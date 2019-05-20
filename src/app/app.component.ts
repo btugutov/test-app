@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-
+import { ConnectorService } from './connector.service'
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -7,11 +7,13 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'test-app';
-  constructor(){
+  constructor(private _c: ConnectorService){
 
   }
   getInfo(){
-    alert("lol")
+    this._c.test().then(res => {
+      alert(res)
+    })
   }
 }
 
