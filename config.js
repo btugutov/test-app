@@ -9,7 +9,7 @@ exports.creds = {
 
     // Required, the client ID of your app in AAD
     // clientID: 'ae5da11b-ed62-4a90-8a64-865732a60e3f',
-    clientID: 'cff4c334-7d7f-4058-a2f5-2a496ddfff05',
+    clientID: 'c9fe3940-657a-4378-a193-8928c84b85f4',
     // Required, must be 'code', 'code id_token', 'id_token code' or 'id_token'
     responseType: 'code id_token',
 
