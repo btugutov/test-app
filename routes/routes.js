@@ -7,7 +7,7 @@ module.exports = function (app) {
     app.get('/api/test', (req, res, next) => {
         res.json(true)
     });
-    app.get('/api/get_user_info_from_azure', (req, res, next) => {
+    app.post('/get_user_info_from_azure', (req, res, next) => {
         console.log("getting info!!!!!!")
         res.json(true)
     });
@@ -15,7 +15,8 @@ module.exports = function (app) {
         console.log("this is the message =>", req.body.message);
         let obj = {
             'message': req.body.message,
-            'os': os
+            'os': os,
+            'req': req.headers
         }
         res.json(obj)
     })

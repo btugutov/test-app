@@ -99,6 +99,23 @@ var AppComponent = /** @class */ (function () {
         this._c = _c;
         this.title = 'test-app';
     }
+    // private async configureAuth(): Promise<void> {
+    //   this.oauthService.loginUrl = 'https://login.microsoftonline.com/12e2dd65-5024-44c2-83b5-3ca21c04ef0e/oauth2/authorize'; 
+    //   this.oauthService.clientId = '1f85af24-72ef-419c-a143-fc21201b1d5d';
+    //   this.oauthService.resource = '';
+    //   this.oauthService.logoutUrl = '';
+    //   this.oauthService.redirectUri = window.location.origin + '/';
+    //   this.oauthService.scope = 'openId';
+    //   this.oauthService.setStorage(sessionStorage);
+    // }
+    // async ngOnInit(){
+    //   await this.configureAuth();
+    //   this.oauthService.tryLogin({});
+    //   if(!this.oauthService.getAccessToken()){
+    //     await this.oauthService.initImplicitFlow();
+    //   }
+    // console.log(this.oauthService.getAccessToken());
+    // }
     AppComponent.prototype.getInfo = function () {
         this._c.test().then(function (res) {
             alert(res);
@@ -169,7 +186,9 @@ var AppModule = /** @class */ (function () {
                 _app_routing_module__WEBPACK_IMPORTED_MODULE_4__["AppRoutingModule"],
                 _angular_common_http__WEBPACK_IMPORTED_MODULE_3__["HttpClientModule"],
             ],
-            providers: [_connector_service__WEBPACK_IMPORTED_MODULE_7__["ConnectorService"]],
+            providers: [
+                _connector_service__WEBPACK_IMPORTED_MODULE_7__["ConnectorService"],
+            ],
             bootstrap: [_app_component__WEBPACK_IMPORTED_MODULE_5__["AppComponent"]]
         })
     ], AppModule);
