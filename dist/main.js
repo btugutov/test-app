@@ -129,6 +129,8 @@ var AppComponent = /** @class */ (function () {
         this._c.getOSInfo(obj).then(function (res) {
             console.log(res);
             alert(res);
+        }).catch(function (err) {
+            console.log("ERROR =>", err);
         });
     };
     AppComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([

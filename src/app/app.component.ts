@@ -42,6 +42,8 @@ export class AppComponent  {
     this._c.getOSInfo(obj).then(res => {
       console.log(res)
       alert(res)
+    }).catch(function(err){
+      console.log("ERROR =>", err)
     })
   }
 }
