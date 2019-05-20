@@ -67,6 +67,7 @@ module.exports = function (app) {
         console.log("getting info!!!!!!")
         res.json(true)
     });
+    /*
     app.post('/api/get_system_info_and_print_message', (req, res) => {
         console.log("this is the message =>", req.body.message);
         let obj = {
@@ -96,19 +97,20 @@ module.exports = function (app) {
             res.json(false)
         }
     })
-    // app.post('/api/get_system_info_and_print_message',
-    //     function (req, res, next) {
-    //         passport.authenticate('azuread-openidconnect',{
-    //                 response: res,                      // required
-    //                 resourceURL: config.resourceURL,    // optional. Provide a value if you want to specify the resource.
-    //                 customState: 'my_state',            // optional. Provide a value if you want to provide custom state value.
-    //                 failureRedirect: '/'
-    //             })(req, res, next);
-    //     },
-    //     function (req, res) {
-    //         log.info('Login was called in the Sample');
-    //         res.json(true);
-    //     });
+    */
+    app.post('/api/get_system_info_and_print_message',
+        function (req, res, next) {
+            passport.authenticate('azuread-openidconnect',{
+                    response: res,                      // required
+                    resourceURL: config.resourceURL,    // optional. Provide a value if you want to specify the resource.
+                    customState: 'my_state',            // optional. Provide a value if you want to provide custom state value.
+                    failureRedirect: '/'
+                })(req, res, next);
+        },
+        function (req, res) {
+            log.info('Login was called in the Sample');
+            res.json(true);
+        });
     app.get('*', (req, res) => {
         res.sendFile(`index.html`, { root: publicweb });
     });
