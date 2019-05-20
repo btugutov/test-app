@@ -1,6 +1,6 @@
 exports.creds = {
     // Required
-    identityMetadata: 'https://login.microsoftonline.com/bpcs.com.onmicrosoft.com/.well-known/openid-configuration',
+    identityMetadata: 'https://login.microsoftonline.com/bpcs.com.onmicrosoft.com/v2.0/.well-known/openid-configuration',
     // or equivalently: 'https://login.microsoftonline.com/<tenant_guid>/.well-known/openid-configuration'
     //
     // or you can use the common endpoint
@@ -8,16 +8,17 @@ exports.creds = {
     // To use the common endpoint, you have to either set `validateIssuer` to false, or provide the `issuer` value.
 
     // Required, the client ID of your app in AAD
-    clientID: 'ae5da11b-ed62-4a90-8a64-865732a60e3f',
-
+    // clientID: 'ae5da11b-ed62-4a90-8a64-865732a60e3f',
+    clientID: 'cff4c334-7d7f-4058-a2f5-2a496ddfff05',
     // Required, must be 'code', 'code id_token', 'id_token code' or 'id_token'
-    responseType: 'id_token code',
+    responseType: 'code id_token',
 
     // Required
     responseMode: 'form_post',
 
     // Required, the reply URL registered in AAD for your app
-    redirectUrl: 'https://bpvalveapps.azurewebsites.net/.auth/login/aad/callback',
+    // redirectUrl: 'https://bpvalveapps.azurewebsites.net/.auth/login/aad/callback',
+    redirectUrl: "http://lenta.ru",
 
     // Required if we use http for redirectUrl
     allowHttpForRedirectUrl: true,
@@ -44,8 +45,7 @@ exports.creds = {
     // to be completely express session free.
     useCookieInsteadOfSession: false,
 
-    // Optional. The additional scope you want besides 'openid', for example: ['email', 'profile'].
-    scope: null,
+    scope: ['profile', 'offline_access', 'https://graph.microsoft.com/mail.read'],
 
     // Optional, 'error', 'warn' or 'info'
     loggingLevel: 'info',
@@ -58,9 +58,6 @@ exports.creds = {
 
     // Optional. The clock skew allowed in token validation, the default value is 300 seconds.
     clockSkew: null,
-
-    //Personal Identifiable Information and Organizational Identifiable information is logged
-    loggingNoPII: false,
 };
 
 // Optional.
