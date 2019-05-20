@@ -15,5 +15,15 @@ export class AppComponent {
       alert(res)
     })
   }
+  getOSInfo(){
+    var message = prompt("Please enter a message");
+    let obj = {
+      'message': message
+    }
+    this._c.getOSInfo(obj).then(res => {
+      console.log(res)
+      alert(res)
+    })
+  }
 }
 

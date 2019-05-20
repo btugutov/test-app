@@ -23,4 +23,17 @@ export class ConnectorService {
       );
     })
   }
+  getOSInfo(message){
+    var that = this;
+    return new Promise(function (resolve, reject) {
+      that.http.post('/api/get_system_info_and_print_message', message).subscribe(
+        res => {
+          resolve(res)
+        },
+        err => {
+          reject(err)
+        }
+      );
+    })
+  }
 }
