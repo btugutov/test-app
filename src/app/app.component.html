@@ -8,4 +8,19 @@
 <h2>WELCOME TO ANGULAR TESTING. PLEASE STAND-BY </h2>
 <button (click)='getInfo()' class='btn btn-lg btn-success' type="button">Get your account info</button>
 <button (click)='getOSInfo()' class='btn btn-lg btn-primary' type="button">Get backendInfo</button>
+<table class="table table-stripped" *ngIf="response">
+    <thead>
+      <tr>
+        <th scope="col">Key</th>
+        <th scope="col">Value</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of response['req.headers'] | keyvalue">
+        <td>{{item.key}}</td>
+        <td>@{{item.value}}</td>
+      </tr>
+    </tbody>
+  </table>
+
 <router-outlet></router-outlet>

@@ -74,7 +74,7 @@ module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<!--The content below is only a placeholder and can be replaced.-->\n<div style=\"text-align:center\">\n  <h1>\n    Welcome to {{ title }}!\n  </h1>\n  <img width=\"300\" alt=\"Angular Logo\" src=\"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==\">\n</div>\n<h2>WELCOME TO ANGULAR TESTING. PLEASE STAND-BY </h2>\n<button (click)='getInfo()' class='btn btn-lg btn-success' type=\"button\">Get your account info</button>\n<button (click)='getOSInfo()' class='btn btn-lg btn-primary' type=\"button\">Get backendInfo</button>\n<router-outlet></router-outlet>\n"
+module.exports = "<!--The content below is only a placeholder and can be replaced.-->\n<div style=\"text-align:center\">\n  <h1>\n    Welcome to {{ title }}!\n  </h1>\n  <img width=\"300\" alt=\"Angular Logo\" src=\"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==\">\n</div>\n<h2>WELCOME TO ANGULAR TESTING. PLEASE STAND-BY </h2>\n<button (click)='getInfo()' class='btn btn-lg btn-success' type=\"button\">Get your account info</button>\n<button (click)='getOSInfo()' class='btn btn-lg btn-primary' type=\"button\">Get backendInfo</button>\n<table class=\"table table-stripped\" *ngIf=\"response\">\n    <thead>\n      <tr>\n        <th scope=\"col\">Key</th>\n        <th scope=\"col\">Value</th>\n      </tr>\n    </thead>\n    <tbody>\n      <tr *ngFor=\"let item of response['req.headers'] | keyvalue\">\n        <td>{{item.key}}</td>\n        <td>@{{item.value}}</td>\n      </tr>\n    </tbody>\n  </table>\n\n<router-outlet></router-outlet>\n"
 
 /***/ }),
 
@@ -98,6 +98,7 @@ var AppComponent = /** @class */ (function () {
     function AppComponent(_c) {
         this._c = _c;
         this.title = 'test-app';
+        this.response = null;
     }
     // private async configureAuth(): Promise<void> {
     //   this.oauthService.loginUrl = 'https://login.microsoftonline.com/12e2dd65-5024-44c2-83b5-3ca21c04ef0e/oauth2/authorize'; 
@@ -122,13 +123,14 @@ var AppComponent = /** @class */ (function () {
         });
     };
     AppComponent.prototype.getOSInfo = function () {
+        var _this = this;
         var message = prompt("Please enter a message");
         var obj = {
             'message': message
         };
         this._c.getOSInfo(obj).then(function (res) {
             console.log(res);
-            alert(res);
+            _this.response = res;
         }).catch(function (err) {
             console.log("ERROR =>", err);
         });

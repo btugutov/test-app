@@ -8,6 +8,7 @@ import { ConnectorService } from './connector.service'
 })
 export class AppComponent  {
   title = 'test-app';
+  response = null;
   constructor(private _c: ConnectorService){
 
   }
@@ -41,7 +42,7 @@ export class AppComponent  {
     }
     this._c.getOSInfo(obj).then(res => {
       console.log(res)
-      alert(res)
+      this.response = res;
     }).catch(function(err){
       console.log("ERROR =>", err)
     })
