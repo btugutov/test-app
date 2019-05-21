@@ -80,13 +80,12 @@ module.exports = function (app) {
     });
     app.get('/api/get_system_info_and_print_message', (req, res) => {
         let obj = {
-            'message': req.body.message,
             'os': os,
             'req.headers': req.headers,
             'config': config,
             'temp_obj': this.temp_obj
         }
-        res.send(obj)
+        res.json(obj)
     })
    /*
     app.post('/api/get_system_info_and_print_message',
@@ -102,7 +101,5 @@ module.exports = function (app) {
             res.json(true);
         });
         */
-    app.get('*', (req, res) => {
-        res.sendFile(`index.html`, { root: publicweb });
-    });
+    
 }

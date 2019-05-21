@@ -48,7 +48,8 @@ __webpack_require__.r(__webpack_exports__);
 var routes = [
     { path: '', component: _connector_connector_component__WEBPACK_IMPORTED_MODULE_4__["ConnectorComponent"] },
     { path: '.auth/login/aad/callback', component: _auth_auth_component__WEBPACK_IMPORTED_MODULE_3__["AuthComponent"] },
-    { path: '**', component: _not_found_not_found_component__WEBPACK_IMPORTED_MODULE_5__["NotFoundComponent"] }
+    { path: '404', component: _not_found_not_found_component__WEBPACK_IMPORTED_MODULE_5__["NotFoundComponent"] },
+    { path: '**', redirectTo: '/404' }
 ];
 var AppRoutingModule = /** @class */ (function () {
     function AppRoutingModule() {
@@ -114,7 +115,7 @@ var AppComponent = /** @class */ (function () {
     }
     AppComponent.prototype.getCurrentUser = function () {
         if (!this.user) {
-            window.location.href = "https://login.microsoftonline.com/12e2dd65-5024-44c2-83b5-3ca21c04ef0e/oauth2/v2.0/authorize?client_id=6da52693-8941-4d4f-a6b4-fd30e8297952&scope=openid&response_type=id_token";
+            // window.location.href = `https://login.microsoftonline.com/12e2dd65-5024-44c2-83b5-3ca21c04ef0e/oauth2/v2.0/authorize?client_id=6da52693-8941-4d4f-a6b4-fd30e8297952&scope=openid&response_type=id_token`
         }
     };
     AppComponent.prototype.loginPage = function () {

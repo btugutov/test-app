@@ -11,8 +11,10 @@ app.use(express.static(publicweb));
 console.log(`serving ${publicweb}`);
 app.use(bodyParser.urlencoded({ extended: true }));
 var routes_setter = require('./routes/routes.js');
-
 routes_setter(app);
+  app.get('*', (req, res) => {
+    res.sendFile(`index.html`, { root: publicweb });
+  });
 
 
 
