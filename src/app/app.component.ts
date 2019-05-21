@@ -15,7 +15,7 @@ export class AppComponent  {
   }
   getCurrentUser(){
     if(!this.user){
-      window.location.href = `https://login.microsoftonline.com/12e2dd65-5024-44c2-83b5-3ca21c04ef0e/oauth2/authorize?response_type=id_token&redirect_uri=https%3A%2F%2Fbaz-angular-nodejs-azure-test.azurewebsites.net%2F.auth%2Flogin%2Faad%2Fcallback&client_id=c601c2d6-1bf0-4820-a71b-0dd48cc68222&scope=openid+profile+email&response_mode=form_post&nonce=10624e1c5df14a23b719262088807b1e_20190521185133&state=redir%3D%252F3%252Fadmin`
+      window.location.href = `https://login.microsoftonline.com/12e2dd65-5024-44c2-83b5-3ca21c04ef0e/oauth2/v2.0/authorize?client_id=c9fe3940-657a-4378-a193-8928c84b85f4&scope=null`
     }
   }
   loginPage(){
