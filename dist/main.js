@@ -36,10 +36,20 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
 /* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
+/* harmony import */ var _auth_auth_component__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./auth/auth.component */ "./src/app/auth/auth.component.ts");
+/* harmony import */ var _connector_connector_component__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./connector/connector.component */ "./src/app/connector/connector.component.ts");
+/* harmony import */ var _not_found_not_found_component__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./not-found/not-found.component */ "./src/app/not-found/not-found.component.ts");
 
 
 
-var routes = [];
+
+
+
+var routes = [
+    { path: '', component: _connector_connector_component__WEBPACK_IMPORTED_MODULE_4__["ConnectorComponent"] },
+    { path: '.auth/login/aad/callback', component: _auth_auth_component__WEBPACK_IMPORTED_MODULE_3__["AuthComponent"] },
+    { path: '**', component: _not_found_not_found_component__WEBPACK_IMPORTED_MODULE_5__["NotFoundComponent"] }
+];
 var AppRoutingModule = /** @class */ (function () {
     function AppRoutingModule() {
     }
@@ -74,7 +84,7 @@ module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<!--The content below is only a placeholder and can be replaced.-->\n<div style=\"text-align:center\">\n  <h1>\n    Welcome to {{ title }}!\n  </h1>\n  <img width=\"300\" alt=\"Angular Logo\" src=\"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==\">\n</div>\n<h2>WELCOME TO ANGULAR TESTING. PLEASE STAND-BY </h2>\n<button (click)='getInfo()' class='btn btn-lg btn-success' type=\"button\">Get your account info</button>\n<button (click)='getOSInfo()' class='btn btn-lg btn-primary' type=\"button\">Get backendInfo</button>\n<table class=\"table table-stripped\" *ngIf=\"response\">\n    <thead>\n      <tr>\n        <th scope=\"col\">Key</th>\n        <th scope=\"col\">Value</th>\n      </tr>\n    </thead>\n    <tbody>\n      <tr *ngFor=\"let item of response['req.headers'] | keyvalue\">\n        <td>{{item.key}}</td>\n        <td>@{{item.value}}</td>\n      </tr>\n    </tbody>\n  </table>\n\n<router-outlet></router-outlet>\n"
+module.exports = "<!--The content below is only a placeholder and can be replaced.-->\n<div style=\"text-align:center\">\n  <h1>\n    Welcome to {{ title }}!\n  </h1>\n  <img width=\"300\" alt=\"Angular Logo\" src=\"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==\">\n</div>\n<h2>WELCOME TO ANGULAR TESTING. PLEASE STAND-BY </h2>\n<button (click)='getInfo()' class='btn btn-lg btn-success' type=\"button\">Get your account info</button>\n<button (click)='getOSInfo()' class='btn btn-lg btn-primary' type=\"button\">Get backendInfo</button>\n<a [routerLink]=\"['/.auth/login/aad/callback']\" routerLinkActive=\"router-link-active\" class='btn btn-lg btn-secondary' >Go to login page</a>\n<a [routerLink]=\"['/']\" routerLinkActive=\"router-link-active\" class='btn btn-lg btn-secondary' >Go to home page</a>\n<table class=\"table table-stripped\" *ngIf=\"response\">\n    <thead>\n      <tr>\n        <th scope=\"col\">Key</th>\n        <th scope=\"col\">Value</th>\n      </tr>\n    </thead>\n    <tbody>\n      <tr *ngFor=\"let item of response['req.headers'] | keyvalue\">\n        <td>{{item.key}}</td>\n        <td>@{{item.value}}</td>\n      </tr>\n    </tbody>\n  </table>\n\n<router-outlet></router-outlet>\n"
 
 /***/ }),
 
@@ -99,7 +109,17 @@ var AppComponent = /** @class */ (function () {
         this._c = _c;
         this.title = 'test-app';
         this.response = null;
+        this.user = null;
+        this.getCurrentUser();
     }
+    AppComponent.prototype.getCurrentUser = function () {
+        if (!this.user) {
+            window.location.href = "https://login.microsoftonline.com/12e2dd65-5024-44c2-83b5-3ca21c04ef0e/oauth2/authorize?response_type=id_token&redirect_uri=https%3A%2F%2Fbaz-angular-nodejs-azure-test.azurewebsites.net%2F.auth%2Flogin%2Faad%2Fcallback&client_id=c601c2d6-1bf0-4820-a71b-0dd48cc68222&scope=openid+profile+email&response_mode=form_post&nonce=10624e1c5df14a23b719262088807b1e_20190521185133&state=redir%3D%252F3%252Fadmin";
+        }
+    };
+    AppComponent.prototype.loginPage = function () {
+        console.log("lol");
+    };
     // private async configureAuth(): Promise<void> {
     //   this.oauthService.loginUrl = 'https://login.microsoftonline.com/12e2dd65-5024-44c2-83b5-3ca21c04ef0e/oauth2/authorize'; 
     //   this.oauthService.clientId = '1f85af24-72ef-419c-a143-fc21201b1d5d';
@@ -124,15 +144,12 @@ var AppComponent = /** @class */ (function () {
     };
     AppComponent.prototype.getOSInfo = function () {
         var _this = this;
-        var message = prompt("Please enter a message");
-        var obj = {
-            'message': message
-        };
-        this._c.getOSInfo(obj).then(function (res) {
+        this._c.getOSInfo().then(function (res) {
             console.log(res);
             _this.response = res;
         }).catch(function (err) {
             console.log("ERROR =>", err);
+            // this.response = err;
         });
     };
     AppComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
@@ -168,6 +185,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _app_component__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./app.component */ "./src/app/app.component.ts");
 /* harmony import */ var _connector_connector_component__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./connector/connector.component */ "./src/app/connector/connector.component.ts");
 /* harmony import */ var _connector_service__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./connector.service */ "./src/app/connector.service.ts");
+/* harmony import */ var _auth_auth_component__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./auth/auth.component */ "./src/app/auth/auth.component.ts");
+/* harmony import */ var _not_found_not_found_component__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./not-found/not-found.component */ "./src/app/not-found/not-found.component.ts");
+
+
 
 
 
@@ -183,7 +204,9 @@ var AppModule = /** @class */ (function () {
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_2__["NgModule"])({
             declarations: [
                 _app_component__WEBPACK_IMPORTED_MODULE_5__["AppComponent"],
-                _connector_connector_component__WEBPACK_IMPORTED_MODULE_6__["ConnectorComponent"]
+                _connector_connector_component__WEBPACK_IMPORTED_MODULE_6__["ConnectorComponent"],
+                _auth_auth_component__WEBPACK_IMPORTED_MODULE_8__["AuthComponent"],
+                _not_found_not_found_component__WEBPACK_IMPORTED_MODULE_9__["NotFoundComponent"]
             ],
             imports: [
                 _angular_platform_browser__WEBPACK_IMPORTED_MODULE_1__["BrowserModule"],
@@ -197,6 +220,63 @@ var AppModule = /** @class */ (function () {
         })
     ], AppModule);
     return AppModule;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/auth/auth.component.css":
+/*!*****************************************!*\
+  !*** ./src/app/auth/auth.component.css ***!
+  \*****************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJzcmMvYXBwL2F1dGgvYXV0aC5jb21wb25lbnQuY3NzIn0= */"
+
+/***/ }),
+
+/***/ "./src/app/auth/auth.component.html":
+/*!******************************************!*\
+  !*** ./src/app/auth/auth.component.html ***!
+  \******************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "<p>\n  auth works!\n</p>\n"
+
+/***/ }),
+
+/***/ "./src/app/auth/auth.component.ts":
+/*!****************************************!*\
+  !*** ./src/app/auth/auth.component.ts ***!
+  \****************************************/
+/*! exports provided: AuthComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AuthComponent", function() { return AuthComponent; });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+
+
+var AuthComponent = /** @class */ (function () {
+    function AuthComponent() {
+    }
+    AuthComponent.prototype.ngOnInit = function () {
+        console.log("SUP");
+    };
+    AuthComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
+            selector: 'app-auth',
+            template: __webpack_require__(/*! ./auth.component.html */ "./src/app/auth/auth.component.html"),
+            styles: [__webpack_require__(/*! ./auth.component.css */ "./src/app/auth/auth.component.css")]
+        }),
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [])
+    ], AuthComponent);
+    return AuthComponent;
 }());
 
 
@@ -233,10 +313,10 @@ var ConnectorService = /** @class */ (function () {
             });
         });
     };
-    ConnectorService.prototype.getOSInfo = function (message) {
+    ConnectorService.prototype.getOSInfo = function () {
         var that = this;
         return new Promise(function (resolve, reject) {
-            that.http.post('/api/get_system_info_and_print_message', message).subscribe(function (res) {
+            that.http.get('/api/get_system_info_and_print_message').subscribe(function (res) {
                 resolve(res);
             }, function (err) {
                 reject(err);
@@ -306,6 +386,62 @@ var ConnectorComponent = /** @class */ (function () {
         tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [])
     ], ConnectorComponent);
     return ConnectorComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/not-found/not-found.component.css":
+/*!***************************************************!*\
+  !*** ./src/app/not-found/not-found.component.css ***!
+  \***************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJzcmMvYXBwL25vdC1mb3VuZC9ub3QtZm91bmQuY29tcG9uZW50LmNzcyJ9 */"
+
+/***/ }),
+
+/***/ "./src/app/not-found/not-found.component.html":
+/*!****************************************************!*\
+  !*** ./src/app/not-found/not-found.component.html ***!
+  \****************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "<p>\n  not-found works!\n</p>\n"
+
+/***/ }),
+
+/***/ "./src/app/not-found/not-found.component.ts":
+/*!**************************************************!*\
+  !*** ./src/app/not-found/not-found.component.ts ***!
+  \**************************************************/
+/*! exports provided: NotFoundComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "NotFoundComponent", function() { return NotFoundComponent; });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+
+
+var NotFoundComponent = /** @class */ (function () {
+    function NotFoundComponent() {
+    }
+    NotFoundComponent.prototype.ngOnInit = function () {
+    };
+    NotFoundComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
+            selector: 'app-not-found',
+            template: __webpack_require__(/*! ./not-found.component.html */ "./src/app/not-found/not-found.component.html"),
+            styles: [__webpack_require__(/*! ./not-found.component.css */ "./src/app/not-found/not-found.component.css")]
+        }),
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [])
+    ], NotFoundComponent);
+    return NotFoundComponent;
 }());
 
 

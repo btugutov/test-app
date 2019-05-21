@@ -5,12 +5,16 @@ import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ConnectorComponent } from './connector/connector.component';
-import {ConnectorService} from './connector.service'
+import {ConnectorService} from './connector.service';
+import { AuthComponent } from './auth/auth.component';
+import { NotFoundComponent } from './not-found/not-found.component'
 
 @NgModule({
   declarations: [
     AppComponent,
-    ConnectorComponent
+    ConnectorComponent,
+    AuthComponent,
+    NotFoundComponent
   ],
   imports: [
     BrowserModule,

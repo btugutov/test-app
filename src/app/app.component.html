@@ -8,6 +8,8 @@
 <h2>WELCOME TO ANGULAR TESTING. PLEASE STAND-BY </h2>
 <button (click)='getInfo()' class='btn btn-lg btn-success' type="button">Get your account info</button>
 <button (click)='getOSInfo()' class='btn btn-lg btn-primary' type="button">Get backendInfo</button>
+<a [routerLink]="['/.auth/login/aad/callback']" routerLinkActive="router-link-active" class='btn btn-lg btn-secondary' >Go to login page</a>
+<a [routerLink]="['/']" routerLinkActive="router-link-active" class='btn btn-lg btn-secondary' >Go to home page</a>
 <table class="table table-stripped" *ngIf="response">
     <thead>
       <tr>

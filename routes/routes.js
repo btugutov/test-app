@@ -54,6 +54,9 @@ passport.use(new OIDCStrategy({
         });
     }
 ));
+
+var temp_obj = {};
+var temp_obj2 = {};
 const publicweb = process.env.PUBLICWEB || './../dist';
 app.use(passport.initialize());
 app.use(passport.session());
@@ -67,13 +70,21 @@ module.exports = function (app) {
         console.log("getting info!!!!!!")
         res.json(true)
     });
-    app.post('/api/get_system_info_and_print_message', (req, res) => {
-        console.log("this is the message =>", req.body.message);
+    app.post('/api/get_user_info_from_azure', (req, res) => {
+        this.temp_obj = req.body
+        res.send(true)
+    });
+    app.get('/api/get_user_info_from_azure', (req, res) => {
+        this.temp_obj2 = req.body
+        res.send(true)
+    });
+    app.get('/api/get_system_info_and_print_message', (req, res) => {
         let obj = {
             'message': req.body.message,
             'os': os,
             'req.headers': req.headers,
-            'config': config
+            'config': config,
+            'temp_obj': this.temp_obj
         }
         res.send(obj)
     })
