@@ -20,7 +20,7 @@ export class AppComponent {
   getCurrentUser() {
     if (!this.user) {
       let href = 'https://login.microsoftonline.com/common/oauth2/authorize?response_type=token&client_id=';
-      href += '7b070d90-8ae5-46ca-859b-9c67facadc2b&resource=https://graph.windows.net&redirect_uri=https://blueprintkaangular/auth/';
+      href += '5f40551b-4ad5-4327-aead-858301bb6d90&resource=https://graph.windows.net&redirect_uri=https://blueprintkaangular/auth/';
       window.location.href = href;
       console.log("NO USER!")
       this.user = true;
