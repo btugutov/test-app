@@ -47,7 +47,8 @@ __webpack_require__.r(__webpack_exports__);
 
 var routes = [
     { path: '', component: _connector_connector_component__WEBPACK_IMPORTED_MODULE_4__["ConnectorComponent"] },
-    { path: '.auth/login/aad/callback', component: _auth_auth_component__WEBPACK_IMPORTED_MODULE_3__["AuthComponent"] },
+    { path: 'auth', component: _auth_auth_component__WEBPACK_IMPORTED_MODULE_3__["AuthComponent"] },
+    // {path: ':other', component: AuthComponent},
     { path: '404', component: _not_found_not_found_component__WEBPACK_IMPORTED_MODULE_5__["NotFoundComponent"] },
     { path: '**', redirectTo: '/404' }
 ];
@@ -85,7 +86,7 @@ module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<!--The content below is only a placeholder and can be replaced.-->\n<div style=\"text-align:center\">\n  <h1>\n    Welcome to {{ title }}!\n  </h1>\n  <img width=\"300\" alt=\"Angular Logo\" src=\"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==\">\n</div>\n<h2>WELCOME TO ANGULAR TESTING. PLEASE STAND-BY </h2>\n<button (click)='getInfo()' class='btn btn-lg btn-success' type=\"button\">Get your account info</button>\n<button (click)='getOSInfo()' class='btn btn-lg btn-primary' type=\"button\">Get backendInfo</button>\n<a [routerLink]=\"['/.auth/login/aad/callback']\" routerLinkActive=\"router-link-active\" class='btn btn-lg btn-secondary' >Go to login page</a>\n<a [routerLink]=\"['/']\" routerLinkActive=\"router-link-active\" class='btn btn-lg btn-secondary' >Go to home page</a>\n<table class=\"table table-stripped\" *ngIf=\"response\">\n    <thead>\n      <tr>\n        <th scope=\"col\">Key</th>\n        <th scope=\"col\">Value</th>\n      </tr>\n    </thead>\n    <tbody>\n      <tr *ngFor=\"let item of response['req.headers'] | keyvalue\">\n        <td>{{item.key}}</td>\n        <td>@{{item.value}}</td>\n      </tr>\n    </tbody>\n  </table>\n\n<router-outlet></router-outlet>\n"
+module.exports = "<!--The content below is only a placeholder and can be replaced.-->\n<div style=\"text-align:center\">\n  <h1>\n    Welcome to {{ title }}!\n  </h1>\n  <img width=\"300\" alt=\"Angular Logo\" src=\"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==\">\n</div>\n<h2>WELCOME TO ANGULAR TESTING. PLEASE STAND-BY </h2>\n<button (click)='getCurrentUser()' class='btn btn-lg btn-success' type=\"button\" >Get your account info</button>\n<button (click)='getOSInfo()' class='btn btn-lg btn-primary' type=\"button\">Get backendInfo</button>\n<a [routerLink]=\"['/.auth/login/aad/callback']\" routerLinkActive=\"router-link-active\" class='btn btn-lg btn-secondary' >Go to login page</a>\n<a [routerLink]=\"['/']\" routerLinkActive=\"router-link-active\" class='btn btn-lg btn-secondary' >Go to home page</a>\n<table class=\"table table-stripped\" *ngIf=\"response\">\n    <thead>\n      <tr>\n        <th scope=\"col\">Key</th>\n        <th scope=\"col\">Value</th>\n      </tr>\n    </thead>\n    <tbody>\n      <tr *ngFor=\"let item of response['req.headers'] | keyvalue\">\n        <td>{{item.key}}</td>\n        <td>@{{item.value}}</td>\n      </tr>\n    </tbody>\n  </table>\n\n<router-outlet></router-outlet>\n"
 
 /***/ }),
 
@@ -111,33 +112,25 @@ var AppComponent = /** @class */ (function () {
         this.title = 'test-app';
         this.response = null;
         this.user = null;
-        this.getCurrentUser();
+        // var token = this.adalSvc.acquireToken('http://adal.resource.com').subscribe((token: string) => {
+        //   console.log(token);
+        // });
+        // this.getCurrentUser();
     }
     AppComponent.prototype.getCurrentUser = function () {
         if (!this.user) {
+            var href = 'https://login.microsoftonline.com/common/oauth2/authorize?response_type=token&client_id=';
+            href += '7b070d90-8ae5-46ca-859b-9c67facadc2b&resource=https://graph.windows.net&redirect_uri=http://localhost:3000/auth/';
+            window.location.href = href;
+            console.log("NO USER!");
+            this.user = true;
             // window.location.href = `https://login.microsoftonline.com/12e2dd65-5024-44c2-83b5-3ca21c04ef0e/oauth2/v2.0/authorize?client_id=6da52693-8941-4d4f-a6b4-fd30e8297952&scope=openid&response_type=id_token`
         }
+        console.log("THIS USER =>", this.user);
     };
     AppComponent.prototype.loginPage = function () {
         console.log("lol");
     };
-    // private async configureAuth(): Promise<void> {
-    //   this.oauthService.loginUrl = 'https://login.microsoftonline.com/12e2dd65-5024-44c2-83b5-3ca21c04ef0e/oauth2/authorize'; 
-    //   this.oauthService.clientId = '1f85af24-72ef-419c-a143-fc21201b1d5d';
-    //   this.oauthService.resource = '';
-    //   this.oauthService.logoutUrl = '';
-    //   this.oauthService.redirectUri = window.location.origin + '/';
-    //   this.oauthService.scope = 'openId';
-    //   this.oauthService.setStorage(sessionStorage);
-    // }
-    // async ngOnInit(){
-    //   await this.configureAuth();
-    //   this.oauthService.tryLogin({});
-    //   if(!this.oauthService.getAccessToken()){
-    //     await this.oauthService.initImplicitFlow();
-    //   }
-    // console.log(this.oauthService.getAccessToken());
-    // }
     AppComponent.prototype.getInfo = function () {
         this._c.test().then(function (res) {
             alert(res);
@@ -188,6 +181,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _connector_service__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./connector.service */ "./src/app/connector.service.ts");
 /* harmony import */ var _auth_auth_component__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./auth/auth.component */ "./src/app/auth/auth.component.ts");
 /* harmony import */ var _not_found_not_found_component__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./not-found/not-found.component */ "./src/app/not-found/not-found.component.ts");
+/* harmony import */ var microsoft_adal_angular6__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! microsoft-adal-angular6 */ "./node_modules/microsoft-adal-angular6/fesm5/microsoft-adal-angular6.js");
+
 
 
 
@@ -213,9 +208,20 @@ var AppModule = /** @class */ (function () {
                 _angular_platform_browser__WEBPACK_IMPORTED_MODULE_1__["BrowserModule"],
                 _app_routing_module__WEBPACK_IMPORTED_MODULE_4__["AppRoutingModule"],
                 _angular_common_http__WEBPACK_IMPORTED_MODULE_3__["HttpClientModule"],
+                microsoft_adal_angular6__WEBPACK_IMPORTED_MODULE_10__["MsAdalAngular6Module"].forRoot({
+                    tenant: '12e2dd65-5024-44c2-83b5-3ca21c04ef0e',
+                    clientId: '7b070d90-8ae5-46ca-859b-9c67facadc2b',
+                    redirectUri: window.location.origin,
+                    navigateToLoginRequestUrl: false,
+                    cacheLocation: 'localStorage',
+                    endpoints: {
+                        "https://localhost:3000/.auth/login/aad/callback": "object_response"
+                    },
+                }),
             ],
             providers: [
                 _connector_service__WEBPACK_IMPORTED_MODULE_7__["ConnectorService"],
+                microsoft_adal_angular6__WEBPACK_IMPORTED_MODULE_10__["AuthenticationGuard"]
             ],
             bootstrap: [_app_component__WEBPACK_IMPORTED_MODULE_5__["AppComponent"]]
         })
@@ -261,10 +267,16 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AuthComponent", function() { return AuthComponent; });
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
+
 
 
 var AuthComponent = /** @class */ (function () {
-    function AuthComponent() {
+    function AuthComponent(_route) {
+        this._route = _route;
+        // this._route.paramMap.subscribe(params => {
+        //   console.log(params.get('other'))
+        // })
     }
     AuthComponent.prototype.ngOnInit = function () {
         console.log("SUP");
@@ -275,7 +287,7 @@ var AuthComponent = /** @class */ (function () {
             template: __webpack_require__(/*! ./auth.component.html */ "./src/app/auth/auth.component.html"),
             styles: [__webpack_require__(/*! ./auth.component.css */ "./src/app/auth/auth.component.css")]
         }),
-        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [])
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_angular_router__WEBPACK_IMPORTED_MODULE_2__["ActivatedRoute"]])
     ], AuthComponent);
     return AuthComponent;
 }());

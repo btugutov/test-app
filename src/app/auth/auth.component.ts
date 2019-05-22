@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-
+import { Router, ActivatedRoute } from '@angular/router';
 @Component({
   selector: 'app-auth',
   templateUrl: './auth.component.html',
@@ -7,7 +7,11 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AuthComponent implements OnInit {
 
-  constructor() { }
+  constructor(private _route: ActivatedRoute) { 
+    // this._route.paramMap.subscribe(params => {
+    //   console.log(params.get('other'))
+    // })
+  }
 
   ngOnInit() {
     console.log("SUP")
