@@ -96,10 +96,15 @@
     }
 
     function graphAPICallback(data) {
-      console.log(data)
-      document.getElementById('user_json').value = data.displayName;
-      document.getElementById('user_displayName').innerHTML = data.displayName;
-      console.log("document.getElementById('user_json').value =>", document.getElementById('user_json').value )
+      try{
+        console.log(data)
+        document.getElementById('user_json').value = data.displayName;
+        document.getElementById('user_displayName').innerHTML = data.displayName;
+        console.log("document.getElementById('user_json').value =>", document.getElementById('user_json').value )
+
+      }catch(function(err){
+        console.log("err => ", err)
+      })
         // document.getElementById("json").innerHTML = JSON.stringify(data, null, 2);
     }
     function JSONParse(data){
