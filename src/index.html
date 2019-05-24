@@ -7,22 +7,33 @@
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/bluebird/3.3.4/bluebird.min.js"></script>
   <script src="https://secure.aadcdn.microsoftonline-p.com/lib/1.0.0/js/msal.js"></script>
+  <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.4.0.min.js"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
 </head>
 <body>
+  <input type="hidden" id="WelcomeMessage" value=''/>
+  <input type="hidden" id="user_json" value=''/>
   <app-root></app-root>
-  <div class="container">
+    <div class="container" id="singIngBox">
         <div class="leftContainer">
-            <input type="hidden" id="WelcomeMessage" />
-            <input type="hidden" id="user_json" />
-            <button id="SignIn" onclick="signIn()" hidden>Sign In</button>
+            <h1>Please Sign in</h1>
+            <button id="SignIn" onclick="signIn()" >Sign In</button>
         </div>
         <div class="rightContainer">
             <pre id="json"></pre>
         </div>
     </div>
 <script>
+  $(document).ready(function(){
+    let user = document.getElementById('WelcomeMessage').value;
+    let check_user = document.getElementById('user_displayName')
+    if(check_user){
+      document.getElementById('WelcomeMessage').style.display = 'none';
+    }else{
+      console.log("we need to get the current user!")
+    }
+  });
     var msalConfig = {
         auth: {
             clientId: "5f40551b-4ad5-4327-aead-858301bb6d90",
@@ -96,15 +107,18 @@
     }
 
     function graphAPICallback(data) {
-      try{
         console.log(data)
         document.getElementById('user_json').value = data.displayName;
-        document.getElementById('user_displayName').innerHTML = data.displayName;
+        // document.getElementById('user_displayName').innerHTML = data.displayName;
         console.log("document.getElementById('user_json').value =>", document.getElementById('user_json').value )
+        let check_user = document.getElementById('user_displayName')
+        if(check_user){
+          console.log("yesno!")
+          document.getElementById('singIngBox').style.display = 'none'
+        }else{
+          location.reload();
+        }
 
-      }catch(function(err){
-        console.log("err => ", err)
-      })
         // document.getElementById("json").innerHTML = JSON.stringify(data, null, 2);
     }
     function JSONParse(data){

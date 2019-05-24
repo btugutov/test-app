@@ -22,7 +22,6 @@ export class AppComponent {
   }
   getCurrentUser() {
     if (!this.user) {
-      document.getElementById('SignIn').click();
       console.log("this.user_field =>", this.user_field.value)
       this.display_name = "loool"
       setTimeout(function(){
