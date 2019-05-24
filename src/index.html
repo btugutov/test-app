@@ -14,8 +14,9 @@
   <app-root></app-root>
   <div class="container">
         <div class="leftContainer">
-            <p id="WelcomeMessage">Welcome to the Microsoft Authentication Library For Javascript Quickstart</p>
-            <button id="SignIn" onclick="signIn()">Sign In</button>
+            <input type="hidden" id="WelcomeMessage" />
+            <input type="hidden" id="user_json" />
+            <button id="SignIn" onclick="signIn()" hidden>Sign In</button>
         </div>
         <div class="rightContainer">
             <pre id="json"></pre>
@@ -95,15 +96,22 @@
     }
 
     function graphAPICallback(data) {
-        document.getElementById("json").innerHTML = JSON.stringify(data, null, 2);
+      console.log(data)
+      document.getElementById('user_json').value = data.displayName;
+      document.getElementById('user_displayName').innerHTML = data.displayName;
+      console.log("document.getElementById('user_json').value =>", document.getElementById('user_json').value )
+        // document.getElementById("json").innerHTML = JSON.stringify(data, null, 2);
     }
-
+    function JSONParse(data){
+      console.log(data)
+    }
     function showWelcomeMessage() {
         var divWelcome = document.getElementById('WelcomeMessage');
-        divWelcome.innerHTML = "Welcome " + myMSALObj.getAccount().userName + " to Microsoft Graph API";
+        divWelcome.value = myMSALObj.getAccount().userName
         var loginbutton = document.getElementById('SignIn');
         loginbutton.innerHTML = 'Sign Out';
         loginbutton.setAttribute('onclick', 'signOut();');
+        console.log("VALUE =>", divWelcome.value)
     }
 
    //This function can be removed if you do not need to support IE

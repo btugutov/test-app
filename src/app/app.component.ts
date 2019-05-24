@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ConnectorService } from './connector.service'
 import { OAuthService } from 'angular-oauth2-oidc';
 import { MsAdalAngular6Service } from 'microsoft-adal-angular6';
+import { DOCUMENT } from '@angular/common';
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -11,31 +13,30 @@ export class AppComponent {
   title = 'test-app';
   response = null;
   user = null;
+  user_field = null;
+  user_displayName = null;
+  display_name = null;
   constructor(private _c: ConnectorService) {
-    // var token = this.adalSvc.acquireToken('http://adal.resource.com').subscribe((token: string) => {
-    //   console.log(token);
-    // });
-    // this.getCurrentUser();
-
-
-
-    // secret => 1wqvrt[RiTS/fjkyR]_VkLn6sgibWc70
-
-
-
-
-
+    this.user_field = document.getElementById('WelcomeMessage');
+    this.getCurrentUser();
   }
   getCurrentUser() {
     if (!this.user) {
-      let href = 'https://login.microsoftonline.com/common/oauth2/authorize?response_type=token&client_id=';
-      href += '5f40551b-4ad5-4327-aead-858301bb6d90&resource=https://graph.windows.net&redirect_uri=https://blueprintkaangular/auth/';
-      window.location.href = href;
-      console.log("NO USER!")
-      this.user = true;
-      // window.location.href = `https://login.microsoftonline.com/12e2dd65-5024-44c2-83b5-3ca21c04ef0e/oauth2/v2.0/authorize?client_id=6da52693-8941-4d4f-a6b4-fd30e8297952&scope=openid&response_type=id_token`
+      document.getElementById('SignIn').click();
+      console.log("this.user_field =>", this.user_field.value)
+      this.display_name = "loool"
+      setTimeout(function(){
+        this.user_displayName = document.getElementById('user_json')['value'];
+        console.log("this.user_displayName =>", this.user_displayName)
+
+      }, 500)
+      // while(!this.user_displayName){
+      //   this.user_displayName = document.getElementById('user_json')['value'];
+      //   console.log("waiting...")
+      // }
+      console.log("lol")
+      this.user = this.user_field.value;
     }
-    console.log("THIS USER =>", this.user)
   }
   loginPage() {
     console.log("lol")
