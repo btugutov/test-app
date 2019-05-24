@@ -86,7 +86,7 @@ module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<!--The content below is only a placeholder and can be replaced.-->\n<div style=\"text-align:center\">\n  <h1>\n    Welcome to {{ title }}!\n  </h1>\n  <img width=\"300\" alt=\"Angular Logo\" src=\"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==\">\n</div>\n<div style=\"text-align:center\">\n  <h2>WELCOME TO ANGULAR TESTING. PLEASE STAND-BY </h2>\n  <button (click)='getCurrentUser()' class='btn btn-lg btn-success' type=\"button\" >Get your account info</button>\n  <button (click)='getOSInfo()' class='btn btn-lg btn-primary' type=\"button\">Get backendInfo</button>\n  <a [routerLink]=\"['/.auth/login/aad/callback']\" routerLinkActive=\"router-link-active\" class='btn btn-lg btn-secondary' >Go to login page</a>\n  <a [routerLink]=\"['/']\" routerLinkActive=\"router-link-active\" class='btn btn-lg btn-secondary' >Go to home page</a>\n</div>\n<table class=\"table table-stripped\" *ngIf=\"response\">\n    <thead>\n      <tr>\n        <th scope=\"col\">Key</th>\n        <th scope=\"col\">Value</th>\n      </tr>\n    </thead>\n    <tbody>\n      <tr *ngFor=\"let item of response['req.headers'] | keyvalue\">\n        <td>{{item.key}}</td>\n        <td>@{{item.value}}</td>\n      </tr>\n    </tbody>\n  </table>\n\n<router-outlet></router-outlet>\n"
+module.exports = "<!--The content below is only a placeholder and can be replaced.-->\n<div style=\"text-align:center\">\n    <h1>\n        Welcome to {{ title }}!\n    </h1>\n    <img width=\"300\" alt=\"Angular Logo\" src=\"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==\">\n</div>\n<div style=\"text-align:center\">\n    <h2>WELCOME TO ANGULAR TESTING. PLEASE STAND-BY </h2>\n    <button (click)='getCurrentUser()' class='btn btn-lg btn-success' type=\"button\">Get your account info</button>\n    <button (click)='getOSInfo()' class='btn btn-lg btn-primary' type=\"button\">Get backendInfo</button>\n    <a [routerLink]=\"['/.auth/login/aad/callback']\" routerLinkActive=\"router-link-active\" class='btn btn-lg btn-secondary'>Go to login page</a>\n    <a [routerLink]=\"['/']\" routerLinkActive=\"router-link-active\" class='btn btn-lg btn-secondary'>Go to home page</a>\n</div>\n\n<table class=\"table table-stripped\" *ngIf=\"response\">\n    <thead>\n        <tr>\n            <th scope=\"col\">Key</th>\n            <th scope=\"col\">Value</th>\n        </tr>\n    </thead>\n    <tbody>\n        <tr *ngFor=\"let item of response['req.headers'] | keyvalue\">\n            <td>{{item.key}}</td>\n            <td>@{{item.value}}</td>\n        </tr>\n    </tbody>\n</table>\n\n<router-outlet></router-outlet>"
 
 /***/ }),
 
@@ -108,14 +108,15 @@ __webpack_require__.r(__webpack_exports__);
 
 var AppComponent = /** @class */ (function () {
     function AppComponent(_c) {
-        this._c = _c;
-        this.title = 'test-app';
-        this.response = null;
-        this.user = null;
         // var token = this.adalSvc.acquireToken('http://adal.resource.com').subscribe((token: string) => {
         //   console.log(token);
         // });
         // this.getCurrentUser();
+        this._c = _c;
+        this.title = 'test-app';
+        this.response = null;
+        this.user = null;
+        // secret => 1wqvrt[RiTS/fjkyR]_VkLn6sgibWc70
     }
     AppComponent.prototype.getCurrentUser = function () {
         if (!this.user) {

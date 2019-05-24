@@ -16,6 +16,15 @@ export class AppComponent {
     //   console.log(token);
     // });
     // this.getCurrentUser();
+
+
+
+    // secret => 1wqvrt[RiTS/fjkyR]_VkLn6sgibWc70
+
+
+
+
+
   }
   getCurrentUser() {
     if (!this.user) {
