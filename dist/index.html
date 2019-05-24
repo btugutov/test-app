@@ -112,7 +112,7 @@
         // document.getElementById('user_displayName').innerHTML = data.displayName;
         console.log("document.getElementById('user_json').value =>", document.getElementById('user_json').value )
         let check_user = document.getElementById('user_displayName')
-        if(check_user){
+        if(check_user && check_user.innerHTML.length>0){
           console.log("yesno!")
           document.getElementById('singIngBox').style.display = 'none'
         }else{
