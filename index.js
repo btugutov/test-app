@@ -10,6 +10,16 @@ app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }))
 app.use(express.static(publicweb));
 console.log(`serving ${publicweb}`);
 app.use(bodyParser.urlencoded({ extended: true }));
+const session = require('express-session');
+app.use(session({
+    secret: 'blablabla',
+    saveUninitialized: false,
+    resave: true,
+    cookie: {
+        path: "/",
+        maxAge: 3600000
+    }
+}));
 var routes_setter = require('./routes/routes.js');
 routes_setter(app);
 app.get('*', (req, res) => {

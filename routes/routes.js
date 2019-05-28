@@ -147,15 +147,18 @@ module.exports = function(app) {
     });
     app.post('/api/store_user', (req, res, next) => {
         console.log("store user =>", req.body.mail)
-        req.headers['test'] = req.body.mail
+        res.setHeader("email", req.body.mail);
+        req.session['user'] = req.body
         res.json(true)
     });
     app.get('/api/get_system_info_and_print_message', (req, res) => {
         let obj = {
             'os': os,
             'req.headers': req.headers,
+            'res.headers': res.headers,
+            'user_session': req.session['user'],
             'config': config,
-            'temp_obj': this.temp_obj
+            'temp_obj': true
         }
         res.json(obj)
     })

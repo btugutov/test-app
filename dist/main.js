@@ -745,7 +745,7 @@ module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<!--The content below is only a placeholder and can be replaced.-->\n<div class=\"container\" id=\"singIngBox\">\n    <div class=\"leftContainer\">\n        <h1>Please Sign in</h1>\n        <button id=\"SignIn\" (click)=\"signIn()\">Sign In</button>\n    </div>\n    <div class=\"rightContainer\">\n        <pre id=\"json\"></pre>\n    </div>\n</div>\n<div *ngIf=\"true\">\n    <div style=\"text-align:center\" *ngIf=\"popup_error_message\">\n        <h1 style=\"color: red\">Please allow popups and reload the page.</h1>\n    </div>\n    <div style=\"text-align:center\">\n        <h1 *ngIf=\"user_obj\">\n            Welcome to {{ title }} {{user_obj | json}}!\n        </h1>\n        <h1>{{displayName}}</h1>\n        <img width=\"300\" alt=\"Angular Logo\" src=\"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==\">\n    </div>\n\n    <div style=\"text-align:center\">\n        <h2>WELCOME TO ANGULAR TESTING. PLEASE STAND-BY </h2>\n        <button (click)='getCurrentUser()' class='btn btn-lg btn-success' type=\"button\">Get your account info</button>\n        <button (click)='getOSInfo()' class='btn btn-lg btn-primary' type=\"button\">Get backendInfo</button>\n        <a [routerLink]=\"['/.auth/login/aad/callback']\" routerLinkActive=\"router-link-active\" class='btn btn-lg btn-secondary'>Go to login page</a>\n        <a [routerLink]=\"['/']\" routerLinkActive=\"router-link-active\" class='btn btn-lg btn-secondary'>Go to home page</a>\n    </div>\n\n    <table class=\"table table-stripped\" *ngIf=\"response\">\n        <thead>\n            <tr>\n                <th scope=\"col\">Key</th>\n                <th scope=\"col\">Value</th>\n            </tr>\n\n        </thead>\n        <tbody>\n            <tr *ngFor=\"let item of response['req.headers'] | keyvalue\">\n                <td>{{item.key}}</td>\n                <td>@{{item.value}}</td>\n            </tr>\n        </tbody>\n    </table>\n\n    <router-outlet></router-outlet>\n</div>\n<h1>USER => {{user}}</h1>\n<div *ngIf=\"user==null\">\n    <h1>No user!</h1>\n</div>"
+module.exports = "<!--The content below is only a placeholder and can be replaced.-->\n<div class=\"container\" id=\"singIngBox\" *ngIf=\"!user_obj\">\n    <div class=\"leftContainer\">\n        <h1>Please Sign in</h1>\n        <button id=\"SignIn\" class='btn btn-outline-success' type=\"button\" (click)=\"signIn()\">Sign In</button>\n    </div>\n    <div class=\"rightContainer\">\n        <pre id=\"json\"></pre>\n    </div>\n</div>\n<button (click)='getOSInfo()' class='btn btn-outline-primary' type=\"button\">Get backendInfo</button>\n<router-outlet></router-outlet>"
 
 /***/ }),
 
@@ -815,11 +815,14 @@ var AppComponent = /** @class */ (function () {
         this.myMSALObj.handleRedirectCallback(this.authRedirectCallBack);
         console.log("THIS.user.obj =>", this.user_obj);
         if (!this.user_obj) {
+            console.log("let's get user than");
             if (localStorage.user) {
+                console.log("user is in storage!");
+                console.log(localStorage.user);
                 this.user_obj = JSON.parse(localStorage.user);
             }
             else {
-                console.log("no user!!!");
+                console.log("no user anywhere!!!");
                 // this.signIn()
             }
         }
@@ -1341,7 +1344,7 @@ module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<p>\n  index works!\n</p>\n"
+module.exports = "<p>\n    index works!\n</p>\n<h1>\n    {{user | json}}\n</h1>"
 
 /***/ }),
 
@@ -1357,12 +1360,30 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "IndexComponent", function() { return IndexComponent; });
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _connector_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./../connector.service */ "./src/app/connector.service.ts");
+
 
 
 var IndexComponent = /** @class */ (function () {
-    function IndexComponent() {
+    function IndexComponent(_c) {
+        var _this = this;
+        this._c = _c;
+        this._c.user.subscribe(function (user) {
+            if (user && user['displayName']) {
+                console.log('we got user!! =>', user);
+                _this.user = user;
+            }
+        });
     }
     IndexComponent.prototype.ngOnInit = function () {
+        if (!this.user) {
+            console.log("tupeof(user) =>", typeof (this.user));
+            if (localStorage['user']) {
+                this.user = JSON.parse(localStorage['user']);
+            }
+        }
+        else {
+        }
     };
     IndexComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
@@ -1370,7 +1391,7 @@ var IndexComponent = /** @class */ (function () {
             template: __webpack_require__(/*! ./index.component.html */ "./src/app/index/index.component.html"),
             styles: [__webpack_require__(/*! ./index.component.css */ "./src/app/index/index.component.css")]
         }),
-        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [])
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_connector_service__WEBPACK_IMPORTED_MODULE_2__["ConnectorService"]])
     ], IndexComponent);
     return IndexComponent;
 }());

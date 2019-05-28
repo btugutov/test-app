@@ -58,10 +58,15 @@ export class AppComponent {
     this.myMSALObj.handleRedirectCallback(this.authRedirectCallBack);
     console.log("THIS.user.obj =>", this.user_obj)
     if(!this.user_obj){
+      console.log("let's get user than")
       if(localStorage.user){
+        console.log("user is in storage!")
+        console.log(localStorage.user)
         this.user_obj = JSON.parse(localStorage.user)
+        
       }else{
-        console.log("no user!!!")
+
+        console.log("no user anywhere!!!")
         // this.signIn()
       }
     }

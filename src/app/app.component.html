@@ -1,52 +1,12 @@
 <!--The content below is only a placeholder and can be replaced.-->
-<div class="container" id="singIngBox">
+<div class="container" id="singIngBox" *ngIf="!user_obj">
     <div class="leftContainer">
         <h1>Please Sign in</h1>
-        <button id="SignIn" (click)="signIn()">Sign In</button>
+        <button id="SignIn" class='btn btn-outline-success' type="button" (click)="signIn()">Sign In</button>
     </div>
     <div class="rightContainer">
         <pre id="json"></pre>
     </div>
 </div>
-<div *ngIf="true">
-    <div style="text-align:center" *ngIf="popup_error_message">
-        <h1 style="color: red">Please allow popups and reload the page.</h1>
-    </div>
-    <div style="text-align:center">
-        <h1 *ngIf="user_obj">
-            Welcome to {{ title }} {{user_obj | json}}!
-        </h1>
-        <h1>{{displayName}}</h1>
-        <img width="300" alt="Angular Logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==">
-    </div>
-
-    <div style="text-align:center">
-        <h2>WELCOME TO ANGULAR TESTING. PLEASE STAND-BY </h2>
-        <button (click)='getCurrentUser()' class='btn btn-lg btn-success' type="button">Get your account info</button>
-        <button (click)='getOSInfo()' class='btn btn-lg btn-primary' type="button">Get backendInfo</button>
-        <a [routerLink]="['/.auth/login/aad/callback']" routerLinkActive="router-link-active" class='btn btn-lg btn-secondary'>Go to login page</a>
-        <a [routerLink]="['/']" routerLinkActive="router-link-active" class='btn btn-lg btn-secondary'>Go to home page</a>
-    </div>
-
-    <table class="table table-stripped" *ngIf="response">
-        <thead>
-            <tr>
-                <th scope="col">Key</th>
-                <th scope="col">Value</th>
-            </tr>
-
-        </thead>
-        <tbody>
-            <tr *ngFor="let item of response['req.headers'] | keyvalue">
-                <td>{{item.key}}</td>
-                <td>@{{item.value}}</td>
-            </tr>
-        </tbody>
-    </table>
-
-    <router-outlet></router-outlet>
-</div>
-<h1>USER => {{user}}</h1>
-<div *ngIf="user==null">
-    <h1>No user!</h1>
-</div>
+<button (click)='getOSInfo()' class='btn btn-outline-primary' type="button">Get backendInfo</button>
+<router-outlet></router-outlet>
