@@ -320,8 +320,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _connector_service__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./connector.service */ "./src/app/connector.service.ts");
 /* harmony import */ var _auth_auth_component__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./auth/auth.component */ "./src/app/auth/auth.component.ts");
 /* harmony import */ var _not_found_not_found_component__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./not-found/not-found.component */ "./src/app/not-found/not-found.component.ts");
-/* harmony import */ var microsoft_adal_angular6__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! microsoft-adal-angular6 */ "./node_modules/microsoft-adal-angular6/fesm5/microsoft-adal-angular6.js");
-
 
 
 
@@ -347,20 +345,9 @@ var AppModule = /** @class */ (function () {
                 _angular_platform_browser__WEBPACK_IMPORTED_MODULE_1__["BrowserModule"],
                 _app_routing_module__WEBPACK_IMPORTED_MODULE_4__["AppRoutingModule"],
                 _angular_common_http__WEBPACK_IMPORTED_MODULE_3__["HttpClientModule"],
-                microsoft_adal_angular6__WEBPACK_IMPORTED_MODULE_10__["MsAdalAngular6Module"].forRoot({
-                    tenant: '12e2dd65-5024-44c2-83b5-3ca21c04ef0e',
-                    clientId: '7b070d90-8ae5-46ca-859b-9c67facadc2b',
-                    redirectUri: window.location.origin,
-                    navigateToLoginRequestUrl: false,
-                    cacheLocation: 'localStorage',
-                    endpoints: {
-                        "https://localhost:3000/.auth/login/aad/callback": "object_response"
-                    },
-                }),
             ],
             providers: [
-                _connector_service__WEBPACK_IMPORTED_MODULE_7__["ConnectorService"],
-                microsoft_adal_angular6__WEBPACK_IMPORTED_MODULE_10__["AuthenticationGuard"]
+                _connector_service__WEBPACK_IMPORTED_MODULE_7__["ConnectorService"]
             ],
             bootstrap: [_app_component__WEBPACK_IMPORTED_MODULE_5__["AppComponent"]]
         })

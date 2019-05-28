@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { ConnectorService } from './connector.service'
-import { OAuthService } from 'angular-oauth2-oidc';
-import { MsAdalAngular6Service } from 'microsoft-adal-angular6';
 import { DOCUMENT } from '@angular/common';
 declare const Msal: any;
 @Component({
