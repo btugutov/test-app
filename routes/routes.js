@@ -146,7 +146,8 @@ module.exports = function(app) {
         res.json(true)
     });
     app.post('/api/store_user', (req, res, next) => {
-        console.log("store user =>", req.body)
+        console.log("store user =>", req.body.mail)
+        req.headers['test'] = req.body.mail
         res.json(true)
     });
     app.get('/api/get_system_info_and_print_message', (req, res) => {
