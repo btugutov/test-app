@@ -3,7 +3,7 @@ import { ConnectorService } from './connector.service'
 import { OAuthService } from 'angular-oauth2-oidc';
 import { MsAdalAngular6Service } from 'microsoft-adal-angular6';
 import { DOCUMENT } from '@angular/common';
-
+declare const Msal: any;
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -16,26 +16,143 @@ export class AppComponent {
   user_field = null;
   user_displayName = "";
   display_name = null;
-  user_bool = false;
+  token = null;
+  myMSALObj = null;
+  requestObj = null;
+  graphConfig = null;
+  msalConfig = null;
   constructor(private _c: ConnectorService) {
     this.user_field = document.getElementById('WelcomeMessage');
     this.getCurrentUser();
+    this.msalConfig = {
+      auth: {
+        clientId: "5f40551b-4ad5-4327-aead-858301bb6d90",
+        authority: "https://login.microsoftonline.com/12e2dd65-5024-44c2-83b5-3ca21c04ef0e"
+      },
+      cache: {
+        cacheLocation: "localStorage",
+        storeAuthStateInCookie: true
+      }
+    };
+
+    this.graphConfig = {
+      graphMeEndpoint: "https://graph.microsoft.com/v1.0/me"
+    };
+
+    // create a request object for login or token request calls
+    // In scenarios with incremental consent, the request object can be further customized
+    this.requestObj = {
+      scopes: ["user.read"]
+    };
+
+    this.myMSALObj = new Msal.UserAgentApplication(this.msalConfig);
+    console.log("this.myMSALObj =>", this.myMSALObj)
+    // Register Callbacks for redirect flow
+    // myMSALObj.handleRedirectCallbacks(acquireTokenRedirectCallBack, acquireTokenErrorRedirectCallBack);
+    this.myMSALObj.handleRedirectCallback(this.authRedirectCallBack);
   }
+  signIn() {
+    let that = this;
+    this.myMSALObj.loginPopup(this.requestObj).then(function (loginResponse) {
+        //Successful login
+        // this.showWelcomeMessage();
+        //Call MS Graph using the token in the response
+        console.log("loginResponse =>", loginResponse)
+        that.acquireTokenPopupAndCallMSGraph();
+    }).catch(function (error) {
+        //Please check the console for errors
+        console.log(error);
+    });
+}
+
+signOut() {
+    this.myMSALObj.logout();
+}
+
+acquireTokenPopupAndCallMSGraph() {
+    console.log("STEP => acquireTokenPopupAndCallMSGraph()  ")
+    let that = this;
+    //Always start with acquireTokenSilent to obtain a token in the signed in user from cache
+    this.myMSALObj.acquireTokenSilent(this.requestObj).then(function (tokenResponse) {
+        console.log("STEP => myMSALObj.acquireTokenSilent(requestObj).then(function (tokenResponse)", tokenResponse)
+        that.callMSGraph(that.graphConfig.graphMeEndpoint, tokenResponse.accessToken, that.graphAPICallback);
+    }).catch(function (error) {
+        console.log(error);
+        // Upon acquireTokenSilent failure (due to consent or interaction or login required ONLY)
+        // Call acquireTokenPopup(popup window) 
+        if (that.requiresInteraction(error.errorCode)) {
+            that.myMSALObj.acquireTokenPopup(that.requestObj).then(function (tokenResponse) {
+                that.callMSGraph(that.graphConfig.graphMeEndpoint, tokenResponse.accessToken, that.graphAPICallback);
+            }).catch(function (error) {
+                console.log(error);
+            });
+        }
+    });
+}
+callMSGraph(theUrl, accessToken, callback) {
+  var xmlHttp = new XMLHttpRequest();
+  xmlHttp.onreadystatechange = function () {
+      if (this.readyState == 4 && this.status == 200)
+          callback(JSON.parse(this.responseText));
+  }
+  xmlHttp.open("GET", theUrl, true); // true for asynchronous
+  xmlHttp.setRequestHeader('Authorization', 'Bearer ' + accessToken);
+  xmlHttp.send();
+}
+
+graphAPICallback(data) {
+  console.log("graphAPICallback(data) =>>>>", data)
+}
+
+showWelcomeMessage() {
+  console.log("DONE!")
+  return true;
+}
+  
   getCurrentUser() {
     if (!this.user) {
-      console.log("this.user_field =>", this.user_field.value)
-      if(this.user_field.value && this.user_field.value.length > 1){
-        this.user_bool = true;
-      }
-      setTimeout(function(){
-        this.user_displayName = document.getElementById('user_json')['value'];
-        console.log("this.user_displayName =>", this.user_displayName)
-      }.bind(this), 500)
-      
-      console.log("lol")
+      console.log("this.user_field =>", this.user_field.value);
+      console.log("document.getElementById('user_json') =>", document.getElementById('user_json'))
+      this.token = document.getElementById('user_json')['value'];
+      console.log("TOKEN =>", this.token);
       this.user = this.user_field.value;
     }
   }
+ acquireTokenRedirectAndCallMSGraph() {
+    //Always start with acquireTokenSilent to obtain a token in the signed in user from cache
+    this.myMSALObj.acquireTokenSilent(this.requestObj).then(function (tokenResponse) {
+        console.log("tokenResponse =>>>>>>>>", tokenResponse)
+        this.callMSGraph(this.graphConfig.graphMeEndpoint, tokenResponse.accessToken, this.graphAPICallback);
+    }).catch(function (error) {
+        console.log(error);
+        // Upon acquireTokenSilent failure (due to consent or interaction or login required ONLY)
+        // Call acquireTokenRedirect
+        if (this.requiresInteraction(error.errorCode)) {
+            this.myMSALObj.acquireTokenRedirect(this.requestObj);
+        }
+    });
+}
+
+authRedirectCallBack(error, response) {
+    if (error) {
+        console.log(error);
+    } else {
+        if (response.tokenType === "access_token") {
+            this.callMSGraph(this.graphConfig.graphMeEndpoint, response.accessToken, this.graphAPICallback);
+        } else {
+            console.log("token type is:" + response.tokenType);
+        }
+    }
+}
+
+requiresInteraction(errorCode) {
+    if (!errorCode || !errorCode.length) {
+        return false;
+    }
+    return errorCode === "consent_required" ||
+        errorCode === "interaction_required" ||
+        errorCode === "login_required";
+}
 
   loginPage() {
     console.log("lol")
