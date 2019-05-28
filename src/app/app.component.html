@@ -8,5 +8,5 @@
         <pre id="json"></pre>
     </div>
 </div>
-<button (click)='getOSInfo()' class='btn btn-outline-primary' type="button">Get backendInfo</button>
-<router-outlet></router-outlet>
+<button (click)='getOSInfo()' class='btn btn-outline-primary' type="button">Get System Info</button>
+<router-outlet *ngIf="user_obj"></router-outlet>

@@ -745,7 +745,7 @@ module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<!--The content below is only a placeholder and can be replaced.-->\n<div class=\"container\" id=\"singIngBox\" *ngIf=\"!user_obj\">\n    <div class=\"leftContainer\">\n        <h1>Please Sign in</h1>\n        <button id=\"SignIn\" class='btn btn-outline-success' type=\"button\" (click)=\"signIn()\">Sign In</button>\n    </div>\n    <div class=\"rightContainer\">\n        <pre id=\"json\"></pre>\n    </div>\n</div>\n<button (click)='getOSInfo()' class='btn btn-outline-primary' type=\"button\">Get backendInfo</button>\n<router-outlet></router-outlet>"
+module.exports = "<!--The content below is only a placeholder and can be replaced.-->\n<div class=\"container\" id=\"singIngBox\" *ngIf=\"!user_obj\">\n    <div class=\"leftContainer\">\n        <h1>Please Sign in</h1>\n        <button id=\"SignIn\" class='btn btn-outline-success' type=\"button\" (click)=\"signIn()\">Sign In</button>\n    </div>\n    <div class=\"rightContainer\">\n        <pre id=\"json\"></pre>\n    </div>\n</div>\n<button (click)='getOSInfo()' class='btn btn-outline-primary' type=\"button\">Get System Info</button>\n<router-outlet *ngIf=\"user_obj\"></router-outlet>"
 
 /***/ }),
 
@@ -782,9 +782,8 @@ var AppComponent = /** @class */ (function () {
         this.graphConfig = null;
         this.msalConfig = null;
         this.popup_error_message = false;
-        console.log("localStorage =>", localStorage);
         this._c.user.subscribe(function (user) {
-            if (user && user['displayName']) {
+            if (user) {
                 console.log('we got user!! =>', user);
                 _this.user_obj = user;
                 localStorage.setItem('user', JSON.stringify(user));
@@ -1167,8 +1166,12 @@ __webpack_require__.r(__webpack_exports__);
 var ConnectorService = /** @class */ (function () {
     function ConnectorService(http) {
         this.http = http;
-        this.cur_user = new rxjs__WEBPACK_IMPORTED_MODULE_2__["BehaviorSubject"]([]);
+        this.cur_user = new rxjs__WEBPACK_IMPORTED_MODULE_2__["BehaviorSubject"](null);
         this.user = this.cur_user.asObservable();
+        this.curEng = new rxjs__WEBPACK_IMPORTED_MODULE_2__["BehaviorSubject"](null);
+        this.currentEng = this.curEng.asObservable();
+        this.engs = new rxjs__WEBPACK_IMPORTED_MODULE_2__["BehaviorSubject"](null);
+        this.engagements = this.engs.asObservable();
     }
     ConnectorService.prototype.test = function () {
         var that = this;
@@ -1184,6 +1187,9 @@ var ConnectorService = /** @class */ (function () {
         var that = this;
         return new Promise(function (resolve, reject) {
             that.http.get('/api/get_system_info_and_print_message').subscribe(function (res) {
+                res['current_engagement'] = that.curEng.value;
+                res['current_user'] = that.cur_user.value;
+                res['all_engagements'] = that.engs.value;
                 resolve(res);
             }, function (err) {
                 reject(err);
@@ -1192,15 +1198,59 @@ var ConnectorService = /** @class */ (function () {
     };
     ConnectorService.prototype.storeUser = function (user) {
         var that = this;
-        this.cur_user.next(user);
         return new Promise(function (resolve, reject) {
             that.http.post('/api/store_user', user).subscribe(function (res) {
+                that.getAvailableEngagements(res['profile_id']).then(function (engs) {
+                    console.log("===========engs =>", engs);
+                    res['engs'] = engs;
+                    that.engs.next(that.objToToArray(engs));
+                    that.cur_user.next(res);
+                    resolve(res);
+                });
+            }, function (err) {
+                reject(err);
+            });
+        });
+    };
+    ConnectorService.prototype.get_User = function (email) {
+        email = {
+            'email': email
+        };
+        var that = this;
+        return new Promise(function (resolve, reject) {
+            that.http.post('/api/get_User', email).subscribe(function (res) {
+                console.log("RES =>", res);
+                resolve(res);
+            }, function (err) {
+                console.log("ERROR =>", err);
+                reject(err);
+            });
+        });
+        console.log("done");
+    };
+    ConnectorService.prototype.getAvailableEngagements = function (profile_id) {
+        var that = this;
+        profile_id = {
+            'profile_id': profile_id
+        };
+        return new Promise(function (resolve, reject) {
+            that.http.post('/api/get_availableEngagements', profile_id).subscribe(function (res) {
                 resolve(res);
             }, function (err) {
                 reject(err);
             });
         });
     };
+    ;
+    // MISC FUNCTIONS
+    ConnectorService.prototype.objToToArray = function (obj) {
+        var result = [];
+        for (var el in obj) {
+            result.push(obj[el]);
+        }
+        return result;
+    };
+    ;
     ConnectorService = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Injectable"])({
             providedIn: 'root'
@@ -1333,7 +1383,7 @@ var HomeComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJzcmMvYXBwL2luZGV4L2luZGV4LmNvbXBvbmVudC5jc3MifQ== */"
+module.exports = "#index_wrapper {\n    background: currentColor;\n    height: 100%;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNyYy9hcHAvaW5kZXgvaW5kZXguY29tcG9uZW50LmNzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtJQUNJLHdCQUF3QjtJQUN4QixZQUFZO0FBQ2hCIiwiZmlsZSI6InNyYy9hcHAvaW5kZXgvaW5kZXguY29tcG9uZW50LmNzcyIsInNvdXJjZXNDb250ZW50IjpbIiNpbmRleF93cmFwcGVyIHtcbiAgICBiYWNrZ3JvdW5kOiBjdXJyZW50Q29sb3I7XG4gICAgaGVpZ2h0OiAxMDAlO1xufSJdfQ== */"
 
 /***/ }),
 
@@ -1344,7 +1394,7 @@ module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<p>\n    index works!\n</p>\n<h1>\n    {{user | json}}\n</h1>"
+module.exports = "<div id=\"index_wrapper\">\n    <div class=\"quiz-selection element-animation-fadeIn\" align=\"center\" id=\"quiz_selection\" style='background: none !important'>\n        <div *ngIf=\"!engagements\" style='height: 25%; justify-content: center; display: flex;\n              flex-direction: column;\n              flex-wrap: wrap;'>\n            <h1 style=\"margin-top:200px; color:#c6c9cc;\">You have no access to any engagement...yet. Please contact the training team if you feel this is an error.</h1>\n        </div>\n        <div *ngIf=\"engagements\">\n            <div style='height: 10%; margin-top: 150px; justify-content: center; display: flex; flex-direction: column; flex-wrap: wrap;'>\n                <h1 style=\"color:#c6c9cc;\">Please select the engagement you would like to work today with</h1>\n            </div>\n            <div class=\"homeCategories\">\n                <div *ngFor=\"let e of engagements\" class=\"listCategory\"><button [routerLink]=\"['/' + e.engagement_id + '/home']\" class='btn btn-lg btn-index dropbtn'>{{e.engagement_name}}</button></div>\n            </div>\n        </div>\n    </div>\n    <div class=\"index_row element-animation-fadeIn\" id=\"contact_footer\">\n        <div class=\"col-md-4 col-12 px-2\" style=\"justify-content: center;\">\n            <div class=\"text-center\">\n                <h4 style=\"color: #4f91cd;\">Knowledge Assessment WebApp</h4>\n            </div>\n        </div>\n        <div class=\"col-md-4 col-12 px-2\">\n            <div class=\"text-center\">\n                <p class=\"mt-3\">If you have questions, please contact the Training Team</p>\n                <p><a class=\"mt-3\" href=\"mailto:jennifer@bpcs.com?subject=Question regarding Knowledge Assessment\" style=\"color: #4f91cd;\"> Jennifer Hollar</a></p>\n                <p><a class=\"mt-3\" href=\"mailto:nmelling@bpcs.com?subject=Question regarding Knowledge Assessment\" style=\"color: #4f91cd;\"> Nigel Melling</a></p>\n                <p><a class=\"mt-3\" href=\"mailto:kjenson@bpcs.com?subject=Question regarding Knowledge Assessment\" style=\"color: #4f91cd;\"> Kevin Jenson</a></p>\n            </div>\n        </div>\n        <div class=\"col-md-4 col-12 px-2\">\n            <div class=\"text-center\">\n                <p class=\"mt-3\" style=\"color: #4f91cd;\">Blueprint Consulting</p>\n                <p class=\"mt-3\" style=\"color: #4f91cd;\">505 106th Ave NE, Third Floor, Bellevue, WA 98004</p>\n                <p class=\"mt-3\" style=\"color: #4f91cd;\">(206) 455-8326</p>\n            </div>\n        </div>\n    </div>\n</div>"
 
 /***/ }),
 
@@ -1368,18 +1418,26 @@ var IndexComponent = /** @class */ (function () {
     function IndexComponent(_c) {
         var _this = this;
         this._c = _c;
-        this._c.user.subscribe(function (user) {
-            if (user && user['displayName']) {
-                console.log('we got user!! =>', user);
-                _this.user = user;
-            }
-        });
+        this._c.user.subscribe(function (user) { return _this.currentUser = user; });
+        this._c.engagements.subscribe(function (engs) { return _this.engagements = engs; });
     }
+    // getAvailableEngagements(profile_id){
+    //   this._c.getAvailableEngagements(profile_id).then(data =>{
+    //     this.engagements = this.objToToArray(data);
+    //     let obj = {
+    //       'currentUser':this.user,
+    //       'engagements': this.engagements,
+    //     }
+    //     console.log("OBJ =>",obj)
+    //     this._c.setMainInfo(obj)
+    //   }).catch(function(error) {
+    //   });
+    // }
     IndexComponent.prototype.ngOnInit = function () {
-        if (!this.user) {
-            console.log("tupeof(user) =>", typeof (this.user));
+        if (!this.currentUser) {
+            console.log("Seems like the Coonector");
             if (localStorage['user']) {
-                this.user = JSON.parse(localStorage['user']);
+                this.currentUser = JSON.parse(localStorage['user']);
             }
         }
         else {

@@ -22,9 +22,8 @@ export class AppComponent {
   msalConfig = null;
   popup_error_message = false;
   constructor(private _c: ConnectorService) {
-    console.log("localStorage =>",localStorage)
     this._c.user.subscribe(user => {
-      if(user && user['displayName']){
+      if(user){
         console.log('we got user!! =>', user)
         this.user_obj = user;
         localStorage.setItem('user', JSON.stringify(user));

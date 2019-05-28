@@ -148,8 +148,12 @@ module.exports = function(app) {
     app.post('/api/store_user', (req, res, next) => {
         console.log("store user =>", req.body.mail)
         res.setHeader("email", req.body.mail);
-        req.session['user'] = req.body
-        res.json(true)
+        get_User(req.body.mail).then(response => {
+            req.session['user'] = response
+            res.json(response);
+        }).catch(function(err) {
+            res.json(err);
+        })
     });
     app.get('/api/get_system_info_and_print_message', (req, res) => {
         let obj = {
