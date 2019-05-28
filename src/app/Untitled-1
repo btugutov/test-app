@@ -1,0 +1,130 @@
+import { Component, OnInit } from '@angular/core';
+import { ConnectorService } from './connector.service'
+import { DOCUMENT } from '@angular/common';
+import { BroadcastService } from "@azure/msal-angular";
+import { MsalService } from "@azure/msal-angular";
+import { Subscription } from "rxjs/Subscription";
+
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css']
+})
+export class AppComponent {
+  title = 'Skill Assessment';
+  response = null;
+  user = null;
+  user_field = null;
+  user_displayName = null
+  display_name = null;
+  loggedIn: boolean;
+  token = '';
+  public userInfo: any = null;
+  private subscription: Subscription;
+  public isIframe: boolean;
+  graphConfig = {
+      graphMeEndpoint: "https://graph.microsoft.com/v1.0/me"
+  };
+  constructor(private _c: ConnectorService, private broadcastService: BroadcastService, private authService: MsalService) {
+    // this.user_field = document.getElementById('WelcomeMessage');
+    // this.getCurrentUser();
+    // this.isIframe = window !== window.parent && !window.opener;
+    // if (this.authService.getUser()) {
+    //   this.loggedIn = true;
+    // }
+    // else {
+    //   this.loggedIn = false;
+    // }
+  }
+  /*
+  login() {
+    return;
+    var requestObj = {
+      scopes: ["user.read"]
+    };
+
+    this.authService.loginPopup(["user.read"]).then(function (loginResponse) {
+      
+  }).catch(function (error) {
+      console.log(error);
+  });
+  }
+  
+
+  logout() {
+    this.authService.logout();
+  }
+
+  getCurrentUser() {
+    if (!this.user) {
+      // console.log("this.user_field =>", this.user_field.value)
+      // this.display_name = "loool"
+      // setTimeout(function(){
+      //   this.user_displayName = document.getElementById('user_json')['value'];
+      //   console.log("this.user_displayName =>", this.user_displayName)
+
+      // }, 500)
+      // // while(!this.user_displayName){
+      // //   this.user_displayName = document.getElementById('user_json')['value'];
+      // //   console.log("waiting...")
+      // // }
+      // console.log("lol")
+      // this.user = this.user_field.value;
+    }
+  }
+  loginPage() {
+    console.log("lol")
+  }
+  getInfo() {
+    this._c.test().then(res => {
+      alert(res)
+    })
+  }
+  getOSInfo() {
+    this._c.getOSInfo().then(res => {
+      console.log(res)
+      this.response = res;
+    }).catch(function (err) {
+      console.log("ERROR =>", err)
+      // this.response = err;
+    })
+  }
+  ngOnInit() {
+    this.broadcastService.subscribe("msal:loginFailure", (payload) => {
+      console.log("login failure " + JSON.stringify(payload));
+      this.loggedIn = false;
+      console.log("FAILED!!")
+    });
+
+    this.broadcastService.subscribe("msal:loginSuccess", (payload) => {
+      this.loggedIn = true;
+      console.log("LOGGED IN!")
+      this.token = payload;
+      this.callMSGraph("https://graph.microsoft.com/v1.0/me", this.token['_token'], this.graphAPICallback)
+    });
+  }
+  callMSGraph(theUrl, accessToken, callback) {
+    // console.log("callMSGraph(theUrl, accessToken, callback) =>", theUrl, accessToken, callback)
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200)
+            callback(JSON.parse(this.responseText));
+    }
+    xmlHttp.open("GET", theUrl, true); // true for asynchronous
+    xmlHttp.setRequestHeader('Authorization', 'Bearer ' + accessToken);
+    xmlHttp.send();
+}
+
+graphAPICallback(data) {
+  console.log("graphAPICallback(data)  =>", data)
+    // document.getElementById("json").innerHTML = JSON.stringify(data, null, 2);
+}
+  ngOnDestroy() {
+    this.broadcastService.getMSALSubject().next(1);
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
+  }
+  */
+}
+
