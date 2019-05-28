@@ -86,7 +86,7 @@ module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<!--The content below is only a placeholder and can be replaced.-->\n<div class=\"container\" id=\"singIngBox\">\n    <div class=\"leftContainer\">\n        <h1>Please Sign in</h1>\n        <button id=\"SignIn\" (click)=\"signIn()\">Sign In</button>\n    </div>\n    <div class=\"rightContainer\">\n        <pre id=\"json\"></pre>\n    </div>\n</div>\n<div *ngIf=\"true\">\n    <div style=\"text-align:center\">\n        <h1>\n            Welcome to {{ title }} {{user_displayName}}!\n        </h1>\n        <h1>{{displayName}}</h1>\n        <img width=\"300\" alt=\"Angular Logo\" src=\"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==\">\n    </div>\n    <div style=\"text-align:center\">\n        <h2>WELCOME TO ANGULAR TESTING. PLEASE STAND-BY </h2>\n        <button (click)='getCurrentUser()' class='btn btn-lg btn-success' type=\"button\">Get your account info</button>\n        <button (click)='getOSInfo()' class='btn btn-lg btn-primary' type=\"button\">Get backendInfo</button>\n        <a [routerLink]=\"['/.auth/login/aad/callback']\" routerLinkActive=\"router-link-active\" class='btn btn-lg btn-secondary'>Go to login page</a>\n        <a [routerLink]=\"['/']\" routerLinkActive=\"router-link-active\" class='btn btn-lg btn-secondary'>Go to home page</a>\n    </div>\n\n    <table class=\"table table-stripped\" *ngIf=\"response\">\n        <thead>\n            <tr>\n                <th scope=\"col\">Key</th>\n                <th scope=\"col\">Value</th>\n            </tr>\n\n        </thead>\n        <tbody>\n            <tr *ngFor=\"let item of response['req.headers'] | keyvalue\">\n                <td>{{item.key}}</td>\n                <td>@{{item.value}}</td>\n            </tr>\n        </tbody>\n    </table>\n\n    <router-outlet></router-outlet>\n</div>\n<h1>USER => {{user}}</h1>\n<div *ngIf=\"user==null\">\n    <h1>No user!</h1>\n</div>"
+module.exports = "<!--The content below is only a placeholder and can be replaced.-->\n<div class=\"container\" id=\"singIngBox\">\n    <div class=\"leftContainer\">\n        <h1>Please Sign in</h1>\n        <button id=\"SignIn\" (click)=\"signIn()\">Sign In</button>\n    </div>\n    <div class=\"rightContainer\">\n        <pre id=\"json\"></pre>\n    </div>\n</div>\n<div *ngIf=\"true\">\n    <div style=\"text-align:center\" *ngIf=\"popup_error_message\">\n        <h1 style=\"color: red\">Please allow popups and reload the page.</h1>\n    </div>\n    <div style=\"text-align:center\">\n        <h1 *ngIf=\"user_obj\">\n            Welcome to {{ title }} {{user_obj | json}}!\n        </h1>\n        <h1>{{displayName}}</h1>\n        <img width=\"300\" alt=\"Angular Logo\" src=\"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==\">\n    </div>\n\n    <div style=\"text-align:center\">\n        <h2>WELCOME TO ANGULAR TESTING. PLEASE STAND-BY </h2>\n        <button (click)='getCurrentUser()' class='btn btn-lg btn-success' type=\"button\">Get your account info</button>\n        <button (click)='getOSInfo()' class='btn btn-lg btn-primary' type=\"button\">Get backendInfo</button>\n        <a [routerLink]=\"['/.auth/login/aad/callback']\" routerLinkActive=\"router-link-active\" class='btn btn-lg btn-secondary'>Go to login page</a>\n        <a [routerLink]=\"['/']\" routerLinkActive=\"router-link-active\" class='btn btn-lg btn-secondary'>Go to home page</a>\n    </div>\n\n    <table class=\"table table-stripped\" *ngIf=\"response\">\n        <thead>\n            <tr>\n                <th scope=\"col\">Key</th>\n                <th scope=\"col\">Value</th>\n            </tr>\n\n        </thead>\n        <tbody>\n            <tr *ngFor=\"let item of response['req.headers'] | keyvalue\">\n                <td>{{item.key}}</td>\n                <td>@{{item.value}}</td>\n            </tr>\n        </tbody>\n    </table>\n\n    <router-outlet></router-outlet>\n</div>\n<h1>USER => {{user}}</h1>\n<div *ngIf=\"user==null\">\n    <h1>No user!</h1>\n</div>"
 
 /***/ }),
 
@@ -108,11 +108,13 @@ __webpack_require__.r(__webpack_exports__);
 
 var AppComponent = /** @class */ (function () {
     function AppComponent(_c) {
+        var _this = this;
         this._c = _c;
         this.title = 'test-app';
         this.response = null;
+        this.user_email = null;
         this.user = null;
-        this.user_field = null;
+        this.user_obj = null;
         this.user_displayName = "";
         this.display_name = null;
         this.token = null;
@@ -120,8 +122,15 @@ var AppComponent = /** @class */ (function () {
         this.requestObj = null;
         this.graphConfig = null;
         this.msalConfig = null;
-        this.user_field = document.getElementById('WelcomeMessage');
-        this.getCurrentUser();
+        this.popup_error_message = false;
+        console.log("localStorage =>", localStorage);
+        this._c.user.subscribe(function (user) {
+            if (user && user['displayName']) {
+                console.log('we got user!! =>', user);
+                _this.user_obj = user;
+                localStorage.setItem('user', JSON.stringify(user));
+            }
+        });
         this.msalConfig = {
             auth: {
                 clientId: "5f40551b-4ad5-4327-aead-858301bb6d90",
@@ -145,6 +154,15 @@ var AppComponent = /** @class */ (function () {
         // Register Callbacks for redirect flow
         // myMSALObj.handleRedirectCallbacks(acquireTokenRedirectCallBack, acquireTokenErrorRedirectCallBack);
         this.myMSALObj.handleRedirectCallback(this.authRedirectCallBack);
+        console.log("THIS.user.obj =>", this.user_obj);
+        if (!this.user_obj) {
+            if (localStorage.user) {
+                this.user_obj = JSON.parse(localStorage.user);
+            }
+            else {
+                this.signIn();
+            }
+        }
     }
     AppComponent.prototype.signIn = function () {
         var that = this;
@@ -163,19 +181,25 @@ var AppComponent = /** @class */ (function () {
         this.myMSALObj.logout();
     };
     AppComponent.prototype.acquireTokenPopupAndCallMSGraph = function () {
-        console.log("STEP => acquireTokenPopupAndCallMSGraph()  ");
+        // console.log("STEP => acquireTokenPopupAndCallMSGraph()  ")
         var that = this;
         //Always start with acquireTokenSilent to obtain a token in the signed in user from cache
         this.myMSALObj.acquireTokenSilent(this.requestObj).then(function (tokenResponse) {
-            console.log("STEP => myMSALObj.acquireTokenSilent(requestObj).then(function (tokenResponse)", tokenResponse);
-            that.callMSGraph(that.graphConfig.graphMeEndpoint, tokenResponse.accessToken, that.graphAPICallback);
+            // console.log("STEP => myMSALObj.acquireTokenSilent(requestObj).then(function (tokenResponse)", tokenResponse)
+            that.callMSGraph(that.graphConfig.graphMeEndpoint, tokenResponse.accessToken, function (data) {
+                that.user_obj = data;
+                that._c.storeUser(data);
+            });
         }).catch(function (error) {
             console.log(error);
             // Upon acquireTokenSilent failure (due to consent or interaction or login required ONLY)
             // Call acquireTokenPopup(popup window) 
             if (that.requiresInteraction(error.errorCode)) {
                 that.myMSALObj.acquireTokenPopup(that.requestObj).then(function (tokenResponse) {
-                    that.callMSGraph(that.graphConfig.graphMeEndpoint, tokenResponse.accessToken, that.graphAPICallback);
+                    that.callMSGraph(that.graphConfig.graphMeEndpoint, tokenResponse.accessToken, function (data) {
+                        that.user_obj = data;
+                        that._c.storeUser(data);
+                    });
                 }).catch(function (error) {
                     console.log(error);
                 });
@@ -192,27 +216,25 @@ var AppComponent = /** @class */ (function () {
         xmlHttp.setRequestHeader('Authorization', 'Bearer ' + accessToken);
         xmlHttp.send();
     };
-    AppComponent.prototype.graphAPICallback = function (data) {
+    AppComponent.prototype.graphAPICallback = function (data, it) {
         console.log("graphAPICallback(data) =>>>>", data);
+        console.log("THIS=>", it);
     };
     AppComponent.prototype.showWelcomeMessage = function () {
-        console.log("DONE!");
+        console.log("myMSALObj.getAccount() =>", this.myMSALObj.getAccount());
         return true;
     };
     AppComponent.prototype.getCurrentUser = function () {
         if (!this.user) {
-            console.log("this.user_field =>", this.user_field.value);
-            console.log("document.getElementById('user_json') =>", document.getElementById('user_json'));
-            this.token = document.getElementById('user_json')['value'];
-            console.log("TOKEN =>", this.token);
-            this.user = this.user_field.value;
         }
     };
     AppComponent.prototype.acquireTokenRedirectAndCallMSGraph = function () {
         //Always start with acquireTokenSilent to obtain a token in the signed in user from cache
         this.myMSALObj.acquireTokenSilent(this.requestObj).then(function (tokenResponse) {
             console.log("tokenResponse =>>>>>>>>", tokenResponse);
-            this.callMSGraph(this.graphConfig.graphMeEndpoint, tokenResponse.accessToken, this.graphAPICallback);
+            this.callMSGraph(this.graphConfig.graphMeEndpoint, tokenResponse.accessToken, function (data) {
+                console.log("NEW DATA =>", data);
+            });
         }).catch(function (error) {
             console.log(error);
             // Upon acquireTokenSilent failure (due to consent or interaction or login required ONLY)
@@ -228,7 +250,9 @@ var AppComponent = /** @class */ (function () {
         }
         else {
             if (response.tokenType === "access_token") {
-                this.callMSGraph(this.graphConfig.graphMeEndpoint, response.accessToken, this.graphAPICallback);
+                this.callMSGraph(this.graphConfig.graphMeEndpoint, response.accessToken, function (data) {
+                    console.log("NEW DATA =>", data);
+                });
             }
             else {
                 console.log("token type is:" + response.tokenType);
@@ -424,13 +448,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ConnectorService", function() { return ConnectorService; });
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
-/* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/common/http */ "./node_modules/@angular/common/fesm5/http.js");
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm5/index.js");
+/* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/common/http */ "./node_modules/@angular/common/fesm5/http.js");
+
 
 
 
 var ConnectorService = /** @class */ (function () {
     function ConnectorService(http) {
         this.http = http;
+        this.cur_user = new rxjs__WEBPACK_IMPORTED_MODULE_2__["BehaviorSubject"]([]);
+        this.user = this.cur_user.asObservable();
     }
     ConnectorService.prototype.test = function () {
         var that = this;
@@ -452,11 +480,23 @@ var ConnectorService = /** @class */ (function () {
             });
         });
     };
+    ConnectorService.prototype.storeUser = function (user) {
+        var that = this;
+        console.log("THIS IS CONNECTOR! Stroing user as =>", user);
+        this.cur_user.next(user);
+        return new Promise(function (resolve, reject) {
+            that.http.post('/api/store_user', user).subscribe(function (res) {
+                resolve(res);
+            }, function (err) {
+                reject(err);
+            });
+        });
+    };
     ConnectorService = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Injectable"])({
             providedIn: 'root'
         }),
-        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpClient"]])
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_angular_common_http__WEBPACK_IMPORTED_MODULE_3__["HttpClient"]])
     ], ConnectorService);
     return ConnectorService;
 }());

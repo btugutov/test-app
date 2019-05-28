@@ -12,8 +12,9 @@ declare const Msal: any;
 export class AppComponent {
   title = 'test-app';
   response = null;
+  user_email = null;
   user = null;
-  user_field = null;
+  user_obj = null;
   user_displayName = "";
   display_name = null;
   token = null;
@@ -21,9 +22,16 @@ export class AppComponent {
   requestObj = null;
   graphConfig = null;
   msalConfig = null;
+  popup_error_message = false;
   constructor(private _c: ConnectorService) {
-    this.user_field = document.getElementById('WelcomeMessage');
-    this.getCurrentUser();
+    console.log("localStorage =>",localStorage)
+    this._c.user.subscribe(user => {
+      if(user && user['displayName']){
+        console.log('we got user!! =>', user)
+        this.user_obj = user;
+        localStorage.setItem('user', JSON.stringify(user));
+      }
+    })
     this.msalConfig = {
       auth: {
         clientId: "5f40551b-4ad5-4327-aead-858301bb6d90",
@@ -50,6 +58,16 @@ export class AppComponent {
     // Register Callbacks for redirect flow
     // myMSALObj.handleRedirectCallbacks(acquireTokenRedirectCallBack, acquireTokenErrorRedirectCallBack);
     this.myMSALObj.handleRedirectCallback(this.authRedirectCallBack);
+    console.log("THIS.user.obj =>", this.user_obj)
+    if(!this.user_obj){
+      
+      if(localStorage.user){
+        this.user_obj = JSON.parse(localStorage.user)
+      }else{
+        this.signIn()
+      }
+    }
+
   }
   signIn() {
     let that = this;
@@ -70,19 +88,25 @@ signOut() {
 }
 
 acquireTokenPopupAndCallMSGraph() {
-    console.log("STEP => acquireTokenPopupAndCallMSGraph()  ")
+    // console.log("STEP => acquireTokenPopupAndCallMSGraph()  ")
     let that = this;
     //Always start with acquireTokenSilent to obtain a token in the signed in user from cache
     this.myMSALObj.acquireTokenSilent(this.requestObj).then(function (tokenResponse) {
-        console.log("STEP => myMSALObj.acquireTokenSilent(requestObj).then(function (tokenResponse)", tokenResponse)
-        that.callMSGraph(that.graphConfig.graphMeEndpoint, tokenResponse.accessToken, that.graphAPICallback);
+        // console.log("STEP => myMSALObj.acquireTokenSilent(requestObj).then(function (tokenResponse)", tokenResponse)
+        that.callMSGraph(that.graphConfig.graphMeEndpoint, tokenResponse.accessToken, function(data){
+          that.user_obj = data;
+          that._c.storeUser(data)
+        });
     }).catch(function (error) {
         console.log(error);
         // Upon acquireTokenSilent failure (due to consent or interaction or login required ONLY)
         // Call acquireTokenPopup(popup window) 
         if (that.requiresInteraction(error.errorCode)) {
             that.myMSALObj.acquireTokenPopup(that.requestObj).then(function (tokenResponse) {
-                that.callMSGraph(that.graphConfig.graphMeEndpoint, tokenResponse.accessToken, that.graphAPICallback);
+                that.callMSGraph(that.graphConfig.graphMeEndpoint, tokenResponse.accessToken, function(data){
+                  that.user_obj = data;
+                  that._c.storeUser(data)
+                });
             }).catch(function (error) {
                 console.log(error);
             });
@@ -100,29 +124,28 @@ callMSGraph(theUrl, accessToken, callback) {
   xmlHttp.send();
 }
 
-graphAPICallback(data) {
+graphAPICallback(data, it) {
   console.log("graphAPICallback(data) =>>>>", data)
+  console.log("THIS=>", it)
 }
 
 showWelcomeMessage() {
-  console.log("DONE!")
+  console.log("myMSALObj.getAccount() =>", this.myMSALObj.getAccount())
   return true;
 }
   
   getCurrentUser() {
     if (!this.user) {
-      console.log("this.user_field =>", this.user_field.value);
-      console.log("document.getElementById('user_json') =>", document.getElementById('user_json'))
-      this.token = document.getElementById('user_json')['value'];
-      console.log("TOKEN =>", this.token);
-      this.user = this.user_field.value;
+      
     }
   }
  acquireTokenRedirectAndCallMSGraph() {
     //Always start with acquireTokenSilent to obtain a token in the signed in user from cache
     this.myMSALObj.acquireTokenSilent(this.requestObj).then(function (tokenResponse) {
         console.log("tokenResponse =>>>>>>>>", tokenResponse)
-        this.callMSGraph(this.graphConfig.graphMeEndpoint, tokenResponse.accessToken, this.graphAPICallback);
+        this.callMSGraph(this.graphConfig.graphMeEndpoint, tokenResponse.accessToken, function(data){
+          console.log("NEW DATA =>", data)
+        });
     }).catch(function (error) {
         console.log(error);
         // Upon acquireTokenSilent failure (due to consent or interaction or login required ONLY)
@@ -138,7 +161,9 @@ authRedirectCallBack(error, response) {
         console.log(error);
     } else {
         if (response.tokenType === "access_token") {
-            this.callMSGraph(this.graphConfig.graphMeEndpoint, response.accessToken, this.graphAPICallback);
+            this.callMSGraph(this.graphConfig.graphMeEndpoint, response.accessToken, function(data){
+              console.log("NEW DATA =>", data)
+            });
         } else {
             console.log("token type is:" + response.tokenType);
         }
