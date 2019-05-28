@@ -32,6 +32,7 @@
         "msal": "^1.0.0-preview.5",
         "mssql": "^5.1.0",
         "passport-azure-ad": "^4.0.0",
+        "promise": "^8.0.3",
         "rxjs": "~6.3.3",
         "tslib": "^1.9.0",
         "zone.js": "~0.8.26"
