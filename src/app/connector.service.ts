@@ -2,6 +2,9 @@ import { Injectable } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { BehaviorSubject, ObservableInput } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
+import 'rxjs/add/observable/merge';
+import 'rxjs/add/operator/map';
+import 'rxjs/Rx';
 @Injectable({
   providedIn: 'root'
 })
@@ -40,7 +43,6 @@ export class ConnectorService {
 
   storeUser(user){
     var that = this;
-    console.log("THIS IS CONNECTOR! Stroing user as =>", user)
     this.cur_user.next(user);
     return new Promise(function (resolve, reject) {
       that.http.post('/api/store_user', user).subscribe(
