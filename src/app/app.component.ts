@@ -21,9 +21,10 @@ export class AppComponent {
   graphConfig = null;
   msalConfig = null;
   popup_error_message = false;
+
   constructor(private _c: ConnectorService) {
     this._c.user.subscribe(user => {
-      if(user){
+      if (user) {
         console.log('we got user!! =>', user)
         this.user_obj = user;
         localStorage.setItem('user', JSON.stringify(user));
@@ -51,20 +52,20 @@ export class AppComponent {
     };
 
     this.myMSALObj = new Msal.UserAgentApplication(this.msalConfig);
-    console.log("this.myMSALObj =>", this.myMSALObj)
     // Register Callbacks for redirect flow
     // myMSALObj.handleRedirectCallbacks(acquireTokenRedirectCallBack, acquireTokenErrorRedirectCallBack);
     this.myMSALObj.handleRedirectCallback(this.authRedirectCallBack);
     console.log("THIS.user.obj =>", this.user_obj)
-    if(!this.user_obj){
+    if (!this.user_obj) {
       console.log("let's get user than")
-      if(localStorage.user){
-        console.log("user is in storage!")
-        console.log(localStorage.user)
+      if (localStorage.user) {
         this.user_obj = JSON.parse(localStorage.user)
-        
-      }else{
-
+        if(this.user_obj){
+          console.log("user is in storage!")
+          console.log(this.user_obj)
+          this._c.storeUser(this.user_obj);
+        }
+      } else {
         console.log("no user anywhere!!!")
         // this.signIn()
       }
@@ -74,112 +75,108 @@ export class AppComponent {
   signIn() {
     let that = this;
     this.myMSALObj.loginPopup(this.requestObj).then(function (loginResponse) {
-        //Successful login
-        // this.showWelcomeMessage();
-        //Call MS Graph using the token in the response
-        console.log("loginResponse =>", loginResponse)
-        that.acquireTokenPopupAndCallMSGraph();
+      that.acquireTokenPopupAndCallMSGraph();
     }).catch(function (error) {
-        //Please check the console for errors
-        console.log(error);
+      this.popup_error_message = error;
+      console.log(error);
     });
-}
+  }
 
-signOut() {
+  signOut() {
     this.myMSALObj.logout();
-}
+    localStorage['user'] = null;
+    this._c.user = null;
+  }
 
-acquireTokenPopupAndCallMSGraph() {
-    // console.log("STEP => acquireTokenPopupAndCallMSGraph()  ")
+  acquireTokenPopupAndCallMSGraph() {
     let that = this;
     //Always start with acquireTokenSilent to obtain a token in the signed in user from cache
     this.myMSALObj.acquireTokenSilent(this.requestObj).then(function (tokenResponse) {
-        // console.log("STEP => myMSALObj.acquireTokenSilent(requestObj).then(function (tokenResponse)", tokenResponse)
-        that.callMSGraph(that.graphConfig.graphMeEndpoint, tokenResponse.accessToken, function(data){
-          that.user_obj = data;
-          that._c.storeUser(data)
-        });
+      that.callMSGraph(that.graphConfig.graphMeEndpoint, tokenResponse.accessToken, function (data) {
+        that.user_obj = data;
+        that._c.storeUser(data)
+      });
     }).catch(function (error) {
-        console.log(error);
-        // Upon acquireTokenSilent failure (due to consent or interaction or login required ONLY)
-        // Call acquireTokenPopup(popup window) 
-        if (that.requiresInteraction(error.errorCode)) {
-            that.myMSALObj.acquireTokenPopup(that.requestObj).then(function (tokenResponse) {
-                that.callMSGraph(that.graphConfig.graphMeEndpoint, tokenResponse.accessToken, function(data){
-                  that.user_obj = data;
-                  that._c.storeUser(data)
-                });
-            }).catch(function (error) {
-                console.log(error);
-            });
-        }
+      console.log(error);
+      // Upon acquireTokenSilent failure (due to consent or interaction or login required ONLY)
+      // Call acquireTokenPopup(popup window) 
+      if (that.requiresInteraction(error.errorCode)) {
+        that.myMSALObj.acquireTokenPopup(that.requestObj).then(function (tokenResponse) {
+          that.callMSGraph(that.graphConfig.graphMeEndpoint, tokenResponse.accessToken, function (data) {
+            that.user_obj = data;
+            that._c.storeUser(data)
+          });
+        }).catch(function (error) {
+          console.log(error);
+        });
+      }
     });
-}
-callMSGraph(theUrl, accessToken, callback) {
-  var xmlHttp = new XMLHttpRequest();
-  xmlHttp.onreadystatechange = function () {
-      if (this.readyState == 4 && this.status == 200)
-          callback(JSON.parse(this.responseText));
   }
-  xmlHttp.open("GET", theUrl, true); // true for asynchronous
-  xmlHttp.setRequestHeader('Authorization', 'Bearer ' + accessToken);
-  xmlHttp.send();
-}
+  callMSGraph(theUrl, accessToken, callback) {
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.onreadystatechange = function () {
+      if (this.readyState == 4 && this.status == 200)
+        callback(JSON.parse(this.responseText));
+    }
+    xmlHttp.open("GET", theUrl, true); // true for asynchronous
+    xmlHttp.setRequestHeader('Authorization', 'Bearer ' + accessToken);
+    xmlHttp.send();
+  }
 
-graphAPICallback(data, it) {
-  console.log("graphAPICallback(data) =>>>>", data)
-  console.log("THIS=>", it)
-}
+  graphAPICallback(data, it) {
+    console.log("graphAPICallback(data) =>>>>", data)
+    console.log("THIS=>", it)
+  }
 
-showWelcomeMessage() {
-  console.log("myMSALObj.getAccount() =>", this.myMSALObj.getAccount())
-  return true;
-}
-  
+  showWelcomeMessage() {
+    console.log("myMSALObj.getAccount() =>", this.myMSALObj.getAccount())
+    return true;
+  }
+
   getCurrentUser() {
     if (!this.user) {
-      
+
     }
   }
- acquireTokenRedirectAndCallMSGraph() {
+  acquireTokenRedirectAndCallMSGraph() {
     //Always start with acquireTokenSilent to obtain a token in the signed in user from cache
     this.myMSALObj.acquireTokenSilent(this.requestObj).then(function (tokenResponse) {
-        console.log("tokenResponse =>>>>>>>>", tokenResponse)
-        this.callMSGraph(this.graphConfig.graphMeEndpoint, tokenResponse.accessToken, function(data){
+      console.log("tokenResponse =>>>>>>>>", tokenResponse)
+      this.callMSGraph(this.graphConfig.graphMeEndpoint, tokenResponse.accessToken, function (data) {
+        console.log("NEW DATA =>", data)
+      });
+    }).catch(function (error) {
+      console.log(error);
+      // Upon acquireTokenSilent failure (due to consent or interaction or login required ONLY)
+      // Call acquireTokenRedirect
+      if (this.requiresInteraction(error.errorCode)) {
+        this.myMSALObj.acquireTokenRedirect(this.requestObj);
+      }
+    });
+  }
+
+  authRedirectCallBack(error, response) {
+    if (error) {
+      console.log(error);
+    } else {
+      if (response.tokenType === "access_token") {
+        this.callMSGraph(this.graphConfig.graphMeEndpoint, response.accessToken, function (data) {
           console.log("NEW DATA =>", data)
         });
-    }).catch(function (error) {
-        console.log(error);
-        // Upon acquireTokenSilent failure (due to consent or interaction or login required ONLY)
-        // Call acquireTokenRedirect
-        if (this.requiresInteraction(error.errorCode)) {
-            this.myMSALObj.acquireTokenRedirect(this.requestObj);
-        }
-    });
-}
-
-authRedirectCallBack(error, response) {
-    if (error) {
-        console.log(error);
-    } else {
-        if (response.tokenType === "access_token") {
-            this.callMSGraph(this.graphConfig.graphMeEndpoint, response.accessToken, function(data){
-              console.log("NEW DATA =>", data)
-            });
-        } else {
-            console.log("token type is:" + response.tokenType);
-        }
+      } else {
+        console.log("token type is:" + response.tokenType);
+      }
     }
-}
+  }
 
-requiresInteraction(errorCode) {
+  requiresInteraction(errorCode) {
     if (!errorCode || !errorCode.length) {
-        return false;
+      return false;
     }
     return errorCode === "consent_required" ||
-        errorCode === "interaction_required" ||
-        errorCode === "login_required";
-}
+      errorCode === "interaction_required" ||
+      errorCode === "login_required";
+  }
 
   loginPage() {
     console.log("lol")
@@ -191,7 +188,7 @@ requiresInteraction(errorCode) {
   }
   getOSInfo() {
     this._c.getOSInfo().then(res => {
-      if(!res['current_user']){
+      if (!res['current_user']) {
         res['current_user'] = JSON.parse(localStorage.user)
       }
       console.log(res)

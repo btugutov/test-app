@@ -50,6 +50,10 @@ export class ConnectorService {
   }
 
   storeUser(user){
+    console.log("storeUser(user): user =>", user)
+    if(!user){
+      return false;
+    }
     var that = this;
     return new Promise(function (resolve, reject) {
       that.http.post('/api/store_user', user).subscribe(

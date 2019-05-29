@@ -734,7 +734,7 @@ var AppRoutingModule = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJzcmMvYXBwL2FwcC5jb21wb25lbnQuY3NzIn0= */"
+module.exports = "#singIngBox {\n    background: currentColor !important;\n    height: 100%;\n    display: flex;\n    flex-direction: column;\n    flex-wrap: nowrap;\n    justify-content: center;\n    align-items: center;\n    align-content: center;\n}\n\n#signIngBoxButtons {\n    display: flex;\n    flex-direction: column;\n    flex-wrap: nowrap;\n    justify-content: center;\n    align-items: center;\n    align-content: center;\n    color: white;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNyYy9hcHAvYXBwLmNvbXBvbmVudC5jc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7SUFDSSxtQ0FBbUM7SUFDbkMsWUFBWTtJQUNaLGFBQWE7SUFDYixzQkFBc0I7SUFDdEIsaUJBQWlCO0lBQ2pCLHVCQUF1QjtJQUN2QixtQkFBbUI7SUFDbkIscUJBQXFCO0FBQ3pCOztBQUVBO0lBQ0ksYUFBYTtJQUNiLHNCQUFzQjtJQUN0QixpQkFBaUI7SUFDakIsdUJBQXVCO0lBQ3ZCLG1CQUFtQjtJQUNuQixxQkFBcUI7SUFDckIsWUFBWTtBQUNoQiIsImZpbGUiOiJzcmMvYXBwL2FwcC5jb21wb25lbnQuY3NzIiwic291cmNlc0NvbnRlbnQiOlsiI3NpbmdJbmdCb3gge1xuICAgIGJhY2tncm91bmQ6IGN1cnJlbnRDb2xvciAhaW1wb3J0YW50O1xuICAgIGhlaWdodDogMTAwJTtcbiAgICBkaXNwbGF5OiBmbGV4O1xuICAgIGZsZXgtZGlyZWN0aW9uOiBjb2x1bW47XG4gICAgZmxleC13cmFwOiBub3dyYXA7XG4gICAganVzdGlmeS1jb250ZW50OiBjZW50ZXI7XG4gICAgYWxpZ24taXRlbXM6IGNlbnRlcjtcbiAgICBhbGlnbi1jb250ZW50OiBjZW50ZXI7XG59XG5cbiNzaWduSW5nQm94QnV0dG9ucyB7XG4gICAgZGlzcGxheTogZmxleDtcbiAgICBmbGV4LWRpcmVjdGlvbjogY29sdW1uO1xuICAgIGZsZXgtd3JhcDogbm93cmFwO1xuICAgIGp1c3RpZnktY29udGVudDogY2VudGVyO1xuICAgIGFsaWduLWl0ZW1zOiBjZW50ZXI7XG4gICAgYWxpZ24tY29udGVudDogY2VudGVyO1xuICAgIGNvbG9yOiB3aGl0ZTtcbn0iXX0= */"
 
 /***/ }),
 
@@ -745,7 +745,7 @@ module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<!--The content below is only a placeholder and can be replaced.-->\n<div class=\"container\" id=\"singIngBox\" *ngIf=\"!user_obj\">\n    <div class=\"leftContainer\">\n        <h1>Please Sign in</h1>\n        <button id=\"SignIn\" class='btn btn-outline-success' type=\"button\" (click)=\"signIn()\">Sign In</button>\n    </div>\n    <div class=\"rightContainer\">\n        <pre id=\"json\"></pre>\n    </div>\n</div>\n<nav *ngIf=\"user_obj\" class=\"navbar text-center navbar-dark\" id=\"navigation\" style=\"background: white !important;\">\n    <div class=\"navbar-left-half\">\n        <a class=\"nav-link btn\" routerLink=\"/\" id=\"bpLogo\">\n            <img class=\"logo\" src=\"assets/bplogo.png\" />\n        </a>\n        <button *ngIf='user_obj && user_obj.admin' class=\"btn dropbtn btn-lg btn-outline-secondary btn-home2\" type=\"button\" onclick=\"window.open('https://blueprintconsultingservices.atlassian.net/wiki/spaces/VETECHDOC/pages/839974989/How-to+Knowledge+Assessment+WebApp')\"\n            formtarget=\"_blank\" id=\"confluence_button\">Confluence</button>\n        <button *ngIf='user_obj && user_obj.admin' class=\"btn dropbtn btn-lg btn-outline-secondary btn-home2\" type=\"button\" onclick=\"window.open('https://app.powerbi.com/groups/me/reports/e7c1bd81-a473-44fd-903b-e5a6bae657f7')\" formtarget=\"_blank\" id=\"bi_report_button\">BI Report</button>\n        <a *ngIf='currentEng' class='btn dropbtn btn-lg btn-outline-secondary btn-home2' id=\"engBtn\" [routerLink]=\"['/home']\"> {{currentEng.engagement_name}} </a>\n    </div>\n    <div class=\"navbar-right-half\">\n        <a *ngIf='user_obj && user_obj.admin && currentEng' class='btn dropbtn btn-lg btn-outline-secondary btn-home2' id=\"engBtn\" [routerLink]=\"[currentEng.engagement_id,'admin']\"> Admin Portal</a>\n        <select class=\"custom-select\" id=\"eng_selector\" style=\"max-width: 250px; color: #4f91cd;\" *ngIf=\"engagements!=null && currentEng\">\n            <option value=\"\" selected=\"selected\" disabled=\"disabled\" hidden=\"hidden\">Select Engagement</option>\n            <option *ngFor=\"let e of engagements\" [value]=\"e.engagement_id\"\n                [attr.selected]=\"currentEng.engagement_id==e.engagement_id ? true : null\">\n                {{e.engagement_name}}\n            </option>\n        </select>\n        <span class=\"text-nowrap text-muted\" *ngIf=\"user_obj!=null\">{{ user_obj.email }}</span>\n        <button class=\"btn btn-home2\" type=\"button\" onclick=\"location.href='/.auth/logout'\">Logout</button>\n        <button (click)='getOSInfo()' class='btn btn-outline-primary' type=\"button\">Get System Info</button>\n    </div>\n</nav>\n<router-outlet *ngIf=\"user_obj\"></router-outlet>"
+module.exports = "<!--The content below is only a placeholder and can be replaced.-->\n<div *ngIf='popup_error_message'>\n    {{popup_error_message | json}}\n</div>\n<div id=\"singIngBox\" *ngIf=\"!user_obj\">\n    <div id=\"signIngBoxButtons\">\n        <h1>Welcome to Skill Assessment Portal</h1>\n        <button id=\"SignIn\" class='btn btn-lg btn-index dropbtn' type=\"button\" (click)=\"signIn()\">Sign In</button>\n    </div>\n</div>\n<nav *ngIf=\"user_obj\" class=\"navbar text-center navbar-dark\" id=\"navigation\" style=\"background: white !important;\">\n    <div class=\"navbar-left-half\">\n        <a class=\"nav-link btn\" routerLink=\"/\" id=\"bpLogo\">\n            <img class=\"logo\" src=\"assets/bplogo.png\" />\n        </a>\n        <button *ngIf='user_obj && user_obj.admin' class=\"btn dropbtn btn-lg btn-outline-secondary btn-home2\" type=\"button\" onclick=\"window.open('https://blueprintconsultingservices.atlassian.net/wiki/spaces/VETECHDOC/pages/839974989/How-to+Knowledge+Assessment+WebApp')\"\n            formtarget=\"_blank\" id=\"confluence_button\">Confluence</button>\n        <button *ngIf='user_obj && user_obj.admin' class=\"btn dropbtn btn-lg btn-outline-secondary btn-home2\" type=\"button\" onclick=\"window.open('https://app.powerbi.com/groups/me/reports/e7c1bd81-a473-44fd-903b-e5a6bae657f7')\" formtarget=\"_blank\" id=\"bi_report_button\">BI Report</button>\n        <a *ngIf='currentEng' class='btn dropbtn btn-lg btn-outline-secondary btn-home2' id=\"engBtn\" [routerLink]=\"['/home']\"> {{currentEng.engagement_name}} </a>\n    </div>\n    <div class=\"navbar-right-half\">\n        <a *ngIf='user_obj && user_obj.admin && currentEng' class='btn dropbtn btn-lg btn-outline-secondary btn-home2' id=\"engBtn\" [routerLink]=\"[currentEng.engagement_id,'admin']\"> Admin Portal</a>\n        <select class=\"custom-select\" id=\"eng_selector\" style=\"max-width: 250px; color: #4f91cd;\" *ngIf=\"engagements!=null && currentEng\">\n            <option value=\"\" selected=\"selected\" disabled=\"disabled\" hidden=\"hidden\">Select Engagement</option>\n            <option *ngFor=\"let e of engagements\" [value]=\"e.engagement_id\"\n                [attr.selected]=\"currentEng.engagement_id==e.engagement_id ? true : null\">\n                {{e.engagement_name}}\n            </option>\n        </select>\n        <span class=\"text-nowrap text-muted\" *ngIf=\"user_obj!=null\">{{ user_obj.email }}</span>\n        <button class=\"btn btn-home2\" type=\"button\" (click)=\"signOut()\">Logout</button>\n        <button (click)='getOSInfo()' class='btn btn-outline-primary' type=\"button\" *ngIf='user_obj.developer'>Get System Info</button>\n    </div>\n</nav>\n<router-outlet *ngIf=\"user_obj\"></router-outlet>"
 
 /***/ }),
 
@@ -808,7 +808,6 @@ var AppComponent = /** @class */ (function () {
             scopes: ["user.read"]
         };
         this.myMSALObj = new Msal.UserAgentApplication(this.msalConfig);
-        console.log("this.myMSALObj =>", this.myMSALObj);
         // Register Callbacks for redirect flow
         // myMSALObj.handleRedirectCallbacks(acquireTokenRedirectCallBack, acquireTokenErrorRedirectCallBack);
         this.myMSALObj.handleRedirectCallback(this.authRedirectCallBack);
@@ -816,9 +815,12 @@ var AppComponent = /** @class */ (function () {
         if (!this.user_obj) {
             console.log("let's get user than");
             if (localStorage.user) {
-                console.log("user is in storage!");
-                console.log(localStorage.user);
                 this.user_obj = JSON.parse(localStorage.user);
+                if (this.user_obj) {
+                    console.log("user is in storage!");
+                    console.log(this.user_obj);
+                    this._c.storeUser(this.user_obj);
+                }
             }
             else {
                 console.log("no user anywhere!!!");
@@ -829,25 +831,21 @@ var AppComponent = /** @class */ (function () {
     AppComponent.prototype.signIn = function () {
         var that = this;
         this.myMSALObj.loginPopup(this.requestObj).then(function (loginResponse) {
-            //Successful login
-            // this.showWelcomeMessage();
-            //Call MS Graph using the token in the response
-            console.log("loginResponse =>", loginResponse);
             that.acquireTokenPopupAndCallMSGraph();
         }).catch(function (error) {
-            //Please check the console for errors
+            this.popup_error_message = error;
             console.log(error);
         });
     };
     AppComponent.prototype.signOut = function () {
         this.myMSALObj.logout();
+        localStorage['user'] = null;
+        this._c.user = null;
     };
     AppComponent.prototype.acquireTokenPopupAndCallMSGraph = function () {
-        // console.log("STEP => acquireTokenPopupAndCallMSGraph()  ")
         var that = this;
         //Always start with acquireTokenSilent to obtain a token in the signed in user from cache
         this.myMSALObj.acquireTokenSilent(this.requestObj).then(function (tokenResponse) {
-            // console.log("STEP => myMSALObj.acquireTokenSilent(requestObj).then(function (tokenResponse)", tokenResponse)
             that.callMSGraph(that.graphConfig.graphMeEndpoint, tokenResponse.accessToken, function (data) {
                 that.user_obj = data;
                 that._c.storeUser(data);
@@ -1200,6 +1198,10 @@ var ConnectorService = /** @class */ (function () {
         });
     };
     ConnectorService.prototype.storeUser = function (user) {
+        console.log("storeUser(user): user =>", user);
+        if (!user) {
+            return false;
+        }
         var that = this;
         return new Promise(function (resolve, reject) {
             that.http.post('/api/store_user', user).subscribe(function (res) {
@@ -1437,17 +1439,17 @@ var IndexComponent = /** @class */ (function () {
     //   });
     // }
     IndexComponent.prototype.ngOnInit = function () {
-        var _this = this;
+        console.log("current user at index.comp =>", this.currentUser);
         if (!this.currentUser) {
-            console.log("Seems like the Coonector");
+            // console.log("Seems like the Coonector")
             if (localStorage['user']) {
                 var user = JSON.parse(localStorage['user']);
-                console.log("user to store =>", user);
-                this._c.storeUser(user).then(function (res) {
-                    _this.currentUser = res;
-                }).catch(function (error) {
-                    console.log("error =>", error);
-                });
+                // console.log("user to store =>", user)
+                // this._c.storeUser(user).then(res => {
+                //   this.currentUser = res;
+                // }).catch(function(error){
+                //   console.log("error =>", error)
+                // })
             }
         }
         else {

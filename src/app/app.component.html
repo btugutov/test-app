@@ -1,11 +1,11 @@
 <!--The content below is only a placeholder and can be replaced.-->
-<div class="container" id="singIngBox" *ngIf="!user_obj">
-    <div class="leftContainer">
-        <h1>Please Sign in</h1>
-        <button id="SignIn" class='btn btn-outline-success' type="button" (click)="signIn()">Sign In</button>
-    </div>
-    <div class="rightContainer">
-        <pre id="json"></pre>
+<div *ngIf='popup_error_message'>
+    {{popup_error_message | json}}
+</div>
+<div id="singIngBox" *ngIf="!user_obj">
+    <div id="signIngBoxButtons">
+        <h1>Welcome to Skill Assessment Portal</h1>
+        <button id="SignIn" class='btn btn-lg btn-index dropbtn' type="button" (click)="signIn()">Sign In</button>
     </div>
 </div>
 <nav *ngIf="user_obj" class="navbar text-center navbar-dark" id="navigation" style="background: white !important;">
@@ -28,8 +28,8 @@
             </option>
         </select>
         <span class="text-nowrap text-muted" *ngIf="user_obj!=null">{{ user_obj.email }}</span>
-        <button class="btn btn-home2" type="button" onclick="location.href='/.auth/logout'">Logout</button>
-        <button (click)='getOSInfo()' class='btn btn-outline-primary' type="button">Get System Info</button>
+        <button class="btn btn-home2" type="button" (click)="signOut()">Logout</button>
+        <button (click)='getOSInfo()' class='btn btn-outline-primary' type="button" *ngIf='user_obj.developer'>Get System Info</button>
     </div>
 </nav>
 <router-outlet *ngIf="user_obj"></router-outlet>

@@ -25,16 +25,17 @@ export class IndexComponent implements OnInit {
   //   });
   // }
   ngOnInit() {
+    console.log("current user at index.comp =>", this.currentUser)
     if(!this.currentUser){
-      console.log("Seems like the Coonector")
+      // console.log("Seems like the Coonector")
       if(localStorage['user']){
         let user = JSON.parse(localStorage['user'])
-        console.log("user to store =>", user)
-        this._c.storeUser(user).then(res => {
-          this.currentUser = res;
-        }).catch(function(error){
-          console.log("error =>", error)
-        })
+        // console.log("user to store =>", user)
+        // this._c.storeUser(user).then(res => {
+        //   this.currentUser = res;
+        // }).catch(function(error){
+        //   console.log("error =>", error)
+        // })
       }
     }else{
 
