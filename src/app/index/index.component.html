@@ -7,7 +7,7 @@
         </div>
         <div *ngIf="engagements">
             <div style='height: 10%; margin-top: 150px; justify-content: center; display: flex; flex-direction: column; flex-wrap: wrap;'>
-                <h1 style="color:#c6c9cc;">Please select the engagement you would like to work today with</h1>
+                <h1 style="color:#c6c9cc;">Hello {{currentUser.first_name}}. Please select the engagement you would like to work today with</h1>
             </div>
             <div class="homeCategories">
                 <div *ngFor="let e of engagements" class="listCategory"><button [routerLink]="['/' + e.engagement_id + '/home']" class='btn btn-lg btn-index dropbtn'>{{e.engagement_name}}</button></div>

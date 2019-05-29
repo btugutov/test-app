@@ -1174,29 +1174,6 @@ var ConnectorService = /** @class */ (function () {
         this.engs = new rxjs__WEBPACK_IMPORTED_MODULE_2__["BehaviorSubject"](null);
         this.engagements = this.engs.asObservable();
     }
-    ConnectorService.prototype.test = function () {
-        var that = this;
-        return new Promise(function (resolve, reject) {
-            that.http.get('/api/test').subscribe(function (res) {
-                resolve(res);
-            }, function (err) {
-                reject(err);
-            });
-        });
-    };
-    ConnectorService.prototype.getOSInfo = function () {
-        var that = this;
-        return new Promise(function (resolve, reject) {
-            that.http.get('/api/get_system_info_and_print_message').subscribe(function (res) {
-                res['current_engagement'] = that.curEng.value;
-                res['current_user'] = that.cur_user.value;
-                res['all_engagements'] = that.engs.value;
-                resolve(res);
-            }, function (err) {
-                reject(err);
-            });
-        });
-    };
     ConnectorService.prototype.storeUser = function (user) {
         console.log("storeUser(user): user =>", user);
         if (!user) {
@@ -1233,6 +1210,7 @@ var ConnectorService = /** @class */ (function () {
         });
         console.log("done");
     };
+    // ENGAGEMENT FUNCTIONS =========================================================
     ConnectorService.prototype.getAvailableEngagements = function (profile_id) {
         var that = this;
         profile_id = {
@@ -1247,6 +1225,76 @@ var ConnectorService = /** @class */ (function () {
         });
     };
     ;
+    // ==============================================================================
+    // QUIZ FUNCTIONS ===============================================================
+    ConnectorService.prototype.takeQuiz = function (eng, email, topic_id, quiz_id) {
+        var that = this;
+        return new Promise(function (resolve, reject) {
+            that.http.get("/api/" + eng + "/topic/" + topic_id + "/user/" + email + "/quiz/" + quiz_id + "/question/1").subscribe(// /3/topic/5/user/Bazyr-Tugutovs-Macbook-Pro.local/quiz/1/question/1
+            function (// /3/topic/5/user/Bazyr-Tugutovs-Macbook-Pro.local/quiz/1/question/1
+            res) {
+                resolve(res);
+            }, function (err) {
+                reject(err);
+            });
+        });
+    };
+    ConnectorService.prototype.submitAnswer = function (eng_id, answer) {
+        var that = this;
+        return new Promise(function (resolve, reject) {
+            that.http.post("/api/" + eng_id + "/success", answer).subscribe(// /3/topic/5/user/Bazyr-Tugutovs-Macbook-Pro.local/quiz/1/question/1
+            function (// /3/topic/5/user/Bazyr-Tugutovs-Macbook-Pro.local/quiz/1/question/1
+            res) {
+                resolve(res);
+            }, function (err) {
+                reject(err);
+            });
+        });
+    };
+    // ==============================================================================
+    // CATEGORIES FUNCTIONS =========================================================
+    ConnectorService.prototype.getAllCategoriesAndTopicsByProfileId = function (profile_id) {
+        var that = this;
+        return new Promise(function (resolve, reject) {
+            var obj = {
+                'profile_id': profile_id
+            };
+            that.http.post('/api/getAllCategoriesAndTopicsByProfileId', obj).subscribe(function (res) {
+                resolve(res);
+            }, function (err) {
+                reject(err);
+            });
+        });
+    };
+    ConnectorService.prototype.getCompletedQuizzesLength = function (profile_id, eng_id) {
+        var that = this;
+        return new Promise(function (resolve, reject) {
+            var obj = {
+                'profile_id': profile_id,
+                'eng_id': eng_id
+            };
+            that.http.post('/api/getCompletedQuizzesLength', obj).subscribe(function (res) {
+                resolve(res);
+            }, function (err) {
+                reject(err);
+            });
+        });
+    };
+    ConnectorService.prototype.getCompletedQuizzes = function (profile_id, eng_id) {
+        var that = this;
+        return new Promise(function (resolve, reject) {
+            var obj = {
+                'profile_id': profile_id,
+                'eng_id': eng_id
+            };
+            that.http.post('/api/getCompletedQuizzes', obj).subscribe(function (res) {
+                resolve(res);
+            }, function (err) {
+                reject(err);
+            });
+        });
+    };
+    // ==============================================================================
     // MISC FUNCTIONS
     ConnectorService.prototype.objToToArray = function (obj) {
         var result = [];
@@ -1256,6 +1304,41 @@ var ConnectorService = /** @class */ (function () {
         return result;
     };
     ;
+    ConnectorService.prototype.setMainInfo = function (obj) {
+        if (obj.currentUser) {
+            this.cur_user.next(obj.currentUser);
+        }
+        if (obj.currentEng) {
+            this.curEng.next(obj.currentEng);
+            console.log('The curEng is updated =>', this.curEng);
+        }
+        if (obj.engagements) {
+            this.engs.next(obj.engagements);
+        }
+    };
+    ConnectorService.prototype.test = function () {
+        var that = this;
+        return new Promise(function (resolve, reject) {
+            that.http.get('/api/test').subscribe(function (res) {
+                resolve(res);
+            }, function (err) {
+                reject(err);
+            });
+        });
+    };
+    ConnectorService.prototype.getOSInfo = function () {
+        var that = this;
+        return new Promise(function (resolve, reject) {
+            that.http.get('/api/get_system_info_and_print_message').subscribe(function (res) {
+                res['current_engagement'] = that.curEng.value;
+                res['current_user'] = that.cur_user.value;
+                res['all_engagements'] = that.engs.value;
+                resolve(res);
+            }, function (err) {
+                reject(err);
+            });
+        });
+    };
     ConnectorService = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Injectable"])({
             providedIn: 'root'
@@ -1332,7 +1415,7 @@ var ConnectorComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJzcmMvYXBwL2hvbWUvaG9tZS5jb21wb25lbnQuY3NzIn0= */"
+module.exports = ".home-main {\n    width: 80%;\n    margin: 0px auto;\n    display: flex;\n    flex-direction: row;\n    flex-wrap: wrap;\n    justify-content: space-around;\n    align-items: baseline;\n    align-content: center;\n}\n\n.home-category {\n    min-width: 250px;\n    width: 250px;\n    max-width: 280px;\n    display: flex;\n    flex-direction: column;\n    flex-wrap: wrap;\n    justify-content: flex-start;\n    align-items: center;\n    align-content: center;\n    margin: 15px 15px;\n    background: rgba(255, 255, 255, 0.4);\n    transition: 0.5s;\n    color: #716c6c;\n}\n\n.home-category:hover {\n    min-width: 280px;\n    max-width: 280px;\n    color: black;\n    background: rgba(255, 255, 255, 0.8);\n    box-shadow: 5px 10px 18px #888888;\n    margin: 15px 0px;\n}\n\n.home-category-element .btn {\n    white-space: normal !important;\n    word-wrap: break-word;\n    display: inline-block;\n    white-space: nowrap;\n    overflow: hidden;\n    text-overflow: ellipsis;\n}\n\n.home-category-title {\n    max-width: 250px;\n    display: flex;\n    flex-direction: row;\n    flex-wrap: wrap;\n    justify-content: center;\n    align-items: center;\n    align-content: center;\n    font-weight: normal;\n}\n\n.home-category-element {\n    width: 100%;\n    display: flex;\n    flex-direction: column;\n    flex-wrap: wrap;\n    justify-content: flex-start;\n    align-items: center;\n    align-content: center;\n}\n\n.home-category-element-inner-box {\n    width: 100%;\n    display: flex;\n    flex-direction: row;\n    flex-wrap: wrap;\n    justify-content: flex-start;\n    align-items: center;\n    align-content: center;\n}\n\n.home-category-element a {\n    width: 100%\n}\n\n.home-category-element-inner-box a {\n    width: 50%;\n    border-radius: 0px;\n}\n\n.home-category-element button {\n    width: 100%;\n    border: none;\n    border-radius: 0px;\n}\n\n/* .home-category-element-hover {\n    background: linear-gradient(to right, #fbfbfb, #fbfbfb);\n    transition: all 0.3s\n}\n\n.home-category-element-hover:hover {\n    background: linear-gradient(to right, #fbfbfb, #c6c6c6)\n} */\n\n.home-category-element-hover {\n    position: relative;\n    background-image: linear-gradient( to right, #fbfbfb, #fbfbfb);\n    z-index: 1;\n}\n\n.home-category-element-hover::before {\n    position: absolute;\n    content: \"\";\n    top: 0;\n    right: 0;\n    bottom: 0;\n    left: 0;\n    background-image: linear-gradient( to right, #fbfbfb, #c6c6c6);\n    z-index: -1;\n    transition: opacity 0.5s linear;\n    opacity: 0;\n}\n\n.home-category-element-hover:hover::before {\n    opacity: 1;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNyYy9hcHAvaG9tZS9ob21lLmNvbXBvbmVudC5jc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7SUFDSSxVQUFVO0lBQ1YsZ0JBQWdCO0lBQ2hCLGFBQWE7SUFDYixtQkFBbUI7SUFDbkIsZUFBZTtJQUNmLDZCQUE2QjtJQUM3QixxQkFBcUI7SUFDckIscUJBQXFCO0FBQ3pCOztBQUVBO0lBQ0ksZ0JBQWdCO0lBQ2hCLFlBQVk7SUFDWixnQkFBZ0I7SUFDaEIsYUFBYTtJQUNiLHNCQUFzQjtJQUN0QixlQUFlO0lBQ2YsMkJBQTJCO0lBQzNCLG1CQUFtQjtJQUNuQixxQkFBcUI7SUFDckIsaUJBQWlCO0lBQ2pCLG9DQUFvQztJQUNwQyxnQkFBZ0I7SUFDaEIsY0FBYztBQUNsQjs7QUFFQTtJQUNJLGdCQUFnQjtJQUNoQixnQkFBZ0I7SUFDaEIsWUFBWTtJQUNaLG9DQUFvQztJQUNwQyxpQ0FBaUM7SUFDakMsZ0JBQWdCO0FBQ3BCOztBQUVBO0lBQ0ksOEJBQThCO0lBQzlCLHFCQUFxQjtJQUNyQixxQkFBcUI7SUFDckIsbUJBQW1CO0lBQ25CLGdCQUFnQjtJQUNoQix1QkFBdUI7QUFDM0I7O0FBRUE7SUFDSSxnQkFBZ0I7SUFDaEIsYUFBYTtJQUNiLG1CQUFtQjtJQUNuQixlQUFlO0lBQ2YsdUJBQXVCO0lBQ3ZCLG1CQUFtQjtJQUNuQixxQkFBcUI7SUFDckIsbUJBQW1CO0FBQ3ZCOztBQUVBO0lBQ0ksV0FBVztJQUNYLGFBQWE7SUFDYixzQkFBc0I7SUFDdEIsZUFBZTtJQUNmLDJCQUEyQjtJQUMzQixtQkFBbUI7SUFDbkIscUJBQXFCO0FBQ3pCOztBQUVBO0lBQ0ksV0FBVztJQUNYLGFBQWE7SUFDYixtQkFBbUI7SUFDbkIsZUFBZTtJQUNmLDJCQUEyQjtJQUMzQixtQkFBbUI7SUFDbkIscUJBQXFCO0FBQ3pCOztBQUVBO0lBQ0k7QUFDSjs7QUFFQTtJQUNJLFVBQVU7SUFDVixrQkFBa0I7QUFDdEI7O0FBRUE7SUFDSSxXQUFXO0lBQ1gsWUFBWTtJQUNaLGtCQUFrQjtBQUN0Qjs7QUFHQTs7Ozs7OztHQU9HOztBQUVIO0lBQ0ksa0JBQWtCO0lBQ2xCLDhEQUE4RDtJQUM5RCxVQUFVO0FBQ2Q7O0FBRUE7SUFDSSxrQkFBa0I7SUFDbEIsV0FBVztJQUNYLE1BQU07SUFDTixRQUFRO0lBQ1IsU0FBUztJQUNULE9BQU87SUFDUCw4REFBOEQ7SUFDOUQsV0FBVztJQUNYLCtCQUErQjtJQUMvQixVQUFVO0FBQ2Q7O0FBRUE7SUFDSSxVQUFVO0FBQ2QiLCJmaWxlIjoic3JjL2FwcC9ob21lL2hvbWUuY29tcG9uZW50LmNzcyIsInNvdXJjZXNDb250ZW50IjpbIi5ob21lLW1haW4ge1xuICAgIHdpZHRoOiA4MCU7XG4gICAgbWFyZ2luOiAwcHggYXV0bztcbiAgICBkaXNwbGF5OiBmbGV4O1xuICAgIGZsZXgtZGlyZWN0aW9uOiByb3c7XG4gICAgZmxleC13cmFwOiB3cmFwO1xuICAgIGp1c3RpZnktY29udGVudDogc3BhY2UtYXJvdW5kO1xuICAgIGFsaWduLWl0ZW1zOiBiYXNlbGluZTtcbiAgICBhbGlnbi1jb250ZW50OiBjZW50ZXI7XG59XG5cbi5ob21lLWNhdGVnb3J5IHtcbiAgICBtaW4td2lkdGg6IDI1MHB4O1xuICAgIHdpZHRoOiAyNTBweDtcbiAgICBtYXgtd2lkdGg6IDI4MHB4O1xuICAgIGRpc3BsYXk6IGZsZXg7XG4gICAgZmxleC1kaXJlY3Rpb246IGNvbHVtbjtcbiAgICBmbGV4LXdyYXA6IHdyYXA7XG4gICAganVzdGlmeS1jb250ZW50OiBmbGV4LXN0YXJ0O1xuICAgIGFsaWduLWl0ZW1zOiBjZW50ZXI7XG4gICAgYWxpZ24tY29udGVudDogY2VudGVyO1xuICAgIG1hcmdpbjogMTVweCAxNXB4O1xuICAgIGJhY2tncm91bmQ6IHJnYmEoMjU1LCAyNTUsIDI1NSwgMC40KTtcbiAgICB0cmFuc2l0aW9uOiAwLjVzO1xuICAgIGNvbG9yOiAjNzE2YzZjO1xufVxuXG4uaG9tZS1jYXRlZ29yeTpob3ZlciB7XG4gICAgbWluLXdpZHRoOiAyODBweDtcbiAgICBtYXgtd2lkdGg6IDI4MHB4O1xuICAgIGNvbG9yOiBibGFjaztcbiAgICBiYWNrZ3JvdW5kOiByZ2JhKDI1NSwgMjU1LCAyNTUsIDAuOCk7XG4gICAgYm94LXNoYWRvdzogNXB4IDEwcHggMThweCAjODg4ODg4O1xuICAgIG1hcmdpbjogMTVweCAwcHg7XG59XG5cbi5ob21lLWNhdGVnb3J5LWVsZW1lbnQgLmJ0biB7XG4gICAgd2hpdGUtc3BhY2U6IG5vcm1hbCAhaW1wb3J0YW50O1xuICAgIHdvcmQtd3JhcDogYnJlYWstd29yZDtcbiAgICBkaXNwbGF5OiBpbmxpbmUtYmxvY2s7XG4gICAgd2hpdGUtc3BhY2U6IG5vd3JhcDtcbiAgICBvdmVyZmxvdzogaGlkZGVuO1xuICAgIHRleHQtb3ZlcmZsb3c6IGVsbGlwc2lzO1xufVxuXG4uaG9tZS1jYXRlZ29yeS10aXRsZSB7XG4gICAgbWF4LXdpZHRoOiAyNTBweDtcbiAgICBkaXNwbGF5OiBmbGV4O1xuICAgIGZsZXgtZGlyZWN0aW9uOiByb3c7XG4gICAgZmxleC13cmFwOiB3cmFwO1xuICAgIGp1c3RpZnktY29udGVudDogY2VudGVyO1xuICAgIGFsaWduLWl0ZW1zOiBjZW50ZXI7XG4gICAgYWxpZ24tY29udGVudDogY2VudGVyO1xuICAgIGZvbnQtd2VpZ2h0OiBub3JtYWw7XG59XG5cbi5ob21lLWNhdGVnb3J5LWVsZW1lbnQge1xuICAgIHdpZHRoOiAxMDAlO1xuICAgIGRpc3BsYXk6IGZsZXg7XG4gICAgZmxleC1kaXJlY3Rpb246IGNvbHVtbjtcbiAgICBmbGV4LXdyYXA6IHdyYXA7XG4gICAganVzdGlmeS1jb250ZW50OiBmbGV4LXN0YXJ0O1xuICAgIGFsaWduLWl0ZW1zOiBjZW50ZXI7XG4gICAgYWxpZ24tY29udGVudDogY2VudGVyO1xufVxuXG4uaG9tZS1jYXRlZ29yeS1lbGVtZW50LWlubmVyLWJveCB7XG4gICAgd2lkdGg6IDEwMCU7XG4gICAgZGlzcGxheTogZmxleDtcbiAgICBmbGV4LWRpcmVjdGlvbjogcm93O1xuICAgIGZsZXgtd3JhcDogd3JhcDtcbiAgICBqdXN0aWZ5LWNvbnRlbnQ6IGZsZXgtc3RhcnQ7XG4gICAgYWxpZ24taXRlbXM6IGNlbnRlcjtcbiAgICBhbGlnbi1jb250ZW50OiBjZW50ZXI7XG59XG5cbi5ob21lLWNhdGVnb3J5LWVsZW1lbnQgYSB7XG4gICAgd2lkdGg6IDEwMCVcbn1cblxuLmhvbWUtY2F0ZWdvcnktZWxlbWVudC1pbm5lci1ib3ggYSB7XG4gICAgd2lkdGg6IDUwJTtcbiAgICBib3JkZXItcmFkaXVzOiAwcHg7XG59XG5cbi5ob21lLWNhdGVnb3J5LWVsZW1lbnQgYnV0dG9uIHtcbiAgICB3aWR0aDogMTAwJTtcbiAgICBib3JkZXI6IG5vbmU7XG4gICAgYm9yZGVyLXJhZGl1czogMHB4O1xufVxuXG5cbi8qIC5ob21lLWNhdGVnb3J5LWVsZW1lbnQtaG92ZXIge1xuICAgIGJhY2tncm91bmQ6IGxpbmVhci1ncmFkaWVudCh0byByaWdodCwgI2ZiZmJmYiwgI2ZiZmJmYik7XG4gICAgdHJhbnNpdGlvbjogYWxsIDAuM3Ncbn1cblxuLmhvbWUtY2F0ZWdvcnktZWxlbWVudC1ob3Zlcjpob3ZlciB7XG4gICAgYmFja2dyb3VuZDogbGluZWFyLWdyYWRpZW50KHRvIHJpZ2h0LCAjZmJmYmZiLCAjYzZjNmM2KVxufSAqL1xuXG4uaG9tZS1jYXRlZ29yeS1lbGVtZW50LWhvdmVyIHtcbiAgICBwb3NpdGlvbjogcmVsYXRpdmU7XG4gICAgYmFja2dyb3VuZC1pbWFnZTogbGluZWFyLWdyYWRpZW50KCB0byByaWdodCwgI2ZiZmJmYiwgI2ZiZmJmYik7XG4gICAgei1pbmRleDogMTtcbn1cblxuLmhvbWUtY2F0ZWdvcnktZWxlbWVudC1ob3Zlcjo6YmVmb3JlIHtcbiAgICBwb3NpdGlvbjogYWJzb2x1dGU7XG4gICAgY29udGVudDogXCJcIjtcbiAgICB0b3A6IDA7XG4gICAgcmlnaHQ6IDA7XG4gICAgYm90dG9tOiAwO1xuICAgIGxlZnQ6IDA7XG4gICAgYmFja2dyb3VuZC1pbWFnZTogbGluZWFyLWdyYWRpZW50KCB0byByaWdodCwgI2ZiZmJmYiwgI2M2YzZjNik7XG4gICAgei1pbmRleDogLTE7XG4gICAgdHJhbnNpdGlvbjogb3BhY2l0eSAwLjVzIGxpbmVhcjtcbiAgICBvcGFjaXR5OiAwO1xufVxuXG4uaG9tZS1jYXRlZ29yeS1lbGVtZW50LWhvdmVyOmhvdmVyOjpiZWZvcmUge1xuICAgIG9wYWNpdHk6IDE7XG59Il19 */"
 
 /***/ }),
 
@@ -1343,7 +1426,7 @@ module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<p>\n  home works!\n</p>\n"
+module.exports = "<div class=\"quiz-selection element-animation-fadeIn\" align=\"center\" id=\"quiz_selection\">\n    <div *ngIf='ready_bool'>\n        <div *ngIf=\"cats_n_tops_bool == False\" style='height: 25%; justify-content: center; display: flex; flex-direction: column; flex-wrap: wrap;'>\n            <h1 style=\"margin-top:200px;\">You have no permission to take any quiz...yet. Please contact the training team if you feel this is an error.</h1>\n        </div>\n        <div *ngIf=\"cats_n_tops\">\n            <div style='height: 10%; justify-content: center; display: flex; flex-direction: column; flex-wrap: wrap;'>\n                <h1>Please select the test you would like to take</h1>\n            </div>\n            <div class=\"home-main\">\n                <div class=\"home-category\" *ngFor=\"let c of cats_n_tops | keyvalue\">\n                    <div class=\"home-category-title\">\n                        <h2>{{c.key}}</h2>\n                    </div>\n                    <div *ngFor=\"let t of c.value | keyvalue\" class=\"home-category-element\">\n                        <a *ngIf=\"t.value['topic_status'] == 0\" [routerLink]=\"[t.value.link]\">\n                            <button type=\"button\" class='{{t.value.class}}'>{{t.value.topic}}</button>\n                        </a>\n                        <a *ngIf=\"t.value['topic_status'] == 1\" [routerLink]=\"[t.value.link]\">\n                            <button type=\"button\" class='{{t.value.class}}'>Continue {{t.value.topic}}</button>\n                        </a>\n                        <a *ngIf=\"t.value['topic_status'] == 2\">\n                            <button type=\"button\" class='{{t.value.class}}' disabled>{{t.value.topic}} (completed)</button>\n                        </a>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n    <div *ngIf=\"!ready_bool\">\n        <h1>loading...</h1>\n    </div>\n</div>\n<div class=\"index_row element-animation-fadeIn\" id=\"contact_footer\">\n    <div class=\"col-md-4 col-12 px-2\" style=\"justify-content: center;\">\n        <div class=\"text-center\">\n            <h4 style=\"color: #4f91cd;\">Knowledge Assessment WebApp</h4>\n        </div>\n    </div>\n    <div class=\"col-md-4 col-12 px-2\">\n        <div class=\"text-center\">\n            <p class=\"mt-3\">If you have questions, please contact the Training Team</p>\n            <p><a class=\"mt-3\" href=\"mailto:jennifer@bpcs.com?subject=Question regarding Knowledge Assessment\" style=\"color: #4f91cd;\"> Jennifer Hollar</a></p>\n            <p><a class=\"mt-3\" href=\"mailto:nmelling@bpcs.com?subject=Question regarding Knowledge Assessment\" style=\"color: #4f91cd;\"> Nigel Melling</a></p>\n            <p><a class=\"mt-3\" href=\"mailto:kjenson@bpcs.com?subject=Question regarding Knowledge Assessment\" style=\"color: #4f91cd;\"> Kevin Jenson</a></p>\n        </div>\n    </div>\n    <div class=\"col-md-4 col-12 px-2\">\n        <div class=\"text-center\">\n            <p class=\"mt-3\" style=\"color: #4f91cd;\">Blueprint Consulting</p>\n            <p class=\"mt-3\" style=\"color: #4f91cd;\">505 106th Ave NE, Third Floor, Bellevue, WA 98004</p>\n            <p class=\"mt-3\" style=\"color: #4f91cd;\">(206) 455-8326</p>\n        </div>\n    </div>\n</div>"
 
 /***/ }),
 
@@ -1359,12 +1442,92 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "HomeComponent", function() { return HomeComponent; });
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
+/* harmony import */ var _connector_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../connector.service */ "./src/app/connector.service.ts");
+/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/common */ "./node_modules/@angular/common/fesm5/common.js");
 
 
+
+
+
+var _a = __webpack_require__(/*! ../object_validation.js */ "./src/app/object_validation.js"), format_quiz_table = _a.format_quiz_table, unescapingObj = _a.unescapingObj, groupBy = _a.groupBy, groupByKey = _a.groupByKey, categoriesFixer = _a.categoriesFixer, switchKey = _a.switchKey, joinUsersByTopicId = _a.joinUsersByTopicId, removeSpacesFromStr = _a.removeSpacesFromStr, gradeValidate = _a.gradeValidate, findAnswerID = _a.findAnswerID, infoValidate = _a.infoValidate, escapeObject = _a.escapeObject, escapingQuiz = _a.escapingQuiz, sortOnKeys = _a.sortOnKeys, topicListNameRemoveSpaces = _a.topicListNameRemoveSpaces, reAssignSession = _a.reAssignSession, questionRenderOderAnswers = _a.questionRenderOderAnswers, filterEngagementsByAvailableQuizzes = _a.filterEngagementsByAvailableQuizzes;
 var HomeComponent = /** @class */ (function () {
-    function HomeComponent() {
+    function HomeComponent(_ConnectorService, location, _route) {
+        var _this = this;
+        this._ConnectorService = _ConnectorService;
+        this.location = location;
+        this._route = _route;
+        this.ready_bool = false;
+        this.currentUser = null;
+        this.currentEng = null;
+        this.engagements = null;
+        this.currentEng_id = null;
+        this.cats_n_tops_array = [];
+        this._route.paramMap.subscribe(function (params) {
+            _this.currentEng_id = params.get('eng');
+        });
+        this._ConnectorService.user.subscribe(function (user) {
+            _this.currentUser = user;
+            if (user) {
+                _this.getAllCategoriesAndTopicsByProfileId(user.profile_id);
+            }
+        });
+        this._ConnectorService.engagements.subscribe(function (engs) {
+            _this.engagements = engs;
+            _this.changeCurEng();
+        });
     }
     HomeComponent.prototype.ngOnInit = function () {
+    };
+    HomeComponent.prototype.changeCurEng = function () {
+        for (var el in this.engagements) {
+            if (this.engagements[el]['engagement_id'] == this.currentEng_id) {
+                var obj = {
+                    currentEng: this.engagements[el]
+                };
+                this._ConnectorService.setMainInfo(obj);
+            }
+        }
+    };
+    HomeComponent.prototype.getAllCategoriesAndTopicsByProfileId = function (profile_id) {
+        var _this = this;
+        this._ConnectorService.getAllCategoriesAndTopicsByProfileId(profile_id).then(function (data) {
+            console.log("getAllCategoriesAndTopicsByProfileId DATA =>", data);
+            _this.cats_n_tops = [];
+            for (var el in data) {
+                if (data[el]['engagement_id'] == _this.currentEng_id) {
+                    data[el]['link'] = "/" + _this.currentEng_id + "/topic/" + data[el]['topic_id'] + "/user/" + _this.currentUser.email + "/quiz/1/question/1";
+                    if (data[el]['topic_status'] == 1) {
+                        data[el]['class'] = "btn btn-outline-danger btn-lg";
+                    }
+                    else if (data[el]['topic_status'] == 2) {
+                        data[el]['class'] = "btn btn-outline-success btn-lg";
+                    }
+                    else {
+                        data[el]['class'] = "btn btn-outline-secondary btn-lg";
+                    }
+                    _this.cats_n_tops.push(data[el]);
+                }
+            }
+            if (Object.keys(_this.cats_n_tops).length < 1) {
+                _this.cats_n_tops_bool = false;
+                _this.ready_bool = true;
+                return;
+            }
+            else {
+                _this.cats_n_tops_bool = true;
+            }
+            _this.cats_n_tops = groupByKey(unescapingObj(_this.cats_n_tops), 'category', 'topic_id');
+            for (var c in _this.cats_n_tops) {
+                _this.cats_n_tops_array[c] = [];
+                for (var t in _this.cats_n_tops[c]) {
+                    _this.cats_n_tops_array[c].push(_this.cats_n_tops[c][t]);
+                }
+            }
+            console.log(_this.cats_n_tops_array);
+            _this.ready_bool = true;
+        }).catch(function (error) {
+        });
     };
     HomeComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
@@ -1372,7 +1535,7 @@ var HomeComponent = /** @class */ (function () {
             template: __webpack_require__(/*! ./home.component.html */ "./src/app/home/home.component.html"),
             styles: [__webpack_require__(/*! ./home.component.css */ "./src/app/home/home.component.css")]
         }),
-        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [])
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_connector_service__WEBPACK_IMPORTED_MODULE_3__["ConnectorService"], _angular_common__WEBPACK_IMPORTED_MODULE_4__["Location"], _angular_router__WEBPACK_IMPORTED_MODULE_2__["ActivatedRoute"]])
     ], HomeComponent);
     return HomeComponent;
 }());
@@ -1399,7 +1562,7 @@ module.exports = "#index_wrapper {\n    background: currentColor;\n    height: 1
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div id=\"index_wrapper\">\n    <div class=\"quiz-selection element-animation-fadeIn\" align=\"center\" id=\"quiz_selection\" style='background: none !important'>\n        <div *ngIf=\"!engagements\" style='height: 25%; justify-content: center; display: flex;\n              flex-direction: column;\n              flex-wrap: wrap;'>\n            <h1 style=\"margin-top:200px; color:#c6c9cc;\">You have no access to any engagement...yet. Please contact the training team if you feel this is an error.</h1>\n        </div>\n        <div *ngIf=\"engagements\">\n            <div style='height: 10%; margin-top: 150px; justify-content: center; display: flex; flex-direction: column; flex-wrap: wrap;'>\n                <h1 style=\"color:#c6c9cc;\">Please select the engagement you would like to work today with</h1>\n            </div>\n            <div class=\"homeCategories\">\n                <div *ngFor=\"let e of engagements\" class=\"listCategory\"><button [routerLink]=\"['/' + e.engagement_id + '/home']\" class='btn btn-lg btn-index dropbtn'>{{e.engagement_name}}</button></div>\n            </div>\n        </div>\n    </div>\n    <div class=\"index_row element-animation-fadeIn\" id=\"contact_footer\">\n        <div class=\"col-md-4 col-12 px-2\" style=\"justify-content: center;\">\n            <div class=\"text-center\">\n                <h4 style=\"color: #4f91cd;\">Knowledge Assessment WebApp</h4>\n            </div>\n        </div>\n        <div class=\"col-md-4 col-12 px-2\">\n            <div class=\"text-center\">\n                <p class=\"mt-3\">If you have questions, please contact the Training Team</p>\n                <p><a class=\"mt-3\" href=\"mailto:jennifer@bpcs.com?subject=Question regarding Knowledge Assessment\" style=\"color: #4f91cd;\"> Jennifer Hollar</a></p>\n                <p><a class=\"mt-3\" href=\"mailto:nmelling@bpcs.com?subject=Question regarding Knowledge Assessment\" style=\"color: #4f91cd;\"> Nigel Melling</a></p>\n                <p><a class=\"mt-3\" href=\"mailto:kjenson@bpcs.com?subject=Question regarding Knowledge Assessment\" style=\"color: #4f91cd;\"> Kevin Jenson</a></p>\n            </div>\n        </div>\n        <div class=\"col-md-4 col-12 px-2\">\n            <div class=\"text-center\">\n                <p class=\"mt-3\" style=\"color: #4f91cd;\">Blueprint Consulting</p>\n                <p class=\"mt-3\" style=\"color: #4f91cd;\">505 106th Ave NE, Third Floor, Bellevue, WA 98004</p>\n                <p class=\"mt-3\" style=\"color: #4f91cd;\">(206) 455-8326</p>\n            </div>\n        </div>\n    </div>\n</div>"
+module.exports = "<div id=\"index_wrapper\">\n    <div class=\"quiz-selection element-animation-fadeIn\" align=\"center\" id=\"quiz_selection\" style='background: none !important'>\n        <div *ngIf=\"!engagements\" style='height: 25%; justify-content: center; display: flex;\n              flex-direction: column;\n              flex-wrap: wrap;'>\n            <h1 style=\"margin-top:200px; color:#c6c9cc;\">You have no access to any engagement...yet. Please contact the training team if you feel this is an error.</h1>\n        </div>\n        <div *ngIf=\"engagements\">\n            <div style='height: 10%; margin-top: 150px; justify-content: center; display: flex; flex-direction: column; flex-wrap: wrap;'>\n                <h1 style=\"color:#c6c9cc;\">Hello {{currentUser.first_name}}. Please select the engagement you would like to work today with</h1>\n            </div>\n            <div class=\"homeCategories\">\n                <div *ngFor=\"let e of engagements\" class=\"listCategory\"><button [routerLink]=\"['/' + e.engagement_id + '/home']\" class='btn btn-lg btn-index dropbtn'>{{e.engagement_name}}</button></div>\n            </div>\n        </div>\n    </div>\n    <div class=\"index_row element-animation-fadeIn\" id=\"contact_footer\">\n        <div class=\"col-md-4 col-12 px-2\" style=\"justify-content: center;\">\n            <div class=\"text-center\">\n                <h4 style=\"color: #4f91cd;\">Knowledge Assessment WebApp</h4>\n            </div>\n        </div>\n        <div class=\"col-md-4 col-12 px-2\">\n            <div class=\"text-center\">\n                <p class=\"mt-3\">If you have questions, please contact the Training Team</p>\n                <p><a class=\"mt-3\" href=\"mailto:jennifer@bpcs.com?subject=Question regarding Knowledge Assessment\" style=\"color: #4f91cd;\"> Jennifer Hollar</a></p>\n                <p><a class=\"mt-3\" href=\"mailto:nmelling@bpcs.com?subject=Question regarding Knowledge Assessment\" style=\"color: #4f91cd;\"> Nigel Melling</a></p>\n                <p><a class=\"mt-3\" href=\"mailto:kjenson@bpcs.com?subject=Question regarding Knowledge Assessment\" style=\"color: #4f91cd;\"> Kevin Jenson</a></p>\n            </div>\n        </div>\n        <div class=\"col-md-4 col-12 px-2\">\n            <div class=\"text-center\">\n                <p class=\"mt-3\" style=\"color: #4f91cd;\">Blueprint Consulting</p>\n                <p class=\"mt-3\" style=\"color: #4f91cd;\">505 106th Ave NE, Third Floor, Bellevue, WA 98004</p>\n                <p class=\"mt-3\" style=\"color: #4f91cd;\">(206) 455-8326</p>\n            </div>\n        </div>\n    </div>\n</div>"
 
 /***/ }),
 
@@ -1579,6 +1742,841 @@ var NotfoundComponent = /** @class */ (function () {
 }());
 
 
+
+/***/ }),
+
+/***/ "./src/app/object_validation.js":
+/*!**************************************!*\
+  !*** ./src/app/object_validation.js ***!
+  \**************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+const Promise = __webpack_require__(/*! promise */ "./node_modules/promise/index.js");
+
+function log_event(logLevel, event, functionName, event_time) {
+    // private function to escape strings
+    function mysql_real_escape_string(str) {
+        try {
+            str = String(str)
+            return str.replace(/[\0\x08\x09\x1a\n\r"'\\\%]/g, function(char) {
+                switch (char) {
+                    case "\0":
+                        return "\\0";
+                    case "\x08":
+                        return "\\b";
+                    case "\x09":
+                        return "\\t";
+                    case "\x1a":
+                        return "\\z";
+                    case "\n":
+                        return "\\n";
+                    case "\r":
+                        return "\\r";
+                    case "'":
+                        return "''";
+                    case "\"":
+                    case "\\":
+                    case "%":
+                        return "\\" + char; // prepends a backslash to backslash, percent,
+                        // and double/single quotes
+                }
+            });
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    let stringEscaped
+        // don't pass in an escaped string into the log function. You must either unescape it or give other information to help
+        // the mysql_real_escape_string() function does not work with escaped strings. It does not like the unicode.    
+    try {
+        stringEscaped = mysql_real_escape_string(event);
+    } catch (error) {
+        stringEscaped = event;
+        console.log('ERROR! CANNOT escape event string!');
+        console.log(error);
+    }
+
+    if (event_time == undefined) {
+        event_time = 'getdate()'
+    } else {
+        event_time = `'${event_time}'`
+    }
+
+    // this takes the incoming event and traces it back to where this function was called, then adds that line to the log table
+    const orig = Error.prepareStackTrace;
+    Error.prepareStackTrace = (_, stack) => stack;
+    const err = new Error();
+    Error.captureStackTrace(err, arguments.callee);
+    const callee = err.stack[0];
+    Error.prepareStackTrace = orig;
+    //return process.stdout.write(`${path.relative(process.cwd(), callee.getFileName())}:${callee.getLineNumber()}: \n`);
+    let line_number = path.relative(process.cwd(), callee.getFileName()) + ":" + callee.getLineNumber();
+
+    let logValues = `'${logLevel}', '${stringEscaped}', 'Knowledge Assessment', '${functionName}', '${line_number}', ${event_time}`;
+    dbLogWrite.log(logValues);
+    console.log(`${line_number} : ${event}`); // use non escaped string here in for log output. Otherwise string looks strange and hard to debug.
+};
+
+function format_quiz_table(object) {
+    let functionName = 'format_quiz_table';
+    try {
+        let answersMap = {};
+
+        // console.log('==============quiz.quizTable========================')
+        for (let el in object) {
+            // console.log('===========', el, '==========================');
+            if (typeof(object[el]) === 'object') {
+                if (!answersMap[object[el]['question_id']]) {
+                    answersMap[object[el]['question_id']] = {};
+                }
+                answersMap[object[el]['question_id']][object[el]['answer_id']] = unescape(object[el]['answer_prompt'])
+            }
+        }
+        // console.log(answersMap)
+        // console.log('=================================================')
+        //debugLog('here');
+        //console.log(object)
+        let keys = Object.keys(object);
+        // console.log('========Object.keys(object)=========', keys)
+        //console.log(keys)
+        let answers = [];
+        let correct = [];
+        let questions = {};
+        let dupes = {};
+        let dupesCorrect = {};
+        let dupesSoftDelete = {};
+        let dupesAnswerSort = {};
+        let dupesBucketList = {};
+        //let dupesAnswerSort = {};
+        let results = [];
+        if (object !== 'null') {
+            try {
+                for (let i = 0; i < keys.length; i++) {
+                    try {
+                        questions['topic_soft_delete'] = object[0]['topic_soft_delete'];
+                        questions['category'] = unescape(object[0]['category']);
+                        questions['topic'] = unescape(object[0]['topic']);
+                        questions['topic_id'] = object[0]['topic_id'];
+                        questions['question_sort'] = object[0]['question_sort'];
+                        // check to see if this object has engagement_id. if yes, add the engagement info to object
+                        if (object[0]['engagement_id']) {
+                            questions['engagement_id'] = object[0]['engagement_id'];
+                            questions['engagement_name'] = object[0]['engagement_name'];
+                        }
+                    } catch (tryError) {
+                        log_event('ERROR', tryError, functionName);
+                        throw tryError;
+                    }
+                    //debugLog('here');
+                    let next = i + 1;
+                    //debugLog('here');
+                    //next = next + 1;
+                    //debugLog('here');
+                    //console.log(object[keys[i]]['answer_id'])
+                    // each answer_id is passed as array. 1 value at the beginning with 2 empty values following. Only select the [0] index for answer_id to prevent empty values
+                    //let currentAns = object[keys[i]]['answer_id'][0];
+                    let currentAns = object[keys[i]]['answer_id'];
+                    //debugLog('here');
+                    let currentPrompt = unescape(object[keys[i]]['answer_prompt']);
+                    let currentCorrect = object[keys[i]]['correct'];
+                    let currentDelete = object[keys[i]]['answer_soft_delete'];
+                    let answer_sort = object[keys[i]]['answer_sort'];
+                    let answer_bucket_id = object[keys[i]]['bucket_id'];
+
+                    //debugLog('here');
+                    //console.log(object[i]['question_id'])
+                    let currentQuestion = object[i]['question_id'];
+                    //let currentCorrect = object[i]['correct'];
+                    //debugLog('here');
+                    if (!questions.hasOwnProperty(currentQuestion)) {
+                        try {
+                            //debugLog('here');
+                            dupes[currentAns] = currentPrompt;
+                            //debugLog("here")
+                            //console.log(currentCorrect)
+                            dupesCorrect[currentAns] = currentCorrect;
+                            dupesSoftDelete[currentAns] = currentDelete;
+                            dupesAnswerSort[currentAns] = answer_sort;
+                            dupesBucketList[currentAns] = answer_bucket_id;
+                            if (next < keys.length) {
+                                //debugLog('here');
+                                // create an array of objects with answer_id as the key and answer_prompt as the value when there's a many to one relationship with question_id (Radial)
+                                while (currentQuestion === object[next]['question_id']) {
+                                    //currentAns = object[keys[next]]['answer_id'][0];
+                                    currentAns = object[keys[next]]['answer_id'];
+                                    dupes[currentAns] = unescape(object[next]['answer_prompt']);
+                                    //console.log(object[next]['correct'])
+                                    //debugLog('***********************')
+                                    dupesCorrect[currentAns] = object[next]['correct'];
+                                    dupesSoftDelete[currentAns] = object[next]['answer_soft_delete'];
+                                    dupesAnswerSort[currentAns] = object[next]['answer_sort'];
+                                    dupesBucketList[currentAns] = object[next]['bucket_id'];
+
+                                    next++;
+                                    // checks to see if we are looking at the last question
+                                    if (next >= keys.length) {
+                                        //debugLog('here');
+                                        break;
+                                    }
+                                }
+                            }
+                        } catch (tryError) {
+                            log_event('ERROR', tryError, functionName);
+                            throw tryError;
+                        }
+                        //debugLog('here');
+                        // this array of objects will be the first index following the question_id key
+                        try {
+                            answers.push(dupes);
+                            // console.log('======================DUPES!!!============================', currentQuestion)
+                            // console.log(dupes, 'compare to', )
+                            // console.log(answersMap[currentQuestion])
+                            //debugLog('here');
+                            // after all answers that are associated with question_id are listed, include the following objects
+                            //questions[currentQuestion] = answers;
+                            questions[currentQuestion] = {};
+                            questions[currentQuestion]['answer_prompt'] = answersMap[currentQuestion];
+                            questions[currentQuestion]['answer_correct'] = dupesCorrect;
+                            questions[currentQuestion]['answer_soft_delete'] = dupesSoftDelete;
+                            questions[currentQuestion]['answer_sort'] = dupesAnswerSort;
+                            questions[currentQuestion]['answer_bucket_id'] = dupesBucketList;
+                            questions[currentQuestion]['question_type_id'] = object[i]['question_type_id'];
+                            questions[currentQuestion]['question_type_description'] = unescape(object[i]['question_type_description']);
+                            questions[currentQuestion]['display_type_id'] = object[i]['display_type_id'];
+                            questions[currentQuestion]['display_type_description'] = unescape(object[i]['display_type_description']);
+                            questions[currentQuestion]['quiz_id'] = object[i]['quiz_id'];
+                            questions[currentQuestion]['quiz_name'] = unescape(object[i]['quiz_name']);
+                            questions[currentQuestion]['prompt'] = unescape(object[i]['prompt']);
+                            //questions[currentQuestion]['sort'] = object[i]['sort'];
+                            questions[currentQuestion]['training_module'] = unescape(object[i]['training_module']);
+                            questions[currentQuestion]['training_url'] = unescape(object[i]['training_url']);
+                            questions[currentQuestion]['base64'] = object[i]['base64'];
+                            questions[currentQuestion]['image'] = object[i]['image'];
+                            questions[currentQuestion]['point_value'] = object[i]['point_value'];
+                            questions[currentQuestion]['question_soft_delete'] = object[i]['question_soft_delete'];
+                            questions[currentQuestion]['expected_response'] = unescape(object[i]['expected_response']);
+                            questions[currentQuestion]['question_sort'] = unescape(object[i]['question_sort']);
+
+                            // now set above. once we stop using at this location, delete these
+                            questions[currentQuestion]['topic'] = unescape(object[i]['topic']);
+                            questions[currentQuestion]['topic_id'] = object[i]['topic_id'];
+                            questions[currentQuestion]['category'] = unescape(object[i]['category']);
+
+                            //debugLog('here');
+                        } catch (tryError) {
+                            log_event('ERROR', tryError, functionName);
+                            throw tryError;
+                        }
+                    }
+                    dupes = {};
+                    answers = [];
+                    correct = [];
+                    dupesCorrect = {};
+                    dupesSoftDelete = {};
+                }
+            } catch (tryError) {
+                log_event('ERROR', tryError, functionName);
+                throw tryError;
+            }
+            results.push(questions);
+            //console.log(results)
+            // console.log(results[0][110])
+            return results;
+        } else {
+            //debugLog("object empty");
+            return [];
+        }
+    } catch (tryError) {
+        log_event('ERROR', tryError, functionName);
+        throw tryError;
+    }
+}
+
+function building_dont_use(object) {
+    let functionName = 'format_quiz_table';
+    // recieve table that is the quiz object
+    // create json object from table results
+    // one topic / topic_id
+    // multiple questions per topic
+    // multiple answer objects per question
+
+    /*
+        // get list of unique question_id
+
+        // for each UNIQUE question_id {
+            get set of data from KA_question table
+
+            get list of UNIQUE answer_id 
+            for each UNIQUE answer_id {
+                get set of data from KA_answer table 
+                
+            }
+
+
+
+
+
+        try {
+            let answersMap = {};
+
+            // console.log('==============quiz.quizTable========================')
+            for (let el in object) {
+                // console.log('===========', el, '==========================');
+                if (typeof(object[el]) === 'object') {
+                    if (!answersMap[object[el]['question_id']]) {
+                        answersMap[object[el]['question_id']] = {};
+                    }
+                    answersMap[object[el]['question_id']][object[el]['answer_id']] = unescape(object[el]['answer_prompt'])
+                }
+            }
+            // console.log(answersMap)
+            // console.log('=================================================')
+            //debugLog('here');
+            //console.log(object)
+            let keys = Object.keys(object);
+            // console.log('========Object.keys(object)=========', keys)
+            //console.log(keys)
+            let answers = [];
+            let correct = [];
+            let questions = {};
+            let dupes = {};
+            let dupesCorrect = {};
+            let dupesSoftDelete = {};
+            let dupesAnswerSort = {};
+            let dupesBucketList = {};
+            //let dupesAnswerSort = {};
+            let results = [];
+            if (object !== 'null') {
+                try {
+                    for (let i = 0; i < keys.length; i++) {
+                        try {
+                            questions['topic_soft_delete'] = object[0]['topic_soft_delete'];
+                            questions['category'] = unescape(object[0]['category']);
+                            questions['topic'] = unescape(object[0]['topic']);
+                            questions['topic_id'] = object[0]['topic_id'];
+                            questions['question_sort'] = object[0]['question_sort'];
+                        } catch (tryError) {
+                            log_event('ERROR', tryError, functionName);
+                            throw tryError;
+                        }
+                        //debugLog('here');
+                        let next = i + 1;
+                        //debugLog('here');
+                        //next = next + 1;
+                        //debugLog('here');
+                        //console.log(object[keys[i]]['answer_id'])
+                        // each answer_id is passed as array. 1 value at the beginning with 2 empty values following. Only select the [0] index for answer_id to prevent empty values
+                        //let currentAns = object[keys[i]]['answer_id'][0];
+                        let currentAns = object[keys[i]]['answer_id'];
+                        //debugLog('here');
+                        let currentPrompt = unescape(object[keys[i]]['answer_prompt']);
+                        let currentCorrect = object[keys[i]]['correct'];
+                        let currentDelete = object[keys[i]]['answer_soft_delete'];
+                        let answer_sort = object[keys[i]]['answer_sort'];
+                        let answer_bucket_id = object[keys[i]]['bucket_id'];
+
+                        //debugLog('here');
+                        //console.log(object[i]['question_id'])
+                        let currentQuestion = object[i]['question_id'];
+                        //let currentCorrect = object[i]['correct'];
+                        //debugLog('here');
+                        if (!questions.hasOwnProperty(currentQuestion)) {
+                            try {
+                                //debugLog('here');
+                                dupes[currentAns] = currentPrompt;
+                                //debugLog("here")
+                                //console.log(currentCorrect)
+                                dupesCorrect[currentAns] = currentCorrect;
+                                dupesSoftDelete[currentAns] = currentDelete;
+                                dupesAnswerSort[currentAns] = answer_sort;
+                                dupesBucketList[currentAns] = answer_bucket_id;
+                                if (next < keys.length) {
+                                    //debugLog('here');
+                                    // create an array of objects with answer_id as the key and answer_prompt as the value when there's a many to one relationship with question_id (Radial)
+                                    while (currentQuestion === object[next]['question_id']) {
+                                        //currentAns = object[keys[next]]['answer_id'][0];
+                                        currentAns = object[keys[next]]['answer_id'];
+                                        dupes[currentAns] = unescape(object[next]['answer_prompt']);
+                                        //console.log(object[next]['correct'])
+                                        //debugLog('***********************')
+                                        dupesCorrect[currentAns] = object[next]['correct'];
+                                        dupesSoftDelete[currentAns] = object[next]['answer_soft_delete'];
+                                        dupesAnswerSort[currentAns] = object[next]['answer_sort'];
+                                        dupesBucketList[currentAns] = object[next]['bucket_id'];
+
+                                        next++;
+                                        // checks to see if we are looking at the last question
+                                        if (next >= keys.length) {
+                                            //debugLog('here');
+                                            break;
+                                        }
+                                    }
+                                }
+                            } catch (tryError) {
+                                log_event('ERROR', tryError, functionName);
+                                throw tryError;
+                            }
+                            //debugLog('here');
+                            // this array of objects will be the first index following the question_id key
+                            try {
+                                answers.push(dupes);
+                                // console.log('======================DUPES!!!============================', currentQuestion)
+                                // console.log(dupes, 'compare to', )
+                                // console.log(answersMap[currentQuestion])
+                                //debugLog('here');
+                                // after all answers that are associated with question_id are listed, include the following objects
+                                //questions[currentQuestion] = answers;
+                                questions[currentQuestion] = {};
+                                questions[currentQuestion]['answer_prompt'] = answersMap[currentQuestion];
+                                questions[currentQuestion]['answer_correct'] = dupesCorrect;
+                                questions[currentQuestion]['answer_soft_delete'] = dupesSoftDelete;
+                                questions[currentQuestion]['answer_sort'] = dupesAnswerSort;
+                                questions[currentQuestion]['buckst_id'] = dupesBucketList;
+                                questions[currentQuestion]['question_type_id'] = object[i]['question_type_id'];
+                                questions[currentQuestion]['question_type_description'] = unescape(object[i]['question_type_description']);
+                                questions[currentQuestion]['display_type_id'] = object[i]['display_type_id'];
+                                questions[currentQuestion]['display_type_description'] = unescape(object[i]['display_type_description']);
+                                questions[currentQuestion]['quiz_id'] = object[i]['quiz_id'];
+                                questions[currentQuestion]['quiz_name'] = unescape(object[i]['quiz_name']);
+                                questions[currentQuestion]['prompt'] = unescape(object[i]['prompt']);
+                                //questions[currentQuestion]['sort'] = object[i]['sort'];
+                                questions[currentQuestion]['training_module'] = unescape(object[i]['training_module']);
+                                questions[currentQuestion]['training_url'] = unescape(object[i]['training_url']);
+                                questions[currentQuestion]['base64'] = object[i]['base64'];
+                                questions[currentQuestion]['image'] = object[i]['image'];
+                                questions[currentQuestion]['point_value'] = object[i]['point_value'];
+                                questions[currentQuestion]['question_soft_delete'] = object[i]['question_soft_delete'];
+                                questions[currentQuestion]['expected_response'] = unescape(object[i]['expected_response']);
+                                questions[currentQuestion]['question_sort'] = unescape(object[i]['question_sort']);
+
+                                // now set above. once we stop using at this location, delete these
+                                questions[currentQuestion]['topic'] = unescape(object[i]['topic']);
+                                questions[currentQuestion]['topic_id'] = object[i]['topic_id'];
+                                questions[currentQuestion]['category'] = unescape(object[i]['category']);
+
+                                //debugLog('here');
+                            } catch (tryError) {
+                                log_event('ERROR', tryError, functionName);
+                                throw tryError;
+                            }
+                        }
+                        dupes = {};
+                        answers = [];
+                        correct = [];
+                        dupesCorrect = {};
+                        dupesSoftDelete = {};
+                    }
+                } catch (tryError) {
+                    log_event('ERROR', tryError, functionName);
+                    throw tryError;
+                }
+                results.push(questions);
+                console.log(results)
+                return results;
+            } else {
+                //debugLog("object empty");
+                return [];
+            }
+        } catch (tryError) {
+            log_event('ERROR', tryError, functionName);
+            throw tryError;
+        }
+
+    */
+}
+
+function escapingQuiz(q) {
+    for (let el in q) {
+        if (typeof(q[el]) !== 'object' && Object.keys(q[el]).length <= 19 || el === 'new') {
+            continue;
+        }
+        delete q[el][0]
+        q[el]['prompt'] = escape(q[el]['prompt']);
+        q[el]['training_url'] = escape(q[el]['training_url']);
+        q[el]['training_module'] = escape(q[el]['training_module']);
+        q[el]['expected_response'] = escape(q[el]['expected_response']);
+        for (let a in q[el]['answer_prompt']) {
+            q[el]['answer_prompt'][a] = escape(q[el]['answer_prompt'][a])
+        }
+    }
+    return q;
+}
+
+function escapeObject(object) {
+    let functionName = 'unescapingObj';
+    try {
+        for (var i = 0; i < Object.keys(object).length; i++) {
+            if (typeof object[Object.keys(object)[i]] == "object" && object[Object.keys(object)[i]] != null) {
+                escapeObject(object[Object.keys(object)[i]]);
+            } else if (Object.keys(object)[i] === 'image') {
+                //console.log('image')
+                continue
+            } else if (typeof object[Object.keys(object)[i]] == "string") {
+                object[Object.keys(object)[i]] = escape(object[Object.keys(object)[i]].trim())
+            } else {
+                continue
+            }
+        }
+        return object
+    } catch (tryError) { log_event('ERROR', tryError, functionName); throw tryError; }
+}
+
+function unescapingObj(object) {
+    let functionName = 'unescapingObj';
+    try {
+        for (var i = 0; i < Object.keys(object).length; i++) {
+            if (typeof object[Object.keys(object)[i]] == "object" && object[Object.keys(object)[i]] != null) {
+                unescapingObj(object[Object.keys(object)[i]]);
+            } else if (typeof object[Object.keys(object)[i]] == "string") {
+                object[Object.keys(object)[i]] = unescape(unescape(object[Object.keys(object)[i]]))
+            }
+        }
+        return object
+    } catch (tryError) { log_event('ERROR', tryError, functionName); throw tryError; }
+}
+
+function groupBy(list, group) {
+    let functionName = 'groupBy';
+    try {
+        let map = {};
+        for (let el in list) {
+            if (typeof(list[el]) === 'object') {
+                if (list[el]['topic']) {
+                    list[el]['topic'] = removeSpacesFromStr(list[el]['topic'])
+                }
+                if (!map[list[el][group]]) {
+                    map[list[el][group]] = {}
+                }
+                map[list[el][group]][el] = list[el]
+            }
+        }
+        return map
+    } catch (tryError) { log_event('ERROR', tryError, functionName); throw tryError; }
+}
+
+function groupByKey(list, group, key) {
+    let functionName = 'groupByKey';
+    try {
+        let map = {};
+        for (let el in list) {
+            if (list[el]['topic']) {
+                list[el]['topic'] = removeSpacesFromStr(list[el]['topic'])
+            }
+            if (!map[list[el][group]]) {
+                map[list[el][group]] = {}
+            }
+            map[list[el][group]][list[el][key]] = list[el]
+        }
+        return map
+    } catch (tryError) { log_event('ERROR', tryError, functionName); throw tryError; }
+}
+
+function categoriesFixer(cat) {
+    let res = {};
+    for (let el in cat) {
+        res[cat[el]['topic_id']] = cat[el];
+    }
+    return res;
+}
+
+function switchKey(list, key) {
+    let res = {};
+    for (let el in list) {
+        res[list[el][key]] = list[el]
+    }
+    return res;
+}
+
+function joinUsersByTopicId(list) {
+    let functionName = 'joinUsersByTopicId';
+    try {
+        var res = {};
+        for (let u in list) {
+            // if (list[u]['profile_id']) {
+            //     if (list[u]['profile_id'] == 727) {
+            //         console.log("==================list[u]['profile_id'] == 727===========================")
+            //         console.log(list[u])
+            //     }
+            // }
+            if (typeof(list[u]) !== 'object' || list[u]['soft_delete']) {
+                continue;
+            }
+            let user_id = list[u]['profile_id'];
+            if (!res[user_id]) {
+                res[user_id] = list[u]
+                let temp = res[user_id]['topic_id'] // ex.: user['topic_id'] = [1,3,4,5,6] array of topic_id's
+                res[user_id]['topic_id'] = [];
+                if (typeof(temp) === 'object') {
+                    for (let el in temp) {
+                        if (!res[user_id]['topic_id'].includes(temp[el]) && !res[user_id]['permission_soft_delete']) {
+                            res[user_id]['topic_id'].push(temp[el])
+                        }
+                    }
+                } else {
+                    if (!res[user_id]['topic_id'].includes(temp)) {
+                        res[user_id]['topic_id'].push(temp)
+                    }
+                }
+            } else {
+                if (list[u]['permission_soft_delete']) {
+                    continue;
+                }
+                let temp = list[u]['topic_id']
+                if (typeof(temp) === 'object') {
+                    for (let el in temp) {
+                        if (!res[user_id]['topic_id'].includes(temp[el])) {
+                            res[user_id]['topic_id'].push(temp[el])
+                        }
+                    }
+                } else {
+                    if (!res[user_id]['topic_id'].includes(temp)) {
+                        res[user_id]['topic_id'].push(temp)
+                    }
+                }
+            }
+            res[user_id]['topic_id'].sort()
+        }
+        return res;
+    } catch (tryError) { log_event('ERROR', tryError, functionName); throw tryError; }
+}
+
+function topicListNameRemoveSpaces(list) {
+    for (let el in list) {
+        list[el]['topic'] = removeSpacesFromStr(list[el]['topic']);
+    }
+    return list;
+}
+
+function removeSpacesFromStr(str) {
+    let functionName = 'removeSpacesFromStr';
+    try {
+        if (str.length < 2) {
+            return str
+        }
+        return str.split('   ').join('');
+    } catch (tryError) { log_event('ERROR', tryError, functionName); throw tryError; }
+}
+
+
+//validates and sanitizes submission_id, question_id, gradeinput, and gradevalue. returns an array of objects that can be iterated through for db insertion
+// array format {question_id: [graded value, admin feedback, submission id]}
+function gradeValidate(body) {
+    //console.log(`gradeValidate INPUT >>> ${body}`)
+    //console.log(body)
+    let keys = Object.keys(body);
+    let cleanResult = {};
+    let gradeContent = [];
+    let gradeValue;
+    //console.log(typeof gradeValue)
+    let grade_input;
+    let submission_id;
+
+    //checks to see if a value matches the expected value. If not, it's assigned a value of '0' or given an error string
+    // would like to validate further here, query to see what submission id the current admin is supposed to be grading according to DB
+    if (typeof body['submission_id'] === 'string') {
+        submission_id = body['submission_id'];
+        submission_id = escape(submission_id);
+    } else {
+        submission_id = '0'
+    }
+
+    for (let i = 0; i < keys.length; i++) {
+        if (Array.isArray(body[keys[i]])) {
+
+            // This needs to be adjusted if the grade scale feature is changed to allow for scores greater or less than 1-5
+            if (0.0 <= body[keys[i]][0] <= 5.0) {
+                gradeValue = body[keys[i]][0];
+                //console.log('=-=-=-=-=--=== here ')
+                //console.log(body[keys[i]][0])
+                //console.log(gradeValue)
+
+            } else {
+                gradeValue = '0.0';
+            }
+            if (typeof body[keys[i]][1] === 'string') {
+                grade_input = body[keys[i]][1];
+            } else {
+                grade_input = 'error expected a string';
+            }
+
+        }
+        // check to see if we are at the end of the array (key 'submission_id') if so stop. We don't need it for the db query
+        else if (keys[i] === 'submission_id') {
+            break;
+        } else {
+            gradeValue = '0';
+        }
+        /*
+        console.log(`gradeValue >>>> ${gradeValue}`)
+        console.log(gradeValue)
+        console.log(typeof gradeValue)
+        console.log(`grade_input >>>> ${grade_input}`)
+        console.log(`escape(grade_input) >>>> ${escape(grade_input)}`)
+        console.log(`submission_id >>>> ${submission_id}`)
+        console.log(`keys[i] >>>> ${keys[i]}`)
+        */
+        // sanitize everything and then add to the final array
+        gradeValue = escape(gradeValue);
+        gradeContent.push(gradeValue);
+        grade_input = escape(grade_input);
+        gradeContent.push(grade_input);
+        gradeContent.push(submission_id);
+        //would like to validate further here. add query to check which questions are available in the type of quiz that is being graded
+        let question_id = keys[i];
+        //question_id = escape(question_id)
+        cleanResult[question_id] = gradeContent;
+        gradeContent = [];
+    }
+    return cleanResult;
+}
+
+//A unique answer_id value is only needed for automated grading. This function iterates through user answers, validates the content and identifies whether it is a choice or freewrite answer
+//The answer_id for Freewrite answers is given a value of '0'
+//The answer_id for choice answers is turned into an array and given the unique answer_id value(s).
+
+function findAnswerID(passInfo, arrayAnswer) {
+    let answer_id = [];
+    if (passInfo[0] !== '2') {
+        for (let i = 0; i < arrayAnswer.length; i++) {
+            // Sometimes empty values get passed when there are multiple answers. We don't need empty values inserted in the DB though.
+            // Skip any empty values so they aren't included in the final output
+            // Assign value and sanitize
+            if (arrayAnswer[i] !== undefined) {
+                if (typeof arrayAnswer[i] === 'string') {
+                    answer_id[i] = arrayAnswer[i];
+                    answer_id[i] = escape(answer_id[i]);
+                }
+            }
+        }
+    }
+    // text input response, cannot validate further
+    else {
+        answer_id = [0];
+    }
+    return answer_id;
+}
+
+
+//validates and sanitizes identifying information passed from the front end. returns an array that can be iterated through for db insertion
+function infoValidate(passInfo) {
+    let cleanPassInfo = [];
+    let questionId;
+    let submitId;
+    let profileId;
+
+    // key of provided input should be an array
+    if (Array.isArray(passInfo)) {
+        // validate that content matches the expected value/type.  If not, it's assigned a value of '0' or given an error string
+        // sanitize by escaping for further security
+        if (typeof passInfo[2] === 'string') {
+            profileId = passInfo[2];
+            profileId = escape(profileId);
+        } else {
+            profileId = '0'
+        }
+        if (typeof passInfo[3] === 'string') {
+            submitId = passInfo[3];
+            submitId = escape(submitId);
+        } else {
+            submitId = '0'
+        }
+        if (typeof passInfo[5] === 'string') {
+            questionId = passInfo[5];
+            questionId = escape(questionId);
+        } else {
+            questionId = '0'
+        }
+    }
+    cleanPassInfo.push(profileId);
+    cleanPassInfo.push(submitId);
+    cleanPassInfo.push(questionId);
+    return cleanPassInfo;
+}
+
+function sortOnKeys(dict) { // sorting object by keys
+    var sorted = [];
+    for (var key in dict) {
+        sorted[sorted.length] = key;
+    }
+    sorted.sort();
+
+    var tempDict = {};
+    for (var i = 0; i < sorted.length; i++) {
+        tempDict[sorted[i]] = dict[sorted[i]];
+    }
+
+    return tempDict;
+}
+
+function reAssignSession(list, id) {
+    for (let el in list) {
+        if (list[el]['engagement_id'] == id) {
+            return list[el]
+        }
+    }
+    return false;
+}
+
+function questionRenderOderAnswers(question) {
+    let res = {
+        answer_keys: [],
+        answer_prompts: []
+    };
+    let orderMap = {};
+    for (let el in question['answer_sort']) {
+        if (!orderMap[question['answer_sort'][el]]) {
+            orderMap[question['answer_sort'][el]] = [];
+        }
+        if (!question['answer_soft_delete'][el] && question['answer_prompt'][el]) {
+            orderMap[question['answer_sort'][el]].push(el);
+        }
+    }
+    // console.log(orderMap);
+    for (let o in orderMap) { // o  = order
+        for (let q of orderMap[o]) { // q = question
+            res.answer_keys.push(q);
+            res.answer_prompts.push(question.answer_prompt[q])
+        }
+    }
+    return res;
+}
+
+function filterEngagementsByAvailableQuizzes(quizzes) {
+    quizzes = groupByKey(quizzes, "engagement_id", "engagement_id")
+    for (let el in quizzes) {
+        quizzes[el] = quizzes[el][el]
+    }
+    return quizzes;
+}
+
+module.exports = {
+    format_quiz_table: format_quiz_table,
+    unescapingObj: unescapingObj,
+    groupBy: groupBy,
+    groupByKey: groupByKey,
+    categoriesFixer: categoriesFixer,
+    switchKey: switchKey,
+    joinUsersByTopicId: joinUsersByTopicId,
+    removeSpacesFromStr: removeSpacesFromStr,
+    gradeValidate: gradeValidate,
+    findAnswerID: findAnswerID,
+    infoValidate: infoValidate,
+    escapingQuiz: escapingQuiz,
+    escapeObject: escapeObject,
+    sortOnKeys: sortOnKeys,
+    topicListNameRemoveSpaces: topicListNameRemoveSpaces,
+    questionRenderOderAnswers: questionRenderOderAnswers,
+    reAssignSession: reAssignSession,
+    filterEngagementsByAvailableQuizzes: filterEngagementsByAvailableQuizzes
+};
+
+
+/*
+// object_validation
+const { format_quiz_table, unescapingObj, groupBy, groupByKey, categoriesFixer, switchKey, joinUsersByTopicId, removeSpacesFromStr, gradeValidate, findAnswerID, infoValidate, escapeObject, escapingQuiz } = require('./object_validation.js');
+*/
 
 /***/ }),
 

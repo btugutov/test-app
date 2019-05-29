@@ -19,35 +19,6 @@ export class ConnectorService {
   constructor(private http: HttpClient) { 
 
   }
-  test(){
-    var that = this;
-    return new Promise(function (resolve, reject) {
-      that.http.get('/api/test').subscribe(
-        res => {
-          resolve(res)
-        },
-        err => {
-          reject(err)
-        }
-      );
-    })
-  }
-  getOSInfo(){
-    var that = this;
-    return new Promise(function (resolve, reject) {
-      that.http.get('/api/get_system_info_and_print_message').subscribe(
-        res => {
-          res['current_engagement'] = that.curEng.value;
-          res['current_user'] = that.cur_user.value;
-          res['all_engagements'] = that.engs.value;
-          resolve(res)
-        },
-        err => {
-          reject(err)
-        }
-      );
-    })
-  }
 
   storeUser(user){
     console.log("storeUser(user): user =>", user)
@@ -91,6 +62,7 @@ export class ConnectorService {
     })
     console.log("done")
   }
+   // ENGAGEMENT FUNCTIONS =========================================================
   getAvailableEngagements(profile_id){
     var that = this;
     profile_id ={
@@ -107,7 +79,88 @@ export class ConnectorService {
       );
     })
   };
-
+  // ==============================================================================
+    // QUIZ FUNCTIONS ===============================================================
+    takeQuiz(eng, email, topic_id, quiz_id){
+      let that = this;
+      return new Promise(function (resolve, reject) {
+        that.http.get(`/api/${eng}/topic/${topic_id}/user/${email}/quiz/${quiz_id}/question/1`).subscribe( // /3/topic/5/user/Bazyr-Tugutovs-Macbook-Pro.local/quiz/1/question/1
+          res => {
+            resolve(res)
+          },
+          err => {
+            reject(err)
+          }
+        );
+      })
+    }
+  
+    submitAnswer(eng_id, answer){
+      let that = this;
+      return new Promise(function (resolve, reject) {
+        that.http.post(`/api/${eng_id}/success`, answer).subscribe( // /3/topic/5/user/Bazyr-Tugutovs-Macbook-Pro.local/quiz/1/question/1
+          res => {
+            resolve(res)
+          },
+          err => {
+            reject(err)
+          }
+        );
+      })
+    }
+    // ==============================================================================
+    // CATEGORIES FUNCTIONS =========================================================
+    getAllCategoriesAndTopicsByProfileId(profile_id){
+      var that = this;
+      return new Promise(function (resolve, reject) {
+        let obj = {
+          'profile_id': profile_id
+        }
+        that.http.post('/api/getAllCategoriesAndTopicsByProfileId', obj).subscribe(
+          res => {
+            resolve(res)
+          },
+          err => {
+            reject(err)
+          }
+        );
+      })
+    }
+    getCompletedQuizzesLength(profile_id, eng_id){
+      var that = this;
+      return new Promise(function (resolve, reject) {
+        let obj = {
+          'profile_id': profile_id,
+          'eng_id': eng_id
+        }
+        that.http.post('/api/getCompletedQuizzesLength', obj).subscribe(
+          res => {
+            resolve(res)
+          },
+          err => {
+            reject(err)
+          }
+        );
+      })
+    }
+    getCompletedQuizzes(profile_id, eng_id){
+      var that = this;
+      return new Promise(function (resolve, reject) {
+        let obj = {
+          'profile_id': profile_id,
+          'eng_id': eng_id
+        }
+        that.http.post('/api/getCompletedQuizzes', obj).subscribe(
+          res => {
+            resolve(res)
+          },
+          err => {
+            reject(err)
+          }
+        );
+      })
+    }
+  // ==============================================================================
 
   // MISC FUNCTIONS
   objToToArray(obj){ // object has to be a list
@@ -117,4 +170,45 @@ export class ConnectorService {
     }
     return result
   };
+  setMainInfo(obj){
+    if(obj.currentUser){
+      this.cur_user.next(obj.currentUser);
+    }
+    if(obj.currentEng){
+      this.curEng.next(obj.currentEng);
+      console.log('The curEng is updated =>', this.curEng)
+    }
+    if(obj.engagements){
+      this.engs.next(obj.engagements);
+    }
+  }
+  test(){
+    var that = this;
+    return new Promise(function (resolve, reject) {
+      that.http.get('/api/test').subscribe(
+        res => {
+          resolve(res)
+        },
+        err => {
+          reject(err)
+        }
+      );
+    })
+  }
+  getOSInfo(){
+    var that = this;
+    return new Promise(function (resolve, reject) {
+      that.http.get('/api/get_system_info_and_print_message').subscribe(
+        res => {
+          res['current_engagement'] = that.curEng.value;
+          res['current_user'] = that.cur_user.value;
+          res['all_engagements'] = that.engs.value;
+          resolve(res)
+        },
+        err => {
+          reject(err)
+        }
+      );
+    })
+  }
 }
