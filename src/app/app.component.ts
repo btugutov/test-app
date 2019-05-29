@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ConnectorService } from './connector.service'
 import { DOCUMENT } from '@angular/common';
+import { Router, ActivatedRoute } from '@angular/router';
+import { Location } from '@angular/common';
+
 declare const Msal: any;
 @Component({
   selector: 'app-root',
@@ -21,13 +24,25 @@ export class AppComponent {
   graphConfig = null;
   msalConfig = null;
   popup_error_message = false;
-
-  constructor(private _c: ConnectorService) {
+  engagements;
+  currentEng;
+  constructor(private location: Location, private _r: Router, private _route: ActivatedRoute,private _c: ConnectorService) {
     this._c.user.subscribe(user => {
       if (user) {
-        console.log('we got user!! =>', user)
         this.user_obj = user;
         localStorage.setItem('user', JSON.stringify(user));
+      }
+    })
+    this._c.currentEng.subscribe(currentEng => {
+      if (currentEng) {
+        console.log('we got currentEng!! =>', currentEng)
+        this.currentEng = currentEng;
+      }
+    })
+    this._c.engagements.subscribe(engagements => {
+      if (engagements) {
+        console.log('we got engagements!! =>', engagements)
+        this.engagements = engagements;
       }
     })
     this.msalConfig = {
@@ -55,30 +70,32 @@ export class AppComponent {
     // Register Callbacks for redirect flow
     // myMSALObj.handleRedirectCallbacks(acquireTokenRedirectCallBack, acquireTokenErrorRedirectCallBack);
     this.myMSALObj.handleRedirectCallback(this.authRedirectCallBack);
-    console.log("THIS.user.obj =>", this.user_obj)
+    // console.log("THIS.user.obj =>", this.user_obj)
     if (!this.user_obj) {
-      console.log("let's get user than")
+      // console.log("let's get user than")
       if (localStorage.user) {
         this.user_obj = JSON.parse(localStorage.user)
         if(this.user_obj){
-          console.log("user is in storage!")
-          console.log(this.user_obj)
+          // console.log("user is in storage!")
+          // console.log(this.user_obj)
           this._c.storeUser(this.user_obj);
         }
       } else {
-        console.log("no user anywhere!!!")
+        // console.log("no user anywhere!!!")
         // this.signIn()
       }
     }
 
   }
+
+  // ========================= AUTH FUNCTIONS ======================================
   signIn() {
     let that = this;
     this.myMSALObj.loginPopup(this.requestObj).then(function (loginResponse) {
       that.acquireTokenPopupAndCallMSGraph();
     }).catch(function (error) {
       this.popup_error_message = error;
-      console.log(error);
+      // console.log(error);
     });
   }
 
@@ -97,7 +114,7 @@ export class AppComponent {
         that._c.storeUser(data)
       });
     }).catch(function (error) {
-      console.log(error);
+      // console.log(error);
       // Upon acquireTokenSilent failure (due to consent or interaction or login required ONLY)
       // Call acquireTokenPopup(popup window) 
       if (that.requiresInteraction(error.errorCode)) {
@@ -107,7 +124,7 @@ export class AppComponent {
             that._c.storeUser(data)
           });
         }).catch(function (error) {
-          console.log(error);
+          // console.log(error);
         });
       }
     });
@@ -124,12 +141,12 @@ export class AppComponent {
   }
 
   graphAPICallback(data, it) {
-    console.log("graphAPICallback(data) =>>>>", data)
-    console.log("THIS=>", it)
+    // console.log("graphAPICallback(data) =>>>>", data)
+    // console.log("THIS=>", it)
   }
 
   showWelcomeMessage() {
-    console.log("myMSALObj.getAccount() =>", this.myMSALObj.getAccount())
+    // console.log("myMSALObj.getAccount() =>", this.myMSALObj.getAccount())
     return true;
   }
 
@@ -141,12 +158,12 @@ export class AppComponent {
   acquireTokenRedirectAndCallMSGraph() {
     //Always start with acquireTokenSilent to obtain a token in the signed in user from cache
     this.myMSALObj.acquireTokenSilent(this.requestObj).then(function (tokenResponse) {
-      console.log("tokenResponse =>>>>>>>>", tokenResponse)
+      // console.log("tokenResponse =>>>>>>>>", tokenResponse)
       this.callMSGraph(this.graphConfig.graphMeEndpoint, tokenResponse.accessToken, function (data) {
-        console.log("NEW DATA =>", data)
+        // console.log("NEW DATA =>", data)
       });
     }).catch(function (error) {
-      console.log(error);
+      // console.log(error);
       // Upon acquireTokenSilent failure (due to consent or interaction or login required ONLY)
       // Call acquireTokenRedirect
       if (this.requiresInteraction(error.errorCode)) {
@@ -157,14 +174,14 @@ export class AppComponent {
 
   authRedirectCallBack(error, response) {
     if (error) {
-      console.log(error);
+      // console.log(error);
     } else {
       if (response.tokenType === "access_token") {
         this.callMSGraph(this.graphConfig.graphMeEndpoint, response.accessToken, function (data) {
-          console.log("NEW DATA =>", data)
+          // console.log("NEW DATA =>", data)
         });
       } else {
-        console.log("token type is:" + response.tokenType);
+        // console.log("token type is:" + response.tokenType);
       }
     }
   }
@@ -179,8 +196,29 @@ export class AppComponent {
   }
 
   loginPage() {
-    console.log("lol")
+    // console.log("lol")
   }
+
+  // ======================== END OF AUTH FUNCTIONS =============
+
+  // ======================== ENGAGEMENT FUNCTIONS ==============
+
+  switchEng(eng_id){
+    let loc = location.href.split('/');
+    loc[3] = eng_id;
+    let new_loc = '';
+    for(let i = 3; i < loc.length; i++){
+      new_loc+="/"+loc[i];
+    }
+    // this._r.navigate([new_loc]);
+    this._r.navigateByUrl(new_loc)
+  }
+
+
+
+  // ======================== END OF ENGAGEMENT FUNCTIONS =======
+  
+  // ========================= MISC FUNCTIONS ===================
   getInfo() {
     this._c.test().then(res => {
       alert(res)
@@ -191,12 +229,13 @@ export class AppComponent {
       if (!res['current_user']) {
         res['current_user'] = JSON.parse(localStorage.user)
       }
-      console.log(res)
+      // console.log(res)
       this.response = res;
     }).catch(function (err) {
-      console.log("ERROR =>", err)
+      // console.log("ERROR =>", err)
       // this.response = err;
     })
   }
+  //========================= END OF MISC FUNCTIONS =============
 }
 

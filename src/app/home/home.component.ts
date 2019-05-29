@@ -4,7 +4,7 @@ import { ConnectorService } from '../connector.service';
 import { Location } from '@angular/common';
 import { Subscription } from 'rxjs';
 
-const { format_quiz_table, unescapingObj, groupBy, groupByKey, categoriesFixer, switchKey, joinUsersByTopicId, removeSpacesFromStr, gradeValidate, findAnswerID, infoValidate, escapeObject, escapingQuiz, sortOnKeys, topicListNameRemoveSpaces, reAssignSession, questionRenderOderAnswers, filterEngagementsByAvailableQuizzes } = require('../object_validation.js');
+import { format_quiz_table, unescapingObj, groupBy, groupByKey, categoriesFixer, switchKey, joinUsersByTopicId, removeSpacesFromStr, gradeValidate, findAnswerID, infoValidate, escapeObject, escapingQuiz, sortOnKeys, topicListNameRemoveSpaces, reAssignSession, questionRenderOderAnswers, filterEngagementsByAvailableQuizzes }  from '../object_validation.js';
 
 @Component({
   selector: 'app-home',
@@ -13,6 +13,7 @@ const { format_quiz_table, unescapingObj, groupBy, groupByKey, categoriesFixer, 
 })
 export class HomeComponent implements OnInit {
   ready_bool = false;
+  cats_n_tops_raw;
   cats_n_tops;
   currentUser = null;
   currentEng = null;
@@ -21,9 +22,17 @@ export class HomeComponent implements OnInit {
   cats_n_tops_array = [];
   cats_n_tops_bool;
 
-  constructor(private _ConnectorService: ConnectorService, private location: Location, private _route: ActivatedRoute) { 
+  constructor(private _ConnectorService: ConnectorService, private location: Location, private _route: ActivatedRoute,private _r: Router) { 
     this._route.paramMap.subscribe(params => {
       this.currentEng_id = params.get('eng');
+      console.log("current engagement =>", this.currentEng_id)
+      if(params.get('eng')){
+        if(this.engagements){
+          console.log("are you trying to renavigate to another engagement?")
+          this.changeCurEng("this._route.paramMap.subscribe(params => {");
+          this.filter_categories_and_topics_by_eng_id(this.cats_n_tops_raw);
+        }
+      }
     })
     this._ConnectorService.user.subscribe(user => {
       this.currentUser = user;
@@ -33,26 +42,41 @@ export class HomeComponent implements OnInit {
     });
     this._ConnectorService.engagements.subscribe(engs => {
       this.engagements = engs;
-      this.changeCurEng();
+      if(engs){
+        console.log("========engs =>",engs)
+        this.changeCurEng("this._ConnectorService.engagements.subscribe(engs =>");
+      }
     });
   }
 
   ngOnInit() {
   }
-  changeCurEng(){
+  changeCurEng(source){
+    let eng_exists_bool = false;
     for(let el in this.engagements){
       if(this.engagements[el]['engagement_id'] == this.currentEng_id){
         let obj ={
           currentEng: this.engagements[el]
         }
         this._ConnectorService.setMainInfo(obj)
+        eng_exists_bool = true;
       }
+    }
+    if(!eng_exists_bool){
+      this._r.navigateByUrl('/oops')
     }
   }
   getAllCategoriesAndTopicsByProfileId(profile_id){
     this._ConnectorService.getAllCategoriesAndTopicsByProfileId(profile_id).then(data =>{
       console.log("getAllCategoriesAndTopicsByProfileId DATA =>", data)
-      this.cats_n_tops = []
+      this.cats_n_tops_raw = data;
+      this.filter_categories_and_topics_by_eng_id(this.cats_n_tops_raw);
+
+    }).catch(function(error) {
+    });
+  }
+  filter_categories_and_topics_by_eng_id(data){
+    this.cats_n_tops = []
       for(let el in data){
         if(data[el]['engagement_id'] == this.currentEng_id){
           data[el]['link'] = `/${this.currentEng_id}/topic/${data[el]['topic_id']}/user/${this.currentUser.email}/quiz/1/question/1`;
@@ -63,7 +87,6 @@ export class HomeComponent implements OnInit {
           }else{
             data[el]['class'] = `btn btn-outline-secondary btn-lg`;
           }
-
           this.cats_n_tops.push(data[el])
         }
       }
@@ -83,7 +106,5 @@ export class HomeComponent implements OnInit {
       }
       console.log(this.cats_n_tops_array)
       this.ready_bool = true;
-    }).catch(function(error) {
-    });
   }
 }

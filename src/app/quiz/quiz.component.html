@@ -1,3 +1,84 @@
-<p>
-  quiz works!
-</p>
+<div *ngIf="question && !completed">
+    <div class="row align-items-center">
+        <div class="col text-center">
+            <h1>Quiz for {{question.topic_name.topic}}</h1>
+        </div>
+    </div>
+
+    <div class="form-row border_info">
+        <div class="col-6 question" style="display: flex; align-items: center; justify-content: center;">
+            <h4>{{question.question_prompt}}</h4>
+        </div>
+        <div class="col-6">
+            <div *ngIf="question.question_type == 2">
+                <!-- manual input  -->
+                <div class="form-check">
+                    <textarea class="element-animation-fadeIn form-control" id="manual_input_field" rows="3" required="true" maxlength="500" autofocus="autofocus"></textarea>
+                </div>
+            </div>
+            <div *ngIf="question.question_type != 2">
+                <div *ngIf="question.display_type == 1">
+                    <!-- radio  -->
+                    <fieldset>
+                        <div *ngFor="let q of question.answer_keys; index as i" class="form-check">
+                            <label class="col-form-label element-animation{{i + 1}}" for="radio{{i}}">
+                                    <input class="placeAfter radio_input" id="{{q}}" name="radio_answer" type="radio" required="true" value={{question.answer_prompt[i]}} />{{question.answer_prompt[i]}}
+                                </label>
+                        </div>
+                    </fieldset>
+                </div>
+                <div *ngIf="question.display_type == 2">
+                    <!-- check  -->
+                    <fieldset>
+                        <div *ngFor="let q of question.answer_keys; index as i" class="form-check">
+                            <label class="col-form-label element-animation{{i + 1}}" for="radio{{i}}">
+                                    <input class="placeAfter checkbox_input" id="{{q}}" type="checkbox" required="true" value={{question.answer_prompt[i]}}>{{question.answer_prompt[i]}}
+                                </label>
+                        </div>
+                    </fieldset>
+                </div>
+                <div *ngIf="question.display_type == 3">
+                    <!-- select -->
+                    <div class="form-check">
+                        <select class="element-animation-fadeIn form-control" id="select_input" required="true">
+                                <option value="">Select One</option>
+                                <option *ngFor="let q of question.answer_keys; index as i" value={{q}}>{{question.answer_prompt[i]}}</option> <!-- option(id = id_att value= value_att[index])-->
+                            </select>
+                    </div>
+                </div>
+                <div *ngIf="question.display_type == 4" id="dragAndDrop">
+                    <!-- drag and drop -->
+                    <div style="width:100%;display: flex; flex-direction: column; flex-wrap: nowrap; justify-content: space-around; align-items: center; align-content: center;" id="dragAndDropContent">
+                        <ol data-draggable="target" style="width: 50%">
+                            <li *ngFor="let c of question.answer_keys" data-draggable="item" class="bucket_question_element bucket_question_choice" id="{{c}}">{{question.answer_prompt[c]}}</li>
+                        </ol>
+
+                        <div style="width: 100%; display: flex; flex-direction: row; flex-wrap: wrap; justify-content: space-around; align-items: baseline; align-content: center;">
+                            <div *ngFor="let b of question.bucket_list | keyvalue" class="bucket_question_element bucket_question_bucket droppable unselectable" style="">
+                                <h4 align="center">{{b.value.bucket_name}}</h4>
+                                <ol class="bucket" data-draggable="target" id='{{b.value.bucket_id}}'></ol>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="form-row justify-content-center">
+        <button class="btn btn-lg btn-success" id="nextButton" type="button" (click)='submit()' style="width:200px;">Next</button>
+    </div>
+    <div *ngIf="question.image_info" class="row">
+        <div class="col" style="display: flex;">
+            <img class="element-animation-fadeIn image_question img-fluid" src="data:image/png;base64,{{question.image_info}}" style="cursor: context-menu; width: auto; margin: 0px auto;" />
+        </div>
+    </div>
+</div>
+<div *ngIf="completed">
+    <div class="jumbotron text-xs-center col element-animation-fadeIn" align="center" style="background: white; margin-top: 10%;" id="body_fadeOut">
+        <h1 class="display-3">Thank You!</h1>
+        <p class="lead"><strong>You have completed Knowledge Assessment Quiz</strong> for further instructions please contact your TL or instructor.</p>
+        <p class="lead">
+            <a class="btn btn-lg btn-home dropbtn" role="button" style="text-decoration: none; color: black;" id="backToHomePage" [routerLink]="[completed_link]">Back to homepage</a>
+        </p>
+    </div>
+</div>

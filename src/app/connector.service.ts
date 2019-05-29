@@ -21,7 +21,7 @@ export class ConnectorService {
   }
 
   storeUser(user){
-    console.log("storeUser(user): user =>", user)
+    // console.log("storeUser(user): user =>", user)
     if(!user){
       return false;
     }
@@ -30,7 +30,7 @@ export class ConnectorService {
       that.http.post('/api/store_user', user).subscribe(
         res => {
           that.getAvailableEngagements(res['profile_id']).then(engs => {
-            console.log("===========engs =>", engs)
+            // console.log("===========engs =>", engs)
             res['engs'] = engs;
             that.engs.next(that.objToToArray(engs));
             that.cur_user.next(res);
@@ -51,16 +51,16 @@ export class ConnectorService {
     return new Promise(function (resolve, reject) {
       that.http.post('/api/get_User', email).subscribe(
         res => {
-          console.log("RES =>", res)
+          // console.log("RES =>", res)
           resolve(res)
         },
         err => {
-          console.log("ERROR =>", err)
+          // console.log("ERROR =>", err)
           reject(err)
         }
       );
     })
-    console.log("done")
+    // console.log("done")
   }
    // ENGAGEMENT FUNCTIONS =========================================================
   getAvailableEngagements(profile_id){
@@ -176,7 +176,7 @@ export class ConnectorService {
     }
     if(obj.currentEng){
       this.curEng.next(obj.currentEng);
-      console.log('The curEng is updated =>', this.curEng)
+      // console.log('The curEng is updated =>', this.curEng)
     }
     if(obj.engagements){
       this.engs.next(obj.engagements);

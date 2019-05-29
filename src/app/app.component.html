@@ -20,16 +20,16 @@
     </div>
     <div class="navbar-right-half">
         <a *ngIf='user_obj && user_obj.admin && currentEng' class='btn dropbtn btn-lg btn-outline-secondary btn-home2' id="engBtn" [routerLink]="[currentEng.engagement_id,'admin']"> Admin Portal</a>
-        <select class="custom-select" id="eng_selector" style="max-width: 250px; color: #4f91cd;" *ngIf="engagements!=null && currentEng">
-            <option value="" selected="selected" disabled="disabled" hidden="hidden">Select Engagement</option>
-            <option *ngFor="let e of engagements" [value]="e.engagement_id"
-                [attr.selected]="currentEng.engagement_id==e.engagement_id ? true : null">
+        <select class="custom-select" id="eng_selector" (change)="switchEng($event.target.value)" style="max-width: 250px; color: #4f91cd; " *ngIf="engagements!=null && currentEng ">
+            <option value=" " selected="selected " disabled="disabled " hidden="hidden ">Select Engagement</option>
+            <option *ngFor="let e of engagements " [value]="e.engagement_id "
+                [attr.selected]="currentEng.engagement_id==e.engagement_id ? true : null ">
                 {{e.engagement_name}}
             </option>
         </select>
-        <span class="text-nowrap text-muted" *ngIf="user_obj!=null">{{ user_obj.email }}</span>
-        <button class="btn btn-home2" type="button" (click)="signOut()">Logout</button>
-        <button (click)='getOSInfo()' class='btn btn-outline-primary' type="button" *ngIf='user_obj.developer'>Get System Info</button>
+        <button class="btn btn-home2" *ngIf="user_obj!=null ">{{ user_obj.email }}</button>
+        <button class="btn btn-home2 " type="button " (click)="signOut() ">Logout</button>
+        <button (click)='getOSInfo()' class='btn btn-outline-primary' type="button " *ngIf='user_obj.developer'>Get System Info</button>
     </div>
 </nav>
-<router-outlet *ngIf="user_obj"></router-outlet>
+<router-outlet *ngIf="user_obj "></router-outlet>

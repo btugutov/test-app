@@ -26,6 +26,7 @@ import { OopsComponent } from './oops/oops.component';
 import { QuizComponent } from './quiz/quiz.component';
 import { RegisterComponent } from './register/register.component';
 import { UserComponent } from './user/user.component'
+import { DynamicScriptLoaderServiceService } from './dynamic-script-loader-service.service';
 @NgModule({
   declarations: [
     AppComponent,
@@ -57,7 +58,8 @@ import { UserComponent } from './user/user.component'
     HttpClientModule,
   ],
   providers: [
-    ConnectorService
+    ConnectorService,
+    DynamicScriptLoaderServiceService,
   ],
   bootstrap: [AppComponent]
 })
