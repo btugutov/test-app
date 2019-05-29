@@ -10,7 +10,7 @@ declare const Msal: any;
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'test-app';
   response = null;
   user_email = null;
@@ -76,8 +76,6 @@ export class AppComponent {
       if (localStorage.user) {
         this.user_obj = JSON.parse(localStorage.user)
         if(this.user_obj){
-          // console.log("user is in storage!")
-          // console.log(this.user_obj)
           this._c.storeUser(this.user_obj);
         }
       } else {
@@ -235,6 +233,9 @@ export class AppComponent {
       // console.log("ERROR =>", err)
       // this.response = err;
     })
+  }
+  ngOnInit() {
+    console.log("App component is here! this.currentEng =>", this.currentEng)
   }
   //========================= END OF MISC FUNCTIONS =============
 }

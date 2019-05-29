@@ -198,14 +198,20 @@ module.exports = function(app) {
 
     // TAKING QUIZ FUNCTIONS  =======================================================
     app.get('/api/:eng/topic/:topicID/user/:userID/quiz/:quizID/question/:questionID', (req, res, next) => {
-        console.log("req.params['topicID'], req.params['eng'] =>", req.params['topicID'], req.params['eng'])
-        preload_block(res, req.headers['x-ms-client-principal-name'], req.params['topicID'], req.params['eng'])
+        console.log("engId =>", req.params['eng'])
+        console.log("topic_id =>", req.params['topicID'])
+        console.log("userID =>", req.params['userID'])
+        console.log("quizID =>", req.params['quizID'])
+        console.log("questionID =>", req.params['questionID'])
+        console.log("session['user'] =>", req.session['user'])
+        preload_block(res, req.session['user']['email'], req.params['topicID'], req.params['eng'])
             .then(returnObj => {
                 let currentUser = returnObj['currentUser']
                 let quiz = returnObj['quiz']
                     // check to see if the database returns anything. If it returns undefined that means that there are no more questions to be answered for this quiz.
                     // Redirect user to the complete page.
                 if (quiz === undefined || quiz.quizTable === undefined) {
+                    console.log("somehow the quiz is done!")
                     finish_quiz_session(quiz.submit_id).then(finResult => {
                         // if we detect that the quiz is complete, call function to see if you need to kick the calculate grade st proc
                         debugLog('quiz.submit_id')

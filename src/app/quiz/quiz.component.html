@@ -22,8 +22,9 @@
                     <fieldset>
                         <div *ngFor="let q of question.answer_keys; index as i" class="form-check">
                             <label class="col-form-label element-animation{{i + 1}}" for="radio{{i}}">
-                                    <input class="placeAfter radio_input" id="{{q}}" name="radio_answer" type="radio" required="true" value={{question.answer_prompt[i]}} />{{question.answer_prompt[i]}}
-                                </label>
+                                <input class="placeAfter radio_input" id="{{q}}" name="radio_answer" type="radio"
+                                    required="true" value={{question.answer_prompt[i]}} />{{question.answer_prompt[i]}}
+                            </label>
                         </div>
                     </fieldset>
                 </div>
@@ -32,8 +33,9 @@
                     <fieldset>
                         <div *ngFor="let q of question.answer_keys; index as i" class="form-check">
                             <label class="col-form-label element-animation{{i + 1}}" for="radio{{i}}">
-                                    <input class="placeAfter checkbox_input" id="{{q}}" type="checkbox" required="true" value={{question.answer_prompt[i]}}>{{question.answer_prompt[i]}}
-                                </label>
+                                <input class="placeAfter checkbox_input" id="{{q}}" type="checkbox" required="true"
+                                    value={{question.answer_prompt[i]}}>{{question.answer_prompt[i]}}
+                            </label>
                         </div>
                     </fieldset>
                 </div>
@@ -41,16 +43,19 @@
                     <!-- select -->
                     <div class="form-check">
                         <select class="element-animation-fadeIn form-control" id="select_input" required="true">
-                                <option value="">Select One</option>
-                                <option *ngFor="let q of question.answer_keys; index as i" value={{q}}>{{question.answer_prompt[i]}}</option> <!-- option(id = id_att value= value_att[index])-->
-                            </select>
+                            <option value="">Select One</option>
+                            <option *ngFor="let q of question.answer_keys; index as i" value={{q}}>
+                                {{question.answer_prompt[i]}}</option>
+                            <!-- option(id = id_att value= value_att[index])-->
+                        </select>
                     </div>
                 </div>
                 <div *ngIf="question.display_type == 4" id="dragAndDrop">
                     <!-- drag and drop -->
                     <div style="width:100%;display: flex; flex-direction: column; flex-wrap: nowrap; justify-content: space-around; align-items: center; align-content: center;" id="dragAndDropContent">
                         <ol data-draggable="target" style="width: 50%">
-                            <li *ngFor="let c of question.answer_keys" data-draggable="item" class="bucket_question_element bucket_question_choice" id="{{c}}">{{question.answer_prompt[c]}}</li>
+                            <li *ngFor="let c of question.answer_keys" data-draggable="item" class="bucket_question_element bucket_question_choice" id="{{c}}">
+                                {{question.answer_prompt[c]}}</li>
                         </ol>
 
                         <div style="width: 100%; display: flex; flex-direction: row; flex-wrap: wrap; justify-content: space-around; align-items: baseline; align-content: center;">

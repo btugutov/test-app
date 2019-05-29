@@ -9,7 +9,7 @@ function call_stored_proc_grading() {
     return new Promise(function(resolve, reject) {
         let query_quiz = `EXEC sp_calculate_scores`;
         return dbQueryMethod.queryRaw(query_quiz).then(result => {
-            console.log(`call_stored_proc_grading() result =>`, result)
+            // console.log(`call_stored_proc_grading() result =>`, result)
             resolve(result)
             return result;
         }).catch(function(error) { reject(error); throw (error); })
@@ -399,42 +399,42 @@ function quizEndChecks(submit_id) {
         // take in params for quiz person was taking
         // get quiz from sql
         get_quiz_question_type_by_submit_id_MSSQL(submit_id).then(result => {
-            console.log(`get_quiz_question_type_by_submit_id_MSSQL(submit_id).then(result =>`, result)
-                // determine if the quiz has > 0 input question
-                // if == 0, 
-            if (result[0][''] == 0) {
-                // mark this submit_id as graded = 1
-                // ^^ this normally happens in the grade quiz page, however it won't be graded if there is no Input Questions. so we need to do this here.
-                finish_gradable_quiz_session_by_id(submit_id).then(wait => {
-                    // kick of grade calculation stored procedure 
-                    console.log(`finish_gradable_quiz_session_by_id(submit_id).then(wait => `, wait)
-                    call_stored_proc_grading().catch(function(error) {
-                        log_event('ERROR', error, 'call_stored_proc_grading');
+                console.log(`get_quiz_question_type_by_submit_id_MSSQL(submit_id).then(result =>`, result)
+                    // determine if the quiz has > 0 input question
+                    // if == 0, 
+                if (result[0][''] == 0) {
+                    // mark this submit_id as graded = 1
+                    // ^^ this normally happens in the grade quiz page, however it won't be graded if there is no Input Questions. so we need to do this here.
+                    finish_gradable_quiz_session_by_id(submit_id).then(wait => {
+                        // kick of grade calculation stored procedure 
+                        // console.log(`finish_gradable_quiz_session_by_id(submit_id).then(wait => `, wait)
+                        call_stored_proc_grading().catch(function(error) {
+                            log_event('ERROR', error, 'call_stored_proc_grading');
+                        })
+                        resolve(result)
+                        return result;
+                    }).catch(function(error) {
+                        log_event('WARNING', error, functionName);
+                        reject(error)
+                        throw error;
                     })
-                    resolve(result)
-                    return result;
-                }).catch(function(error) {
-                    log_event('WARNING', error, functionName);
-                    reject(error)
-                    throw error;
-                })
-            }
-            // if >0 
-            else {
-                // normal call when grading is complete
-                call_stored_proc_grading().catch(function(error) {
-                    log_event('ERROR', error, 'call_stored_proc_grading');
-                })
-                // do nothing.
-                resolve('complete')
-                return 'complete';
-            }
-        }).catch(function(error) {
-            log_event('WARNING', error, functionName);
-            reject(error)
-            throw error;
-        })
-        // log that grade procedure was successful
+                }
+                // if >0 
+                else {
+                    // normal call when grading is complete
+                    call_stored_proc_grading().catch(function(error) {
+                            log_event('ERROR', error, 'call_stored_proc_grading');
+                        })
+                        // do nothing.
+                    resolve('complete')
+                    return 'complete';
+                }
+            }).catch(function(error) {
+                log_event('WARNING', error, functionName);
+                reject(error)
+                throw error;
+            })
+            // log that grade procedure was successful
     }).catch(function(error) {
         log_event('WARNING', error, functionName);
         reject(error)

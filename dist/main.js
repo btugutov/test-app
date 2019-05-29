@@ -534,7 +534,7 @@ var AdminHomeEditComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJzcmMvYXBwL2FkbWluLWhvbWUtZ3JhZGUvYWRtaW4taG9tZS1ncmFkZS5jb21wb25lbnQuY3NzIn0= */"
+module.exports = ".grade-home-main {\n    width: 80%;\n    margin: 0px auto;\n    display: flex;\n    flex-direction: row;\n    flex-wrap: wrap;\n    justify-content: space-around;\n    align-items: baseline;\n    align-content: center;\n}\n\n.grade-home-category {\n    min-width: 250px;\n    display: flex;\n    flex-direction: column;\n    flex-wrap: wrap;\n    justify-content: flex-start;\n    align-items: center;\n    align-content: center;\n    margin: 15px 15px;\n    box-shadow: 5px 10px 18px #888888;\n}\n\n.grade-home-category-title {\n    display: flex;\n    flex-direction: row;\n    flex-wrap: wrap;\n    justify-content: center;\n    align-items: center;\n    align-content: center;\n}\n\n.grade-home-category-element {\n    width: 100%;\n    display: flex;\n    flex-direction: column;\n    flex-wrap: wrap;\n    justify-content: flex-start;\n    align-items: center;\n    align-content: center;\n}\n\n.grade-home-category-element a {\n    width: 100%\n}\n\n.grade-home-category-element button {\n    width: 100%;\n    border: none;\n    border-radius: 0px;\n}\n\n.home-main {\n    width: 80%;\n    margin: 0px auto;\n    display: flex;\n    flex-direction: row;\n    flex-wrap: wrap;\n    justify-content: space-around;\n    align-items: baseline;\n    align-content: center;\n}\n\n.home-category {\n    min-width: 250px;\n    width: 250px;\n    max-width: 280px;\n    display: flex;\n    flex-direction: column;\n    flex-wrap: wrap;\n    justify-content: flex-start;\n    align-items: center;\n    align-content: center;\n    margin: 15px 15px;\n    background: rgba(255, 255, 255, 0.4);\n    transition: 0.5s;\n    color: #716c6c;\n}\n\n.home-category:hover {\n    min-width: 280px;\n    max-width: 280px;\n    color: black;\n    background: rgba(255, 255, 255, 0.8);\n    box-shadow: 5px 10px 18px #888888;\n    margin: 15px 0px;\n}\n\n.home-category-element .btn {\n    white-space: normal !important;\n    word-wrap: break-word;\n    display: inline-block;\n    white-space: nowrap;\n    overflow: hidden;\n    text-overflow: ellipsis;\n}\n\n.home-category-title {\n    max-width: 250px;\n    display: flex;\n    flex-direction: row;\n    flex-wrap: wrap;\n    justify-content: center;\n    align-items: center;\n    align-content: center;\n    font-weight: normal;\n}\n\n.home-category-element {\n    width: 100%;\n    display: flex;\n    flex-direction: column;\n    flex-wrap: wrap;\n    justify-content: flex-start;\n    align-items: center;\n    align-content: center;\n}\n\n.home-category-element-inner-box {\n    width: 100%;\n    display: flex;\n    flex-direction: row;\n    flex-wrap: wrap;\n    justify-content: flex-start;\n    align-items: center;\n    align-content: center;\n}\n\n.home-category-element a {\n    width: 100%\n}\n\n.home-category-element-inner-box a {\n    width: 50%;\n    border-radius: 0px;\n}\n\n.home-category-element button {\n    width: 100%;\n    border: none;\n    border-radius: 0px;\n}\n\n/* .home-category-element-hover {\n    background: linear-gradient(to right, #fbfbfb, #fbfbfb);\n    transition: all 0.3s\n}\n\n.home-category-element-hover:hover {\n    background: linear-gradient(to right, #fbfbfb, #c6c6c6)\n} */\n\n.home-category-element-hover {\n    position: relative;\n    background-image: linear-gradient( to right, #fbfbfb, #fbfbfb);\n    z-index: 1;\n}\n\n.home-category-element-hover::before {\n    position: absolute;\n    content: \"\";\n    top: 0;\n    right: 0;\n    bottom: 0;\n    left: 0;\n    background-image: linear-gradient( to right, #fbfbfb, #c6c6c6);\n    z-index: -1;\n    transition: opacity 0.5s linear;\n    opacity: 0;\n}\n\n.home-category-element-hover:hover::before {\n    opacity: 1;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNyYy9hcHAvYWRtaW4taG9tZS1ncmFkZS9hZG1pbi1ob21lLWdyYWRlLmNvbXBvbmVudC5jc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7SUFDSSxVQUFVO0lBQ1YsZ0JBQWdCO0lBQ2hCLGFBQWE7SUFDYixtQkFBbUI7SUFDbkIsZUFBZTtJQUNmLDZCQUE2QjtJQUM3QixxQkFBcUI7SUFDckIscUJBQXFCO0FBQ3pCOztBQUVBO0lBQ0ksZ0JBQWdCO0lBQ2hCLGFBQWE7SUFDYixzQkFBc0I7SUFDdEIsZUFBZTtJQUNmLDJCQUEyQjtJQUMzQixtQkFBbUI7SUFDbkIscUJBQXFCO0lBQ3JCLGlCQUFpQjtJQUNqQixpQ0FBaUM7QUFDckM7O0FBRUE7SUFDSSxhQUFhO0lBQ2IsbUJBQW1CO0lBQ25CLGVBQWU7SUFDZix1QkFBdUI7SUFDdkIsbUJBQW1CO0lBQ25CLHFCQUFxQjtBQUN6Qjs7QUFFQTtJQUNJLFdBQVc7SUFDWCxhQUFhO0lBQ2Isc0JBQXNCO0lBQ3RCLGVBQWU7SUFDZiwyQkFBMkI7SUFDM0IsbUJBQW1CO0lBQ25CLHFCQUFxQjtBQUN6Qjs7QUFFQTtJQUNJO0FBQ0o7O0FBRUE7SUFDSSxXQUFXO0lBQ1gsWUFBWTtJQUNaLGtCQUFrQjtBQUN0Qjs7QUFFQTtJQUNJLFVBQVU7SUFDVixnQkFBZ0I7SUFDaEIsYUFBYTtJQUNiLG1CQUFtQjtJQUNuQixlQUFlO0lBQ2YsNkJBQTZCO0lBQzdCLHFCQUFxQjtJQUNyQixxQkFBcUI7QUFDekI7O0FBRUE7SUFDSSxnQkFBZ0I7SUFDaEIsWUFBWTtJQUNaLGdCQUFnQjtJQUNoQixhQUFhO0lBQ2Isc0JBQXNCO0lBQ3RCLGVBQWU7SUFDZiwyQkFBMkI7SUFDM0IsbUJBQW1CO0lBQ25CLHFCQUFxQjtJQUNyQixpQkFBaUI7SUFDakIsb0NBQW9DO0lBQ3BDLGdCQUFnQjtJQUNoQixjQUFjO0FBQ2xCOztBQUVBO0lBQ0ksZ0JBQWdCO0lBQ2hCLGdCQUFnQjtJQUNoQixZQUFZO0lBQ1osb0NBQW9DO0lBQ3BDLGlDQUFpQztJQUNqQyxnQkFBZ0I7QUFDcEI7O0FBRUE7SUFDSSw4QkFBOEI7SUFDOUIscUJBQXFCO0lBQ3JCLHFCQUFxQjtJQUNyQixtQkFBbUI7SUFDbkIsZ0JBQWdCO0lBQ2hCLHVCQUF1QjtBQUMzQjs7QUFFQTtJQUNJLGdCQUFnQjtJQUNoQixhQUFhO0lBQ2IsbUJBQW1CO0lBQ25CLGVBQWU7SUFDZix1QkFBdUI7SUFDdkIsbUJBQW1CO0lBQ25CLHFCQUFxQjtJQUNyQixtQkFBbUI7QUFDdkI7O0FBRUE7SUFDSSxXQUFXO0lBQ1gsYUFBYTtJQUNiLHNCQUFzQjtJQUN0QixlQUFlO0lBQ2YsMkJBQTJCO0lBQzNCLG1CQUFtQjtJQUNuQixxQkFBcUI7QUFDekI7O0FBRUE7SUFDSSxXQUFXO0lBQ1gsYUFBYTtJQUNiLG1CQUFtQjtJQUNuQixlQUFlO0lBQ2YsMkJBQTJCO0lBQzNCLG1CQUFtQjtJQUNuQixxQkFBcUI7QUFDekI7O0FBRUE7SUFDSTtBQUNKOztBQUVBO0lBQ0ksVUFBVTtJQUNWLGtCQUFrQjtBQUN0Qjs7QUFFQTtJQUNJLFdBQVc7SUFDWCxZQUFZO0lBQ1osa0JBQWtCO0FBQ3RCOztBQUdBOzs7Ozs7O0dBT0c7O0FBRUg7SUFDSSxrQkFBa0I7SUFDbEIsOERBQThEO0lBQzlELFVBQVU7QUFDZDs7QUFFQTtJQUNJLGtCQUFrQjtJQUNsQixXQUFXO0lBQ1gsTUFBTTtJQUNOLFFBQVE7SUFDUixTQUFTO0lBQ1QsT0FBTztJQUNQLDhEQUE4RDtJQUM5RCxXQUFXO0lBQ1gsK0JBQStCO0lBQy9CLFVBQVU7QUFDZDs7QUFFQTtJQUNJLFVBQVU7QUFDZCIsImZpbGUiOiJzcmMvYXBwL2FkbWluLWhvbWUtZ3JhZGUvYWRtaW4taG9tZS1ncmFkZS5jb21wb25lbnQuY3NzIiwic291cmNlc0NvbnRlbnQiOlsiLmdyYWRlLWhvbWUtbWFpbiB7XG4gICAgd2lkdGg6IDgwJTtcbiAgICBtYXJnaW46IDBweCBhdXRvO1xuICAgIGRpc3BsYXk6IGZsZXg7XG4gICAgZmxleC1kaXJlY3Rpb246IHJvdztcbiAgICBmbGV4LXdyYXA6IHdyYXA7XG4gICAganVzdGlmeS1jb250ZW50OiBzcGFjZS1hcm91bmQ7XG4gICAgYWxpZ24taXRlbXM6IGJhc2VsaW5lO1xuICAgIGFsaWduLWNvbnRlbnQ6IGNlbnRlcjtcbn1cblxuLmdyYWRlLWhvbWUtY2F0ZWdvcnkge1xuICAgIG1pbi13aWR0aDogMjUwcHg7XG4gICAgZGlzcGxheTogZmxleDtcbiAgICBmbGV4LWRpcmVjdGlvbjogY29sdW1uO1xuICAgIGZsZXgtd3JhcDogd3JhcDtcbiAgICBqdXN0aWZ5LWNvbnRlbnQ6IGZsZXgtc3RhcnQ7XG4gICAgYWxpZ24taXRlbXM6IGNlbnRlcjtcbiAgICBhbGlnbi1jb250ZW50OiBjZW50ZXI7XG4gICAgbWFyZ2luOiAxNXB4IDE1cHg7XG4gICAgYm94LXNoYWRvdzogNXB4IDEwcHggMThweCAjODg4ODg4O1xufVxuXG4uZ3JhZGUtaG9tZS1jYXRlZ29yeS10aXRsZSB7XG4gICAgZGlzcGxheTogZmxleDtcbiAgICBmbGV4LWRpcmVjdGlvbjogcm93O1xuICAgIGZsZXgtd3JhcDogd3JhcDtcbiAgICBqdXN0aWZ5LWNvbnRlbnQ6IGNlbnRlcjtcbiAgICBhbGlnbi1pdGVtczogY2VudGVyO1xuICAgIGFsaWduLWNvbnRlbnQ6IGNlbnRlcjtcbn1cblxuLmdyYWRlLWhvbWUtY2F0ZWdvcnktZWxlbWVudCB7XG4gICAgd2lkdGg6IDEwMCU7XG4gICAgZGlzcGxheTogZmxleDtcbiAgICBmbGV4LWRpcmVjdGlvbjogY29sdW1uO1xuICAgIGZsZXgtd3JhcDogd3JhcDtcbiAgICBqdXN0aWZ5LWNvbnRlbnQ6IGZsZXgtc3RhcnQ7XG4gICAgYWxpZ24taXRlbXM6IGNlbnRlcjtcbiAgICBhbGlnbi1jb250ZW50OiBjZW50ZXI7XG59XG5cbi5ncmFkZS1ob21lLWNhdGVnb3J5LWVsZW1lbnQgYSB7XG4gICAgd2lkdGg6IDEwMCVcbn1cblxuLmdyYWRlLWhvbWUtY2F0ZWdvcnktZWxlbWVudCBidXR0b24ge1xuICAgIHdpZHRoOiAxMDAlO1xuICAgIGJvcmRlcjogbm9uZTtcbiAgICBib3JkZXItcmFkaXVzOiAwcHg7XG59XG5cbi5ob21lLW1haW4ge1xuICAgIHdpZHRoOiA4MCU7XG4gICAgbWFyZ2luOiAwcHggYXV0bztcbiAgICBkaXNwbGF5OiBmbGV4O1xuICAgIGZsZXgtZGlyZWN0aW9uOiByb3c7XG4gICAgZmxleC13cmFwOiB3cmFwO1xuICAgIGp1c3RpZnktY29udGVudDogc3BhY2UtYXJvdW5kO1xuICAgIGFsaWduLWl0ZW1zOiBiYXNlbGluZTtcbiAgICBhbGlnbi1jb250ZW50OiBjZW50ZXI7XG59XG5cbi5ob21lLWNhdGVnb3J5IHtcbiAgICBtaW4td2lkdGg6IDI1MHB4O1xuICAgIHdpZHRoOiAyNTBweDtcbiAgICBtYXgtd2lkdGg6IDI4MHB4O1xuICAgIGRpc3BsYXk6IGZsZXg7XG4gICAgZmxleC1kaXJlY3Rpb246IGNvbHVtbjtcbiAgICBmbGV4LXdyYXA6IHdyYXA7XG4gICAganVzdGlmeS1jb250ZW50OiBmbGV4LXN0YXJ0O1xuICAgIGFsaWduLWl0ZW1zOiBjZW50ZXI7XG4gICAgYWxpZ24tY29udGVudDogY2VudGVyO1xuICAgIG1hcmdpbjogMTVweCAxNXB4O1xuICAgIGJhY2tncm91bmQ6IHJnYmEoMjU1LCAyNTUsIDI1NSwgMC40KTtcbiAgICB0cmFuc2l0aW9uOiAwLjVzO1xuICAgIGNvbG9yOiAjNzE2YzZjO1xufVxuXG4uaG9tZS1jYXRlZ29yeTpob3ZlciB7XG4gICAgbWluLXdpZHRoOiAyODBweDtcbiAgICBtYXgtd2lkdGg6IDI4MHB4O1xuICAgIGNvbG9yOiBibGFjaztcbiAgICBiYWNrZ3JvdW5kOiByZ2JhKDI1NSwgMjU1LCAyNTUsIDAuOCk7XG4gICAgYm94LXNoYWRvdzogNXB4IDEwcHggMThweCAjODg4ODg4O1xuICAgIG1hcmdpbjogMTVweCAwcHg7XG59XG5cbi5ob21lLWNhdGVnb3J5LWVsZW1lbnQgLmJ0biB7XG4gICAgd2hpdGUtc3BhY2U6IG5vcm1hbCAhaW1wb3J0YW50O1xuICAgIHdvcmQtd3JhcDogYnJlYWstd29yZDtcbiAgICBkaXNwbGF5OiBpbmxpbmUtYmxvY2s7XG4gICAgd2hpdGUtc3BhY2U6IG5vd3JhcDtcbiAgICBvdmVyZmxvdzogaGlkZGVuO1xuICAgIHRleHQtb3ZlcmZsb3c6IGVsbGlwc2lzO1xufVxuXG4uaG9tZS1jYXRlZ29yeS10aXRsZSB7XG4gICAgbWF4LXdpZHRoOiAyNTBweDtcbiAgICBkaXNwbGF5OiBmbGV4O1xuICAgIGZsZXgtZGlyZWN0aW9uOiByb3c7XG4gICAgZmxleC13cmFwOiB3cmFwO1xuICAgIGp1c3RpZnktY29udGVudDogY2VudGVyO1xuICAgIGFsaWduLWl0ZW1zOiBjZW50ZXI7XG4gICAgYWxpZ24tY29udGVudDogY2VudGVyO1xuICAgIGZvbnQtd2VpZ2h0OiBub3JtYWw7XG59XG5cbi5ob21lLWNhdGVnb3J5LWVsZW1lbnQge1xuICAgIHdpZHRoOiAxMDAlO1xuICAgIGRpc3BsYXk6IGZsZXg7XG4gICAgZmxleC1kaXJlY3Rpb246IGNvbHVtbjtcbiAgICBmbGV4LXdyYXA6IHdyYXA7XG4gICAganVzdGlmeS1jb250ZW50OiBmbGV4LXN0YXJ0O1xuICAgIGFsaWduLWl0ZW1zOiBjZW50ZXI7XG4gICAgYWxpZ24tY29udGVudDogY2VudGVyO1xufVxuXG4uaG9tZS1jYXRlZ29yeS1lbGVtZW50LWlubmVyLWJveCB7XG4gICAgd2lkdGg6IDEwMCU7XG4gICAgZGlzcGxheTogZmxleDtcbiAgICBmbGV4LWRpcmVjdGlvbjogcm93O1xuICAgIGZsZXgtd3JhcDogd3JhcDtcbiAgICBqdXN0aWZ5LWNvbnRlbnQ6IGZsZXgtc3RhcnQ7XG4gICAgYWxpZ24taXRlbXM6IGNlbnRlcjtcbiAgICBhbGlnbi1jb250ZW50OiBjZW50ZXI7XG59XG5cbi5ob21lLWNhdGVnb3J5LWVsZW1lbnQgYSB7XG4gICAgd2lkdGg6IDEwMCVcbn1cblxuLmhvbWUtY2F0ZWdvcnktZWxlbWVudC1pbm5lci1ib3ggYSB7XG4gICAgd2lkdGg6IDUwJTtcbiAgICBib3JkZXItcmFkaXVzOiAwcHg7XG59XG5cbi5ob21lLWNhdGVnb3J5LWVsZW1lbnQgYnV0dG9uIHtcbiAgICB3aWR0aDogMTAwJTtcbiAgICBib3JkZXI6IG5vbmU7XG4gICAgYm9yZGVyLXJhZGl1czogMHB4O1xufVxuXG5cbi8qIC5ob21lLWNhdGVnb3J5LWVsZW1lbnQtaG92ZXIge1xuICAgIGJhY2tncm91bmQ6IGxpbmVhci1ncmFkaWVudCh0byByaWdodCwgI2ZiZmJmYiwgI2ZiZmJmYik7XG4gICAgdHJhbnNpdGlvbjogYWxsIDAuM3Ncbn1cblxuLmhvbWUtY2F0ZWdvcnktZWxlbWVudC1ob3Zlcjpob3ZlciB7XG4gICAgYmFja2dyb3VuZDogbGluZWFyLWdyYWRpZW50KHRvIHJpZ2h0LCAjZmJmYmZiLCAjYzZjNmM2KVxufSAqL1xuXG4uaG9tZS1jYXRlZ29yeS1lbGVtZW50LWhvdmVyIHtcbiAgICBwb3NpdGlvbjogcmVsYXRpdmU7XG4gICAgYmFja2dyb3VuZC1pbWFnZTogbGluZWFyLWdyYWRpZW50KCB0byByaWdodCwgI2ZiZmJmYiwgI2ZiZmJmYik7XG4gICAgei1pbmRleDogMTtcbn1cblxuLmhvbWUtY2F0ZWdvcnktZWxlbWVudC1ob3Zlcjo6YmVmb3JlIHtcbiAgICBwb3NpdGlvbjogYWJzb2x1dGU7XG4gICAgY29udGVudDogXCJcIjtcbiAgICB0b3A6IDA7XG4gICAgcmlnaHQ6IDA7XG4gICAgYm90dG9tOiAwO1xuICAgIGxlZnQ6IDA7XG4gICAgYmFja2dyb3VuZC1pbWFnZTogbGluZWFyLWdyYWRpZW50KCB0byByaWdodCwgI2ZiZmJmYiwgI2M2YzZjNik7XG4gICAgei1pbmRleDogLTE7XG4gICAgdHJhbnNpdGlvbjogb3BhY2l0eSAwLjVzIGxpbmVhcjtcbiAgICBvcGFjaXR5OiAwO1xufVxuXG4uaG9tZS1jYXRlZ29yeS1lbGVtZW50LWhvdmVyOmhvdmVyOjpiZWZvcmUge1xuICAgIG9wYWNpdHk6IDE7XG59Il19 */"
 
 /***/ }),
 
@@ -545,7 +545,7 @@ module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<p>\n  admin-home-grade works!\n</p>\n"
+module.exports = "<div class=\"column_list element-animation-fadeIn\" id=\"body_fadeOut\">\n    <div style=\"display: flex; flex-direction: column; flex-wrap: nowrap; justify-content: center; align-items: stretch; align-content: center; height: 10%;\">\n        <h1 style=\"margin: 0px auto\">Choose a category and topic to grade</h1>\n    </div>\n    <div class=\"d-flex justify-content-center\">\n        <button class=\"btn btn-warning text-monospace button_hover_expand\" *ngIf=\"your_list_length>1\" id=\"release_all\" style=\"border-radius: 0px; width: 250px\">Release all {{your_list_length}} quizzes</button>\n        <button class=\"btn btn-warning text-monospace button_hover_expand\" *ngIf=\"your_list_length==1\" id=\"release_all\" style=\"border-radius: 0px; width: 250px\">Release the current quiz</button>\n        <button class=\"btn btn-warning text-monospace button_hover_expand\" *ngIf=\"your_list_length<1\" id=\"release_all\" style=\"border-radius: 0px; width: 250px\">No current quizzes under your revision</button>\n    </div>\n    <div class=\"grade-home-main\" id=\"grade-home-main\">\n        <div *ngFor=\"let c of quizzes | keyvalue\" class=\"home-category\" style=\"box-shadow: 12px 12px 16px silver;\">\n            <div class=\"home-category-title\">\n                <h3>{{c.key}}</h3>\n            </div>\n            <div *ngFor=\"let t of c.value | keyvalue\" class=\"home-category-element\">\n                <a href=\"/3/grade/10\">\n                    <button type=\"button\" class=\"btn btn-outline-secondary\">{{t.value[Object.keys(t.value)[0]] | json}}</button>\n                </a>\n            </div>\n        </div>\n        <div class=\"home-category\" style=\"box-shadow: 12px 12px 16px silver;\">\n            <div class=\"home-category-title\">\n                <h3>Accounts</h3>\n            </div>\n            <div class=\"home-category-element\">\n                <a href=\"/3/grade/10\">\n                    <button type=\"button\" class=\"btn btn-outline-secondary\">Fraud (1)</button>\n                </a>\n            </div>\n            <div class=\"home-category-element\">\n                <a href=\"/3/grade/35\">\n                    <button type=\"button\" class=\"btn btn-outline-secondary\">Hijacking (2)</button>\n                </a>\n            </div>\n        </div>\n        <div class=\"home-category\" style=\"box-shadow: 12px 12px 16px silver;\">\n            <div class=\"home-category-title\">\n                <h3>Billing</h3>\n            </div>\n            <div class=\"home-category-element\">\n                <a href=\"/3/grade/55\">\n                    <button type=\"button\" class=\"btn btn-outline-secondary\">asdblablblbla (2)</button>\n                </a>\n            </div>\n            <div class=\"home-category-element\">\n                <a href=\"/3/grade/5\">\n                    <button type=\"button\" class=\"btn btn-outline-secondary\">Billing (1)</button>\n                </a>\n            </div>\n        </div>\n        <div class=\"home-category\" style=\"box-shadow: 12px 12px 16px silver;\">\n            <div class=\"home-category-title\">\n                <h3>TEst</h3>\n            </div>\n            <div class=\"home-category-element btn-outline-secondary\">\n                <span> <span unselectable=\"on\" class=\"font-weight-bolder\">Manual and select inputs</span> <span class=\"text-black-10 text-monospace\">1780</span></span>\n                <div class=\"home-category-element-inner-box\">\n                    <a class=\"btn btn-outline-info btn-sm text-monospace\" style=\"border: none\" href=\"/3/continue_grade/1780\">Continue</a>\n                    <a class=\"btn btn-outline-warning btn-sm text-monospace\" style=\"border: none\" href=\"/3/grade_release/1780/727\">Release</a>\n                </div>\n            </div>\n            <div class=\"home-category-element btn-outline-secondary\">\n                <span> <span unselectable=\"on\" class=\"font-weight-bolder\">Nothing</span> <span class=\"text-black-10 text-monospace\">1771</span></span>\n                <div class=\"home-category-element-inner-box\">\n                    <a class=\"btn btn-outline-info btn-sm text-monospace\" style=\"border: none\" href=\"/3/continue_grade/1771\">Continue</a>\n                    <a class=\"btn btn-outline-warning btn-sm text-monospace\" style=\"border: none\" href=\"/3/grade_release/1771/727\">Release</a>\n                </div>\n            </div>\n        </div>\n    </div>\n</div>"
 
 /***/ }),
 
@@ -561,12 +561,68 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AdminHomeGradeComponent", function() { return AdminHomeGradeComponent; });
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
+/* harmony import */ var _connector_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../connector.service */ "./src/app/connector.service.ts");
+/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/common */ "./node_modules/@angular/common/fesm5/common.js");
+
+
+
 
 
 var AdminHomeGradeComponent = /** @class */ (function () {
-    function AdminHomeGradeComponent() {
+    function AdminHomeGradeComponent(_ConnectorService, location, _route, _r) {
+        var _this = this;
+        this._ConnectorService = _ConnectorService;
+        this.location = location;
+        this._route = _route;
+        this._r = _r;
+        this.quizzes = null;
+        this.quizzes_counter = {};
+        this.currentEng_id = null;
+        this.currentUser = null;
+        this.your_list = null;
+        this.your_list_length = 0;
+        this._route.paramMap.subscribe(function (params) {
+            _this.currentEng_id = params.get('eng');
+        });
+        this._ConnectorService.user.subscribe(function (user) {
+            _this.currentUser = user;
+            if (user && (!user.admin_grader && !user.admin_owner)) {
+                _this._r.navigate(["/" + _this.currentEng_id + "/home"]);
+            }
+            if (user && user.profile_id) {
+                _this._ConnectorService.getCompletedQuizzes(_this.currentUser['profile_id'], _this.currentEng_id).then(function (res) {
+                    _this.quizzes = res;
+                    _this.your_list = _this.getCurrentGradingQuiz(res);
+                    _this.your_list_length = Object.keys(_this.your_list).length;
+                    console.log("getCompletedQuizzes =>", res);
+                });
+            }
+        });
     }
     AdminHomeGradeComponent.prototype.ngOnInit = function () {
+    };
+    AdminHomeGradeComponent.prototype.getCurrentGradingQuiz = function (list) {
+        var res = {};
+        for (var c in list) {
+            for (var t in list[c]) {
+                for (var single_t in list[c][t]) {
+                    var current_submit = list[c][t][single_t];
+                    if (this.quizzes_counter[current_submit['topic_id']]) {
+                        this.quizzes_counter[current_submit['topic_id']]++;
+                    }
+                    else {
+                        this.quizzes_counter[current_submit['topic_id']] = 1;
+                    }
+                    if (!current_submit['graded'] && current_submit['graded_by'] == this.currentUser.profile_id) {
+                        res[list[c][t][single_t]['submit_id']] = list[c][t][single_t];
+                    }
+                }
+            }
+        }
+        console.log("getCurrentGradingQuiz  return =>", res);
+        console.log("quizzes_counter =>", this.quizzes_counter);
+        return res;
     };
     AdminHomeGradeComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
@@ -574,7 +630,7 @@ var AdminHomeGradeComponent = /** @class */ (function () {
             template: __webpack_require__(/*! ./admin-home-grade.component.html */ "./src/app/admin-home-grade/admin-home-grade.component.html"),
             styles: [__webpack_require__(/*! ./admin-home-grade.component.css */ "./src/app/admin-home-grade/admin-home-grade.component.css")]
         }),
-        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [])
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_connector_service__WEBPACK_IMPORTED_MODULE_3__["ConnectorService"], _angular_common__WEBPACK_IMPORTED_MODULE_4__["Location"], _angular_router__WEBPACK_IMPORTED_MODULE_2__["ActivatedRoute"], _angular_router__WEBPACK_IMPORTED_MODULE_2__["Router"]])
     ], AdminHomeGradeComponent);
     return AdminHomeGradeComponent;
 }());
@@ -590,7 +646,7 @@ var AdminHomeGradeComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJzcmMvYXBwL2FkbWluLWhvbWUvYWRtaW4taG9tZS5jb21wb25lbnQuY3NzIn0= */"
+module.exports = ".home-main {\n    width: 80%;\n    margin: 0px auto;\n    display: flex;\n    flex-direction: row;\n    flex-wrap: wrap;\n    justify-content: space-around;\n    align-items: baseline;\n    align-content: center;\n}\n\n.home-category {\n    min-width: 250px;\n    width: 250px;\n    max-width: 280px;\n    display: flex;\n    flex-direction: column;\n    flex-wrap: wrap;\n    justify-content: flex-start;\n    align-items: center;\n    align-content: center;\n    margin: 15px 15px;\n    background: rgba(255, 255, 255, 0.4);\n    transition: 0.5s;\n    color: #716c6c;\n}\n\n.home-category:hover {\n    min-width: 280px;\n    max-width: 280px;\n    color: black;\n    background: rgba(255, 255, 255, 0.8);\n    box-shadow: 5px 10px 18px #888888;\n    margin: 15px 0px;\n}\n\n.home-category-element .btn {\n    white-space: normal !important;\n    word-wrap: break-word;\n    display: inline-block;\n    white-space: nowrap;\n    overflow: hidden;\n    text-overflow: ellipsis;\n}\n\n.home-category-title {\n    max-width: 250px;\n    display: flex;\n    flex-direction: row;\n    flex-wrap: wrap;\n    justify-content: center;\n    align-items: center;\n    align-content: center;\n    font-weight: normal;\n}\n\n.home-category-element {\n    width: 100%;\n    display: flex;\n    flex-direction: column;\n    flex-wrap: wrap;\n    justify-content: flex-start;\n    align-items: center;\n    align-content: center;\n}\n\n.home-category-element-inner-box {\n    width: 100%;\n    display: flex;\n    flex-direction: row;\n    flex-wrap: wrap;\n    justify-content: flex-start;\n    align-items: center;\n    align-content: center;\n}\n\n.home-category-element a {\n    width: 100%\n}\n\n.home-category-element-inner-box a {\n    width: 50%;\n    border-radius: 0px;\n}\n\n.home-category-element button {\n    width: 100%;\n    border: none;\n    border-radius: 0px;\n}\n\n/* .home-category-element-hover {\n    background: linear-gradient(to right, #fbfbfb, #fbfbfb);\n    transition: all 0.3s\n}\n\n.home-category-element-hover:hover {\n    background: linear-gradient(to right, #fbfbfb, #c6c6c6)\n} */\n\n.home-category-element-hover {\n    position: relative;\n    background-image: linear-gradient( to right, #fbfbfb, #fbfbfb);\n    z-index: 1;\n}\n\n.home-category-element-hover::before {\n    position: absolute;\n    content: \"\";\n    top: 0;\n    right: 0;\n    bottom: 0;\n    left: 0;\n    background-image: linear-gradient( to right, #fbfbfb, #c6c6c6);\n    z-index: -1;\n    transition: opacity 0.5s linear;\n    opacity: 0;\n}\n\n.home-category-element-hover:hover::before {\n    opacity: 1;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNyYy9hcHAvYWRtaW4taG9tZS9hZG1pbi1ob21lLmNvbXBvbmVudC5jc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7SUFDSSxVQUFVO0lBQ1YsZ0JBQWdCO0lBQ2hCLGFBQWE7SUFDYixtQkFBbUI7SUFDbkIsZUFBZTtJQUNmLDZCQUE2QjtJQUM3QixxQkFBcUI7SUFDckIscUJBQXFCO0FBQ3pCOztBQUVBO0lBQ0ksZ0JBQWdCO0lBQ2hCLFlBQVk7SUFDWixnQkFBZ0I7SUFDaEIsYUFBYTtJQUNiLHNCQUFzQjtJQUN0QixlQUFlO0lBQ2YsMkJBQTJCO0lBQzNCLG1CQUFtQjtJQUNuQixxQkFBcUI7SUFDckIsaUJBQWlCO0lBQ2pCLG9DQUFvQztJQUNwQyxnQkFBZ0I7SUFDaEIsY0FBYztBQUNsQjs7QUFFQTtJQUNJLGdCQUFnQjtJQUNoQixnQkFBZ0I7SUFDaEIsWUFBWTtJQUNaLG9DQUFvQztJQUNwQyxpQ0FBaUM7SUFDakMsZ0JBQWdCO0FBQ3BCOztBQUVBO0lBQ0ksOEJBQThCO0lBQzlCLHFCQUFxQjtJQUNyQixxQkFBcUI7SUFDckIsbUJBQW1CO0lBQ25CLGdCQUFnQjtJQUNoQix1QkFBdUI7QUFDM0I7O0FBRUE7SUFDSSxnQkFBZ0I7SUFDaEIsYUFBYTtJQUNiLG1CQUFtQjtJQUNuQixlQUFlO0lBQ2YsdUJBQXVCO0lBQ3ZCLG1CQUFtQjtJQUNuQixxQkFBcUI7SUFDckIsbUJBQW1CO0FBQ3ZCOztBQUVBO0lBQ0ksV0FBVztJQUNYLGFBQWE7SUFDYixzQkFBc0I7SUFDdEIsZUFBZTtJQUNmLDJCQUEyQjtJQUMzQixtQkFBbUI7SUFDbkIscUJBQXFCO0FBQ3pCOztBQUVBO0lBQ0ksV0FBVztJQUNYLGFBQWE7SUFDYixtQkFBbUI7SUFDbkIsZUFBZTtJQUNmLDJCQUEyQjtJQUMzQixtQkFBbUI7SUFDbkIscUJBQXFCO0FBQ3pCOztBQUVBO0lBQ0k7QUFDSjs7QUFFQTtJQUNJLFVBQVU7SUFDVixrQkFBa0I7QUFDdEI7O0FBRUE7SUFDSSxXQUFXO0lBQ1gsWUFBWTtJQUNaLGtCQUFrQjtBQUN0Qjs7QUFHQTs7Ozs7OztHQU9HOztBQUVIO0lBQ0ksa0JBQWtCO0lBQ2xCLDhEQUE4RDtJQUM5RCxVQUFVO0FBQ2Q7O0FBRUE7SUFDSSxrQkFBa0I7SUFDbEIsV0FBVztJQUNYLE1BQU07SUFDTixRQUFRO0lBQ1IsU0FBUztJQUNULE9BQU87SUFDUCw4REFBOEQ7SUFDOUQsV0FBVztJQUNYLCtCQUErQjtJQUMvQixVQUFVO0FBQ2Q7O0FBRUE7SUFDSSxVQUFVO0FBQ2QiLCJmaWxlIjoic3JjL2FwcC9hZG1pbi1ob21lL2FkbWluLWhvbWUuY29tcG9uZW50LmNzcyIsInNvdXJjZXNDb250ZW50IjpbIi5ob21lLW1haW4ge1xuICAgIHdpZHRoOiA4MCU7XG4gICAgbWFyZ2luOiAwcHggYXV0bztcbiAgICBkaXNwbGF5OiBmbGV4O1xuICAgIGZsZXgtZGlyZWN0aW9uOiByb3c7XG4gICAgZmxleC13cmFwOiB3cmFwO1xuICAgIGp1c3RpZnktY29udGVudDogc3BhY2UtYXJvdW5kO1xuICAgIGFsaWduLWl0ZW1zOiBiYXNlbGluZTtcbiAgICBhbGlnbi1jb250ZW50OiBjZW50ZXI7XG59XG5cbi5ob21lLWNhdGVnb3J5IHtcbiAgICBtaW4td2lkdGg6IDI1MHB4O1xuICAgIHdpZHRoOiAyNTBweDtcbiAgICBtYXgtd2lkdGg6IDI4MHB4O1xuICAgIGRpc3BsYXk6IGZsZXg7XG4gICAgZmxleC1kaXJlY3Rpb246IGNvbHVtbjtcbiAgICBmbGV4LXdyYXA6IHdyYXA7XG4gICAganVzdGlmeS1jb250ZW50OiBmbGV4LXN0YXJ0O1xuICAgIGFsaWduLWl0ZW1zOiBjZW50ZXI7XG4gICAgYWxpZ24tY29udGVudDogY2VudGVyO1xuICAgIG1hcmdpbjogMTVweCAxNXB4O1xuICAgIGJhY2tncm91bmQ6IHJnYmEoMjU1LCAyNTUsIDI1NSwgMC40KTtcbiAgICB0cmFuc2l0aW9uOiAwLjVzO1xuICAgIGNvbG9yOiAjNzE2YzZjO1xufVxuXG4uaG9tZS1jYXRlZ29yeTpob3ZlciB7XG4gICAgbWluLXdpZHRoOiAyODBweDtcbiAgICBtYXgtd2lkdGg6IDI4MHB4O1xuICAgIGNvbG9yOiBibGFjaztcbiAgICBiYWNrZ3JvdW5kOiByZ2JhKDI1NSwgMjU1LCAyNTUsIDAuOCk7XG4gICAgYm94LXNoYWRvdzogNXB4IDEwcHggMThweCAjODg4ODg4O1xuICAgIG1hcmdpbjogMTVweCAwcHg7XG59XG5cbi5ob21lLWNhdGVnb3J5LWVsZW1lbnQgLmJ0biB7XG4gICAgd2hpdGUtc3BhY2U6IG5vcm1hbCAhaW1wb3J0YW50O1xuICAgIHdvcmQtd3JhcDogYnJlYWstd29yZDtcbiAgICBkaXNwbGF5OiBpbmxpbmUtYmxvY2s7XG4gICAgd2hpdGUtc3BhY2U6IG5vd3JhcDtcbiAgICBvdmVyZmxvdzogaGlkZGVuO1xuICAgIHRleHQtb3ZlcmZsb3c6IGVsbGlwc2lzO1xufVxuXG4uaG9tZS1jYXRlZ29yeS10aXRsZSB7XG4gICAgbWF4LXdpZHRoOiAyNTBweDtcbiAgICBkaXNwbGF5OiBmbGV4O1xuICAgIGZsZXgtZGlyZWN0aW9uOiByb3c7XG4gICAgZmxleC13cmFwOiB3cmFwO1xuICAgIGp1c3RpZnktY29udGVudDogY2VudGVyO1xuICAgIGFsaWduLWl0ZW1zOiBjZW50ZXI7XG4gICAgYWxpZ24tY29udGVudDogY2VudGVyO1xuICAgIGZvbnQtd2VpZ2h0OiBub3JtYWw7XG59XG5cbi5ob21lLWNhdGVnb3J5LWVsZW1lbnQge1xuICAgIHdpZHRoOiAxMDAlO1xuICAgIGRpc3BsYXk6IGZsZXg7XG4gICAgZmxleC1kaXJlY3Rpb246IGNvbHVtbjtcbiAgICBmbGV4LXdyYXA6IHdyYXA7XG4gICAganVzdGlmeS1jb250ZW50OiBmbGV4LXN0YXJ0O1xuICAgIGFsaWduLWl0ZW1zOiBjZW50ZXI7XG4gICAgYWxpZ24tY29udGVudDogY2VudGVyO1xufVxuXG4uaG9tZS1jYXRlZ29yeS1lbGVtZW50LWlubmVyLWJveCB7XG4gICAgd2lkdGg6IDEwMCU7XG4gICAgZGlzcGxheTogZmxleDtcbiAgICBmbGV4LWRpcmVjdGlvbjogcm93O1xuICAgIGZsZXgtd3JhcDogd3JhcDtcbiAgICBqdXN0aWZ5LWNvbnRlbnQ6IGZsZXgtc3RhcnQ7XG4gICAgYWxpZ24taXRlbXM6IGNlbnRlcjtcbiAgICBhbGlnbi1jb250ZW50OiBjZW50ZXI7XG59XG5cbi5ob21lLWNhdGVnb3J5LWVsZW1lbnQgYSB7XG4gICAgd2lkdGg6IDEwMCVcbn1cblxuLmhvbWUtY2F0ZWdvcnktZWxlbWVudC1pbm5lci1ib3ggYSB7XG4gICAgd2lkdGg6IDUwJTtcbiAgICBib3JkZXItcmFkaXVzOiAwcHg7XG59XG5cbi5ob21lLWNhdGVnb3J5LWVsZW1lbnQgYnV0dG9uIHtcbiAgICB3aWR0aDogMTAwJTtcbiAgICBib3JkZXI6IG5vbmU7XG4gICAgYm9yZGVyLXJhZGl1czogMHB4O1xufVxuXG5cbi8qIC5ob21lLWNhdGVnb3J5LWVsZW1lbnQtaG92ZXIge1xuICAgIGJhY2tncm91bmQ6IGxpbmVhci1ncmFkaWVudCh0byByaWdodCwgI2ZiZmJmYiwgI2ZiZmJmYik7XG4gICAgdHJhbnNpdGlvbjogYWxsIDAuM3Ncbn1cblxuLmhvbWUtY2F0ZWdvcnktZWxlbWVudC1ob3Zlcjpob3ZlciB7XG4gICAgYmFja2dyb3VuZDogbGluZWFyLWdyYWRpZW50KHRvIHJpZ2h0LCAjZmJmYmZiLCAjYzZjNmM2KVxufSAqL1xuXG4uaG9tZS1jYXRlZ29yeS1lbGVtZW50LWhvdmVyIHtcbiAgICBwb3NpdGlvbjogcmVsYXRpdmU7XG4gICAgYmFja2dyb3VuZC1pbWFnZTogbGluZWFyLWdyYWRpZW50KCB0byByaWdodCwgI2ZiZmJmYiwgI2ZiZmJmYik7XG4gICAgei1pbmRleDogMTtcbn1cblxuLmhvbWUtY2F0ZWdvcnktZWxlbWVudC1ob3Zlcjo6YmVmb3JlIHtcbiAgICBwb3NpdGlvbjogYWJzb2x1dGU7XG4gICAgY29udGVudDogXCJcIjtcbiAgICB0b3A6IDA7XG4gICAgcmlnaHQ6IDA7XG4gICAgYm90dG9tOiAwO1xuICAgIGxlZnQ6IDA7XG4gICAgYmFja2dyb3VuZC1pbWFnZTogbGluZWFyLWdyYWRpZW50KCB0byByaWdodCwgI2ZiZmJmYiwgI2M2YzZjNik7XG4gICAgei1pbmRleDogLTE7XG4gICAgdHJhbnNpdGlvbjogb3BhY2l0eSAwLjVzIGxpbmVhcjtcbiAgICBvcGFjaXR5OiAwO1xufVxuXG4uaG9tZS1jYXRlZ29yeS1lbGVtZW50LWhvdmVyOmhvdmVyOjpiZWZvcmUge1xuICAgIG9wYWNpdHk6IDE7XG59Il19 */"
 
 /***/ }),
 
@@ -601,7 +657,7 @@ module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<p>\n  admin-home works!\n</p>\n"
+module.exports = "<div *ngIf='currentUser && currentUser.admin' class=\"quiz-selection element-animation-fadeIn\" align=\"center\" id=\"body_fadeOut\">\n    <div style=\"height: 10%; justify-content: center; display: flex; flex-direction: column;flex-wrap: wrap;\">\n        <h1 class=\"text-center\">Welcome, {{currentUser.first_name}} {{currentUser.last_name}}</h1>\n    </div>\n    <div class=\"home-main\" id=\"homeCategories\">\n        <div class=\"home-category\">\n            <div class=\"home-category-title\">\n                <h1>Grader</h1>\n            </div>\n            <div class=\"home-category-element\">\n                <a class=\"admin_link\" [routerLink]=\"['/',currentEng_id, 'adminhomegrade']\">\n                    <button *ngIf=\"gradings_counter>0\" class=\"btn btn-outline-success btn-lg dropbtn admin-button\" [disabled]=\"!currentUser.admin_grader && !currentUser.admin_owner\" type=\"button\">Grade a Quiz ({{gradings_counter}})</button>\n                    <button *ngIf=\"!gradings_counter || gradings_counter<1\" class=\"btn btn-outline-success btn-lg dropbtn admin-button\" disabled type=\"button\">No quizzes to grade</button>\n                </a>\n            </div>\n        </div>\n        <div class=\"home-category\">\n            <div class=\"home-category-title\">\n                <h1>Editor</h1>\n            </div>\n            <div class=\"home-category-element\">\n                <a class=\"admin_link\" [routerLink]=\"['/',currentEng_id, 'admincreatequiz']\">\n                    <button class=\"btn btn-outline-primary btn-lg dropbtn admin-button\" type=\"button\" [disabled]=\"!currentUser.admin_editor && !currentUser.admin_owner\">Create a Quiz</button>\n                </a>\n                <a class=\"admin_link\" [routerLink]=\"['/',currentEng_id, 'adminhomeedit']\">\n                    <button class=\"btn btn-lg btn-outline-primary dropbtn admin-button\" type=\"button\" [disabled]=\"!currentUser.admin_editor && !currentUser.admin_owner\">Edit a Quiz</button>\n                </a>\n            </div>\n        </div>\n        <div class=\"home-category\">\n            <div class=\"home-category-title\">\n                <h1>Quiz Controls</h1>\n            </div>\n            <div class=\"home-category-element\">\n                <a class=\"admin_link\" [routerLink]=\"['/',currentEng_id, 'AdminEditpermissions']\">\n                    <button class=\"btn btn-outline-dark btn-lg dropbtn admin-button\" [disabled]=\"!currentUser.admin_permissions && !currentUser.admin_owner\" type=\"button\">Quiz Permissions</button>\n                </a>\n                <a class=\"admin_link\" [routerLink]=\"['/',currentEng_id, 'AdminEditsubmissions']\">\n                    <button class=\"btn btn-outline-dark btn-lg dropbtn admin-button\" [disabled]=\"!currentUser.admin_permissions && !currentUser.admin_owner\" type=\"button\">Quiz Submissions</button>\n                </a>\n            </div>\n        </div>\n        <div class=\"home-category\">\n            <div class=\"home-category-title\">\n                <h1>Super Admin</h1>\n            </div>\n            <div class=\"home-category-element\">\n                <a class=\"admin_link\" [routerLink]=\"['/',currentEng_id, 'AdminEditusersComponent']\">\n                    <button class=\"btn btn-outline-danger btn-lg dropbtn admin-button\" [disabled]=\"!currentUser.admin_permissions && !currentUser.admin_owner\" type=\"button\">User Permissions</button>\n                </a>\n                <a class=\"admin_link\" [routerLink]=\"['/',currentEng_id, 'AdminEditengagements']\">\n                    <button class=\"btn btn-outline-danger btn-lg dropbtn admin-button\" [disabled]=\"!currentUser.admin_permissions && !currentUser.admin_owner\" type=\"button\">Edit Engagements</button>\n                </a>\n            </div>\n        </div>\n    </div>\n</div>"
 
 /***/ }),
 
@@ -617,12 +673,45 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AdminHomeComponent", function() { return AdminHomeComponent; });
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
+/* harmony import */ var _connector_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../connector.service */ "./src/app/connector.service.ts");
+/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/common */ "./node_modules/@angular/common/fesm5/common.js");
+
+
+
 
 
 var AdminHomeComponent = /** @class */ (function () {
-    function AdminHomeComponent() {
+    function AdminHomeComponent(_ConnectorService, location, _route, _r) {
+        var _this = this;
+        this._ConnectorService = _ConnectorService;
+        this.location = location;
+        this._route = _route;
+        this._r = _r;
+        this.currentEng_id = null;
+        this.currentUser = null;
+        this.gradings_counter = null;
+        this.your_list = null;
+        this._route.paramMap.subscribe(function (params) {
+            _this.currentEng_id = params.get('eng');
+        });
+        this._ConnectorService.user.subscribe(function (user) {
+            _this.currentUser = user;
+            if (user && !user.admin) {
+                _this._r.navigate(["/" + _this.currentEng_id + "/home"]);
+            }
+            _this.gradings_counter = 0;
+            if (user && user.profile_id) {
+                _this._ConnectorService.getCompletedQuizzesLength(_this.currentUser['profile_id'], _this.currentEng_id).then(function (res) {
+                    _this.gradings_counter = res;
+                });
+            }
+        });
     }
     AdminHomeComponent.prototype.ngOnInit = function () {
+    };
+    AdminHomeComponent.prototype.test = function () {
+        console.log("currentEng_id =>", this.currentEng_id, "; currentUser =>", this.currentUser);
     };
     AdminHomeComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
@@ -630,7 +719,7 @@ var AdminHomeComponent = /** @class */ (function () {
             template: __webpack_require__(/*! ./admin-home.component.html */ "./src/app/admin-home/admin-home.component.html"),
             styles: [__webpack_require__(/*! ./admin-home.component.css */ "./src/app/admin-home/admin-home.component.css")]
         }),
-        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [])
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_connector_service__WEBPACK_IMPORTED_MODULE_3__["ConnectorService"], _angular_common__WEBPACK_IMPORTED_MODULE_4__["Location"], _angular_router__WEBPACK_IMPORTED_MODULE_2__["ActivatedRoute"], _angular_router__WEBPACK_IMPORTED_MODULE_2__["Router"]])
     ], AdminHomeComponent);
     return AdminHomeComponent;
 }());
@@ -835,8 +924,6 @@ var AppComponent = /** @class */ (function () {
             if (localStorage.user) {
                 this.user_obj = JSON.parse(localStorage.user);
                 if (this.user_obj) {
-                    // console.log("user is in storage!")
-                    // console.log(this.user_obj)
                     this._c.storeUser(this.user_obj);
                 }
             }
@@ -980,6 +1067,9 @@ var AppComponent = /** @class */ (function () {
             // console.log("ERROR =>", err)
             // this.response = err;
         });
+    };
+    AppComponent.prototype.ngOnInit = function () {
+        console.log("App component is here! this.currentEng =>", this.currentEng);
     };
     AppComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
@@ -2805,7 +2895,7 @@ module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div *ngIf=\"question && !completed\">\n    <div class=\"row align-items-center\">\n        <div class=\"col text-center\">\n            <h1>Quiz for {{question.topic_name.topic}}</h1>\n        </div>\n    </div>\n\n    <div class=\"form-row border_info\">\n        <div class=\"col-6 question\" style=\"display: flex; align-items: center; justify-content: center;\">\n            <h4>{{question.question_prompt}}</h4>\n        </div>\n        <div class=\"col-6\">\n            <div *ngIf=\"question.question_type == 2\">\n                <!-- manual input  -->\n                <div class=\"form-check\">\n                    <textarea class=\"element-animation-fadeIn form-control\" id=\"manual_input_field\" rows=\"3\" required=\"true\" maxlength=\"500\" autofocus=\"autofocus\"></textarea>\n                </div>\n            </div>\n            <div *ngIf=\"question.question_type != 2\">\n                <div *ngIf=\"question.display_type == 1\">\n                    <!-- radio  -->\n                    <fieldset>\n                        <div *ngFor=\"let q of question.answer_keys; index as i\" class=\"form-check\">\n                            <label class=\"col-form-label element-animation{{i + 1}}\" for=\"radio{{i}}\">\n                                    <input class=\"placeAfter radio_input\" id=\"{{q}}\" name=\"radio_answer\" type=\"radio\" required=\"true\" value={{question.answer_prompt[i]}} />{{question.answer_prompt[i]}}\n                                </label>\n                        </div>\n                    </fieldset>\n                </div>\n                <div *ngIf=\"question.display_type == 2\">\n                    <!-- check  -->\n                    <fieldset>\n                        <div *ngFor=\"let q of question.answer_keys; index as i\" class=\"form-check\">\n                            <label class=\"col-form-label element-animation{{i + 1}}\" for=\"radio{{i}}\">\n                                    <input class=\"placeAfter checkbox_input\" id=\"{{q}}\" type=\"checkbox\" required=\"true\" value={{question.answer_prompt[i]}}>{{question.answer_prompt[i]}}\n                                </label>\n                        </div>\n                    </fieldset>\n                </div>\n                <div *ngIf=\"question.display_type == 3\">\n                    <!-- select -->\n                    <div class=\"form-check\">\n                        <select class=\"element-animation-fadeIn form-control\" id=\"select_input\" required=\"true\">\n                                <option value=\"\">Select One</option>\n                                <option *ngFor=\"let q of question.answer_keys; index as i\" value={{q}}>{{question.answer_prompt[i]}}</option> <!-- option(id = id_att value= value_att[index])-->\n                            </select>\n                    </div>\n                </div>\n                <div *ngIf=\"question.display_type == 4\" id=\"dragAndDrop\">\n                    <!-- drag and drop -->\n                    <div style=\"width:100%;display: flex; flex-direction: column; flex-wrap: nowrap; justify-content: space-around; align-items: center; align-content: center;\" id=\"dragAndDropContent\">\n                        <ol data-draggable=\"target\" style=\"width: 50%\">\n                            <li *ngFor=\"let c of question.answer_keys\" data-draggable=\"item\" class=\"bucket_question_element bucket_question_choice\" id=\"{{c}}\">{{question.answer_prompt[c]}}</li>\n                        </ol>\n\n                        <div style=\"width: 100%; display: flex; flex-direction: row; flex-wrap: wrap; justify-content: space-around; align-items: baseline; align-content: center;\">\n                            <div *ngFor=\"let b of question.bucket_list | keyvalue\" class=\"bucket_question_element bucket_question_bucket droppable unselectable\" style=\"\">\n                                <h4 align=\"center\">{{b.value.bucket_name}}</h4>\n                                <ol class=\"bucket\" data-draggable=\"target\" id='{{b.value.bucket_id}}'></ol>\n                            </div>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n    <div class=\"form-row justify-content-center\">\n        <button class=\"btn btn-lg btn-success\" id=\"nextButton\" type=\"button\" (click)='submit()' style=\"width:200px;\">Next</button>\n    </div>\n    <div *ngIf=\"question.image_info\" class=\"row\">\n        <div class=\"col\" style=\"display: flex;\">\n            <img class=\"element-animation-fadeIn image_question img-fluid\" src=\"data:image/png;base64,{{question.image_info}}\" style=\"cursor: context-menu; width: auto; margin: 0px auto;\" />\n        </div>\n    </div>\n</div>\n<div *ngIf=\"completed\">\n    <div class=\"jumbotron text-xs-center col element-animation-fadeIn\" align=\"center\" style=\"background: white; margin-top: 10%;\" id=\"body_fadeOut\">\n        <h1 class=\"display-3\">Thank You!</h1>\n        <p class=\"lead\"><strong>You have completed Knowledge Assessment Quiz</strong> for further instructions please contact your TL or instructor.</p>\n        <p class=\"lead\">\n            <a class=\"btn btn-lg btn-home dropbtn\" role=\"button\" style=\"text-decoration: none; color: black;\" id=\"backToHomePage\" [routerLink]=\"[completed_link]\">Back to homepage</a>\n        </p>\n    </div>\n</div>"
+module.exports = "<div *ngIf=\"question && !completed\">\n    <div class=\"row align-items-center\">\n        <div class=\"col text-center\">\n            <h1>Quiz for {{question.topic_name.topic}}</h1>\n        </div>\n    </div>\n\n    <div class=\"form-row border_info\">\n        <div class=\"col-6 question\" style=\"display: flex; align-items: center; justify-content: center;\">\n            <h4>{{question.question_prompt}}</h4>\n        </div>\n        <div class=\"col-6\">\n            <div *ngIf=\"question.question_type == 2\">\n                <!-- manual input  -->\n                <div class=\"form-check\">\n                    <textarea class=\"element-animation-fadeIn form-control\" id=\"manual_input_field\" rows=\"3\" required=\"true\" maxlength=\"500\" autofocus=\"autofocus\"></textarea>\n                </div>\n            </div>\n            <div *ngIf=\"question.question_type != 2\">\n                <div *ngIf=\"question.display_type == 1\">\n                    <!-- radio  -->\n                    <fieldset>\n                        <div *ngFor=\"let q of question.answer_keys; index as i\" class=\"form-check\">\n                            <label class=\"col-form-label element-animation{{i + 1}}\" for=\"radio{{i}}\">\n                                <input class=\"placeAfter radio_input\" id=\"{{q}}\" name=\"radio_answer\" type=\"radio\"\n                                    required=\"true\" value={{question.answer_prompt[i]}} />{{question.answer_prompt[i]}}\n                            </label>\n                        </div>\n                    </fieldset>\n                </div>\n                <div *ngIf=\"question.display_type == 2\">\n                    <!-- check  -->\n                    <fieldset>\n                        <div *ngFor=\"let q of question.answer_keys; index as i\" class=\"form-check\">\n                            <label class=\"col-form-label element-animation{{i + 1}}\" for=\"radio{{i}}\">\n                                <input class=\"placeAfter checkbox_input\" id=\"{{q}}\" type=\"checkbox\" required=\"true\"\n                                    value={{question.answer_prompt[i]}}>{{question.answer_prompt[i]}}\n                            </label>\n                        </div>\n                    </fieldset>\n                </div>\n                <div *ngIf=\"question.display_type == 3\">\n                    <!-- select -->\n                    <div class=\"form-check\">\n                        <select class=\"element-animation-fadeIn form-control\" id=\"select_input\" required=\"true\">\n                            <option value=\"\">Select One</option>\n                            <option *ngFor=\"let q of question.answer_keys; index as i\" value={{q}}>\n                                {{question.answer_prompt[i]}}</option>\n                            <!-- option(id = id_att value= value_att[index])-->\n                        </select>\n                    </div>\n                </div>\n                <div *ngIf=\"question.display_type == 4\" id=\"dragAndDrop\">\n                    <!-- drag and drop -->\n                    <div style=\"width:100%;display: flex; flex-direction: column; flex-wrap: nowrap; justify-content: space-around; align-items: center; align-content: center;\" id=\"dragAndDropContent\">\n                        <ol data-draggable=\"target\" style=\"width: 50%\">\n                            <li *ngFor=\"let c of question.answer_keys\" data-draggable=\"item\" class=\"bucket_question_element bucket_question_choice\" id=\"{{c}}\">\n                                {{question.answer_prompt[c]}}</li>\n                        </ol>\n\n                        <div style=\"width: 100%; display: flex; flex-direction: row; flex-wrap: wrap; justify-content: space-around; align-items: baseline; align-content: center;\">\n                            <div *ngFor=\"let b of question.bucket_list | keyvalue\" class=\"bucket_question_element bucket_question_bucket droppable unselectable\" style=\"\">\n                                <h4 align=\"center\">{{b.value.bucket_name}}</h4>\n                                <ol class=\"bucket\" data-draggable=\"target\" id='{{b.value.bucket_id}}'></ol>\n                            </div>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n    <div class=\"form-row justify-content-center\">\n        <button class=\"btn btn-lg btn-success\" id=\"nextButton\" type=\"button\" (click)='submit()' style=\"width:200px;\">Next</button>\n    </div>\n    <div *ngIf=\"question.image_info\" class=\"row\">\n        <div class=\"col\" style=\"display: flex;\">\n            <img class=\"element-animation-fadeIn image_question img-fluid\" src=\"data:image/png;base64,{{question.image_info}}\" style=\"cursor: context-menu; width: auto; margin: 0px auto;\" />\n        </div>\n    </div>\n</div>\n<div *ngIf=\"completed\">\n    <div class=\"jumbotron text-xs-center col element-animation-fadeIn\" align=\"center\" style=\"background: white; margin-top: 10%;\" id=\"body_fadeOut\">\n        <h1 class=\"display-3\">Thank You!</h1>\n        <p class=\"lead\"><strong>You have completed Knowledge Assessment Quiz</strong> for further instructions please contact your TL or instructor.</p>\n        <p class=\"lead\">\n            <a class=\"btn btn-lg btn-home dropbtn\" role=\"button\" style=\"text-decoration: none; color: black;\" id=\"backToHomePage\" [routerLink]=\"[completed_link]\">Back to homepage</a>\n        </p>\n    </div>\n</div>"
 
 /***/ }),
 
@@ -2821,12 +2911,253 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "QuizComponent", function() { return QuizComponent; });
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
+/* harmony import */ var _connector_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../connector.service */ "./src/app/connector.service.ts");
+/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/common */ "./node_modules/@angular/common/fesm5/common.js");
+/* harmony import */ var _dynamic_script_loader_service_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../dynamic-script-loader-service.service */ "./src/app/dynamic-script-loader-service.service.ts");
+
+
+
+
 
 
 var QuizComponent = /** @class */ (function () {
-    function QuizComponent() {
+    function QuizComponent(_ConnectorService, location, _route, dynamicScriptLoader) {
+        var _this = this;
+        this._ConnectorService = _ConnectorService;
+        this.location = location;
+        this._route = _route;
+        this.dynamicScriptLoader = dynamicScriptLoader;
+        this.currentEng_id = null;
+        this.topic_id = null;
+        this.quiz_id = null;
+        this.currentUser = null;
+        this.currentEng = null;
+        this.question = null;
+        this.completed = false;
+        this.completed_link = "";
+        this._route.paramMap.subscribe(function (params) {
+            _this.currentEng_id = params.get('eng');
+            _this.topic_id = params.get('topic_id');
+            _this.quiz_id = params.get('quiz_id');
+            _this._ConnectorService.user.subscribe(function (user) {
+                _this.currentUser = user;
+                if (user) {
+                    console.log("USER IS HERE!", _this.currentEng_id);
+                }
+                if (user) {
+                    console.log("TAKING A QUIZ!");
+                    _this.takeQuiz();
+                }
+            });
+        });
     }
     QuizComponent.prototype.ngOnInit = function () {
+    };
+    QuizComponent.prototype.loadScripts = function () {
+        // You can load multiple scripts by just providing the key as argument into load method of the service
+        this.dynamicScriptLoader.load('quizQuestionRender').then(function (data) {
+            // Script Loaded Successfully
+        }).catch(function (error) { return console.log(error); });
+    };
+    QuizComponent.prototype.takeQuiz = function () {
+        var _this = this;
+        console.log("this.currentEng_id, this.currentUser.email, this.topic_id, this.quiz_id =>", this.currentEng_id, this.currentUser.email, this.topic_id, this.quiz_id);
+        this._ConnectorService.takeQuiz(this.currentEng_id, this.currentUser.email, this.topic_id, this.quiz_id).then(function (data) {
+            console.log(data);
+            _this.question = data;
+            if (data) {
+                if (data['completed']) {
+                    _this.completed = true;
+                    _this.completed_link = "/" + _this.currentEng_id + "/home";
+                    return;
+                }
+                if (_this.question.display_type == 4) {
+                    _this.loadScripts();
+                }
+            }
+        }).catch(function (error) {
+            console.log(error);
+        });
+    };
+    QuizComponent.prototype.submit = function () {
+        var _this = this;
+        var _a, _b, _c, _d;
+        console.log('reading answer...');
+        if (this.question.question_type == 2) {
+            // MANUAL INPUT ANSWER
+            var input = document.getElementById('manual_input_field');
+            console.log(input['value']);
+            var obj = (_a = {},
+                _a[this.question.pass_info] = input['value'],
+                _a);
+            console.log("OBJ =>", obj);
+            this._ConnectorService.submitAnswer(this.currentEng_id, obj).then(function (data) {
+                console.log(data);
+                if (data['completed']) {
+                    _this.completed = true;
+                    _this.completed_link = "/" + _this.currentEng_id + "/home";
+                    return;
+                }
+                _this.question = data;
+                if (data) {
+                    if (_this.question.display_type == 4) {
+                        _this.loadScripts();
+                    }
+                }
+            }).catch(function (error) {
+                console.log(error);
+            });
+        }
+        else {
+            if (this.question.display_type == 1) {
+                var inputs = document.getElementsByClassName("radio_input");
+                var answer = null;
+                for (var el in inputs) {
+                    if (typeof (inputs[el]) == 'object') {
+                        if (inputs[el]['checked']) {
+                            answer = inputs[el];
+                            break;
+                        }
+                    }
+                }
+                if (!answer) {
+                    alert("SELECT ANSWER!!!!!");
+                    return;
+                }
+                console.log("ANSWER =>", answer.id);
+                var obj = (_b = {},
+                    _b[this.question.pass_info] = answer.id,
+                    _b);
+                console.log("OBJ =>", obj);
+                this._ConnectorService.submitAnswer(this.currentEng_id, obj).then(function (data) {
+                    console.log(data);
+                    _this.question = data;
+                    if (data) {
+                        if (data['completed']) {
+                            _this.completed = true;
+                            _this.completed_link = "/" + _this.currentEng_id + "/home";
+                            return;
+                        }
+                        if (_this.question.display_type == 4) {
+                            _this.loadScripts();
+                        }
+                    }
+                }).catch(function (error) {
+                    console.log(error);
+                });
+            }
+            if (this.question.display_type == 2) {
+                var inputs = document.getElementsByClassName("checkbox_input");
+                var answers = [];
+                for (var el in inputs) {
+                    if (typeof (inputs[el]) == 'object') {
+                        if (inputs[el]['checked']) {
+                            answers.push(inputs[el]['id']);
+                        }
+                    }
+                }
+                if (answers.length < 1) {
+                    alert("PLEASE CHECK ANYTHING!");
+                }
+                else {
+                    var obj = (_c = {},
+                        _c[this.question.pass_info] = answers,
+                        _c);
+                    console.log("OBJ =>", obj);
+                    this._ConnectorService.submitAnswer(this.currentEng_id, obj).then(function (data) {
+                        console.log(data);
+                        _this.question = data;
+                        if (data) {
+                            if (data['completed']) {
+                                _this.completed = true;
+                                _this.completed_link = "/" + _this.currentEng_id + "/home";
+                                return;
+                            }
+                            if (_this.question.display_type == 4) {
+                                _this.loadScripts();
+                            }
+                        }
+                    }).catch(function (error) {
+                        console.log(error);
+                    });
+                }
+            }
+            if (this.question.display_type == 3) {
+                var inputs = document.getElementById("select_input");
+                if (!inputs['value'] || inputs['value'].length < 1) {
+                    alert('please select answer');
+                    return;
+                }
+                var obj = (_d = {},
+                    _d[this.question.pass_info] = inputs['value'],
+                    _d);
+                console.log("OBJ =>", obj);
+                this._ConnectorService.submitAnswer(this.currentEng_id, obj).then(function (data) {
+                    console.log(data);
+                    _this.question = data;
+                    if (data) {
+                        if (data['completed']) {
+                            _this.completed = true;
+                            _this.completed_link = "/" + _this.currentEng_id + "/home";
+                            return;
+                        }
+                        if (_this.question.display_type == 4) {
+                            _this.loadScripts();
+                        }
+                    }
+                }).catch(function (error) {
+                    console.log(error);
+                });
+            }
+            if (this.question.display_type == 4) {
+                var buckets = document.getElementsByClassName('bucket');
+                var submit_answers = {};
+                for (var b in buckets) {
+                    for (var el in buckets[b]['children']) {
+                        if (typeof (buckets[b]['children'][el]) === 'object') {
+                            submit_answers[buckets[b]['children'][el]['id']] = buckets[b]['id'];
+                        }
+                    }
+                }
+                if (Object.keys(submit_answers).length < 1) {
+                    alert('please answer!');
+                    return;
+                }
+                submit_answers['drag_and_drop'] = true;
+                // somehow drag'n'drop questions have 'info' property as object. It has to be a string
+                submit_answers['info'] = '';
+                for (var el in this.question.pass_info) {
+                    submit_answers['info'] += this.question.pass_info[el] + ",";
+                }
+                console.log(submit_answers);
+                /*
+                {
+                  '785': '2',
+                  '786': '1',
+                  '787': '1',
+                  drag_and_drop: 'true',
+                  info: '3,4,727,1832,2019-05-09 23:34:10,413,'
+                }
+                */
+                this._ConnectorService.submitAnswer(this.currentEng_id, submit_answers).then(function (data) {
+                    console.log(data);
+                    _this.question = data;
+                    if (data) {
+                        if (data['completed']) {
+                            _this.completed = true;
+                            _this.completed_link = "/" + _this.currentEng_id + "/home";
+                            return;
+                        }
+                        if (_this.question.display_type == 4) {
+                            _this.loadScripts();
+                        }
+                    }
+                }).catch(function (error) {
+                    console.log(error);
+                });
+            }
+        }
     };
     QuizComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
@@ -2834,7 +3165,7 @@ var QuizComponent = /** @class */ (function () {
             template: __webpack_require__(/*! ./quiz.component.html */ "./src/app/quiz/quiz.component.html"),
             styles: [__webpack_require__(/*! ./quiz.component.css */ "./src/app/quiz/quiz.component.css")]
         }),
-        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [])
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_connector_service__WEBPACK_IMPORTED_MODULE_3__["ConnectorService"], _angular_common__WEBPACK_IMPORTED_MODULE_4__["Location"], _angular_router__WEBPACK_IMPORTED_MODULE_2__["ActivatedRoute"], _dynamic_script_loader_service_service__WEBPACK_IMPORTED_MODULE_5__["DynamicScriptLoaderServiceService"]])
     ], QuizComponent);
     return QuizComponent;
 }());
