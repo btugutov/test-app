@@ -191,6 +191,9 @@ requiresInteraction(errorCode) {
   }
   getOSInfo() {
     this._c.getOSInfo().then(res => {
+      if(!res['current_user']){
+        res['current_user'] = JSON.parse(localStorage.user)
+      }
       console.log(res)
       this.response = res;
     }).catch(function (err) {

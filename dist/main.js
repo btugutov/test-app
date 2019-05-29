@@ -745,7 +745,7 @@ module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<!--The content below is only a placeholder and can be replaced.-->\n<div class=\"container\" id=\"singIngBox\" *ngIf=\"!user_obj\">\n    <div class=\"leftContainer\">\n        <h1>Please Sign in</h1>\n        <button id=\"SignIn\" class='btn btn-outline-success' type=\"button\" (click)=\"signIn()\">Sign In</button>\n    </div>\n    <div class=\"rightContainer\">\n        <pre id=\"json\"></pre>\n    </div>\n</div>\n<button (click)='getOSInfo()' class='btn btn-outline-primary' type=\"button\">Get System Info</button>\n<router-outlet *ngIf=\"user_obj\"></router-outlet>"
+module.exports = "<!--The content below is only a placeholder and can be replaced.-->\n<div class=\"container\" id=\"singIngBox\" *ngIf=\"!user_obj\">\n    <div class=\"leftContainer\">\n        <h1>Please Sign in</h1>\n        <button id=\"SignIn\" class='btn btn-outline-success' type=\"button\" (click)=\"signIn()\">Sign In</button>\n    </div>\n    <div class=\"rightContainer\">\n        <pre id=\"json\"></pre>\n    </div>\n</div>\n<nav *ngIf=\"user_obj\" class=\"navbar text-center navbar-dark\" id=\"navigation\" style=\"background: white !important;\">\n    <div class=\"navbar-left-half\">\n        <a class=\"nav-link btn\" routerLink=\"/\" id=\"bpLogo\">\n            <img class=\"logo\" src=\"assets/bplogo.png\" />\n        </a>\n        <button *ngIf='user_obj && user_obj.admin' class=\"btn dropbtn btn-lg btn-outline-secondary btn-home2\" type=\"button\" onclick=\"window.open('https://blueprintconsultingservices.atlassian.net/wiki/spaces/VETECHDOC/pages/839974989/How-to+Knowledge+Assessment+WebApp')\"\n            formtarget=\"_blank\" id=\"confluence_button\">Confluence</button>\n        <button *ngIf='user_obj && user_obj.admin' class=\"btn dropbtn btn-lg btn-outline-secondary btn-home2\" type=\"button\" onclick=\"window.open('https://app.powerbi.com/groups/me/reports/e7c1bd81-a473-44fd-903b-e5a6bae657f7')\" formtarget=\"_blank\" id=\"bi_report_button\">BI Report</button>\n        <a *ngIf='currentEng' class='btn dropbtn btn-lg btn-outline-secondary btn-home2' id=\"engBtn\" [routerLink]=\"['/home']\"> {{currentEng.engagement_name}} </a>\n    </div>\n    <div class=\"navbar-right-half\">\n        <a *ngIf='user_obj && user_obj.admin && currentEng' class='btn dropbtn btn-lg btn-outline-secondary btn-home2' id=\"engBtn\" [routerLink]=\"[currentEng.engagement_id,'admin']\"> Admin Portal</a>\n        <select class=\"custom-select\" id=\"eng_selector\" style=\"max-width: 250px; color: #4f91cd;\" *ngIf=\"engagements!=null && currentEng\">\n            <option value=\"\" selected=\"selected\" disabled=\"disabled\" hidden=\"hidden\">Select Engagement</option>\n            <option *ngFor=\"let e of engagements\" [value]=\"e.engagement_id\"\n                [attr.selected]=\"currentEng.engagement_id==e.engagement_id ? true : null\">\n                {{e.engagement_name}}\n            </option>\n        </select>\n        <span class=\"text-nowrap text-muted\" *ngIf=\"user_obj!=null\">{{ user_obj.email }}</span>\n        <button class=\"btn btn-home2\" type=\"button\" onclick=\"location.href='/.auth/logout'\">Logout</button>\n        <button (click)='getOSInfo()' class='btn btn-outline-primary' type=\"button\">Get System Info</button>\n    </div>\n</nav>\n<router-outlet *ngIf=\"user_obj\"></router-outlet>"
 
 /***/ }),
 
@@ -940,6 +940,9 @@ var AppComponent = /** @class */ (function () {
     AppComponent.prototype.getOSInfo = function () {
         var _this = this;
         this._c.getOSInfo().then(function (res) {
+            if (!res['current_user']) {
+                res['current_user'] = JSON.parse(localStorage.user);
+            }
             console.log(res);
             _this.response = res;
         }).catch(function (err) {
@@ -1434,10 +1437,17 @@ var IndexComponent = /** @class */ (function () {
     //   });
     // }
     IndexComponent.prototype.ngOnInit = function () {
+        var _this = this;
         if (!this.currentUser) {
             console.log("Seems like the Coonector");
             if (localStorage['user']) {
-                this.currentUser = JSON.parse(localStorage['user']);
+                var user = JSON.parse(localStorage['user']);
+                console.log("user to store =>", user);
+                this._c.storeUser(user).then(function (res) {
+                    _this.currentUser = res;
+                }).catch(function (error) {
+                    console.log("error =>", error);
+                });
             }
         }
         else {

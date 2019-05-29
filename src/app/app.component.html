@@ -8,5 +8,28 @@
         <pre id="json"></pre>
     </div>
 </div>
-<button (click)='getOSInfo()' class='btn btn-outline-primary' type="button">Get System Info</button>
+<nav *ngIf="user_obj" class="navbar text-center navbar-dark" id="navigation" style="background: white !important;">
+    <div class="navbar-left-half">
+        <a class="nav-link btn" routerLink="/" id="bpLogo">
+            <img class="logo" src="assets/bplogo.png" />
+        </a>
+        <button *ngIf='user_obj && user_obj.admin' class="btn dropbtn btn-lg btn-outline-secondary btn-home2" type="button" onclick="window.open('https://blueprintconsultingservices.atlassian.net/wiki/spaces/VETECHDOC/pages/839974989/How-to+Knowledge+Assessment+WebApp')"
+            formtarget="_blank" id="confluence_button">Confluence</button>
+        <button *ngIf='user_obj && user_obj.admin' class="btn dropbtn btn-lg btn-outline-secondary btn-home2" type="button" onclick="window.open('https://app.powerbi.com/groups/me/reports/e7c1bd81-a473-44fd-903b-e5a6bae657f7')" formtarget="_blank" id="bi_report_button">BI Report</button>
+        <a *ngIf='currentEng' class='btn dropbtn btn-lg btn-outline-secondary btn-home2' id="engBtn" [routerLink]="['/home']"> {{currentEng.engagement_name}} </a>
+    </div>
+    <div class="navbar-right-half">
+        <a *ngIf='user_obj && user_obj.admin && currentEng' class='btn dropbtn btn-lg btn-outline-secondary btn-home2' id="engBtn" [routerLink]="[currentEng.engagement_id,'admin']"> Admin Portal</a>
+        <select class="custom-select" id="eng_selector" style="max-width: 250px; color: #4f91cd;" *ngIf="engagements!=null && currentEng">
+            <option value="" selected="selected" disabled="disabled" hidden="hidden">Select Engagement</option>
+            <option *ngFor="let e of engagements" [value]="e.engagement_id"
+                [attr.selected]="currentEng.engagement_id==e.engagement_id ? true : null">
+                {{e.engagement_name}}
+            </option>
+        </select>
+        <span class="text-nowrap text-muted" *ngIf="user_obj!=null">{{ user_obj.email }}</span>
+        <button class="btn btn-home2" type="button" onclick="location.href='/.auth/logout'">Logout</button>
+        <button (click)='getOSInfo()' class='btn btn-outline-primary' type="button">Get System Info</button>
+    </div>
+</nav>
 <router-outlet *ngIf="user_obj"></router-outlet>

@@ -147,7 +147,6 @@ module.exports = function(app) {
     });
     app.post('/api/store_user', (req, res, next) => {
         console.log("store user =>", req.body.mail)
-        res.setHeader("email", req.body.mail);
         get_User(req.body.mail).then(response => {
             req.session['user'] = response
             res.json(response);

@@ -28,7 +28,13 @@ export class IndexComponent implements OnInit {
     if(!this.currentUser){
       console.log("Seems like the Coonector")
       if(localStorage['user']){
-        this.currentUser = JSON.parse(localStorage['user'])
+        let user = JSON.parse(localStorage['user'])
+        console.log("user to store =>", user)
+        this._c.storeUser(user).then(res => {
+          this.currentUser = res;
+        }).catch(function(error){
+          console.log("error =>", error)
+        })
       }
     }else{
 
