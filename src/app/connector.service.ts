@@ -11,10 +11,15 @@ import 'rxjs/Rx';
 export class ConnectorService {
   private cur_user = new BehaviorSubject(null);
   user = this.cur_user.asObservable();
+
   private curEng = new BehaviorSubject(null);
   currentEng = this.curEng.asObservable();
+
   private engs = new BehaviorSubject(null);
   engagements = this.engs.asObservable();
+
+  private quizzes = new BehaviorSubject(null);
+  quizz_names = this.quizzes.asObservable();
 
   constructor(private http: HttpClient) {
 
@@ -202,6 +207,23 @@ export class ConnectorService {
         );
       })
     }
+    getQuizForGrading(email, topic_id){
+      var that = this;
+      return new Promise(function (resolve, reject) {
+        let obj = {
+          'email': email,
+          'topic_id': topic_id
+        }
+        that.http.post('/api/getQuizForGrading', obj).subscribe(
+          res => {
+            resolve(res)
+          },
+          err => {
+            reject(err)
+          }
+        );
+      })
+    }
 
 
   // ==============================================================================
@@ -224,6 +246,9 @@ export class ConnectorService {
     }
     if (obj.engagements) {
       this.engs.next(obj.engagements);
+    }
+    if(obj.quizzes){
+      this.quizzes.next(obj.quizzes)
     }
   }
   test() {

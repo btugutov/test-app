@@ -422,7 +422,7 @@ var AdminEditusersComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJzcmMvYXBwL2FkbWluLWdyYWRlL2FkbWluLWdyYWRlLmNvbXBvbmVudC5jc3MifQ== */"
+module.exports = ".grading_page {\n    width: 100%;\n    padding: 50px 25px;\n}\n\n.grading_page-title {}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNyYy9hcHAvYWRtaW4tZ3JhZGUvYWRtaW4tZ3JhZGUuY29tcG9uZW50LmNzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtJQUNJLFdBQVc7SUFDWCxrQkFBa0I7QUFDdEI7O0FBRUEscUJBQXFCIiwiZmlsZSI6InNyYy9hcHAvYWRtaW4tZ3JhZGUvYWRtaW4tZ3JhZGUuY29tcG9uZW50LmNzcyIsInNvdXJjZXNDb250ZW50IjpbIi5ncmFkaW5nX3BhZ2Uge1xuICAgIHdpZHRoOiAxMDAlO1xuICAgIHBhZGRpbmc6IDUwcHggMjVweDtcbn1cblxuLmdyYWRpbmdfcGFnZS10aXRsZSB7fSJdfQ== */"
 
 /***/ }),
 
@@ -433,7 +433,7 @@ module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<p>\n  admin-grade works!\n</p>\n"
+module.exports = "<div *ngIf='quiz' class=\"grading_page\">\n    <div class='grading_page-title'>\n        <h1 class=\"text-center \">Please grade provided submitted quiz <span class=\"text-monospace text-muted\">{{quiz_name}} #{{submit_id}}</span></h1>\n    </div>\n    <div>\n\n    </div>\n</div>\n<div *ngIf='quiz == null' class=\"loading_box\">\n    <img class=\"loading_box-ing\" src='./../../assets/loading.gif'>\n</div>\n{{quiz| json}}"
 
 /***/ }),
 
@@ -449,10 +449,53 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AdminGradeComponent", function() { return AdminGradeComponent; });
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
+/* harmony import */ var _connector_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../connector.service */ "./src/app/connector.service.ts");
+/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/common */ "./node_modules/@angular/common/fesm5/common.js");
+
+
+
 
 
 var AdminGradeComponent = /** @class */ (function () {
-    function AdminGradeComponent() {
+    function AdminGradeComponent(_ConnectorService, location, _route, _r) {
+        var _this = this;
+        this._ConnectorService = _ConnectorService;
+        this.location = location;
+        this._route = _route;
+        this._r = _r;
+        // this._ConnectorService.quizz_names.subscribe(quiz_names => {
+        //   this.quiz_names = quiz_names;
+        // })
+        this._route.paramMap.subscribe(function (params) {
+            _this.currentEng_id = params.get('eng');
+            _this.target = params.get('target_id');
+            _this.action = params.get('action');
+            _this._ConnectorService.user.subscribe(function (user) {
+                _this.currentUser = user;
+                if (user && (!user.admin_grader && !user.admin_owner)) {
+                    _this._r.navigate(["/" + _this.currentEng_id + "/home"]);
+                }
+                if (user && user.profile_id) {
+                    if (_this.action == 'grade') {
+                        _this._ConnectorService.getQuizForGrading(_this.currentUser.email, _this.target).then(function (res) {
+                            if (res['status'] == 'success') {
+                                _this.quiz = res['quiz'];
+                                console.log("RESPONSE =>", res);
+                                _this.quiz_name = res['quiz_name']['quiz_name'];
+                                _this.submit_id = res['submit_id'];
+                            }
+                            else {
+                                console.log("error!");
+                                console.log(res);
+                            }
+                        }).catch(function (error) {
+                            console.log(error);
+                        });
+                    }
+                }
+            });
+        });
     }
     AdminGradeComponent.prototype.ngOnInit = function () {
     };
@@ -462,7 +505,7 @@ var AdminGradeComponent = /** @class */ (function () {
             template: __webpack_require__(/*! ./admin-grade.component.html */ "./src/app/admin-grade/admin-grade.component.html"),
             styles: [__webpack_require__(/*! ./admin-grade.component.css */ "./src/app/admin-grade/admin-grade.component.css")]
         }),
-        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [])
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_connector_service__WEBPACK_IMPORTED_MODULE_3__["ConnectorService"], _angular_common__WEBPACK_IMPORTED_MODULE_4__["Location"], _angular_router__WEBPACK_IMPORTED_MODULE_2__["ActivatedRoute"], _angular_router__WEBPACK_IMPORTED_MODULE_2__["Router"]])
     ], AdminGradeComponent);
     return AdminGradeComponent;
 }());
@@ -593,6 +636,7 @@ var AdminHomeGradeComponent = /** @class */ (function () {
             }
             if (user && user.profile_id) {
                 _this._ConnectorService.getCompletedQuizzes(_this.currentUser['profile_id'], _this.currentEng_id).then(function (res) {
+                    _this._ConnectorService.setMainInfo({ "quizzes": res });
                     for (var c in res) {
                         for (var t in res[c]) {
                             for (var el in res[c][t]) {
@@ -1350,6 +1394,8 @@ var ConnectorService = /** @class */ (function () {
         this.currentEng = this.curEng.asObservable();
         this.engs = new rxjs__WEBPACK_IMPORTED_MODULE_2__["BehaviorSubject"](null);
         this.engagements = this.engs.asObservable();
+        this.quizzes = new rxjs__WEBPACK_IMPORTED_MODULE_2__["BehaviorSubject"](null);
+        this.quizz_names = this.quizzes.asObservable();
     }
     ConnectorService.prototype.storeUser = function (user) {
         // console.log("storeUser(user): user =>", user)
@@ -1502,6 +1548,20 @@ var ConnectorService = /** @class */ (function () {
             });
         });
     };
+    ConnectorService.prototype.getQuizForGrading = function (email, topic_id) {
+        var that = this;
+        return new Promise(function (resolve, reject) {
+            var obj = {
+                'email': email,
+                'topic_id': topic_id
+            };
+            that.http.post('/api/getQuizForGrading', obj).subscribe(function (res) {
+                resolve(res);
+            }, function (err) {
+                reject(err);
+            });
+        });
+    };
     // ==============================================================================
     // MISC FUNCTIONS
     ConnectorService.prototype.objToToArray = function (obj) {
@@ -1522,6 +1582,9 @@ var ConnectorService = /** @class */ (function () {
         }
         if (obj.engagements) {
             this.engs.next(obj.engagements);
+        }
+        if (obj.quizzes) {
+            this.quizzes.next(obj.quizzes);
         }
     };
     ConnectorService.prototype.test = function () {

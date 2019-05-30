@@ -28,6 +28,7 @@ export class AdminHomeGradeComponent implements OnInit {
       }
       if (user && user.profile_id) {
         this._ConnectorService.getCompletedQuizzes(this.currentUser['profile_id'], this.currentEng_id).then(res => {
+          this._ConnectorService.setMainInfo({"quizzes": res})
           for (let c in res) {
             for (let t in res[c]) {
               for (let el in res[c][t]) {

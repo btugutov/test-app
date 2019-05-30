@@ -1,3 +1,12 @@
-<p>
-  admin-grade works!
-</p>
+<div *ngIf='quiz' class="grading_page">
+    <div class='grading_page-title'>
+        <h1 class="text-center ">Please grade provided submitted quiz <span class="text-monospace text-muted">{{quiz_name}} #{{submit_id}}</span></h1>
+    </div>
+    <div>
+
+    </div>
+</div>
+<div *ngIf='quiz == null' class="loading_box">
+    <img class="loading_box-ing" src='./../../assets/loading.gif'>
+</div>
+{{quiz| json}}

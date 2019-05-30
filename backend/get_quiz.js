@@ -6,8 +6,8 @@ const { debugLog, getLineNumber, log_event, dbQueryMethod } = require('./classes
 
 // class like objects >>> really just json objects
 
-class quiz{
-    constructor(topic_id, profile_id){
+class quiz {
+    constructor(topic_id, profile_id) {
         this.topic;
         this.profile_id = profile_id; // user class
         this.range;
@@ -148,76 +148,72 @@ function start_quiz_session_MSSQL(quiz_id, profile_id) {
 // monoliths //
 
 // Create a quiz object and all the mess is around that
-function get_Quiz(topic_id, profile_id, engagement_id, range){
+function get_Quiz(topic_id, profile_id, engagement_id, range) {
     let functionName = 'get_Quiz';
-    return new Promise(function (resolve, reject) {
+    return new Promise(function(resolve, reject) {
         debugLog('(topic_id, profile_id, range)')
-      //console.log(topic_id, profile_id, range)
-        if(range == undefined){
+            //console.log(topic_id, profile_id, range)
+        if (range == undefined) {
             range = 9999;
         }
 
         const quizObj = new quiz(topic_id, profile_id);
         quizObj.profile_id = profile_id;
-        
-        function write_quizResult_toObject(quizResult){
+
+        function write_quizResult_toObject(quizResult) {
             //debugLog("write_quizResult_toObject")
-            try{
+            try {
                 quizObj.topic = quizResult[0]['topic'];
                 quizObj.topic_id = quizResult[0]['topic_id'];
                 quizObj.quiz_id = quizResult[0]['quiz_id'];
                 quizObj.quiz_name = quizResult[0]['quiz_name'];
                 quizObj.quizTable = quizResult;
-            }
-            catch(error){
+            } catch (error) {
                 log_event('WARNING', error, functionName);
                 //debugLog(error);
             }
         }
 
-        function write_quizSessionResult_toObject(quizSessionResult){
-                //debugLog("write_quizSessionResult_toObject")
-            try{
+        function write_quizSessionResult_toObject(quizSessionResult) {
+            //debugLog("write_quizSessionResult_toObject")
+            try {
                 quizObj.quiz_session = quizSessionResult[0]; // do i need this?
                 quizObj.submit_id = quizSessionResult[0]['submit_id'];
                 quizObj.start_time = quizSessionResult[0]['start_time'];
                 quizObj.topic_id = quizSessionResult[0]['topic_id'];
                 quizObj.quiz_id = quizSessionResult[0]['quiz_id'];
                 quizObj.quiz_name = quizSessionResult[0]['quiz_name'];
-            }
-            catch(error){
+            } catch (error) {
                 log_event('WARNING', error, functionName);
                 //debugLog(error);
             }
         }
-        
-        let resolveQuizSession = new Promise(function(resolve, reject){
+
+        let resolveQuizSession = new Promise(function(resolve, reject) {
             get_quiz_session_MSSQL(profile_id, topic_id, range, engagement_id).then(result => {
                 //console.log(result)
                 //debugLog("get_quiz_session_MSSQL");
                 let freshQuiz;
-                if ((result[0] === undefined) || (result === []) || (result.includes("ERROR!"))){
+                if ((result[0] === undefined) || (result === []) || (result.includes("ERROR!"))) {
                     //debugLog("Never tested on this topic before");
                     freshQuiz = true;
-                }
-                else {
+                } else {
                     //debugLog("In the middle of a quiz");
                     freshQuiz = false;
                 }
-                if(freshQuiz === true){
+                if (freshQuiz === true) {
                     start_quiz_session_MSSQL(topic_id, profile_id).then(unused => {
                         get_quiz_session_MSSQL(profile_id, topic_id, range, engagement_id).then(newQuizSessionResult => {
                             write_quizSessionResult_toObject(newQuizSessionResult);
                             resolve('COMPLETE');
                             return 'COMPLETE';
-                        }).catch(function (error) {
+                        }).catch(function(error) {
                             log_event('WARNING', error, functionName);
                             reject("ERROR: Cannot get_quiz.");
                             return "ERROR: Cannot get_quiz.";
                         });
                     })
-                }
-                else{
+                } else {
                     // give resoluts for what quiz the user is currently in the middle of
                     write_quizSessionResult_toObject(result);
                     resolve('COMPLETE');
@@ -228,7 +224,7 @@ function get_Quiz(topic_id, profile_id, engagement_id, range){
         Promise.all([resolveQuizSession]).then(tableResult => {
             get_quiz_current_MSSQL(topic_id, quizObj.profile_id, quizObj.submit_id).then(resultQuiz => {
                 //console.log(resultQuiz)
-                if(resultQuiz[0] === undefined || resultQuiz.includes('ERROR')){
+                if (resultQuiz[0] === undefined || resultQuiz.includes('ERROR')) {
                     quizObj.quizTable = undefined;
                     resolve(quizObj);
                     return quizObj;
@@ -236,30 +232,48 @@ function get_Quiz(topic_id, profile_id, engagement_id, range){
                 write_quizResult_toObject(resultQuiz);
                 //debugLog(quizObj);
                 resolve(quizObj);
-                return(quizObj);
-            }).catch(function (error){
+                return (quizObj);
+            }).catch(function(error) {
                 log_event('WARNING', error, functionName);
                 reject(error);
-                throw(error);
+                throw (error);
             });
-        }).catch(function (error){
+        }).catch(function(error) {
             log_event('WARNING', error, functionName);
             reject(error);
-            throw(error);
+            throw (error);
         });
-    }).catch(function (error){
+    }).catch(function(error) {
         log_event('WARNING', error, functionName);
         reject(error);
-        throw(error);
-    }).finally(function(){
+        throw (error);
+    }).finally(function() {
         //debugLog("finally block");
     });
 }
 
+function get_quiz_name_by_topic_id(topic_id) {
+    let functionName = 'get_quiz_name_by_topic_id';
+    return new Promise(function(resolve, reject) {
+        let profileQuery = `SELECT * FROM [dbo].[KA_quizzes] WHERE topic_id = '${topic_id}'`;
+        return dbQueryMethod.query(profileQuery).then(result => {
+            resolve(result)
+            return result;
+        }).catch(function(error) {
+            reject(error)
+            log_event('WARNING', error, functionName);
+            throw error;
+        })
+    }).catch(function(error) {
+        log_event('WARNING', error, functionName);
+        throw error;
+    })
+};
 /* Public / Export functions */
 
 module.exports = {
-    get_Quiz: get_Quiz
+    get_Quiz: get_Quiz,
+    get_quiz_name_by_topic_id: get_quiz_name_by_topic_id
 };
 
 //

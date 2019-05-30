@@ -1787,3 +1787,18 @@ a.disabled {
 .button_hover_expand:hover {
     box-shadow: 0.5rem 0.5rem 1rem rgba(0, 0, 0, .45)!important;
 }
+
+.loading_box {
+    width: 100%;
+    height: 80%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+}
+
+.loading_box {
+    max-height: fit-content
+}

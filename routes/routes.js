@@ -14,7 +14,7 @@ const { get_topic_to_edit_MSSQL, get_topic_info_for_editQuizHome, update_topic_m
 // get_User
 const { get_User } = require('../backend/get_user.js');
 // get_Quiz
-const { get_Quiz } = require('../backend/get_quiz.js');
+const { get_Quiz, get_quiz_name_by_topic_id } = require('../backend/get_quiz.js');
 // edit permissions
 const { update_permission_quiz_main, update_permission_admins_main, get_all_users_admin_permission_edit, get_all_users_quiz_permission_edit } = require('../backend/edit_permission.js');
 // grade_quiz
@@ -483,13 +483,13 @@ module.exports = function(app) {
 
     // *************************************************************************
     // *************************************************************************
-    // ***********************                  ********************************
-    // ***********************  ADMIN FUNCTIONS ********************************
-    // ***********************                  ********************************
+    // ***********************                    ******************************
+    // ***********************  GRADING FUNCTIONS ******************************
+    // ***********************                    ******************************
     // *************************************************************************
     // *************************************************************************
 
-    //  ====================== GRAING FUNCTIONS ===============================
+    //  ====================== GRADING FUNCTIONS ===============================
     app.post('/api/getCompletedQuizzesLength', (req, res, next) => {
         get_completed_quiz_submissions(req.body.profile_id, req.body.eng_id).then(compQuiz => {
             res.json(compQuiz.length)
@@ -504,6 +504,8 @@ module.exports = function(app) {
             res.json(quizzes)
         })
     });
+
+    // release one quiz by id
     app.post('/api/releaseSubmittedQuiz', (req, res, next) => {
         let submit_id = req.body['submit_id']
         let response_message = {
@@ -518,8 +520,6 @@ module.exports = function(app) {
                 let currentUser = returnObj['currentUser']
                 if (currentUser.admin_grader || currentUser.admin_owner) {
                     release_grade_hold(submit_id, currentUser.profile_id).then(response => {
-                            // console.log("response =>", response)
-                            // console.log("response.rowsAffected ==>", response.rowsAffected[0])
                             if (response.rowsAffected[0] == 0) {
                                 response_message.message = "Somehow release your current quiz that your were in process of grading. Try it again or contact developers."
                                 res.json(response_message)
@@ -546,8 +546,9 @@ module.exports = function(app) {
                 error_handler(error, res, getLineNumber())
                 res.json(response_message)
             });
-        // console.log("/api/releaseSubmittedQuiz: req.body =>", req.body)
     });
+
+    // release all current quizzes
     app.post('/api/releaseAllSubmittedQuiz', (req, res, next) => {
         let ids = req.body['ids']
         let response_message = {
@@ -588,8 +589,177 @@ module.exports = function(app) {
                 error_handler(error, res, getLineNumber())
                 res.json(response_message)
             });
-        // console.log("/api/releaseSubmittedQuiz: req.body =>", req.body)
     });
+
+    app.post('/api/getQuizForGrading', function(req, res, next) {
+        var topic_id = req.body['topic_id']
+        let response_message = {
+            'status': 'failed',
+            'message': ''
+        }
+        preload_block(res, req.body['email'], undefined, undefined)
+            .catch(function(error) {
+                debugLog("ERROR HERE" + error);
+                response_message['message'] = error;
+                res.json(response_message)
+                return;
+            })
+            .then(returnObj => {
+                let currentUser = returnObj['currentUser']
+                let quiz = returnObj['quiz']
+                    // check to see if user is an admin
+                    // If they are, update the database to show that they have started grading a quiz
+                if (currentUser.admin_grader || currentUser.admin_owner) {
+                    check_current_quizzes(currentUser.profile_id, topic_id).then(cur_quizzes => {
+                            /* UNCOMMENT IT !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                            if (cur_quizzes.length > 0) {
+                                for (let el in cur_quizzes) {
+                                    if (!cur_quizzes[el]['graded']) {
+                                        response_message.message = "continue";
+                                        response_message.continue = cur_quizzes[el]['submit_id'];
+                                        res.json(response_message)
+                                        return;
+                                    }
+                                }
+                            }
+                         UNCOMMENT IT !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                           */
+                            start_grading_quiz(currentUser.profile_id, topic_id).then(submit_id => {
+                                    // If there are no quizzes left to grade, redirect back to the admin landing page
+                                    if (submit_id === undefined) {
+                                        response_message.message = "No such topics left to grade"
+                                        res.json(response_message);
+                                        return;
+                                    } else { // If there are quizzes left, render the grading page
+                                        get_completed_quiz_by_submissions(submit_id).then(result => {
+                                                response_message.quiz = unescapingObj(result);
+                                                response_message.submit_id = submit_id
+                                                response_message.status = 'success';
+                                                get_quiz_name_by_topic_id(topic_id).then(quiz_name => {
+                                                        response_message.quiz_name = quiz_name[0];
+                                                        res.json(response_message);
+                                                    })
+                                                    .catch(function(error) {
+                                                        log_event('ERROR', error, 'gradeHome');
+                                                        error_handler(error, res, getLineNumber())
+                                                        response_message.message = error;
+                                                        res.json(response_message)
+                                                    });
+                                            })
+                                            .catch(function(error) {
+                                                log_event('ERROR', error, 'gradeHome');
+                                                error_handler(error, res, getLineNumber())
+                                                response_message.message = error;
+                                                res.json(response_message)
+                                            });
+                                    }
+                                })
+                                .catch(function(error) {
+                                    log_event('ERROR', error, 'gradeHome');
+                                    error_handler(error, res, getLineNumber())
+                                    response_message.message = error;
+                                    res.json(response_message)
+                                });
+
+                        })
+                        .catch(function(error) {
+                            log_event('ERROR', error, 'gradeHome');
+                            error_handler(error, res, getLineNumber())
+                            response_message.message = error;
+                            res.json(response_message)
+                        });
+
+                }
+                // if not admin, redirect to an error page
+                else {
+                    response_message.message = 'You have no permissions';
+                    res.json(response_message)
+                }
+            })
+            .catch(function(error) {
+                log_event('ERROR', error, 'gradeHome');
+                error_handler(error, res, getLineNumber())
+                response_message.message = error;
+                res.json(response_message)
+            });
+    });
+    app.get('/:eng/continue_grade/:submit_id', function(req, res, next) {
+        var submit_id = req.params['submit_id']
+        preload_block(res, req.headers['x-ms-client-principal-name'], undefined, req.params['eng'])
+            .catch(function(error) {
+                debugLog("ERROR HERE" + error);
+                req.session['error_message'] = error;
+                res.redirect(302, `/${req.params['eng']}/oops`)
+            })
+            .then(returnObj => {
+                let currentUser = returnObj['currentUser']
+                let quiz = returnObj['quiz']
+                    // check to see if user is an admin
+                    // If they are, update the database to show that they have started grading a quiz
+                if (currentUser.admin_grader || currentUser.admin_owner) {
+                    get_table_complete('KA_engagement').then(res_engs => {
+                            if (!req.session['eng'] || req.session['eng'] == null || req.params['eng'] != req.session['eng']['engagement_id']) {
+                                console.log('DIFFERENT URL ENG AND SESSION ENG!!!!!!!!!!')
+                                console.log("req.params['eng'] =>", req.params['eng'], "; req.session['eng'] =>", req.session['eng'])
+                                for (let el in res_engs) {
+                                    if (res_engs[el]['engagement_id'] == req.params['eng']) {
+                                        req.session['eng'] = res_engs[el];
+                                        console.log("Now engagement is", req.session['eng']);
+                                        break;
+                                    }
+                                }
+                            }
+                            continue_grading_quiz(currentUser.profile_id, submit_id).then(result => {
+                                    console.log(`continue_grading_quiz result =>`, result)
+                                    let params = create_params_object(currentUser);
+                                    req.session['eng'] = reAssignSession(res_engs, req.params['eng']);
+                                    params['current_eng'] = req.session['eng'];
+                                    params['eng_ids'] = res_engs;
+                                    params['available_engagements'] = res_engs;
+                                    // If there are no quizzes left to grade, redirect back to the admin landing page
+                                    if (result === undefined) {
+                                        res.redirect(302, '/admin');
+                                    }
+
+                                    // If there are quizzes left, render the grading page
+                                    else {
+                                        get_completed_quiz_by_submissions(submit_id).then(result2 => {
+                                                res.locals.quiz = unescapingObj(result2);
+                                                res.render('grade', {
+                                                    quiz: res.locals.quiz,
+                                                    submit_id: result2[Object.keys(result2)[0]].submit_id[0],
+                                                    currentUserId: currentUser['profile_id'],
+                                                    hostname: hostname,
+                                                    params: params
+                                                })
+                                            })
+                                            .catch(function(error) {
+                                                log_event('ERROR', error, 'continue_grade');
+                                                error_handler(error, res, getLineNumber())
+                                            });
+                                    }
+                                })
+                                .catch(function(error) {
+                                    log_event('ERROR', error, 'continue_grade');
+                                    error_handler(error, res, getLineNumber())
+                                });
+                        })
+                        .catch(function(error) {
+                            log_event('ERROR', error, 'continue_grade');
+                            error_handler(error, res, getLineNumber())
+                        });
+                }
+                // if not admin, redirect to an error page
+                else {
+                    res.redirect(302, '/admin')
+                }
+            })
+            .catch(function(error) {
+                log_event('ERROR', error, 'continue_grade');
+                error_handler(error, res, getLineNumber())
+            });
+    });
+
 
 
 
