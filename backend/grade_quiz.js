@@ -267,7 +267,6 @@ function release_grade_hold(submit_id, profile_id) {
 };
 
 function release_grade_hold_all(ids, profile_id) {
-    console.log(`release_grade_hold(submit_id's = ${ids}, profile_id = ${profile_id})`)
     let multiple_submit_ids = '';
     let counter = 1;
     for (let el in ids) {
@@ -278,7 +277,7 @@ function release_grade_hold_all(ids, profile_id) {
         counter++;
     }
 
-    let functionName = 'release_grade_hold';
+    let functionName = 'release_grade_hold_all';
     console.log(`****** ${functionName} ******`)
     return new Promise(function(resolve, reject) {
         let query = `UPDATE [KA_quiz_submission] 

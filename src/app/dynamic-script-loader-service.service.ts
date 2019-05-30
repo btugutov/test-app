@@ -543,8 +543,10 @@ export class DynamicScriptLoaderServiceService {
       });`);
         script.appendChild(script_text)
         if (script.readyState) {  //IE
+            console.log('script.readyState =>', script.readyState)
             script.onreadystatechange = () => {
                 if (script.readyState === "loaded" || script.readyState === "complete") {
+                    console.log(`script.readyState === "loaded" || script.readyState === "complete" =>`, script.readyState === "loaded" || script.readyState === "complete")
                     script.onreadystatechange = null;
                     this.scripts[name].loaded = true;
                     resolve({script: name, loaded: true, status: 'Loaded'});
@@ -561,8 +563,10 @@ export class DynamicScriptLoaderServiceService {
         for(let c of head.children){
             if(c.id == "dragngdrop_logic"){
                 console.log("resintalling the script!")
-                let p = c.parentNode;
-                c.parentNode.removeChild(c)
+                head.removeChild(c)
+                console.log("parent.children after deleting child =>>>>", head.children)
+                location.reload();
+                // console.log("child after deleting from paretn =>>>", c)
             }
         }
         head.appendChild(script);

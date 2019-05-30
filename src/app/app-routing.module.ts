@@ -36,7 +36,7 @@ const routes: Routes = [
   { path: ':eng/AdminEditquiz/:topicID', component: AdminEditquizComponent },
   { path: ':eng/AdminEditsubmissions', component: AdminEditsubmissionsComponent },
   { path: ':eng/AdminEditusersComponent', component: AdminEditusersComponent},
-  { path: ':eng/AdminGradeComponent', component: AdminGradeComponent},
+  { path: ':eng/grade/:target_id/:action', component: AdminGradeComponent},
   { path: 'auth/login/aad/callback', component: AuthComponent},
   { path: 'oops', component: OopsComponent},
 

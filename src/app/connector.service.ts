@@ -16,13 +16,13 @@ export class ConnectorService {
   private engs = new BehaviorSubject(null);
   engagements = this.engs.asObservable();
 
-  constructor(private http: HttpClient) { 
+  constructor(private http: HttpClient) {
 
   }
 
-  storeUser(user){
+  storeUser(user) {
     // console.log("storeUser(user): user =>", user)
-    if(!user){
+    if (!user) {
       return false;
     }
     var that = this;
@@ -62,10 +62,10 @@ export class ConnectorService {
     })
     // console.log("done")
   }
-   // ENGAGEMENT FUNCTIONS =========================================================
-  getAvailableEngagements(profile_id){
+  // ENGAGEMENT FUNCTIONS =========================================================
+  getAvailableEngagements(profile_id) {
     var that = this;
-    profile_id ={
+    profile_id = {
       'profile_id': profile_id
     }
     return new Promise(function (resolve, reject) {
@@ -80,53 +80,58 @@ export class ConnectorService {
     })
   };
   // ==============================================================================
-    // QUIZ FUNCTIONS ===============================================================
-    takeQuiz(eng, email, topic_id, quiz_id){
-      let that = this;
-      return new Promise(function (resolve, reject) {
-        that.http.get(`/api/${eng}/topic/${topic_id}/user/${email}/quiz/${quiz_id}/question/1`).subscribe( // /3/topic/5/user/Bazyr-Tugutovs-Macbook-Pro.local/quiz/1/question/1
-          res => {
-            resolve(res)
-          },
-          err => {
-            reject(err)
-          }
-        );
-      })
-    }
-  
-    submitAnswer(eng_id, answer){
-      let that = this;
-      return new Promise(function (resolve, reject) {
-        that.http.post(`/api/${eng_id}/success`, answer).subscribe( // /3/topic/5/user/Bazyr-Tugutovs-Macbook-Pro.local/quiz/1/question/1
-          res => {
-            resolve(res)
-          },
-          err => {
-            reject(err)
-          }
-        );
-      })
-    }
-    // ==============================================================================
-    // CATEGORIES FUNCTIONS =========================================================
-    getAllCategoriesAndTopicsByProfileId(profile_id){
-      var that = this;
-      return new Promise(function (resolve, reject) {
-        let obj = {
-          'profile_id': profile_id
+
+  // QUIZ FUNCTIONS ===============================================================
+  takeQuiz(eng, email, topic_id, quiz_id) {
+    let that = this;
+    return new Promise(function (resolve, reject) {
+      that.http.get(`/api/${eng}/topic/${topic_id}/user/${email}/quiz/${quiz_id}/question/1`).subscribe( // /3/topic/5/user/Bazyr-Tugutovs-Macbook-Pro.local/quiz/1/question/1
+        res => {
+          resolve(res)
+        },
+        err => {
+          reject(err)
         }
-        that.http.post('/api/getAllCategoriesAndTopicsByProfileId', obj).subscribe(
-          res => {
-            resolve(res)
-          },
-          err => {
-            reject(err)
-          }
-        );
-      })
-    }
-    getCompletedQuizzesLength(profile_id, eng_id){
+      );
+    })
+  }
+
+  submitAnswer(eng_id, answer) {
+    let that = this;
+    return new Promise(function (resolve, reject) {
+      that.http.post(`/api/${eng_id}/success`, answer).subscribe( // /3/topic/5/user/Bazyr-Tugutovs-Macbook-Pro.local/quiz/1/question/1
+        res => {
+          resolve(res)
+        },
+        err => {
+          reject(err)
+        }
+      );
+    })
+  }
+  // ==============================================================================
+
+  // CATEGORIES FUNCTIONS =========================================================
+  getAllCategoriesAndTopicsByProfileId(profile_id) {
+    var that = this;
+    return new Promise(function (resolve, reject) {
+      let obj = {
+        'profile_id': profile_id
+      }
+      that.http.post('/api/getAllCategoriesAndTopicsByProfileId', obj).subscribe(
+        res => {
+          resolve(res)
+        },
+        err => {
+          reject(err)
+        }
+      );
+    })
+  }
+  // ==============================================================================
+  
+  // GRADING FUNCTIONS ============================================================
+    getCompletedQuizzesLength(profile_id, eng_id) {
       var that = this;
       return new Promise(function (resolve, reject) {
         let obj = {
@@ -143,7 +148,8 @@ export class ConnectorService {
         );
       })
     }
-    getCompletedQuizzes(profile_id, eng_id){
+
+    getCompletedQuizzes(profile_id, eng_id) {
       var that = this;
       return new Promise(function (resolve, reject) {
         let obj = {
@@ -160,29 +166,67 @@ export class ConnectorService {
         );
       })
     }
+
+    releaseSubmittedQuiz(submit_id, topic_id, email){
+      var that = this;
+      return new Promise(function (resolve, reject) {
+        let obj = {
+          'submit_id': submit_id,
+          'topic_id': topic_id,
+          'email': email
+        }
+        that.http.post('/api/releaseSubmittedQuiz', obj).subscribe(
+          res => {
+            resolve(res)
+          },
+          err => {
+            reject(err)
+          }
+        );
+      })
+    }
+    releaseAllSubmittedQuiz(ids, email){
+      var that = this;
+      return new Promise(function (resolve, reject) {
+        let obj = {
+          'ids': ids,
+          'email': email
+        }
+        that.http.post('/api/releaseAllSubmittedQuiz', obj).subscribe(
+          res => {
+            resolve(res)
+          },
+          err => {
+            reject(err)
+          }
+        );
+      })
+    }
+
+
   // ==============================================================================
 
   // MISC FUNCTIONS
-  objToToArray(obj){ // object has to be a list
+  objToToArray(obj) { // object has to be a list
     let result = [];
-    for(let el in obj){
+    for (let el in obj) {
       result.push(obj[el])
     }
     return result
   };
-  setMainInfo(obj){
-    if(obj.currentUser){
+  setMainInfo(obj) {
+    if (obj.currentUser) {
       this.cur_user.next(obj.currentUser);
     }
-    if(obj.currentEng){
+    if (obj.currentEng) {
       this.curEng.next(obj.currentEng);
       // console.log('The curEng is updated =>', this.curEng)
     }
-    if(obj.engagements){
+    if (obj.engagements) {
       this.engs.next(obj.engagements);
     }
   }
-  test(){
+  test() {
     var that = this;
     return new Promise(function (resolve, reject) {
       that.http.get('/api/test').subscribe(
@@ -195,7 +239,7 @@ export class ConnectorService {
       );
     })
   }
-  getOSInfo(){
+  getOSInfo() {
     var that = this;
     return new Promise(function (resolve, reject) {
       that.http.get('/api/get_system_info_and_print_message').subscribe(

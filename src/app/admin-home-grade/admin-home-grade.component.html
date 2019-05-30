@@ -3,9 +3,9 @@
         <h1 style="margin: 0px auto">Choose a category and topic to grade</h1>
     </div>
     <div class="d-flex justify-content-center">
-        <button class="btn btn-warning text-monospace button_hover_expand" *ngIf="your_list_length>1" id="release_all" style="border-radius: 0px; width: 250px">Release all {{your_list_length}} quizzes</button>
+        <button class="btn btn-warning text-monospace button_hover_expand" *ngIf="your_list_length>1" id="release_all" style="border-radius: 0px; width: 250px" (click)="releaseAllSubmittedQuiz()">Release all {{your_list_length}} quizzes</button>
         <button class="btn btn-warning text-monospace button_hover_expand" *ngIf="your_list_length==1" id="release_all" style="border-radius: 0px; width: 250px">Release the current quiz</button>
-        <button class="btn btn-warning text-monospace button_hover_expand" *ngIf="your_list_length<1" id="release_all" style="border-radius: 0px; width: 250px">No current quizzes under your revision</button>
+        <button class="btn btn-warning text-monospace button_hover_expand" *ngIf="your_list_length<1" id="release_all" style="border-radius: 0px; width: 250px" disabled>No current quizzes</button>
     </div>
     <div class="grade-home-main" id="grade-home-main">
         <div *ngFor="let c of quizzes | keyvalue" class="home-category" style="box-shadow: 12px 12px 16px silver;">
@@ -13,58 +13,18 @@
                 <h3>{{c.key}}</h3>
             </div>
             <div *ngFor="let t of c.value | keyvalue" class="home-category-element">
-                <a href="/3/grade/10">
-                    <button type="button" class="btn btn-outline-secondary">{{t.value[Object.keys(t.value)[0]] | json}}</button>
-                </a>
-            </div>
-        </div>
-        <div class="home-category" style="box-shadow: 12px 12px 16px silver;">
-            <div class="home-category-title">
-                <h3>Accounts</h3>
-            </div>
-            <div class="home-category-element">
-                <a href="/3/grade/10">
-                    <button type="button" class="btn btn-outline-secondary">Fraud (1)</button>
-                </a>
-            </div>
-            <div class="home-category-element">
-                <a href="/3/grade/35">
-                    <button type="button" class="btn btn-outline-secondary">Hijacking (2)</button>
-                </a>
-            </div>
-        </div>
-        <div class="home-category" style="box-shadow: 12px 12px 16px silver;">
-            <div class="home-category-title">
-                <h3>Billing</h3>
-            </div>
-            <div class="home-category-element">
-                <a href="/3/grade/55">
-                    <button type="button" class="btn btn-outline-secondary">asdblablblbla (2)</button>
-                </a>
-            </div>
-            <div class="home-category-element">
-                <a href="/3/grade/5">
-                    <button type="button" class="btn btn-outline-secondary">Billing (1)</button>
-                </a>
-            </div>
-        </div>
-        <div class="home-category" style="box-shadow: 12px 12px 16px silver;">
-            <div class="home-category-title">
-                <h3>TEst</h3>
-            </div>
-            <div class="home-category-element btn-outline-secondary">
-                <span> <span unselectable="on" class="font-weight-bolder">Manual and select inputs</span> <span class="text-black-10 text-monospace">1780</span></span>
-                <div class="home-category-element-inner-box">
-                    <a class="btn btn-outline-info btn-sm text-monospace" style="border: none" href="/3/continue_grade/1780">Continue</a>
-                    <a class="btn btn-outline-warning btn-sm text-monospace" style="border: none" href="/3/grade_release/1780/727">Release</a>
+                <div *ngIf="your_list[links[t.key]['topic_id']]" style="width:100%" align='center'>
+                    <span> <span unselectable="on" class="font-weight-bolder"> {{t.key}}</span> <span class="text-black-10 text-monospace">  #{{your_list[links[t.key]['topic_id']]['submit_id']}}</span></span>
+                    <div class="home-category-element-inner-box">
+                        <button class="btn btn-outline-info btn-sm text-monospace" style="border: none" [routerLink]="[your_list[links[t.key]['topic_id']]['continue_link']]">Continue</button>
+                        <button class="btn btn-outline-warning btn-sm text-monospace" style="border: none" (click)="releaseQuiz(your_list[links[t.key]['topic_id']]['submit_id'], links[t.key]['topic_id'])">Release</button>
+                    </div>
                 </div>
-            </div>
-            <div class="home-category-element btn-outline-secondary">
-                <span> <span unselectable="on" class="font-weight-bolder">Nothing</span> <span class="text-black-10 text-monospace">1771</span></span>
-                <div class="home-category-element-inner-box">
-                    <a class="btn btn-outline-info btn-sm text-monospace" style="border: none" href="/3/continue_grade/1771">Continue</a>
-                    <a class="btn btn-outline-warning btn-sm text-monospace" style="border: none" href="/3/grade_release/1771/727">Release</a>
-                </div>
+                <a *ngIf="your_list[links[t.key]['topic_id']] == null" [routerLink]="[links[t.key]['topic_link']]">
+                    <button type="button" class="btn btn-outline-secondary">{{t.key}}
+                        ({{  quizzes_counter[links[t.key]['topic_id']] }})
+                        {{your_list[links[t.key]['topic_id']]}}</button>
+                </a>
             </div>
         </div>
     </div>

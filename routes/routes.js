@@ -158,7 +158,7 @@ module.exports = function(app) {
             res.json(false)
         }
         get_User(email).then(response => {
-            console.log("response =>", response)
+            // console.log("response =>", response)
             req.session['user'] = response
             res.json(response);
         }).catch(function(err) {
@@ -195,8 +195,15 @@ module.exports = function(app) {
         })
     });
 
+    // ************************************************************************
+    // ************************************************************************
+    // ************************                       *************************
+    // ************************ TAKING QUIZ FUNCTIONS *************************
+    // ************************                       *************************
+    // ************************************************************************
+    // ************************************************************************
 
-    // TAKING QUIZ FUNCTIONS  =======================================================
+    // TAKING QUIZ FUNCTIONS  =================================================
     app.get('/api/:eng/topic/:topicID/user/:userID/quiz/:quizID/question/:questionID', (req, res, next) => {
         console.log("engId =>", req.params['eng'])
         console.log("topic_id =>", req.params['topicID'])
@@ -370,20 +377,14 @@ module.exports = function(app) {
             })
     })
     app.post('/api/:eng/success', (req, res) => {
-
         // input question
-        // console.log(req.body) >>> { '2,1,42,1595,2019-03-28 17:26:40,2': 'lksdlksjlkslksdfaj' }
         // CheckBox question / MC
-        // console.log(req.body) >>> { '1,2,42,1604,2019-03-28 21:39:53,133': [ '175', '176', '178', '179', '180' ] }
-
         // RADIO = >{ '1,2,727,1598,2019-03-28 21:07:23,183': [ '244', '245', '246', '247' ] }
-        console.log("'/api/:eng/success'  req.body=>", req.body)
         let drag_and_drop_bool = false;
         let drag_and_drop_answers = {};
         let iNeedThis = '';
         if (req.body['drag_and_drop']) {
             drag_and_drop_bool = true;
-            console.log("we've got drag and")
             let new_response = '';
             for (let el in req.body) {
                 if (el !== 'drag_and_drop' && el !== 'info') {
@@ -401,18 +402,13 @@ module.exports = function(app) {
             let new_key = req.body['info'];
             req.body = {};
             req.body[new_key] = new_response;
-            console.log("======= NEW REQUEST BODY========")
-            console.log(req.body)
         }
 
         debugLog(' ')
-        console.log(iNeedThis)
         debugLog(' ')
         try { console.log(req.body[info]) } catch (error) { debugLog('cant do it') };
         debugLog(' ')
         debugLog(' ')
-        console.log('=======drag_and_drop_answers========')
-        console.log(drag_and_drop_answers)
             // extract req.body key, which returns an array of strings and integers passed from the front.
             // turn everything in the array into strings and then turn into an array of strings
         const info = Object.keys(req.body).toString().split(',');
@@ -448,8 +444,6 @@ module.exports = function(app) {
         debugLog(' ')
         debugLog(' ')
         debugLog(' ')
-
-        console.log(answer_id, arrayAnswer, profileId, submitId, questionId)
             // input question
             //    console.log(answer_id, arrayAnswer, profileId, submitId, questionId)  >>>   [ 0 ] 'lksdlksjlkslksdfaj' '42' '1595' '2'
             // Checkbox question
@@ -468,18 +462,10 @@ module.exports = function(app) {
             // BEFORE THIS LINE THE INPUT SHOULD BE CLEAR OR FIXED OR SANITIZED
 
         // Update database with validated/santized values and then redirect user back to the quiz taking page
-        //console.log('-------------------- ANSWERED QUESTIONS --------------------')
-        console.log('answer_id', answer_id, 'arrayAnswer', arrayAnswer, 'profileId', profileId, 'submitId', submitId, 'questionId', questionId)
-            // answer_id [ '244', '246', '247' ] arrayAnswer 244%2C246%2C247 profileId 727 submitId 1601 questionId 183
+        // answer_id [ '244', '246', '247' ] arrayAnswer 244%2C246%2C247 profileId 727 submitId 1601 questionId 183
         finish_response(answer_id, arrayAnswer, profileId, submitId, questionId)
             .then(function(result) {
-                console.log('result.topic_id')
-                console.log(result.topic_id)
-                console.log(result.quiz_id)
-                console.log(result.profile_id)
-
                 let tempDirect = 'unknown';
-                console.log(`/${req.params['eng']}/topic/${result.topic_id}/user/${result.quiz_id}/quiz/${result.quiz_id}/question/${tempDirect}`);
                 //res.redirect(302, req.params['eng'] + '/topic/' + tempDirect + '/user/' + tempDirect + '/quiz/' + tempDirect + '/question/' + tempDirect);
                 res.redirect(302, `/api/${req.params['eng']}/topic/${result.topic_id}/user/${result.profile_id}/quiz/${result.quiz_id}/question/${tempDirect}`);
             }).catch(function(error) {
@@ -488,8 +474,22 @@ module.exports = function(app) {
             });
     });
 
+    // END OF TAKING QUIZ FUNCTIONS ===========================================
+    // ************************************************************************
+    // ********************* END OFTAKING QUIZ FUNCTIONS **********************
+    // ************************************************************************
 
-    // ADMIN FUNCTIONS  =======================================================
+
+
+    // *************************************************************************
+    // *************************************************************************
+    // ***********************                  ********************************
+    // ***********************  ADMIN FUNCTIONS ********************************
+    // ***********************                  ********************************
+    // *************************************************************************
+    // *************************************************************************
+
+    //  ====================== GRAING FUNCTIONS ===============================
     app.post('/api/getCompletedQuizzesLength', (req, res, next) => {
         get_completed_quiz_submissions(req.body.profile_id, req.body.eng_id).then(compQuiz => {
             res.json(compQuiz.length)
@@ -504,9 +504,114 @@ module.exports = function(app) {
             res.json(quizzes)
         })
     });
+    app.post('/api/releaseSubmittedQuiz', (req, res, next) => {
+        let submit_id = req.body['submit_id']
+        let response_message = {
+            'status': 'failed',
+            'message': ''
+        }
+        preload_block(res, req.body['email'], undefined, req.params['eng'])
+            .catch(function(error) {
+                res.json(error)
+            })
+            .then(returnObj => {
+                let currentUser = returnObj['currentUser']
+                if (currentUser.admin_grader || currentUser.admin_owner) {
+                    release_grade_hold(submit_id, currentUser.profile_id).then(response => {
+                            // console.log("response =>", response)
+                            // console.log("response.rowsAffected ==>", response.rowsAffected[0])
+                            if (response.rowsAffected[0] == 0) {
+                                response_message.message = "Somehow release your current quiz that your were in process of grading. Try it again or contact developers."
+                                res.json(response_message)
+                            } else {
+                                response_message.status = "success"
+                                res.json(response_message)
+                            }
+                        })
+                        .catch(function(error) {
+                            response_message.message = error;
+                            debugLog("ERROR HERE" + error);
+                            res.json(response_message)
+                        })
+
+                } else {
+                    response_message.message = 'You have no admin permissions';
+                    res.json(response_message)
+                }
+
+            })
+            .catch(function(error) {
+                response_message.message = error
+                log_event('ERROR', error, 'grade_release');
+                error_handler(error, res, getLineNumber())
+                res.json(response_message)
+            });
+        // console.log("/api/releaseSubmittedQuiz: req.body =>", req.body)
+    });
+    app.post('/api/releaseAllSubmittedQuiz', (req, res, next) => {
+        let ids = req.body['ids']
+        let response_message = {
+            'status': 'failed',
+            'message': ''
+        }
+        preload_block(res, req.body['email'], undefined, undefined)
+            .catch(function(error) {
+                res.json(error)
+            })
+            .then(returnObj => {
+                let currentUser = returnObj['currentUser']
+                if (currentUser.admin_grader || currentUser.admin_owner) {
+                    release_grade_hold_all(ids, currentUser.profile_id).then(response => {
+                            if (response.rowsAffected[0] == 0) {
+                                response_message.message = "Somehow release your current quiz that your were in process of grading. Try it again or contact developers."
+                                res.json(response_message)
+                            } else {
+                                response_message.status = "success"
+                                res.json(response_message)
+                            }
+                        })
+                        .catch(function(error) {
+                            response_message.message = error;
+                            debugLog("ERROR HERE" + error);
+                            res.json(response_message)
+                        })
+
+                } else {
+                    response_message.message = 'You have no admin permissions';
+                    res.json(response_message)
+                }
+
+            })
+            .catch(function(error) {
+                response_message.message = error
+                log_event('ERROR', error, 'grade_release');
+                error_handler(error, res, getLineNumber())
+                res.json(response_message)
+            });
+        // console.log("/api/releaseSubmittedQuiz: req.body =>", req.body)
+    });
 
 
-    // ENGAGEMENT FUNCTIONS  ==================================================
+
+    // ========================END OF ADMING FUNCTIONS=========================
+
+    // ************************************************************************
+    // ************************* END OF ADMIN FUNCTIONS ***********************
+    // ************************************************************************
+
+
+
+
+    // ************************************************************************
+    // ************************************************************************
+    // ***********************                  *******************************
+    // ***********************  MISC  FUNCTIONS *******************************
+    // ***********************                  *******************************
+    // ************************************************************************
+    // ************************************************************************
+
+
+    // ========================ENGAGEMENT FUNCTIONS ===========================
     app.get('/api/get_all_engagemets', (req, res, next) => {
         get_table_complete('KA_engagement').then(res_engs => {
             res.json(res_engs)
@@ -521,5 +626,9 @@ module.exports = function(app) {
             res.json(err);
         })
     });
+    // ====================== END OF ENGAGEMENT FUNCTIONS======================
 
+    // ************************************************************************
+    // ************************* END OF MISC  FUNCTIONS ***********************
+    // ************************************************************************
 }

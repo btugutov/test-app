@@ -43,14 +43,15 @@ export class QuizComponent implements OnInit {
     // You can load multiple scripts by just providing the key as argument into load method of the service
     this.dynamicScriptLoader.load('quizQuestionRender').then(data => {
       // Script Loaded Successfully
-    }).catch(error => console.log(error));
+    }).catch(error => 
+      console.log(error)
+      );
   }
 
 
   takeQuiz() {
-    console.log(`this.currentEng_id, this.currentUser.email, this.topic_id, this.quiz_id =>`, this.currentEng_id, this.currentUser.email, this.topic_id, this.quiz_id)
     this._ConnectorService.takeQuiz(this.currentEng_id, this.currentUser.email, this.topic_id, this.quiz_id).then(data => {
-      console.log(data)
+      // console.log(data)
       this.question = data;
       if (data) {
         if (data['completed']) {
@@ -63,21 +64,21 @@ export class QuizComponent implements OnInit {
         }
       }
     }).catch(function (error) {
-      console.log(error)
+      // console.log(error)
     })
   }
   submit() {
-    console.log('reading answer...')
+    // console.log('reading answer...')
     if (this.question.question_type == 2) {
       // MANUAL INPUT ANSWER
       let input = document.getElementById('manual_input_field');
-      console.log(input['value'])
+      // console.log(input['value'])
       let obj = {
         [this.question.pass_info]: input['value']
       }
-      console.log("OBJ =>", obj)
+      // console.log("OBJ =>", obj)
       this._ConnectorService.submitAnswer(this.currentEng_id, obj).then(data => {
-        console.log(data)
+        // console.log(data)
         if (data['completed']) {
           this.completed = true;
           this.completed_link = `/${this.currentEng_id}/home`;
@@ -108,13 +109,13 @@ export class QuizComponent implements OnInit {
           alert("SELECT ANSWER!!!!!")
           return
         }
-        console.log("ANSWER =>", answer.id)
+        // console.log("ANSWER =>", answer.id)
         let obj = {
           [this.question.pass_info]: answer.id,
         }
-        console.log("OBJ =>", obj)
+        // console.log("OBJ =>", obj)
         this._ConnectorService.submitAnswer(this.currentEng_id, obj).then(data => {
-          console.log(data)
+          // console.log(data)
           this.question = data;
           if (data) {
             if (data['completed']) {
@@ -146,9 +147,9 @@ export class QuizComponent implements OnInit {
           let obj = {
             [this.question.pass_info]: answers,
           }
-          console.log("OBJ =>", obj)
+          // console.log("OBJ =>", obj)
           this._ConnectorService.submitAnswer(this.currentEng_id, obj).then(data => {
-            console.log(data)
+            // console.log(data)
             this.question = data;
             if (data) {
               if (data['completed']) {
@@ -174,9 +175,9 @@ export class QuizComponent implements OnInit {
         let obj = {
           [this.question.pass_info]: inputs['value'],
         }
-        console.log("OBJ =>", obj)
+        // console.log("OBJ =>", obj)
         this._ConnectorService.submitAnswer(this.currentEng_id, obj).then(data => {
-          console.log(data)
+          // console.log(data)
           this.question = data;
           if (data) {
             if (data['completed']) {
@@ -213,7 +214,7 @@ export class QuizComponent implements OnInit {
         for (let el in this.question.pass_info) {
           submit_answers['info'] += this.question.pass_info[el] + ","
         }
-        console.log(submit_answers)
+        // console.log(submit_answers)
         /*
         {
           '785': '2',
@@ -224,7 +225,7 @@ export class QuizComponent implements OnInit {
         }
         */
         this._ConnectorService.submitAnswer(this.currentEng_id, submit_answers).then(data => {
-          console.log(data)
+          // console.log(data)
           this.question = data;
           if (data) {
             if (data['completed']) {
