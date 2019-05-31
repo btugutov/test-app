@@ -48,7 +48,7 @@ export class AdminHomeGradeComponent implements OnInit {
           this.quizzes = res;
           this.your_list = this.getCurrentGradingQuiz(res)
           this.your_list_length = Object.keys(this.your_list).length;
-          console.log("getCompletedQuizzes =>", this.quizzes)
+          // console.log("getCompletedQuizzes =>", this.quizzes)
         })
       }
     });
@@ -76,19 +76,18 @@ export class AdminHomeGradeComponent implements OnInit {
         }
       }
     }
-    console.log("getCurrentGradingQuiz  return =>", res)
-    console.log("quizzes_counter =>", this.quizzes_counter)
+    // console.log("getCurrentGradingQuiz  return =>", res)
+    // console.log("quizzes_counter =>", this.quizzes_counter)
     return res;
   }
   releaseQuiz(submit_id, topic_id){
-    // console.log("releasing  submit_id=>", submit_id, "; topic_id =>", topic_id)
-    // console.log("yourList =>", this.your_list[topic_id])
     this._ConnectorService.releaseSubmittedQuiz(submit_id, topic_id, this.currentUser.email).then(res =>{
-      console.log("RES =>",res)
+      // console.log("RES =>",res)
       delete this.your_list[topic_id];
       this.your_list_length--;
     }).catch(function(err){
-      console.log("ERROR =>", err)
+      alert(err)
+      // console.log("ERROR =>", err)
     })
   }
   releaseAllSubmittedQuiz(){
@@ -97,17 +96,27 @@ export class AdminHomeGradeComponent implements OnInit {
       ids.push(this.your_list[el]['submit_id'])
     }
     this._ConnectorService.releaseAllSubmittedQuiz(ids, this.currentUser.email).then(res =>{
-      console.log("RES =>",res)
+      // console.log("RES =>",res)
       if(res['status'] == "success"){
         this.your_list = {};
         this.your_list_length = 0;
       }else{
-        console.log(res['message'])
+        // console.log(res['message'])
         alert("Error. Please contact developers." + res['message'])
       }
     }).catch(function(err){
-      console.log("ERROR =>", err)
+      alert(err)
+      // console.log("ERROR =>", err)
     })
+  }
+  releaseOneSubmittedQuiz(){
+    if(Object.keys(this.your_list).length>1){
+      alert("Something is wrong.");
+      return;
+    }
+    for(let i in this.your_list){
+      this.releaseQuiz(this.your_list[i]['submit_id'], this.your_list[i]['quiz_id']);
+    }
   }
 
 }

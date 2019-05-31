@@ -224,6 +224,23 @@ export class ConnectorService {
         );
       })
     }
+    continueGradeQuiz(email, submit_id){
+      var that = this;
+      return new Promise(function (resolve, reject) {
+        let obj = {
+          'submit_id': submit_id,
+          'email': email
+        }
+        that.http.post('/api/continue_grade', obj).subscribe(
+          res => {
+            resolve(res)
+          },
+          err => {
+            reject(err)
+          }
+        );
+      })
+    }
 
 
   // ==============================================================================

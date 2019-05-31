@@ -683,13 +683,17 @@ module.exports = function(app) {
                 res.json(response_message)
             });
     });
-    app.get('/:eng/continue_grade/:submit_id', function(req, res, next) {
-        var submit_id = req.params['submit_id']
-        preload_block(res, req.headers['x-ms-client-principal-name'], undefined, req.params['eng'])
+    app.post('/api/continue_grade', function(req, res, next) {
+        var submit_id = req.body['submit_id'];
+        let response_message = {
+            'status': 'failed',
+            'message': ''
+        }
+        preload_block(res, req.body['email'], undefined, req.params['eng'])
             .catch(function(error) {
                 debugLog("ERROR HERE" + error);
-                req.session['error_message'] = error;
-                res.redirect(302, `/${req.params['eng']}/oops`)
+                response_message.message = error;
+                res.json(response_message)
             })
             .then(returnObj => {
                 let currentUser = returnObj['currentUser']
@@ -697,66 +701,52 @@ module.exports = function(app) {
                     // check to see if user is an admin
                     // If they are, update the database to show that they have started grading a quiz
                 if (currentUser.admin_grader || currentUser.admin_owner) {
-                    get_table_complete('KA_engagement').then(res_engs => {
-                            if (!req.session['eng'] || req.session['eng'] == null || req.params['eng'] != req.session['eng']['engagement_id']) {
-                                console.log('DIFFERENT URL ENG AND SESSION ENG!!!!!!!!!!')
-                                console.log("req.params['eng'] =>", req.params['eng'], "; req.session['eng'] =>", req.session['eng'])
-                                for (let el in res_engs) {
-                                    if (res_engs[el]['engagement_id'] == req.params['eng']) {
-                                        req.session['eng'] = res_engs[el];
-                                        console.log("Now engagement is", req.session['eng']);
-                                        break;
-                                    }
-                                }
-                            }
-                            continue_grading_quiz(currentUser.profile_id, submit_id).then(result => {
-                                    console.log(`continue_grading_quiz result =>`, result)
-                                    let params = create_params_object(currentUser);
-                                    req.session['eng'] = reAssignSession(res_engs, req.params['eng']);
-                                    params['current_eng'] = req.session['eng'];
-                                    params['eng_ids'] = res_engs;
-                                    params['available_engagements'] = res_engs;
-                                    // If there are no quizzes left to grade, redirect back to the admin landing page
-                                    if (result === undefined) {
-                                        res.redirect(302, '/admin');
-                                    }
-
-                                    // If there are quizzes left, render the grading page
-                                    else {
-                                        get_completed_quiz_by_submissions(submit_id).then(result2 => {
-                                                res.locals.quiz = unescapingObj(result2);
-                                                res.render('grade', {
-                                                    quiz: res.locals.quiz,
-                                                    submit_id: result2[Object.keys(result2)[0]].submit_id[0],
-                                                    currentUserId: currentUser['profile_id'],
-                                                    hostname: hostname,
-                                                    params: params
-                                                })
+                    continue_grading_quiz(currentUser.profile_id, submit_id).then(result => {
+                            if (result === undefined) { // If there are no quizzes left to grade, redirect back to the admin landing page
+                                response_message.message = '';
+                                res.json(response_message)
+                            } else { // If there are quizzes left, render the grading page
+                                get_completed_quiz_by_submissions(submit_id).then(result2 => {
+                                        let topic_id = result[0]['quiz_id'][0]
+                                        response_message.status = 'success';
+                                        response_message.quiz = unescapingObj(result2);
+                                        get_quiz_name_by_topic_id(topic_id).then(quiz_name => {
+                                                response_message.quiz_name = quiz_name[0];
+                                                res.json(response_message);
                                             })
                                             .catch(function(error) {
-                                                log_event('ERROR', error, 'continue_grade');
+                                                log_event('ERROR', error, 'gradeHome');
                                                 error_handler(error, res, getLineNumber())
+                                                response_message.message = error;
+                                                res.json(response_message)
                                             });
-                                    }
-                                })
-                                .catch(function(error) {
-                                    log_event('ERROR', error, 'continue_grade');
-                                    error_handler(error, res, getLineNumber())
-                                });
+                                    })
+                                    .catch(function(error) {
+                                        log_event('ERROR', error, 'continue_grade');
+                                        error_handler(error, res, getLineNumber())
+                                        response_message.message = error;
+                                        res.json(response_message)
+                                    });
+                            }
                         })
                         .catch(function(error) {
                             log_event('ERROR', error, 'continue_grade');
                             error_handler(error, res, getLineNumber())
+                            response_message.message = error;
+                            res.json(response_message)
                         });
                 }
                 // if not admin, redirect to an error page
                 else {
-                    res.redirect(302, '/admin')
+                    response_message.message = 'You have no permission.';
+                    res.json(response_message)
                 }
             })
             .catch(function(error) {
                 log_event('ERROR', error, 'continue_grade');
                 error_handler(error, res, getLineNumber())
+                response_message.message = error;
+                res.json(response_message)
             });
     });
 
