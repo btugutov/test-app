@@ -1,4 +1,9 @@
 <div class="column_list element-animation-fadeIn" id="body_fadeOut">
+    <div *ngIf='popup_message' class="d-flex justify-content-center popup_message_slideIn">
+        <div class="alert alert-success" role="alert">
+            <strong>Well done!</strong> {{popup_message}}
+        </div>
+    </div>
     <div style="display: flex; flex-direction: column; flex-wrap: nowrap; justify-content: center; align-items: stretch; align-content: center; height: 10%;">
         <h1 style="margin: 0px auto">Choose a category and topic to grade</h1>
     </div>
@@ -13,7 +18,7 @@
                 <h3>{{c.key}}</h3>
             </div>
             <div *ngFor="let t of c.value | keyvalue " class="home-category-element ">
-                <div *ngIf="your_list[links[t.key][ 'topic_id']] " style="width:100% " align='center'>
+                <div *ngIf="your_list[links[t.key][ 'topic_id']] " style="width:100%" align='center'>
                     <span> <span unselectable="on " class="font-weight-bolder "> {{t.key}}</span> <span class="text-black-10 text-monospace ">  #{{your_list[links[t.key]['topic_id']]['submit_id']}}</span></span>
                     <div class="home-category-element-inner-box ">
                         <button class="btn btn-outline-info btn-sm text-monospace " style="border: none " [routerLink]="[your_list[links[t.key][ 'topic_id']][ 'continue_link']] ">Continue</button>

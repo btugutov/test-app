@@ -422,7 +422,7 @@ var AdminEditusersComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = ".grading_page {\n    width: 100%;\n    padding: 50px 25px;\n}\n\n.grading_page-title {}\n\n.grading_page-release_button {\n    border: none;\n    border-radius: 0px;\n}\n\n/* \n\nnew*/\n\n.inline-radio {\n    display: flex;\n    border-radius: 3px;\n    overflow: hidden;\n    border: 1px solid #b6b6b6;\n}\n\n.inline-radio div {\n    position: relative;\n    flex: 1;\n}\n\n.inline-radio input {\n    width: 100%;\n    height: 100%;\n    opacity: 0;\n}\n\n.inline-radio label {\n    position: absolute;\n    top: 0;\n    left: 0;\n    color: #b6b6b6;\n    width: 100%;\n    height: 100%;\n    background: #fff;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    pointer-events: none;\n    border-right: 1px solid #b6b6b6;\n    -webkit-transform: ease 0.5s;\n            transform: ease 0.5s;\n}\n\n.inline-radio div:last-child label {\n    border-right: 0;\n}\n\n.inline-radio input:checked+label {\n    background: dimgrey;\n    font-weight: 500;\n    color: #fff;\n}\n\n.admin-radio-hover {}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNyYy9hcHAvYWRtaW4tZ3JhZGUvYWRtaW4tZ3JhZGUuY29tcG9uZW50LmNzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtJQUNJLFdBQVc7SUFDWCxrQkFBa0I7QUFDdEI7O0FBRUEscUJBQXFCOztBQUVyQjtJQUNJLFlBQVk7SUFDWixrQkFBa0I7QUFDdEI7O0FBR0E7O0lBRUk7O0FBRUo7SUFDSSxhQUFhO0lBQ2Isa0JBQWtCO0lBQ2xCLGdCQUFnQjtJQUNoQix5QkFBeUI7QUFDN0I7O0FBRUE7SUFDSSxrQkFBa0I7SUFDbEIsT0FBTztBQUNYOztBQUVBO0lBQ0ksV0FBVztJQUNYLFlBQVk7SUFDWixVQUFVO0FBQ2Q7O0FBRUE7SUFDSSxrQkFBa0I7SUFDbEIsTUFBTTtJQUNOLE9BQU87SUFDUCxjQUFjO0lBQ2QsV0FBVztJQUNYLFlBQVk7SUFDWixnQkFBZ0I7SUFDaEIsYUFBYTtJQUNiLG1CQUFtQjtJQUNuQix1QkFBdUI7SUFDdkIsb0JBQW9CO0lBQ3BCLCtCQUErQjtJQUMvQiw0QkFBb0I7WUFBcEIsb0JBQW9CO0FBQ3hCOztBQUVBO0lBQ0ksZUFBZTtBQUNuQjs7QUFFQTtJQUNJLG1CQUFtQjtJQUNuQixnQkFBZ0I7SUFDaEIsV0FBVztBQUNmOztBQUVBLG9CQUFvQiIsImZpbGUiOiJzcmMvYXBwL2FkbWluLWdyYWRlL2FkbWluLWdyYWRlLmNvbXBvbmVudC5jc3MiLCJzb3VyY2VzQ29udGVudCI6WyIuZ3JhZGluZ19wYWdlIHtcbiAgICB3aWR0aDogMTAwJTtcbiAgICBwYWRkaW5nOiA1MHB4IDI1cHg7XG59XG5cbi5ncmFkaW5nX3BhZ2UtdGl0bGUge31cblxuLmdyYWRpbmdfcGFnZS1yZWxlYXNlX2J1dHRvbiB7XG4gICAgYm9yZGVyOiBub25lO1xuICAgIGJvcmRlci1yYWRpdXM6IDBweDtcbn1cblxuXG4vKiBcblxubmV3Ki9cblxuLmlubGluZS1yYWRpbyB7XG4gICAgZGlzcGxheTogZmxleDtcbiAgICBib3JkZXItcmFkaXVzOiAzcHg7XG4gICAgb3ZlcmZsb3c6IGhpZGRlbjtcbiAgICBib3JkZXI6IDFweCBzb2xpZCAjYjZiNmI2O1xufVxuXG4uaW5saW5lLXJhZGlvIGRpdiB7XG4gICAgcG9zaXRpb246IHJlbGF0aXZlO1xuICAgIGZsZXg6IDE7XG59XG5cbi5pbmxpbmUtcmFkaW8gaW5wdXQge1xuICAgIHdpZHRoOiAxMDAlO1xuICAgIGhlaWdodDogMTAwJTtcbiAgICBvcGFjaXR5OiAwO1xufVxuXG4uaW5saW5lLXJhZGlvIGxhYmVsIHtcbiAgICBwb3NpdGlvbjogYWJzb2x1dGU7XG4gICAgdG9wOiAwO1xuICAgIGxlZnQ6IDA7XG4gICAgY29sb3I6ICNiNmI2YjY7XG4gICAgd2lkdGg6IDEwMCU7XG4gICAgaGVpZ2h0OiAxMDAlO1xuICAgIGJhY2tncm91bmQ6ICNmZmY7XG4gICAgZGlzcGxheTogZmxleDtcbiAgICBhbGlnbi1pdGVtczogY2VudGVyO1xuICAgIGp1c3RpZnktY29udGVudDogY2VudGVyO1xuICAgIHBvaW50ZXItZXZlbnRzOiBub25lO1xuICAgIGJvcmRlci1yaWdodDogMXB4IHNvbGlkICNiNmI2YjY7XG4gICAgdHJhbnNmb3JtOiBlYXNlIDAuNXM7XG59XG5cbi5pbmxpbmUtcmFkaW8gZGl2Omxhc3QtY2hpbGQgbGFiZWwge1xuICAgIGJvcmRlci1yaWdodDogMDtcbn1cblxuLmlubGluZS1yYWRpbyBpbnB1dDpjaGVja2VkK2xhYmVsIHtcbiAgICBiYWNrZ3JvdW5kOiBkaW1ncmV5O1xuICAgIGZvbnQtd2VpZ2h0OiA1MDA7XG4gICAgY29sb3I6ICNmZmY7XG59XG5cbi5hZG1pbi1yYWRpby1ob3ZlciB7fSJdfQ== */"
+module.exports = ".grading_page {\n    width: 100%;\n    padding: 50px 25px;\n}\n\n.grading_page-title {}\n\n.grading_page-release_button {\n    border: none;\n    border-radius: 0px;\n}\n\n.grading_page-body {\n    margin-top: 50px;\n}\n\n/* \n\nnew*/\n\n.inline-radio {\n    display: flex;\n    border-radius: 3px;\n    overflow: hidden;\n    border: 1px solid #b6b6b6;\n}\n\n.inline-radio div {\n    position: relative;\n    flex: 1;\n}\n\n.inline-radio input {\n    width: 100%;\n    height: 100%;\n    opacity: 0;\n}\n\n.inline-radio label {\n    position: absolute;\n    top: 0;\n    left: 0;\n    color: #b6b6b6;\n    width: 100%;\n    height: 100%;\n    background: #fff;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    pointer-events: none;\n    border-right: 1px solid #b6b6b6;\n    -webkit-transform: ease 0.5s;\n            transform: ease 0.5s;\n}\n\n.inline-radio div:last-child label {\n    border-right: 0;\n}\n\n.inline-radio input:checked+label {\n    background: dimgrey;\n    font-weight: 500;\n    color: #fff;\n}\n\n.admin-radio-hover {}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNyYy9hcHAvYWRtaW4tZ3JhZGUvYWRtaW4tZ3JhZGUuY29tcG9uZW50LmNzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtJQUNJLFdBQVc7SUFDWCxrQkFBa0I7QUFDdEI7O0FBRUEscUJBQXFCOztBQUVyQjtJQUNJLFlBQVk7SUFDWixrQkFBa0I7QUFDdEI7O0FBRUE7SUFDSSxnQkFBZ0I7QUFDcEI7O0FBR0E7O0lBRUk7O0FBRUo7SUFDSSxhQUFhO0lBQ2Isa0JBQWtCO0lBQ2xCLGdCQUFnQjtJQUNoQix5QkFBeUI7QUFDN0I7O0FBRUE7SUFDSSxrQkFBa0I7SUFDbEIsT0FBTztBQUNYOztBQUVBO0lBQ0ksV0FBVztJQUNYLFlBQVk7SUFDWixVQUFVO0FBQ2Q7O0FBRUE7SUFDSSxrQkFBa0I7SUFDbEIsTUFBTTtJQUNOLE9BQU87SUFDUCxjQUFjO0lBQ2QsV0FBVztJQUNYLFlBQVk7SUFDWixnQkFBZ0I7SUFDaEIsYUFBYTtJQUNiLG1CQUFtQjtJQUNuQix1QkFBdUI7SUFDdkIsb0JBQW9CO0lBQ3BCLCtCQUErQjtJQUMvQiw0QkFBb0I7WUFBcEIsb0JBQW9CO0FBQ3hCOztBQUVBO0lBQ0ksZUFBZTtBQUNuQjs7QUFFQTtJQUNJLG1CQUFtQjtJQUNuQixnQkFBZ0I7SUFDaEIsV0FBVztBQUNmOztBQUVBLG9CQUFvQiIsImZpbGUiOiJzcmMvYXBwL2FkbWluLWdyYWRlL2FkbWluLWdyYWRlLmNvbXBvbmVudC5jc3MiLCJzb3VyY2VzQ29udGVudCI6WyIuZ3JhZGluZ19wYWdlIHtcbiAgICB3aWR0aDogMTAwJTtcbiAgICBwYWRkaW5nOiA1MHB4IDI1cHg7XG59XG5cbi5ncmFkaW5nX3BhZ2UtdGl0bGUge31cblxuLmdyYWRpbmdfcGFnZS1yZWxlYXNlX2J1dHRvbiB7XG4gICAgYm9yZGVyOiBub25lO1xuICAgIGJvcmRlci1yYWRpdXM6IDBweDtcbn1cblxuLmdyYWRpbmdfcGFnZS1ib2R5IHtcbiAgICBtYXJnaW4tdG9wOiA1MHB4O1xufVxuXG5cbi8qIFxuXG5uZXcqL1xuXG4uaW5saW5lLXJhZGlvIHtcbiAgICBkaXNwbGF5OiBmbGV4O1xuICAgIGJvcmRlci1yYWRpdXM6IDNweDtcbiAgICBvdmVyZmxvdzogaGlkZGVuO1xuICAgIGJvcmRlcjogMXB4IHNvbGlkICNiNmI2YjY7XG59XG5cbi5pbmxpbmUtcmFkaW8gZGl2IHtcbiAgICBwb3NpdGlvbjogcmVsYXRpdmU7XG4gICAgZmxleDogMTtcbn1cblxuLmlubGluZS1yYWRpbyBpbnB1dCB7XG4gICAgd2lkdGg6IDEwMCU7XG4gICAgaGVpZ2h0OiAxMDAlO1xuICAgIG9wYWNpdHk6IDA7XG59XG5cbi5pbmxpbmUtcmFkaW8gbGFiZWwge1xuICAgIHBvc2l0aW9uOiBhYnNvbHV0ZTtcbiAgICB0b3A6IDA7XG4gICAgbGVmdDogMDtcbiAgICBjb2xvcjogI2I2YjZiNjtcbiAgICB3aWR0aDogMTAwJTtcbiAgICBoZWlnaHQ6IDEwMCU7XG4gICAgYmFja2dyb3VuZDogI2ZmZjtcbiAgICBkaXNwbGF5OiBmbGV4O1xuICAgIGFsaWduLWl0ZW1zOiBjZW50ZXI7XG4gICAganVzdGlmeS1jb250ZW50OiBjZW50ZXI7XG4gICAgcG9pbnRlci1ldmVudHM6IG5vbmU7XG4gICAgYm9yZGVyLXJpZ2h0OiAxcHggc29saWQgI2I2YjZiNjtcbiAgICB0cmFuc2Zvcm06IGVhc2UgMC41cztcbn1cblxuLmlubGluZS1yYWRpbyBkaXY6bGFzdC1jaGlsZCBsYWJlbCB7XG4gICAgYm9yZGVyLXJpZ2h0OiAwO1xufVxuXG4uaW5saW5lLXJhZGlvIGlucHV0OmNoZWNrZWQrbGFiZWwge1xuICAgIGJhY2tncm91bmQ6IGRpbWdyZXk7XG4gICAgZm9udC13ZWlnaHQ6IDUwMDtcbiAgICBjb2xvcjogI2ZmZjtcbn1cblxuLmFkbWluLXJhZGlvLWhvdmVyIHt9Il19 */"
 
 /***/ }),
 
@@ -433,7 +433,7 @@ module.exports = ".grading_page {\n    width: 100%;\n    padding: 50px 25px;\n}\
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div *ngIf='quiz' class=\"grading_page\">\n    <div class='grading_page-title'>\n        <h1 class=\"text-center \">Please grade provided submitted quiz <span class=\"text-monospace text-muted\">{{quiz_name}}\n        #{{submit_id}}</span> <button *ngIf=\"release_status == 'no'\" class=\"btn btn-outline-warning btn-lg text-monospace grading_page-release_button\" (click)=\"release('ask')\">Release</button>\n            <button *ngIf=\"release_status == 'ask'\" class=\"btn btn-warning btn-lg text-monospace grading_page-release_button\" (click)=\"release('yes')\">Yes</button>\n            <button *ngIf=\"release_status == 'ask'\" class=\"btn btn-info btn-lg text-monospace grading_page-release_button\" (click)=\"release('no')\">No</button>\n        </h1>\n    </div>\n    <div class='grading_page-body'>\n\n        <table class=\"table table-striped table-borderless\">\n            <thead class=\"thead-light\">\n                <tr>\n                    <th class=\"border-0 text-uppercase small font-weight-bold text-center\">Question</th>\n                    <th class=\"border-0 text-uppercase small font-weight-bold text-center\">Image</th>\n                    <th class=\"border-0 text-uppercase small font-weight-bold text-center\">Expected Answer</th>\n                    <th class=\"border-0 text-uppercase small font-weight-bold text-center\">User's Answer</th>\n                    <th class=\"border-0 text-uppercase small font-weight-bold text-center\">Scale</th>\n                    <th class=\"border-0 text-uppercase small font-weight-bold text-center\">Comment</th>\n                    <th class=\"border-0 text-uppercase small font-weight-bold text-center\">Annotation</th>\n                </tr>\n            </thead>\n            <tbody>\n                <tr *ngFor='let q of quiz'>\n                    <td>{{q.prompt}}</td>\n                    <td>\n                        <img *ngIf='q.base64' class='image_question img-fluid' src={{q.base64}} />\n                    </td>\n                    <td>{{q.expected_response}}</td>\n                    <td>{{q.input_value}}</td>\n                    <td style=\"width: 15%\">\n                        <!-- <fieldset class=\"gradeRangeCounter horizRadio btn-group\" id=\"undefinedfield\">\n                            <div class=\"btn-group btn-group-toggle\" data-toggle=\"buttons\">\n                                <div *ngFor=\"let num of [0.0, 0.2, 0.4, 0.6, 0.8, 1.0]\">\n                                    <label for=\"{{q.question_id}}_{{num}}\" class=\"btn btn-outline-dark btn-sm gradeRangeClickListener\" (click)=\"scaleButton($event.target)\">\n                                      <input class=\"placeAfter\"  type=\"radio\" id=\"{{q.question_id}}_{{num}}\" value=\"{{num}}\"  required=\"true\" autocomplete=\"off\"  /> {{num * 100}}\n                                    </label>\n\n                                </div>\n                            </div>\n                        </fieldset> -->\n                        <div class=\"inline-radio\">\n                            <div *ngFor=\"let num of [0.0, 0.2, 0.4, 0.6, 0.8, 1.0]\">\n                                <input type=\"radio\" (click)=\"scaleButton($event.target)\" value=\"{{num}}\" name=\"{{q.question_id}}\"><label class=\"admin-radio-hover\">{{num * 100}}</label>\n                            </div>\n                        </div>\n                    </td>\n                    <td>\n                        <div class=\"form-check\">\n                            <textarea class=\"ui-autocomplete-input\" id=\"{{q.question_id}}\" (input)=\"adminCommentInput($event.target)\" value=\"\" rows=\"2\" maxlength=\"500\" placeholder=\"Leave a comment\" autocomplete=\"off\" role=\"textbox\" aria-autocomplete=\"list\" aria-haspopup=\"true\" style=\"width:100%;\"></textarea>\n                        </div>\n                    </td>\n                    <td>\n                        <p>{{q.training_module}} </p>\n                        <a *ngIf=\"q.training_url\" href=\"q.training_url\" target='_blank'>Link</a>\n                    </td>\n                </tr>\n            </tbody>\n        </table>\n    </div>\n</div>\n<div *ngIf='quiz == null' class=\" loading_box \">\n    <img class=\"loading_box-ing \" src='./../../assets/loading.gif'>\n</div>"
+module.exports = "<div *ngIf='quiz' class=\"grading_page\">\n    <div class='grading_page-title'>\n        <h1 class=\"text-center \">Please grade provided submitted quiz <span class=\"text-monospace text-muted\">{{quiz_name}}\n        #{{submit_id}}</span>\n        </h1>\n        <div class=\"d-flex justify-content-center\">\n            <button *ngIf=\"release_status == 'no'\" class=\"btn btn-warning btn-lg text-monospace grading_page-release_button justify-content-center\" (click)=\"release('ask')\">Release</button>\n            <button *ngIf=\"release_status == 'ask'\" class=\"btn btn-warning btn-lg text-monospace grading_page-release_button\" (click)=\"release('yes')\">Yes</button>\n            <button *ngIf=\"release_status == 'ask'\" class=\"btn btn-info btn-lg text-monospace grading_page-release_button\" (click)=\"release('no')\">No</button>\n        </div>\n    </div>\n    <div class='grading_page-body'>\n        <table class=\"table table-striped table-borderless\">\n            <thead class=\"thead-light\">\n                <tr>\n                    <th class=\"border-0 text-uppercase small font-weight-bold text-center\">Question</th>\n                    <th class=\"border-0 text-uppercase small font-weight-bold text-center\">Image</th>\n                    <th class=\"border-0 text-uppercase small font-weight-bold text-center\">Expected Answer</th>\n                    <th class=\"border-0 text-uppercase small font-weight-bold text-center\">User's Answer</th>\n                    <th class=\"border-0 text-uppercase small font-weight-bold text-center\">Points</th>\n                    <th class=\"border-0 text-uppercase small font-weight-bold text-center\">Comment</th>\n                    <th class=\"border-0 text-uppercase small font-weight-bold text-center\">Annotation</th>\n                </tr>\n            </thead>\n            <tbody>\n                <tr *ngFor='let q of quiz'>\n                    <td>{{q.prompt}}</td>\n                    <td>\n                        <img *ngIf='q.base64' class='image_question img-fluid' src={{q.base64}} />\n                    </td>\n                    <td>{{q.expected_response}}</td>\n                    <td>{{q.input_value}}</td>\n                    <td style=\"width: 15%\">\n                        <div class=\"inline-radio\">\n                            <div *ngFor=\"let num of [0.0, 0.2, 0.4, 0.6, 0.8, 1.0]\">\n                                <input type=\"radio\" (click)=\"scaleButton($event.target)\" value=\"{{num}}\" name=\"{{q.question_id}}\"><label class=\"admin-radio-hover text-monospace\">{{num * 100}}</label>\n                            </div>\n                        </div>\n                    </td>\n                    <td>\n                        <div class=\"form-check\">\n                            <textarea class=\"ui-autocomplete-input\" id=\"{{q.question_id}}\" (input)=\"adminCommentInput($event.target)\" value=\"\" rows=\"2\" maxlength=\"500\" placeholder=\"Leave a comment\" autocomplete=\"off\" role=\"textbox\" aria-autocomplete=\"list\" aria-haspopup=\"true\" style=\"width:100%;\"></textarea>\n                        </div>\n                    </td>\n                    <td>\n                        <p>{{q.training_module}} </p>\n                        <a *ngIf=\"q.training_url\" href=\"{{q.training_url}}\" target='_blank'>Link</a>\n                    </td>\n                </tr>\n            </tbody>\n        </table>\n        <div class=\"d-flex justify-content-center\">\n            <button *ngIf=\"!grading_done_bool\" class='btn btn-lg btn-success grading_page-release_button text-monospace ' (click)=\"submitGrades()\" [disabled]=\"!grading_done_bool\">Please grade all answers.</button>\n            <button *ngIf=\"grading_done_bool\" class='btn btn-lg btn-success grading_page-release_button text-monospace ' (click)=\"submitGrades()\" [disabled]=\"!grading_done_bool\">Submit grades</button>\n        </div>\n    </div>\n</div>\n<div *ngIf='quiz == null' class=\" loading_box \">\n    <img class=\"loading_box-ing \" src='./../../assets/loading.gif'>\n</div>"
 
 /***/ }),
 
@@ -466,6 +466,8 @@ var AdminGradeComponent = /** @class */ (function () {
         this._r = _r;
         this.grade_data = {};
         this.release_status = 'no';
+        this.grading_done_bool = false;
+        this.grades_submitted = false;
         // this._ConnectorService.quizz_names.subscribe(quiz_names => {
         //   this.quiz_names = quiz_names;
         // })
@@ -538,7 +540,18 @@ var AdminGradeComponent = /** @class */ (function () {
         return new_result;
     };
     AdminGradeComponent.prototype.scaleButton = function (target) {
-        console.log("hey", target);
+        // console.log("hey", target.name, target.value)
+        if (!this.grade_data[target.name]) {
+            this.grade_data[target.name] = {
+                'grader_comment': ''
+            };
+        }
+        this.grade_data[target.name]['point'] = target.value;
+        if (Object.keys(this.grade_data).length == Object.keys(this.quiz).length) {
+            console.log("ALL DONE!");
+            this.grading_done_bool = true;
+            console.log(this.grade_data);
+        }
     };
     AdminGradeComponent.prototype.adminCommentInput = function (target) {
         if (!this.grade_data[target.id]) {
@@ -547,7 +560,35 @@ var AdminGradeComponent = /** @class */ (function () {
         this.grade_data[target.id]['grader_comment'] = target.value;
     };
     AdminGradeComponent.prototype.submitGrades = function () {
+        var _this = this;
         console.log(this.grade_data);
+        var obj = {
+            "submission_id": this.submit_id
+        };
+        for (var el in this.grade_data) {
+            obj[el] = [this.grade_data[el]['point'], this.grade_data[el]['grader_comment']];
+        }
+        this._ConnectorService.submitGrades(obj, this.currentUser.email).then(function (res) {
+            console.log("RES =>", res);
+            if (res['status'] == "success") {
+                var message = "Thank you for submitting grades for quiz " + unescape(_this.quiz_name) + " #" + _this.submit_id + " ";
+                _this._ConnectorService.setMainInfo({ 'message': message });
+                _this._r.navigateByUrl(_this.currentEng_id + "/adminhomegrade");
+            }
+            else {
+                alert(res['message']);
+            }
+        }).catch(function (err) {
+            console.log(err);
+            alert(err);
+        });
+        /*
+        obj {
+          '404': [ '1', '1st question' ],
+          '405': [ '0.8', 'second question' ],
+          submission_id: '1825'
+        }
+        */
     };
     AdminGradeComponent.prototype.release = function (status) {
         var _this = this;
@@ -655,7 +696,7 @@ module.exports = ".grade-home-main {\n    width: 80%;\n    margin: 0px auto;\n  
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"column_list element-animation-fadeIn\" id=\"body_fadeOut\">\n    <div style=\"display: flex; flex-direction: column; flex-wrap: nowrap; justify-content: center; align-items: stretch; align-content: center; height: 10%;\">\n        <h1 style=\"margin: 0px auto\">Choose a category and topic to grade</h1>\n    </div>\n    <div class=\"d-flex justify-content-center\">\n        <button class=\"btn btn-warning text-monospace button_hover_expand\" *ngIf=\"your_list_length>1\" id=\"release_all\" style=\"border-radius: 0px; width: 250px\" (click)=\"releaseAllSubmittedQuiz()\">Release all {{your_list_length}} quizzes</button>\n        <button class=\"btn btn-warning text-monospace button_hover_expand\" *ngIf=\"your_list_length==1\" id=\"release_all\" style=\"border-radius: 0px; width: 250px\" (click)=\"releaseOneSubmittedQuiz()\">Release the current quiz</button>\n        <button class=\" btn btn-warning text-monospace button_hover_expand \" *ngIf=\"your_list_length<1 \" id=\"release_all \" style=\"border-radius: 0px; width: 250px \" disabled>No current quizzes</button>\n    </div>\n    <div class=\"grade-home-main \" id=\"grade-home-main \">\n        <div *ngFor=\"let c of quizzes | keyvalue \" class=\"home-category \" style=\"box-shadow: 12px 12px 16px silver; \">\n            <div class=\"home-category-title \">\n                <h3>{{c.key}}</h3>\n            </div>\n            <div *ngFor=\"let t of c.value | keyvalue \" class=\"home-category-element \">\n                <div *ngIf=\"your_list[links[t.key][ 'topic_id']] \" style=\"width:100% \" align='center'>\n                    <span> <span unselectable=\"on \" class=\"font-weight-bolder \"> {{t.key}}</span> <span class=\"text-black-10 text-monospace \">  #{{your_list[links[t.key]['topic_id']]['submit_id']}}</span></span>\n                    <div class=\"home-category-element-inner-box \">\n                        <button class=\"btn btn-outline-info btn-sm text-monospace \" style=\"border: none \" [routerLink]=\"[your_list[links[t.key][ 'topic_id']][ 'continue_link']] \">Continue</button>\n                        <button class=\"btn btn-outline-warning btn-sm text-monospace \" style=\"border: none \" (click)=\"releaseQuiz(your_list[links[t.key][ 'topic_id']][ 'submit_id'], links[t.key][ 'topic_id']) \">Release</button>\n                    </div>\n                </div>\n                <a *ngIf=\"your_list[links[t.key][ 'topic_id']]==n ull \" [routerLink]=\"[links[t.key][ 'topic_link']] \">\n                    <button type=\"button \" class=\"btn btn-outline-secondary \">{{t.key}}\n                        ({{  quizzes_counter[links[t.key]['topic_id']] }})\n                        {{your_list[links[t.key]['topic_id']]}}</button>\n                </a>\n            </div>\n        </div>\n    </div>\n</div>"
+module.exports = "<div class=\"column_list element-animation-fadeIn\" id=\"body_fadeOut\">\n    <div *ngIf='popup_message' class=\"d-flex justify-content-center popup_message_slideIn\">\n        <div class=\"alert alert-success\" role=\"alert\">\n            <strong>Well done!</strong> {{popup_message}}\n        </div>\n    </div>\n    <div style=\"display: flex; flex-direction: column; flex-wrap: nowrap; justify-content: center; align-items: stretch; align-content: center; height: 10%;\">\n        <h1 style=\"margin: 0px auto\">Choose a category and topic to grade</h1>\n    </div>\n    <div class=\"d-flex justify-content-center\">\n        <button class=\"btn btn-warning text-monospace button_hover_expand\" *ngIf=\"your_list_length>1\" id=\"release_all\" style=\"border-radius: 0px; width: 250px\" (click)=\"releaseAllSubmittedQuiz()\">Release all {{your_list_length}} quizzes</button>\n        <button class=\"btn btn-warning text-monospace button_hover_expand\" *ngIf=\"your_list_length==1\" id=\"release_all\" style=\"border-radius: 0px; width: 250px\" (click)=\"releaseOneSubmittedQuiz()\">Release the current quiz</button>\n        <button class=\" btn btn-warning text-monospace button_hover_expand \" *ngIf=\"your_list_length<1 \" id=\"release_all \" style=\"border-radius: 0px; width: 250px \" disabled>No current quizzes</button>\n    </div>\n    <div class=\"grade-home-main \" id=\"grade-home-main \">\n        <div *ngFor=\"let c of quizzes | keyvalue \" class=\"home-category \" style=\"box-shadow: 12px 12px 16px silver; \">\n            <div class=\"home-category-title \">\n                <h3>{{c.key}}</h3>\n            </div>\n            <div *ngFor=\"let t of c.value | keyvalue \" class=\"home-category-element \">\n                <div *ngIf=\"your_list[links[t.key][ 'topic_id']] \" style=\"width:100%\" align='center'>\n                    <span> <span unselectable=\"on \" class=\"font-weight-bolder \"> {{t.key}}</span> <span class=\"text-black-10 text-monospace \">  #{{your_list[links[t.key]['topic_id']]['submit_id']}}</span></span>\n                    <div class=\"home-category-element-inner-box \">\n                        <button class=\"btn btn-outline-info btn-sm text-monospace \" style=\"border: none \" [routerLink]=\"[your_list[links[t.key][ 'topic_id']][ 'continue_link']] \">Continue</button>\n                        <button class=\"btn btn-outline-warning btn-sm text-monospace \" style=\"border: none \" (click)=\"releaseQuiz(your_list[links[t.key][ 'topic_id']][ 'submit_id'], links[t.key][ 'topic_id']) \">Release</button>\n                    </div>\n                </div>\n                <a *ngIf=\"your_list[links[t.key][ 'topic_id']]==n ull \" [routerLink]=\"[links[t.key][ 'topic_link']] \">\n                    <button type=\"button \" class=\"btn btn-outline-secondary \">{{t.key}}\n                        ({{  quizzes_counter[links[t.key]['topic_id']] }})\n                        {{your_list[links[t.key]['topic_id']]}}</button>\n                </a>\n            </div>\n        </div>\n    </div>\n</div>"
 
 /***/ }),
 
@@ -693,8 +734,15 @@ var AdminHomeGradeComponent = /** @class */ (function () {
         this.your_list = null; // list of your current grading quizzes
         this.your_list_length = 0;
         this.links = {};
+        this.popup_message = null;
         this._route.paramMap.subscribe(function (params) {
             _this.currentEng_id = params.get('eng');
+        });
+        this._ConnectorService.pop_up_message.subscribe(function (message) {
+            _this.popup_message = message;
+            if (message) {
+                _this._ConnectorService.setMainInfo({ 'message': null });
+            }
         });
         this._ConnectorService.user.subscribe(function (user) {
             _this.currentUser = user;
@@ -703,6 +751,7 @@ var AdminHomeGradeComponent = /** @class */ (function () {
             }
             if (user && user.profile_id) {
                 _this._ConnectorService.getCompletedQuizzes(_this.currentUser['profile_id'], _this.currentEng_id).then(function (res) {
+                    console.log("res => ", res);
                     _this._ConnectorService.setMainInfo({ "quizzes": res });
                     for (var c in res) {
                         for (var t in res[c]) {
@@ -723,6 +772,7 @@ var AdminHomeGradeComponent = /** @class */ (function () {
                     _this.quizzes = res;
                     _this.your_list = _this.getCurrentGradingQuiz(res);
                     _this.your_list_length = Object.keys(_this.your_list).length;
+                    console.log("this.your_list =>", _this.your_list);
                     // console.log("getCompletedQuizzes =>", this.quizzes)
                 });
             }
@@ -1472,6 +1522,8 @@ var ConnectorService = /** @class */ (function () {
         this.engagements = this.engs.asObservable();
         this.quizzes = new rxjs__WEBPACK_IMPORTED_MODULE_2__["BehaviorSubject"](null);
         this.quizz_names = this.quizzes.asObservable();
+        this.message = new rxjs__WEBPACK_IMPORTED_MODULE_2__["BehaviorSubject"](null);
+        this.pop_up_message = this.message.asObservable();
     }
     ConnectorService.prototype.storeUser = function (user) {
         // console.log("storeUser(user): user =>", user)
@@ -1652,6 +1704,20 @@ var ConnectorService = /** @class */ (function () {
             });
         });
     };
+    ConnectorService.prototype.submitGrades = function (grades, email) {
+        var that = this;
+        return new Promise(function (resolve, reject) {
+            var obj = {
+                'grades': grades,
+                'email': email
+            };
+            that.http.post('/api/submitGrades', obj).subscribe(function (res) {
+                resolve(res);
+            }, function (err) {
+                reject(err);
+            });
+        });
+    };
     // ==============================================================================
     // MISC FUNCTIONS
     ConnectorService.prototype.objToToArray = function (obj) {
@@ -1675,6 +1741,9 @@ var ConnectorService = /** @class */ (function () {
         }
         if (obj.quizzes) {
             this.quizzes.next(obj.quizzes);
+        }
+        if (obj.message) {
+            this.message.next(obj.message);
         }
     };
     ConnectorService.prototype.test = function () {

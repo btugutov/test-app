@@ -21,6 +21,9 @@ export class ConnectorService {
   private quizzes = new BehaviorSubject(null);
   quizz_names = this.quizzes.asObservable();
 
+  private message = new BehaviorSubject(null);
+  pop_up_message = this.message.asObservable();
+
   constructor(private http: HttpClient) {
 
   }
@@ -242,7 +245,23 @@ export class ConnectorService {
       })
     }
 
-
+    submitGrades(grades, email){
+      var that = this;
+      return new Promise(function (resolve, reject) {
+        let obj = {
+          'grades': grades,
+          'email': email
+        }
+        that.http.post('/api/submitGrades', obj).subscribe(
+          res => {
+            resolve(res)
+          },
+          err => {
+            reject(err)
+          }
+        );
+      })
+    }
   // ==============================================================================
 
   // MISC FUNCTIONS
@@ -265,7 +284,10 @@ export class ConnectorService {
       this.engs.next(obj.engagements);
     }
     if(obj.quizzes){
-      this.quizzes.next(obj.quizzes)
+      this.quizzes.next(obj.quizzes);
+    }
+    if(obj.message){
+      this.message.next(obj.message);
     }
   }
   test() {

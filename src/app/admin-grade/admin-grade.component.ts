@@ -19,6 +19,8 @@ export class AdminGradeComponent implements OnInit {
   grade_data = {};
   release_status = 'no';
   topic_id;
+  grading_done_bool = false;
+  grades_submitted = false;
   constructor(private _ConnectorService: ConnectorService, private location: Location, private _route: ActivatedRoute, private _r: Router) {
     // this._ConnectorService.quizz_names.subscribe(quiz_names => {
     //   this.quiz_names = quiz_names;
@@ -91,7 +93,18 @@ export class AdminGradeComponent implements OnInit {
   }
 
   scaleButton(target){
-    console.log("hey", target)
+    // console.log("hey", target.name, target.value)
+    if(!this.grade_data[target.name]){
+      this.grade_data[target.name] = {
+        'grader_comment': ''
+      };
+    }
+    this.grade_data[target.name]['point'] = target.value;
+    if(Object.keys(this.grade_data).length == Object.keys(this.quiz).length){
+      console.log("ALL DONE!")
+      this.grading_done_bool = true;
+      console.log(this.grade_data)
+    }
   }
   adminCommentInput(target){
     if(!this.grade_data[target.id]){
@@ -101,6 +114,32 @@ export class AdminGradeComponent implements OnInit {
   }
   submitGrades(){
     console.log(this.grade_data)
+    let obj = {
+      "submission_id": this.submit_id
+    };
+    for(let el in this.grade_data){
+      obj[el] = [this.grade_data[el]['point'], this.grade_data[el]['grader_comment']]
+    }
+    this._ConnectorService.submitGrades(obj, this.currentUser.email).then(res =>{
+      console.log("RES =>", res)
+      if(res['status']=="success"){
+        let message = `Thank you for submitting grades for quiz ${unescape(this.quiz_name)} #${this.submit_id} `;
+        this._ConnectorService.setMainInfo({'message': message});
+        this._r.navigateByUrl(`${this.currentEng_id}/adminhomegrade`)
+      }else{
+        alert(res['message'])
+      }
+    }).catch(function(err){
+      console.log(err)
+      alert(err)
+    })
+    /*
+    obj { 
+      '404': [ '1', '1st question' ],
+      '405': [ '0.8', 'second question' ],
+      submission_id: '1825' 
+    }
+    */
   }
   release(status){
     this.release_status = status;

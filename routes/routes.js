@@ -611,22 +611,24 @@ module.exports = function(app) {
                     // If they are, update the database to show that they have started grading a quiz
                 if (currentUser.admin_grader || currentUser.admin_owner) {
                     check_current_quizzes(currentUser.profile_id, topic_id).then(cur_quizzes => {
-                            /* UNCOMMENT IT !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                             if (cur_quizzes.length > 0) {
                                 for (let el in cur_quizzes) {
                                     if (!cur_quizzes[el]['graded']) {
-                                        response_message.message = "continue";
-                                        response_message.continue = cur_quizzes[el]['submit_id'];
-                                        res.json(response_message)
-                                        return;
+                                        /* UNCOMMENT IT !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                                            response_message.message = "continue";
+                                            response_message.continue = cur_quizzes[el]['submit_id'];
+                                            res.json(response_message)
+                                            return;
+                                            UNCOMMENT IT !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                                              */
+                                        console.log("NEED TO CONTINUE!!!")
                                     }
                                 }
                             }
-                         UNCOMMENT IT !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-                           */
                             start_grading_quiz(currentUser.profile_id, topic_id).then(submit_id => {
                                     // If there are no quizzes left to grade, redirect back to the admin landing page
                                     if (submit_id === undefined) {
+                                        console.log("submit_id =>>>>>", submit_id)
                                         response_message.message = "No such topics left to grade"
                                         res.json(response_message);
                                         return;
@@ -749,7 +751,68 @@ module.exports = function(app) {
                 res.json(response_message)
             });
     });
+    app.post('/api/submitGrades', function(req, res, next) {
+        let response_message = {
+            'status': 'failed',
+            'message': ''
+        }
+        let functionName = "api/submitGrades";
+        let grades = req.body.grades;
+        try {
+            preload_block(res, req.body['email'], undefined, undefined)
+                .catch(function(error) {
+                    debugLog("ERROR HERE" + error);
+                    response_message.message = error;
+                    res.json(response_message)
+                })
+                .then(returnObj => {
+                    let currentUser = returnObj['currentUser']
+                        // check to make sure that user has grading permissions before accepting data from the post
+                    if (currentUser.admin_grader || currentUser.admin_owner) {
+                        console.log("GRADES INCOMING!!!!!!!!!!!!!!!!", grades)
+                            // validate and sanitize grades
+                        let quiz = gradeValidate(grades);
+                        console.log("gradeValidate(grades) =>>>", quiz)
+                        const reviewer_id = currentUser.profile_id;
+                        let questions = Object.keys(quiz);
+                        // loop through each question and update DB with score (and feedback if provided)
+                        for (let i = 0; i < questions.length; i++) {
+                            update_grade_input_response(questions[i], quiz[questions[i]][2], quiz[questions[i]][0], quiz[questions[i]][1], reviewer_id);
+                        }
+                        finish_gradable_quiz_session_by_id(grades['submission_id']).then(response => {
+                            quizEndChecks(grades['submission_id']).then(graded_done => {
+                                response_message.status = 'success';
+                                response_message.confirm = graded_done;
+                                res.json(response_message)
+                            }).catch(function(error) {
+                                log_event('ERROR', error, functionName);
+                                error_handler(error, res, getLineNumber())
+                                response_message.message = error;
+                                res.json(response_message)
+                            });;
 
+                        }).catch(function(error) {
+                            log_event('ERROR', error, functionName);
+                            error_handler(error, res, getLineNumber())
+                            response_message.message = error;
+                            res.json(response_message)
+                        });;
+                        // After grading is completed, redirect admin the the admin landing page
+                    } else {
+                        response_message.message = 'You have no permission.';
+                        res.json(response_message)
+                    }
+                }).catch(function(error) {
+                    log_event('ERROR', error, 'gradeHome');
+                    error_handler(error, res, getLineNumber());
+                    response_message.message = error;
+                    res.json(response_message)
+                });
+        } catch (err) {
+            response_message.status = err;
+            res.json(err)
+        }
+    })
 
 
 
