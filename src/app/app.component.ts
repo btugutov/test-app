@@ -208,8 +208,9 @@ export class AppComponent implements OnInit {
     for(let i = 3; i < loc.length; i++){
       new_loc+="/"+loc[i];
     }
+    console.log(loc)
     // this._r.navigate([new_loc]);
-    this._r.navigateByUrl(new_loc)
+    this._r.navigateByUrl(`/${eng_id}/home`)
   }
 
 

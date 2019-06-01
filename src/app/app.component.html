@@ -16,7 +16,7 @@
         <button *ngIf='user_obj && user_obj.admin' class="btn dropbtn btn-lg btn-outline-secondary btn-home2" type="button" onclick="window.open('https://blueprintconsultingservices.atlassian.net/wiki/spaces/VETECHDOC/pages/839974989/How-to+Knowledge+Assessment+WebApp')"
             formtarget="_blank" id="confluence_button">Confluence</button>
         <button *ngIf='user_obj && user_obj.admin' class="btn dropbtn btn-lg btn-outline-secondary btn-home2" type="button" onclick="window.open('https://app.powerbi.com/groups/me/reports/e7c1bd81-a473-44fd-903b-e5a6bae657f7')" formtarget="_blank" id="bi_report_button">BI Report</button>
-        <a *ngIf='currentEng' class='btn dropbtn btn-lg btn-outline-secondary btn-home2' id="engBtn" [routerLink]="['/home']"> {{currentEng.engagement_name}} </a>
+        <a *ngIf='currentEng' class='btn dropbtn btn-lg btn-outline-secondary btn-home2' id="engBtn" [routerLink]="[currentEng['engagement_id'],'home']"> {{currentEng.engagement_name}} </a>
     </div>
     <div class="navbar-right-half">
         <a *ngIf='user_obj && user_obj.admin && currentEng' class='btn dropbtn btn-lg btn-outline-secondary btn-home2' id="engBtn" [routerLink]="[currentEng.engagement_id,'admin']"> Admin Portal</a>
