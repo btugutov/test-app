@@ -35,13 +35,13 @@ export class AppComponent implements OnInit {
     })
     this._c.currentEng.subscribe(currentEng => {
       if (currentEng) {
-        console.log('we got currentEng!! =>', currentEng)
+        // console.log('we got currentEng!! =>', currentEng)
         this.currentEng = currentEng;
       }
     })
     this._c.engagements.subscribe(engagements => {
       if (engagements) {
-        console.log('we got engagements!! =>', engagements)
+        // console.log('we got engagements!! =>', engagements)
         this.engagements = engagements;
       }
     })
@@ -235,7 +235,44 @@ export class AppComponent implements OnInit {
     })
   }
   ngOnInit() {
-    console.log("App component is here! this.currentEng =>", this.currentEng)
+    // console.log("App component is here! this.currentEng =>", this.currentEng)
+    let loc = location.href.split('/');
+    console.log("THIS LOCATION =>", loc)
+    if(loc[3]){
+      if(localStorage['cur_eng']){
+        if(localStorage['cur_eng']['engagement_id'] != loc[3]){
+          this._c.getAvailableEngagements(this.user_obj.profile_id).then(res => {
+            for(let el in res){
+              if(res[el]['engagement_id'] == loc[3]){
+                this.currentEng = res[el];
+                localStorage['cur_eng'] = res[el];
+                this._c.setMainInfo({'currentEng': res[el]});
+                console.log("NEW ENGAGEMENT WAS DETECTED =>", res[el])
+                return;
+              }
+            }
+          })
+        }
+      }else{
+        this._c.getAvailableEngagements(this.user_obj.profile_id).then(res => {
+          for(let el in res){
+            if(res[el]['engagement_id'] == loc[3]){
+              this.currentEng = res[el];
+              localStorage['cur_eng'] = res[el];
+              this._c.setMainInfo({'currentEng': res[el]});
+              console.log("SETTING A NEW ENGAGEMENT")
+              return;
+            }
+          }
+          alert("ERROR! No SUCH ENGAGEMENT WAS FOUND!")
+          this._r.navigateByUrl('/');
+        })
+        .catch(function(err){
+          console.log( "ERR =>", err)
+        })
+      }
+    }
+    
   }
   //========================= END OF MISC FUNCTIONS =============
 }

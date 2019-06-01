@@ -1,7 +1,10 @@
 <div class="column_list element-animation-fadeIn" id="body_fadeOut">
     <div *ngIf='popup_message' class="d-flex justify-content-center popup_message_slideIn">
-        <div class="alert alert-success" role="alert">
-            <strong>Well done!</strong> {{popup_message}}
+        <div *ngIf='popup_message.success' class="alert alert-success" role="alert">
+            <strong>Well done!</strong> {{popup_message.message}}
+        </div>
+        <div *ngIf='!popup_message.success' class="alert alert-danger" role="alert">
+            <h4 class="alert-heading">Oops! Please contact admin or developers!</h4> {{popup_message.message | json}}
         </div>
     </div>
     <div style="display: flex; flex-direction: column; flex-wrap: nowrap; justify-content: center; align-items: stretch; align-content: center; height: 10%;">

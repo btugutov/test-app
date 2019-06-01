@@ -39,33 +39,33 @@ export class AdminGradeComponent implements OnInit {
             this._ConnectorService.getQuizForGrading(this.currentUser.email, this.target).then(res => {
               if(res['status'] == 'success'){
                 this.quiz = this.filterQuiz(res['quiz'])
-                console.log("RESPONSE =>", res)
-                this.quiz_name = res['quiz_name']['quiz_name']
+                // console.log("RESPONSE =>", res)
+                this.quiz_name = unescape(res['quiz_name']['quiz_name'])
                 this.submit_id = res['submit_id']
-                console.log("QUIZ =>", this.quiz)
+                // console.log("QUIZ =>", this.quiz)
               }else{
-                console.log("error!")
-                console.log(res)
+                // console.log("error!")
+                // console.log(res)
               }
             }).catch(function(error){
-              console.log(error)
+              // console.log(error)
             })
           }else if(this.action == 'continue'){
-            console.log("CONTINUE!!!", this.target)
+            // console.log("CONTINUE!!!", this.target)
             this._ConnectorService.continueGradeQuiz(this.currentUser.email, this.target).then(res =>{
-              console.log("res =>", res)
+              // console.log("res =>", res)
               if(res['status'] == 'success'){
                 this.quiz = this.filterQuiz(res['quiz'])
-                console.log("RESPONSE =>", res)
-                this.quiz_name = res['quiz_name']['quiz_name']
+                // console.log("RESPONSE =>", res)
+                this.quiz_name = unescape(res['quiz_name']['quiz_name'])
                 this.submit_id = this.target;
-                console.log("QUIZ =>", this.quiz)
+                // console.log("QUIZ =>", this.quiz)
               }else{
-                console.log("error!")
-                console.log(res)
+                // console.log("error!")
+                // console.log(res)
               }
             }).catch(function(err){
-              console.log("ERROR =>", err)
+              // console.log("ERROR =>", err)
             })
           }
         }
@@ -93,7 +93,7 @@ export class AdminGradeComponent implements OnInit {
   }
 
   scaleButton(target){
-    // console.log("hey", target.name, target.value)
+    console.log("hey", target.name, target.value)
     if(!this.grade_data[target.name]){
       this.grade_data[target.name] = {
         'grader_comment': ''
@@ -101,9 +101,9 @@ export class AdminGradeComponent implements OnInit {
     }
     this.grade_data[target.name]['point'] = target.value;
     if(Object.keys(this.grade_data).length == Object.keys(this.quiz).length){
-      console.log("ALL DONE!")
+      // console.log("ALL DONE!")
       this.grading_done_bool = true;
-      console.log(this.grade_data)
+      // console.log(this.grade_data)
     }
   }
   adminCommentInput(target){
@@ -113,7 +113,7 @@ export class AdminGradeComponent implements OnInit {
     this.grade_data[target.id]['grader_comment'] = target.value;
   }
   submitGrades(){
-    console.log(this.grade_data)
+    // console.log(this.grade_data)
     let obj = {
       "submission_id": this.submit_id
     };
@@ -121,16 +121,25 @@ export class AdminGradeComponent implements OnInit {
       obj[el] = [this.grade_data[el]['point'], this.grade_data[el]['grader_comment']]
     }
     this._ConnectorService.submitGrades(obj, this.currentUser.email).then(res =>{
-      console.log("RES =>", res)
+      // console.log("RES =>", res)
       if(res['status']=="success"){
-        let message = `Thank you for submitting grades for quiz ${unescape(this.quiz_name)} #${this.submit_id} `;
-        this._ConnectorService.setMainInfo({'message': message});
+        let obj = {
+          'success': true,
+          'message': ''
+        }
+        obj.message = `Thank you for submitting grades for quiz ${unescape(this.quiz_name)} #${this.submit_id} `;
+        this._ConnectorService.setMainInfo({'message': obj});
         this._r.navigateByUrl(`${this.currentEng_id}/adminhomegrade`)
       }else{
+        let obj = {
+          'success': false,
+          'message': res['message']
+        }
+        this._r.navigateByUrl(`${this.currentEng_id}/adminhomegrade`)
         alert(res['message'])
       }
     }).catch(function(err){
-      console.log(err)
+      // console.log(err)
       alert(err)
     })
     /*
@@ -146,14 +155,14 @@ export class AdminGradeComponent implements OnInit {
     if(status == 'yes'){
       this._ConnectorService.releaseSubmittedQuiz(this.submit_id, this.topic_id, this.currentUser.email).then(data =>{
         if(data['status'] == 'failed'){
-          console.log("data after release =>", data)
+          // console.log("data after release =>", data)
         }else{
           this._r.navigateByUrl(`${this.currentEng_id}/adminhomegrade`)
         }
       }).catch(function(err){
-        console.log("error after release =>", err)
+        // console.log("error after release =>", err)
       })
     }
-    console.log(status)
+    // console.log(status)
   }
 }

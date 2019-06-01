@@ -25,10 +25,10 @@ export class HomeComponent implements OnInit {
   constructor(private _ConnectorService: ConnectorService, private location: Location, private _route: ActivatedRoute,private _r: Router) { 
     this._route.paramMap.subscribe(params => {
       this.currentEng_id = params.get('eng');
-      console.log("current engagement =>", this.currentEng_id)
+      // console.log("current engagement =>", this.currentEng_id)
       if(params.get('eng')){
         if(this.engagements){
-          console.log("are you trying to renavigate to another engagement?")
+          // console.log("are you trying to renavigate to another engagement?")
           this.changeCurEng("this._route.paramMap.subscribe(params => {");
           this.filter_categories_and_topics_by_eng_id(this.cats_n_tops_raw);
         }
@@ -43,7 +43,7 @@ export class HomeComponent implements OnInit {
     this._ConnectorService.engagements.subscribe(engs => {
       this.engagements = engs;
       if(engs){
-        console.log("========engs =>",engs)
+        // console.log("========engs =>",engs)
         this.changeCurEng("this._ConnectorService.engagements.subscribe(engs =>");
       }
     });
@@ -68,7 +68,7 @@ export class HomeComponent implements OnInit {
   }
   getAllCategoriesAndTopicsByProfileId(profile_id){
     this._ConnectorService.getAllCategoriesAndTopicsByProfileId(profile_id).then(data =>{
-      console.log("getAllCategoriesAndTopicsByProfileId DATA =>", data)
+      // console.log("getAllCategoriesAndTopicsByProfileId DATA =>", data)
       this.cats_n_tops_raw = data;
       this.filter_categories_and_topics_by_eng_id(this.cats_n_tops_raw);
 
@@ -104,7 +104,7 @@ export class HomeComponent implements OnInit {
           this.cats_n_tops_array[c].push(this.cats_n_tops[c][t])
         }
       }
-      console.log(this.cats_n_tops_array)
+      // console.log(this.cats_n_tops_array)
       this.ready_bool = true;
   }
 }

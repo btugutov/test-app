@@ -35,7 +35,7 @@ export class AdminHomeGradeComponent implements OnInit {
       }
       if (user && user.profile_id) {
         this._ConnectorService.getCompletedQuizzes(this.currentUser['profile_id'], this.currentEng_id).then(res => {
-          console.log("res => ", res)
+          // console.log("res => ", res)
           this._ConnectorService.setMainInfo({"quizzes": res})
           for (let c in res) {
             for (let t in res[c]) {
@@ -56,7 +56,7 @@ export class AdminHomeGradeComponent implements OnInit {
           this.quizzes = res;
           this.your_list = this.getCurrentGradingQuiz(res)
           this.your_list_length = Object.keys(this.your_list).length;
-          console.log("this.your_list =>", this.your_list)
+          // console.log("this.your_list =>", this.your_list)
           // console.log("getCompletedQuizzes =>", this.quizzes)
         })
       }

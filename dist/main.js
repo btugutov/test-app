@@ -485,36 +485,36 @@ var AdminGradeComponent = /** @class */ (function () {
                         _this._ConnectorService.getQuizForGrading(_this.currentUser.email, _this.target).then(function (res) {
                             if (res['status'] == 'success') {
                                 _this.quiz = _this.filterQuiz(res['quiz']);
-                                console.log("RESPONSE =>", res);
-                                _this.quiz_name = res['quiz_name']['quiz_name'];
+                                // console.log("RESPONSE =>", res)
+                                _this.quiz_name = unescape(res['quiz_name']['quiz_name']);
                                 _this.submit_id = res['submit_id'];
-                                console.log("QUIZ =>", _this.quiz);
+                                // console.log("QUIZ =>", this.quiz)
                             }
                             else {
-                                console.log("error!");
-                                console.log(res);
+                                // console.log("error!")
+                                // console.log(res)
                             }
                         }).catch(function (error) {
-                            console.log(error);
+                            // console.log(error)
                         });
                     }
                     else if (_this.action == 'continue') {
-                        console.log("CONTINUE!!!", _this.target);
+                        // console.log("CONTINUE!!!", this.target)
                         _this._ConnectorService.continueGradeQuiz(_this.currentUser.email, _this.target).then(function (res) {
-                            console.log("res =>", res);
+                            // console.log("res =>", res)
                             if (res['status'] == 'success') {
                                 _this.quiz = _this.filterQuiz(res['quiz']);
-                                console.log("RESPONSE =>", res);
-                                _this.quiz_name = res['quiz_name']['quiz_name'];
+                                // console.log("RESPONSE =>", res)
+                                _this.quiz_name = unescape(res['quiz_name']['quiz_name']);
                                 _this.submit_id = _this.target;
-                                console.log("QUIZ =>", _this.quiz);
+                                // console.log("QUIZ =>", this.quiz)
                             }
                             else {
-                                console.log("error!");
-                                console.log(res);
+                                // console.log("error!")
+                                // console.log(res)
                             }
                         }).catch(function (err) {
-                            console.log("ERROR =>", err);
+                            // console.log("ERROR =>", err)
                         });
                     }
                 }
@@ -540,7 +540,7 @@ var AdminGradeComponent = /** @class */ (function () {
         return new_result;
     };
     AdminGradeComponent.prototype.scaleButton = function (target) {
-        // console.log("hey", target.name, target.value)
+        console.log("hey", target.name, target.value);
         if (!this.grade_data[target.name]) {
             this.grade_data[target.name] = {
                 'grader_comment': ''
@@ -548,9 +548,9 @@ var AdminGradeComponent = /** @class */ (function () {
         }
         this.grade_data[target.name]['point'] = target.value;
         if (Object.keys(this.grade_data).length == Object.keys(this.quiz).length) {
-            console.log("ALL DONE!");
+            // console.log("ALL DONE!")
             this.grading_done_bool = true;
-            console.log(this.grade_data);
+            // console.log(this.grade_data)
         }
     };
     AdminGradeComponent.prototype.adminCommentInput = function (target) {
@@ -561,7 +561,7 @@ var AdminGradeComponent = /** @class */ (function () {
     };
     AdminGradeComponent.prototype.submitGrades = function () {
         var _this = this;
-        console.log(this.grade_data);
+        // console.log(this.grade_data)
         var obj = {
             "submission_id": this.submit_id
         };
@@ -569,17 +569,26 @@ var AdminGradeComponent = /** @class */ (function () {
             obj[el] = [this.grade_data[el]['point'], this.grade_data[el]['grader_comment']];
         }
         this._ConnectorService.submitGrades(obj, this.currentUser.email).then(function (res) {
-            console.log("RES =>", res);
+            // console.log("RES =>", res)
             if (res['status'] == "success") {
-                var message = "Thank you for submitting grades for quiz " + unescape(_this.quiz_name) + " #" + _this.submit_id + " ";
-                _this._ConnectorService.setMainInfo({ 'message': message });
+                var obj_1 = {
+                    'success': true,
+                    'message': ''
+                };
+                obj_1.message = "Thank you for submitting grades for quiz " + unescape(_this.quiz_name) + " #" + _this.submit_id + " ";
+                _this._ConnectorService.setMainInfo({ 'message': obj_1 });
                 _this._r.navigateByUrl(_this.currentEng_id + "/adminhomegrade");
             }
             else {
+                var obj_2 = {
+                    'success': false,
+                    'message': res['message']
+                };
+                _this._r.navigateByUrl(_this.currentEng_id + "/adminhomegrade");
                 alert(res['message']);
             }
         }).catch(function (err) {
-            console.log(err);
+            // console.log(err)
             alert(err);
         });
         /*
@@ -596,16 +605,16 @@ var AdminGradeComponent = /** @class */ (function () {
         if (status == 'yes') {
             this._ConnectorService.releaseSubmittedQuiz(this.submit_id, this.topic_id, this.currentUser.email).then(function (data) {
                 if (data['status'] == 'failed') {
-                    console.log("data after release =>", data);
+                    // console.log("data after release =>", data)
                 }
                 else {
                     _this._r.navigateByUrl(_this.currentEng_id + "/adminhomegrade");
                 }
             }).catch(function (err) {
-                console.log("error after release =>", err);
+                // console.log("error after release =>", err)
             });
         }
-        console.log(status);
+        // console.log(status)
     };
     AdminGradeComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
@@ -696,7 +705,7 @@ module.exports = ".grade-home-main {\n    width: 80%;\n    margin: 0px auto;\n  
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"column_list element-animation-fadeIn\" id=\"body_fadeOut\">\n    <div *ngIf='popup_message' class=\"d-flex justify-content-center popup_message_slideIn\">\n        <div class=\"alert alert-success\" role=\"alert\">\n            <strong>Well done!</strong> {{popup_message}}\n        </div>\n    </div>\n    <div style=\"display: flex; flex-direction: column; flex-wrap: nowrap; justify-content: center; align-items: stretch; align-content: center; height: 10%;\">\n        <h1 style=\"margin: 0px auto\">Choose a category and topic to grade</h1>\n    </div>\n    <div class=\"d-flex justify-content-center\">\n        <button class=\"btn btn-warning text-monospace button_hover_expand\" *ngIf=\"your_list_length>1\" id=\"release_all\" style=\"border-radius: 0px; width: 250px\" (click)=\"releaseAllSubmittedQuiz()\">Release all {{your_list_length}} quizzes</button>\n        <button class=\"btn btn-warning text-monospace button_hover_expand\" *ngIf=\"your_list_length==1\" id=\"release_all\" style=\"border-radius: 0px; width: 250px\" (click)=\"releaseOneSubmittedQuiz()\">Release the current quiz</button>\n        <button class=\" btn btn-warning text-monospace button_hover_expand \" *ngIf=\"your_list_length<1 \" id=\"release_all \" style=\"border-radius: 0px; width: 250px \" disabled>No current quizzes</button>\n    </div>\n    <div class=\"grade-home-main \" id=\"grade-home-main \">\n        <div *ngFor=\"let c of quizzes | keyvalue \" class=\"home-category \" style=\"box-shadow: 12px 12px 16px silver; \">\n            <div class=\"home-category-title \">\n                <h3>{{c.key}}</h3>\n            </div>\n            <div *ngFor=\"let t of c.value | keyvalue \" class=\"home-category-element \">\n                <div *ngIf=\"your_list[links[t.key][ 'topic_id']] \" style=\"width:100%\" align='center'>\n                    <span> <span unselectable=\"on \" class=\"font-weight-bolder \"> {{t.key}}</span> <span class=\"text-black-10 text-monospace \">  #{{your_list[links[t.key]['topic_id']]['submit_id']}}</span></span>\n                    <div class=\"home-category-element-inner-box \">\n                        <button class=\"btn btn-outline-info btn-sm text-monospace \" style=\"border: none \" [routerLink]=\"[your_list[links[t.key][ 'topic_id']][ 'continue_link']] \">Continue</button>\n                        <button class=\"btn btn-outline-warning btn-sm text-monospace \" style=\"border: none \" (click)=\"releaseQuiz(your_list[links[t.key][ 'topic_id']][ 'submit_id'], links[t.key][ 'topic_id']) \">Release</button>\n                    </div>\n                </div>\n                <a *ngIf=\"your_list[links[t.key][ 'topic_id']]==n ull \" [routerLink]=\"[links[t.key][ 'topic_link']] \">\n                    <button type=\"button \" class=\"btn btn-outline-secondary \">{{t.key}}\n                        ({{  quizzes_counter[links[t.key]['topic_id']] }})\n                        {{your_list[links[t.key]['topic_id']]}}</button>\n                </a>\n            </div>\n        </div>\n    </div>\n</div>"
+module.exports = "<div class=\"column_list element-animation-fadeIn\" id=\"body_fadeOut\">\n    <div *ngIf='popup_message' class=\"d-flex justify-content-center popup_message_slideIn\">\n        <div *ngIf='popup_message.success' class=\"alert alert-success\" role=\"alert\">\n            <strong>Well done!</strong> {{popup_message.message}}\n        </div>\n        <div *ngIf='!popup_message.success' class=\"alert alert-danger\" role=\"alert\">\n            <h4 class=\"alert-heading\">Oops! Please contact admin or developers!</h4> {{popup_message.message | json}}\n        </div>\n    </div>\n    <div style=\"display: flex; flex-direction: column; flex-wrap: nowrap; justify-content: center; align-items: stretch; align-content: center; height: 10%;\">\n        <h1 style=\"margin: 0px auto\">Choose a category and topic to grade</h1>\n    </div>\n    <div class=\"d-flex justify-content-center\">\n        <button class=\"btn btn-warning text-monospace button_hover_expand\" *ngIf=\"your_list_length>1\" id=\"release_all\" style=\"border-radius: 0px; width: 250px\" (click)=\"releaseAllSubmittedQuiz()\">Release all {{your_list_length}} quizzes</button>\n        <button class=\"btn btn-warning text-monospace button_hover_expand\" *ngIf=\"your_list_length==1\" id=\"release_all\" style=\"border-radius: 0px; width: 250px\" (click)=\"releaseOneSubmittedQuiz()\">Release the current quiz</button>\n        <button class=\" btn btn-warning text-monospace button_hover_expand \" *ngIf=\"your_list_length<1 \" id=\"release_all \" style=\"border-radius: 0px; width: 250px \" disabled>No current quizzes</button>\n    </div>\n    <div class=\"grade-home-main \" id=\"grade-home-main \">\n        <div *ngFor=\"let c of quizzes | keyvalue \" class=\"home-category \" style=\"box-shadow: 12px 12px 16px silver; \">\n            <div class=\"home-category-title \">\n                <h3>{{c.key}}</h3>\n            </div>\n            <div *ngFor=\"let t of c.value | keyvalue \" class=\"home-category-element \">\n                <div *ngIf=\"your_list[links[t.key][ 'topic_id']] \" style=\"width:100%\" align='center'>\n                    <span> <span unselectable=\"on \" class=\"font-weight-bolder \"> {{t.key}}</span> <span class=\"text-black-10 text-monospace \">  #{{your_list[links[t.key]['topic_id']]['submit_id']}}</span></span>\n                    <div class=\"home-category-element-inner-box \">\n                        <button class=\"btn btn-outline-info btn-sm text-monospace \" style=\"border: none \" [routerLink]=\"[your_list[links[t.key][ 'topic_id']][ 'continue_link']] \">Continue</button>\n                        <button class=\"btn btn-outline-warning btn-sm text-monospace \" style=\"border: none \" (click)=\"releaseQuiz(your_list[links[t.key][ 'topic_id']][ 'submit_id'], links[t.key][ 'topic_id']) \">Release</button>\n                    </div>\n                </div>\n                <a *ngIf=\"your_list[links[t.key][ 'topic_id']]==n ull \" [routerLink]=\"[links[t.key][ 'topic_link']] \">\n                    <button type=\"button \" class=\"btn btn-outline-secondary \">{{t.key}}\n                        ({{  quizzes_counter[links[t.key]['topic_id']] }})\n                        {{your_list[links[t.key]['topic_id']]}}</button>\n                </a>\n            </div>\n        </div>\n    </div>\n</div>"
 
 /***/ }),
 
@@ -751,7 +760,7 @@ var AdminHomeGradeComponent = /** @class */ (function () {
             }
             if (user && user.profile_id) {
                 _this._ConnectorService.getCompletedQuizzes(_this.currentUser['profile_id'], _this.currentEng_id).then(function (res) {
-                    console.log("res => ", res);
+                    // console.log("res => ", res)
                     _this._ConnectorService.setMainInfo({ "quizzes": res });
                     for (var c in res) {
                         for (var t in res[c]) {
@@ -772,7 +781,7 @@ var AdminHomeGradeComponent = /** @class */ (function () {
                     _this.quizzes = res;
                     _this.your_list = _this.getCurrentGradingQuiz(res);
                     _this.your_list_length = Object.keys(_this.your_list).length;
-                    console.log("this.your_list =>", _this.your_list);
+                    // console.log("this.your_list =>", this.your_list)
                     // console.log("getCompletedQuizzes =>", this.quizzes)
                 });
             }
@@ -1107,13 +1116,13 @@ var AppComponent = /** @class */ (function () {
         });
         this._c.currentEng.subscribe(function (currentEng) {
             if (currentEng) {
-                console.log('we got currentEng!! =>', currentEng);
+                // console.log('we got currentEng!! =>', currentEng)
                 _this.currentEng = currentEng;
             }
         });
         this._c.engagements.subscribe(function (engagements) {
             if (engagements) {
-                console.log('we got engagements!! =>', engagements);
+                // console.log('we got engagements!! =>', engagements)
                 _this.engagements = engagements;
             }
         });
@@ -1290,7 +1299,45 @@ var AppComponent = /** @class */ (function () {
         });
     };
     AppComponent.prototype.ngOnInit = function () {
-        console.log("App component is here! this.currentEng =>", this.currentEng);
+        var _this = this;
+        // console.log("App component is here! this.currentEng =>", this.currentEng)
+        var loc = location.href.split('/');
+        console.log("THIS LOCATION =>", loc);
+        if (loc[3]) {
+            if (localStorage['cur_eng']) {
+                if (localStorage['cur_eng']['engagement_id'] != loc[3]) {
+                    this._c.getAvailableEngagements(this.user_obj.profile_id).then(function (res) {
+                        for (var el in res) {
+                            if (res[el]['engagement_id'] == loc[3]) {
+                                _this.currentEng = res[el];
+                                localStorage['cur_eng'] = res[el];
+                                _this._c.setMainInfo({ 'currentEng': res[el] });
+                                console.log("NEW ENGAGEMENT WAS DETECTED =>", res[el]);
+                                return;
+                            }
+                        }
+                    });
+                }
+            }
+            else {
+                this._c.getAvailableEngagements(this.user_obj.profile_id).then(function (res) {
+                    for (var el in res) {
+                        if (res[el]['engagement_id'] == loc[3]) {
+                            _this.currentEng = res[el];
+                            localStorage['cur_eng'] = res[el];
+                            _this._c.setMainInfo({ 'currentEng': res[el] });
+                            console.log("SETTING A NEW ENGAGEMENT");
+                            return;
+                        }
+                    }
+                    alert("ERROR! No SUCH ENGAGEMENT WAS FOUND!");
+                    _this._r.navigateByUrl('/');
+                })
+                    .catch(function (err) {
+                    console.log("ERR =>", err);
+                });
+            }
+        }
     };
     AppComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
@@ -1994,10 +2041,10 @@ var HomeComponent = /** @class */ (function () {
         this.cats_n_tops_array = [];
         this._route.paramMap.subscribe(function (params) {
             _this.currentEng_id = params.get('eng');
-            console.log("current engagement =>", _this.currentEng_id);
+            // console.log("current engagement =>", this.currentEng_id)
             if (params.get('eng')) {
                 if (_this.engagements) {
-                    console.log("are you trying to renavigate to another engagement?");
+                    // console.log("are you trying to renavigate to another engagement?")
                     _this.changeCurEng("this._route.paramMap.subscribe(params => {");
                     _this.filter_categories_and_topics_by_eng_id(_this.cats_n_tops_raw);
                 }
@@ -2012,7 +2059,7 @@ var HomeComponent = /** @class */ (function () {
         this._ConnectorService.engagements.subscribe(function (engs) {
             _this.engagements = engs;
             if (engs) {
-                console.log("========engs =>", engs);
+                // console.log("========engs =>",engs)
                 _this.changeCurEng("this._ConnectorService.engagements.subscribe(engs =>");
             }
         });
@@ -2037,7 +2084,7 @@ var HomeComponent = /** @class */ (function () {
     HomeComponent.prototype.getAllCategoriesAndTopicsByProfileId = function (profile_id) {
         var _this = this;
         this._ConnectorService.getAllCategoriesAndTopicsByProfileId(profile_id).then(function (data) {
-            console.log("getAllCategoriesAndTopicsByProfileId DATA =>", data);
+            // console.log("getAllCategoriesAndTopicsByProfileId DATA =>", data)
             _this.cats_n_tops_raw = data;
             _this.filter_categories_and_topics_by_eng_id(_this.cats_n_tops_raw);
         }).catch(function (error) {
@@ -2075,7 +2122,7 @@ var HomeComponent = /** @class */ (function () {
                 this.cats_n_tops_array[c].push(this.cats_n_tops[c][t]);
             }
         }
-        console.log(this.cats_n_tops_array);
+        // console.log(this.cats_n_tops_array)
         this.ready_bool = true;
     };
     HomeComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
