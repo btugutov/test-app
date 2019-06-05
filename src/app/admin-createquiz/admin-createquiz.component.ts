@@ -150,13 +150,33 @@ export class AdminCreatequizComponent implements OnInit {
         return;
       }
     }
-    let key = `added${Object.keys(answers_list).length + 1}`;
+    let key = 'added'
+    if(Object.keys(answers_list).length > 0){
+      console.log("NEW NUMBER =>", Number( Object.keys(answers_list)[Object.keys(answers_list).length - 1].split('added')[1]) + 1)
+      key+= Number( Object.keys(answers_list)[Object.keys(answers_list).length - 1].split('added')[1]) + 1;
+    }else{
+      key+=1;
+    }
     this.list_of_questions[target]['answer_prompt'][key] = value;
     this.list_of_questions[target]['answer_sort'][key] = 1;
     this.list_of_questions[target]['answer_correct'][key] = false;
     this.list_of_questions[target]['answer_soft_delete'][key] = false;
   }
-
+  answerEditor(q_id, q_key, a_id, value){
+    if(q_key == 'answer_soft_delete'){
+      delete this.list_of_questions[q_id]['answer_prompt'][a_id];
+      delete this.list_of_questions[q_id]['answer_correct'][a_id];
+      delete this.list_of_questions[q_id]['answer_soft_delete'][a_id];
+      delete this.list_of_questions[q_id]['answer_sort'][a_id];
+      return;
+    }
+    console.log(`q_id => ${q_id}, q_key => ${q_key}, a_id => ${a_id}, value => ${value}`)
+    console.log('this.list_of_questions[q_id][q_key][a_id] =>',this.list_of_questions[q_id][q_key][a_id])
+    this.list_of_questions[q_id][q_key][a_id] = value;
+  }
+  inputTest(target){
+    console.log(`inputTest function: target => ${target}`)
+  }
 
 
 

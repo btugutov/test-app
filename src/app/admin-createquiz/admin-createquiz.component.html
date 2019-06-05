@@ -101,47 +101,101 @@
                     </td>
 
                     <td>
+                        <!-- NOT SELECTED -->
                         <div *ngIf="!list_of_questions.new_question['question_type_description']">
                             <p align="center" class='text-muted'>Please check type of question.</p>
                         </div>
+
+
+                        <!-- MANUAL INPUT -->
                         <div style="padding: 0px 3px !important;" [hidden]="list_of_questions.new_question['question_type_description'] != 'textfield input'">
                             <textarea class='textAreaExpectedAnswer form-control create_form_input_shadow' rows=4 name='questionExpectedAnswer' id='questionExpectedAnswer_new_question' question_id='new_question' placeholder="Expected answer">{{list_of_questions['new_question']['expected_response']}}</textarea>
                         </div>
+
+
+                        <!-- DRAG AND DROP  -->
                         <div *ngIf="list_of_questions.new_question['question_type_description'] == 'drag_and_drop'">
                             drag and drop
                         </div>
+
+
+                        <!-- CHECKBOX  -->
                         <div *ngIf="list_of_questions.new_question['display_type_description'] == 'Checkbox' && list_of_questions.new_question['question_type_description'] = 'selected input'">
                             <div *ngFor="let ans of list_of_questions.new_question['answer_prompt'] | keyvalue">
-                                <div><input class="answerChoice" type="checkbox" id="checkbox_{{ans.key}}" value="{{ans.value}}" title="Select the right answer. You can chose multiple." />
-                                    <label for="checkbox${id}" style="margin:0px 0px; width:92%">
+                                <div>
+                                    <input class="answerChoice" (change)="answerEditor('new_question', 'answer_correct', ans.key, !list_of_questions.new_question['answer_correct'][ans.key])" [checked]=list_of_questions.new_question.answer_correct[ans.key] type="checkbox" id="checkbox_{{ans.key}}"
+                                        title="Select the right answer. You can chose multiple." />
+                                    <label for="checkbox_{{ans.key}}" style="margin:0px 0px; width:92%">
                                       <div class="input-group mb-1">
                                           <div class="input-group-prepend" style="width: 15%;">
-                                              <input type="number" class="answer_order_edit text_adjust answer_order_edit${id}" min="1" id="answer_order_edit_{{ans.key}}" style="width: 90%;" value="{{list_of_questions.new_question['answer_sort'][ans.key] }}" data-toggle="tooltip" data-placement="bottom" title="Set priority of the answer.">
+                                              <input type="number"  (change)="answerEditor('new_question', 'answer_sort', ans.key, $event.target.value)" class="answer_order_edit" min="1" id="answer_order_edit_{{ans.key}}" style="width: 90%;" value="{{list_of_questions.new_question['answer_sort'][ans.key] }}" data-toggle="tooltip" data-placement="bottom" title="Set priority of the answer.">
                                           </div>
-                                          <input class="form-control" type="text" id="answerId${id}" value="" aria-describedby="basic-addon2"/>
+                                          <input class="form-control" type="text" id="answerId${id}" value="" aria-describedby="basic-addon2" value='{{ans.value}}' (change)="answerEditor('new_question', 'answer_prompt', ans.key, $event.target.value)"/>
                                           <div class="input-group-append">
-                                              <button class="btn btn-outline-danger buttonRemoveAnswer buttonRemoveAnswerForQuestionId${id}" id='buttonRemoveAnswer${i}' type="button" >-</button>
+                                              <button class="btn btn-outline-danger buttonRemoveAnswer" (click)="answerEditor('new_question', 'answer_soft_delete', ans.key, true)" [hidden]="list_of_questions.new_question['answer_soft_delete'][ans.key]" id='buttonRemoveAnswer${i}' type="button" >-</button>
                                           </div>
                                       </div>
                                   </label>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <!-- DROPDOWN/SELECT -->
+                        <div *ngIf="list_of_questions.new_question['display_type_description'] == 'Dropdown' && list_of_questions.new_question['question_type_description'] = 'selected input'">
+                            <div *ngFor="let ans of list_of_questions.new_question['answer_prompt'] | keyvalue" class="custom-control custom-radio">
+                                <input type="radio" id="select_answer_{{ans.key}}" name="select_for_question_new_question" class="custom-control-input">
+                                <label class="custom-control-label" for="select_answer_{{ans.key}}">{{ans.value}}</label>
+                            </div>
+                            <!-- 
+                            <div *ngFor="let ans of list_of_questions.new_question['answer_prompt'] | keyvalue">
+                                    <div><input class="answerChoice" type="checkbox" id="checkbox_{{ans.key}}" value="{{ans.value}}" title="Select the right answer. You can chose multiple." />
+                                        <label for="checkbox${id}" style="margin:0px 0px; width:92%">
+                                            <div class="input-group mb-1">
+                                                <div class="input-group-prepend" style="width: 15%;">
+                                                    <input type="number" class="answer_order_edit answer_order_edit${id}" min="1" id="answer_order_edit_{{ans.key}}" style="width: 90%;" value="{{list_of_questions.new_question['answer_sort'][ans.key] }}" data-toggle="tooltip" data-placement="bottom" title="Set priority of the answer.">
+                                                </div>
+                                                <input class="form-control" type="text" id="answerId${id}" value="" aria-describedby="basic-addon2"/>
+                                                <div class="input-group-append">
+                                                    <button class="btn btn-outline-danger buttonRemoveAnswer buttonRemoveAnswerForQuestionId${id}" id='buttonRemoveAnswer${i}' type="button" >-</button>
+                                                </div>
+                                            </div>
+                                        </label>
+                                    </div>
+                                </div>
+                                -->
+                        </div>
+
+
+                        <!-- RADIO -->
+                        <div *ngIf="list_of_questions.new_question['display_type_description'] == 'Radio' && list_of_questions.new_question['question_type_description'] = 'selected input'">
+                            <div *ngFor="let ans of list_of_questions.new_question['answer_prompt'] | keyvalue">
+                                <div><input class="answerChoice" type="checkbox" id="checkbox_{{ans.key}}" value="{{ans.value}}" title="Select the right answer. You can chose multiple." />
+                                    <label for="checkbox${id}" style="margin:0px 0px; width:92%">
+                                              <div class="input-group mb-1">
+                                                  <div class="input-group-prepend" style="width: 15%;">
+                                                      <input type="number" class="answer_order_edit text_adjust answer_order_edit${id}" min="1" id="answer_order_edit_{{ans.key}}" style="width: 90%;" value="{{list_of_questions.new_question['answer_sort'][ans.key] }}" data-toggle="tooltip" data-placement="bottom" title="Set priority of the answer.">
+                                                  </div>
+                                                  <input class="form-control" type="text" id="answerId${id}" value="" aria-describedby="basic-addon2"/>
+                                                  <div class="input-group-append">
+                                                      <button class="btn btn-outline-danger buttonRemoveAnswer buttonRemoveAnswerForQuestionId${id}" id='buttonRemoveAnswer${i}' type="button" >-</button>
+                                                  </div>
+                                              </div>
+                                          </label>
                                 </div>
                                 <!-- <input type="checkbox" value="" >{{ans.value}} -->
                             </div>
                         </div>
 
-                        <div *ngIf="list_of_questions.new_question['display_type_description'] == 'Dropdown' && list_of_questions.new_question['question_type_description'] = 'selected input'">
-                            <div *ngFor="let ans of list_of_questions.new_question['answer_prompt'] | keyvalue"> {{ans.value}}</div>
-                        </div>
 
-                        <div *ngIf="list_of_questions.new_question['display_type_description'] == 'Radio' && list_of_questions.new_question['question_type_description'] = 'selected input'">
-                            <div *ngFor="let ans of list_of_questions.new_question['answer_prompt'] | keyvalue">{{ans.value}}</div>
-                        </div>
+                        <!-- ADD ANSWER FORM -->
                         <div style="padding-right: 3px !important;" class="input-group mb-3 create_form_input_shadow" [hidden]="!list_of_questions.new_question['question_type_description'] || list_of_questions.new_question['question_type_description'] == 'textfield input' || list_of_questions.new_question['question_type_description'] == 'drag_and_drop'">
                             <div class="input-group-prepend" style="width: 25px">
                                 <button class="btn btn-success create_form_answer_add btn-action-borderless" id='buttonAddNewAnswer_new_question' type="button" (click)="addAnswer('new_question')" question_id="new_question">+</button>
                             </div>
                             <input type="text" class="form-control create_form_input_shadowless  edit_quiz_input_text_add" question_id="new_question" id="newAnswerFor_new_question" placeholder='Add an answer' aria-describedby="basic-addon2">
                         </div>
+
                     </td>
                     <td>
                         admin notes
