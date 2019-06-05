@@ -47,14 +47,24 @@ export class AppComponent implements OnInit {
     })
     this.msalConfig = {
       auth: {
-        clientId: "5f40551b-4ad5-4327-aead-858301bb6d90",
+        clientId: "a1cbc100-5eed-4d33-b6fd-68856bb28b34",
         authority: "https://login.microsoftonline.com/12e2dd65-5024-44c2-83b5-3ca21c04ef0e"
-      },
-      cache: {
+    },
+    cache: {
         cacheLocation: "localStorage",
         storeAuthStateInCookie: true
-      }
+    }
     };
+    // this.msalConfig = { // OLD VERSION
+    //   auth: {
+    //     clientId: "5f40551b-4ad5-4327-aead-858301bb6d90",
+    //     authority: "https://login.microsoftonline.com/12e2dd65-5024-44c2-83b5-3ca21c04ef0e"
+    //   },
+    //   cache: {
+    //     cacheLocation: "localStorage",
+    //     storeAuthStateInCookie: true
+    //   }
+    // };
 
     this.graphConfig = {
       graphMeEndpoint: "https://graph.microsoft.com/v1.0/me"
