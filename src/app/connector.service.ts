@@ -25,7 +25,7 @@ export class ConnectorService {
   pop_up_message = this.message.asObservable();
 
   constructor(private http: HttpClient) {
-    console.log("CONNECTOR IS READY TO SERVE")
+
   }
 
   storeUser(user) {
