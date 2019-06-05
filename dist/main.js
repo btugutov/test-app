@@ -30,7 +30,7 @@ webpackEmptyAsyncContext.id = "./src/$$_lazy_route_resource lazy recursive";
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJzcmMvYXBwL2FkbWluLWNyZWF0ZXF1aXovYWRtaW4tY3JlYXRlcXVpei5jb21wb25lbnQuY3NzIn0= */"
+module.exports = ".admin-create-quiz {\n    margin-top: 50px;\n}\n\n.admin-create-quiz-title {\n    display: flex;\n    flex-direction: column;\n    flex-wrap: nowrap;\n    justify-content: flex-start;\n    align-items: center;\n    align-content: center;\n}\n\n.admin-create-quiz-body {\n    display: flex;\n    flex-direction: column;\n    flex-wrap: nowrap;\n    justify-content: flex-start;\n    align-items: center;\n    align-content: center;\n}\n\n.admin-create-quiz-body-topic-cat-eng-box {\n    /* max-width: 400px; */\n}\n\n.admin-create-quiz-body-topic-cat-eng-box-select-box {\n    margin: 0px 10px;\n    display: flex;\n    flex-direction: column;\n    flex-wrap: nowrap;\n    justify-content: flex-start;\n    align-items: center;\n    align-content: center;\n}\n\n.thead-light {\n    background: #e9ecef;\n    color: #7f8082;\n}\n\n.select-label {\n    margin-bottom: 0px !important;\n    margin-left: 5px;\n}\n\n.table-row {\n    /* padding: 0px 0px !important; */\n    /* display: ; */\n    display: flex;\n    flex-direction: column;\n    flex-wrap: nowrap;\n    justify-content: flex-start;\n    align-items: center;\n    align-content: center;\n}\n\n.create_form_img_box {\n    width: 15%;\n}\n\n.create_form_answer_add {\n    width: 100%;\n    padding: 0px 0px !important;\n}\n\ninput[type=\"file\"] {\n    display: none;\n}\n\n.custom-file-upload {\n    border: 1px solid #ccc;\n    display: inline-block;\n    padding: 6px 12px;\n    cursor: pointer;\n}\n\n.create_form_input_shadow {\n    box-shadow: 0 0 0 0.2rem rgba(179, 182, 185, 0.25);\n    border-radius: 0px;\n}\n\n.create_form_input_shadow:focus {\n    box-shadow: 0 0 0 0.2rem #4f91cd59;\n    /* background-color: none repeat scroll 0 0 rgba(0, 0, 0, 0.01); */\n}\n\n.btn-shadow {\n    box-shadow: 0 0 0 0.2rem rgba(179, 182, 185, 0.25);\n}\n\n.create_form_input_shadowless {\n    box-shadow: none;\n    border-radius: 0px;\n    border: none;\n}\n\n.create_form_input_shadowless:focus {\n    box-shadow: none;\n    border: none;\n    /* background-color: none repeat scroll 0 0 rgba(0, 0, 0, 0.01); */\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNyYy9hcHAvYWRtaW4tY3JlYXRlcXVpei9hZG1pbi1jcmVhdGVxdWl6LmNvbXBvbmVudC5jc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7SUFDSSxnQkFBZ0I7QUFDcEI7O0FBRUE7SUFDSSxhQUFhO0lBQ2Isc0JBQXNCO0lBQ3RCLGlCQUFpQjtJQUNqQiwyQkFBMkI7SUFDM0IsbUJBQW1CO0lBQ25CLHFCQUFxQjtBQUN6Qjs7QUFFQTtJQUNJLGFBQWE7SUFDYixzQkFBc0I7SUFDdEIsaUJBQWlCO0lBQ2pCLDJCQUEyQjtJQUMzQixtQkFBbUI7SUFDbkIscUJBQXFCO0FBQ3pCOztBQUVBO0lBQ0ksc0JBQXNCO0FBQzFCOztBQUVBO0lBQ0ksZ0JBQWdCO0lBQ2hCLGFBQWE7SUFDYixzQkFBc0I7SUFDdEIsaUJBQWlCO0lBQ2pCLDJCQUEyQjtJQUMzQixtQkFBbUI7SUFDbkIscUJBQXFCO0FBQ3pCOztBQUVBO0lBQ0ksbUJBQW1CO0lBQ25CLGNBQWM7QUFDbEI7O0FBRUE7SUFDSSw2QkFBNkI7SUFDN0IsZ0JBQWdCO0FBQ3BCOztBQUVBO0lBQ0ksaUNBQWlDO0lBQ2pDLGVBQWU7SUFDZixhQUFhO0lBQ2Isc0JBQXNCO0lBQ3RCLGlCQUFpQjtJQUNqQiwyQkFBMkI7SUFDM0IsbUJBQW1CO0lBQ25CLHFCQUFxQjtBQUN6Qjs7QUFFQTtJQUNJLFVBQVU7QUFDZDs7QUFFQTtJQUNJLFdBQVc7SUFDWCwyQkFBMkI7QUFDL0I7O0FBRUE7SUFDSSxhQUFhO0FBQ2pCOztBQUVBO0lBQ0ksc0JBQXNCO0lBQ3RCLHFCQUFxQjtJQUNyQixpQkFBaUI7SUFDakIsZUFBZTtBQUNuQjs7QUFFQTtJQUNJLGtEQUFrRDtJQUNsRCxrQkFBa0I7QUFDdEI7O0FBRUE7SUFDSSxrQ0FBa0M7SUFDbEMsa0VBQWtFO0FBQ3RFOztBQUVBO0lBQ0ksa0RBQWtEO0FBQ3REOztBQUVBO0lBQ0ksZ0JBQWdCO0lBQ2hCLGtCQUFrQjtJQUNsQixZQUFZO0FBQ2hCOztBQUVBO0lBQ0ksZ0JBQWdCO0lBQ2hCLFlBQVk7SUFDWixrRUFBa0U7QUFDdEUiLCJmaWxlIjoic3JjL2FwcC9hZG1pbi1jcmVhdGVxdWl6L2FkbWluLWNyZWF0ZXF1aXouY29tcG9uZW50LmNzcyIsInNvdXJjZXNDb250ZW50IjpbIi5hZG1pbi1jcmVhdGUtcXVpeiB7XG4gICAgbWFyZ2luLXRvcDogNTBweDtcbn1cblxuLmFkbWluLWNyZWF0ZS1xdWl6LXRpdGxlIHtcbiAgICBkaXNwbGF5OiBmbGV4O1xuICAgIGZsZXgtZGlyZWN0aW9uOiBjb2x1bW47XG4gICAgZmxleC13cmFwOiBub3dyYXA7XG4gICAganVzdGlmeS1jb250ZW50OiBmbGV4LXN0YXJ0O1xuICAgIGFsaWduLWl0ZW1zOiBjZW50ZXI7XG4gICAgYWxpZ24tY29udGVudDogY2VudGVyO1xufVxuXG4uYWRtaW4tY3JlYXRlLXF1aXotYm9keSB7XG4gICAgZGlzcGxheTogZmxleDtcbiAgICBmbGV4LWRpcmVjdGlvbjogY29sdW1uO1xuICAgIGZsZXgtd3JhcDogbm93cmFwO1xuICAgIGp1c3RpZnktY29udGVudDogZmxleC1zdGFydDtcbiAgICBhbGlnbi1pdGVtczogY2VudGVyO1xuICAgIGFsaWduLWNvbnRlbnQ6IGNlbnRlcjtcbn1cblxuLmFkbWluLWNyZWF0ZS1xdWl6LWJvZHktdG9waWMtY2F0LWVuZy1ib3gge1xuICAgIC8qIG1heC13aWR0aDogNDAwcHg7ICovXG59XG5cbi5hZG1pbi1jcmVhdGUtcXVpei1ib2R5LXRvcGljLWNhdC1lbmctYm94LXNlbGVjdC1ib3gge1xuICAgIG1hcmdpbjogMHB4IDEwcHg7XG4gICAgZGlzcGxheTogZmxleDtcbiAgICBmbGV4LWRpcmVjdGlvbjogY29sdW1uO1xuICAgIGZsZXgtd3JhcDogbm93cmFwO1xuICAgIGp1c3RpZnktY29udGVudDogZmxleC1zdGFydDtcbiAgICBhbGlnbi1pdGVtczogY2VudGVyO1xuICAgIGFsaWduLWNvbnRlbnQ6IGNlbnRlcjtcbn1cblxuLnRoZWFkLWxpZ2h0IHtcbiAgICBiYWNrZ3JvdW5kOiAjZTllY2VmO1xuICAgIGNvbG9yOiAjN2Y4MDgyO1xufVxuXG4uc2VsZWN0LWxhYmVsIHtcbiAgICBtYXJnaW4tYm90dG9tOiAwcHggIWltcG9ydGFudDtcbiAgICBtYXJnaW4tbGVmdDogNXB4O1xufVxuXG4udGFibGUtcm93IHtcbiAgICAvKiBwYWRkaW5nOiAwcHggMHB4ICFpbXBvcnRhbnQ7ICovXG4gICAgLyogZGlzcGxheTogOyAqL1xuICAgIGRpc3BsYXk6IGZsZXg7XG4gICAgZmxleC1kaXJlY3Rpb246IGNvbHVtbjtcbiAgICBmbGV4LXdyYXA6IG5vd3JhcDtcbiAgICBqdXN0aWZ5LWNvbnRlbnQ6IGZsZXgtc3RhcnQ7XG4gICAgYWxpZ24taXRlbXM6IGNlbnRlcjtcbiAgICBhbGlnbi1jb250ZW50OiBjZW50ZXI7XG59XG5cbi5jcmVhdGVfZm9ybV9pbWdfYm94IHtcbiAgICB3aWR0aDogMTUlO1xufVxuXG4uY3JlYXRlX2Zvcm1fYW5zd2VyX2FkZCB7XG4gICAgd2lkdGg6IDEwMCU7XG4gICAgcGFkZGluZzogMHB4IDBweCAhaW1wb3J0YW50O1xufVxuXG5pbnB1dFt0eXBlPVwiZmlsZVwiXSB7XG4gICAgZGlzcGxheTogbm9uZTtcbn1cblxuLmN1c3RvbS1maWxlLXVwbG9hZCB7XG4gICAgYm9yZGVyOiAxcHggc29saWQgI2NjYztcbiAgICBkaXNwbGF5OiBpbmxpbmUtYmxvY2s7XG4gICAgcGFkZGluZzogNnB4IDEycHg7XG4gICAgY3Vyc29yOiBwb2ludGVyO1xufVxuXG4uY3JlYXRlX2Zvcm1faW5wdXRfc2hhZG93IHtcbiAgICBib3gtc2hhZG93OiAwIDAgMCAwLjJyZW0gcmdiYSgxNzksIDE4MiwgMTg1LCAwLjI1KTtcbiAgICBib3JkZXItcmFkaXVzOiAwcHg7XG59XG5cbi5jcmVhdGVfZm9ybV9pbnB1dF9zaGFkb3c6Zm9jdXMge1xuICAgIGJveC1zaGFkb3c6IDAgMCAwIDAuMnJlbSAjNGY5MWNkNTk7XG4gICAgLyogYmFja2dyb3VuZC1jb2xvcjogbm9uZSByZXBlYXQgc2Nyb2xsIDAgMCByZ2JhKDAsIDAsIDAsIDAuMDEpOyAqL1xufVxuXG4uYnRuLXNoYWRvdyB7XG4gICAgYm94LXNoYWRvdzogMCAwIDAgMC4ycmVtIHJnYmEoMTc5LCAxODIsIDE4NSwgMC4yNSk7XG59XG5cbi5jcmVhdGVfZm9ybV9pbnB1dF9zaGFkb3dsZXNzIHtcbiAgICBib3gtc2hhZG93OiBub25lO1xuICAgIGJvcmRlci1yYWRpdXM6IDBweDtcbiAgICBib3JkZXI6IG5vbmU7XG59XG5cbi5jcmVhdGVfZm9ybV9pbnB1dF9zaGFkb3dsZXNzOmZvY3VzIHtcbiAgICBib3gtc2hhZG93OiBub25lO1xuICAgIGJvcmRlcjogbm9uZTtcbiAgICAvKiBiYWNrZ3JvdW5kLWNvbG9yOiBub25lIHJlcGVhdCBzY3JvbGwgMCAwIHJnYmEoMCwgMCwgMCwgMC4wMSk7ICovXG59Il19 */"
 
 /***/ }),
 
@@ -41,7 +41,7 @@ module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<p>\n  admin-createquiz works!\n</p>\n"
+module.exports = "<div class=\"admin-create-quiz\" *ngIf=\"currentUser && engagements\">\n    <div class=\"admin-create-quiz-title\">\n        <h1>Create a new quiz</h1>\n    </div>\n    <div class=\"admin-create-quiz-body\">\n        <div class=\"admin-create-quiz-body-topic-cat-eng-box\">\n            <div class=\"input-group\">\n                <div class=\"admin-create-quiz-body-topic-cat-eng-box-select-box\">\n                    <span class=\"text-muted\">Engagement</span>\n                    <select class=\"custom-select\" (change)=\"valueChanger('engagement', $event.target.value)\">\n                      <option *ngFor=\"let eng of engagements\" [selected]=\"eng.engagement_id==currentEng_id\"\n                        [disabled]=\"eng.soft_delete\" value={{eng.engagement_id}}>{{eng.engagement_name}}</option>\n                    </select>\n                </div>\n                <div class=\"admin-create-quiz-body-topic-cat-eng-box-select-box\">\n                    <span class=\"text-muted\">Category</span>\n                    <input [disabled]=\"!selected_eng\" class=\"custom-select\" type=\"text\" id=\"category_selector\" list=\"categories\" (change)=\"valueChanger('category', $event.target.value)\" />\n                    <datalist id=\"categories\">\n                    <select class=\"custom-select\">\n                      <option *ngFor=\"let c of categories_list | keyvalue\" [value]=\"c.key\"></option>\n                    </select>\n                  </datalist>\n                </div>\n                <div class=\"admin-create-quiz-body-topic-cat-eng-box-select-box\">\n                    <span class=\"text-muted\">Topic</span>\n                    <input [disabled]=\"!selected_category\" id=\"topic_selector\" class=\"custom-select\" type=\"text\" list=\"topics\" (change)=\"valueChanger('topic', $event.target.value)\" />\n                    <datalist id=\"topics\">\n                    <select class=\"custom-select\">\n                      <option *ngFor=\"let t of topic_list | keyvalue\" [value]=\"t.value['topic']\">(Already exists)</option>\n                    </select>\n                  </datalist>\n                </div>\n            </div>\n        </div>\n        <div *ngIf=\"topic_cat_eng_message.display\" style=\"margin-top: 15px\">\n            <div *ngIf=\"topic_cat_eng_message.status == 'fail'\" class=\"alert alert-warning shadow\" role=\"alert\">\n                <strong>Warning!</strong> {{topic_cat_eng_message.message}}\n            </div>\n            <div *ngIf=\"topic_cat_eng_message.status == 'success'\" class=\"alert alert-success shadow\" role=\"alert\">\n                <strong>Nice!</strong> {{topic_cat_eng_message.message}}\n            </div>\n        </div>\n        <div *ngIf='topic_cat_eng_message.display == false' style=\"height: 81px;\">\n\n        </div>\n    </div>\n\n    <div class='admin-create-quiz-form' style=\"margin-top: 25px;\">\n        <table class=\"table table-borderless\">\n            <thead class=\"thead-light\">\n                <tr style=\"height: 50px\">\n                    <th class=\"border-0 text-uppercase small font-weight-bold text-center\" style=\"width: 5%\">ID/Order</th>\n                    <th class=\"border-0 text-uppercase small font-weight-bold text-center\">Question prompt</th>\n                    <th class=\"border-0 text-uppercase small font-weight-bold text-center\">Image</th>\n                    <th class=\"border-0 text-uppercase small font-weight-bold text-center\" style=\"width: 7%\">Display Type</th>\n                    <th class=\"border-0 text-uppercase small font-weight-bold text-center\">List of choices/Expected Answer</th>\n                    <th class=\"border-0 text-uppercase small font-weight-bold text-center\">Admin notes</th>\n                    <th class=\"border-0 text-uppercase small font-weight-bold text-center\" style=\"width: 5%\">Action</th>\n                </tr>\n            </thead>\n            <tbody>\n                <tr class=\"create_form_row\">\n                    <td class='text-center table-row'>\n                        <p>New</p>\n                        <div>\n                            <input style=\"width: 100%; padding: 0px 0px !important\" class=\"edit_sort_value text_adjust form-control create_form_input_shadow\" min=0 max=99 type=\"number\" value=1 title=\"Set Question Priority\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Tooltip on bottom\">\n                        </div>\n                    </td>\n                    <td style=\"padding: 0px 3px !important;\">\n                        <textarea class='textAreaPrompt form-control create_form_input_shadow text_adjust' rows=4 name='questionPromts' question_id=${id} id='questionPromt${id}' data=${id}></textarea>\n                    </td>\n                    <td class='create_form_img_box' align=\"center\">\n                        <div *ngIf=\"!list_of_questions.new_question['image']\">\n                            <label for=\"file-upload\" style=\"width: 100%;\" class=\"custom-file-upload btn btn-sm btn-outline-secondary btn-action-borderless\">\n                                &#8682; Upload Picture\n                          </label>\n                            <input id=\"file-upload\" type=\"file\" />\n                        </div>\n                        <div *ngIf=\"list_of_questions.new_question['image']\">\n                            <img src=\"/images/pathToYourImage.png\" class=\"img-fluid\" alt=\"Responsive image\">\n                        </div>\n                    </td>\n                    <td>\n                        <div class=\"btn-group-vertical btn-group-toggle\" data-toggle=\"buttons\">\n                            <label class=\"btn btn-sm btn-action-borderless btn-outline-secondary\" (click)=\"displayTypeChanger('new_question', 'textfield input')\" checked>\n                              <input type=\"radio\" name=\"displayTypeNew\" id=\"manual_input\"  value=\"textfield input\" ng-checked='true' /> Manual Input\n                            </label>\n                            <label class=\"btn btn-sm btn-action-borderless btn-outline-secondary\" (click)=\"displayTypeChanger('new_question', 'Radio')\">\n                              <input type=\"radio\" name=\"displayTypeNew \" id=\"radio \"  value=\"Radio\" /> Radio\n                            </label>\n                            <label class=\"btn btn-sm btn-action-borderless btn-outline-secondary \" (click)=\"displayTypeChanger( 'new_question', 'Dropdown')\">\n                            <input type=\"radio\" name=\"displayTypeNew\" id=\"dropdown\" value=\"Dropdown\" > Dropdown\n                            </label>\n                            <label class=\"btn btn-sm btn-action-borderless btn-outline-secondary\" (click)=\"displayTypeChanger('new_question', 'Checkbox')\">\n                              <input type=\"radio\" name=\"displayTypeNew \" id=\"checkbox \" value=\"Checkbox \"> Checkbox\n                            </label>\n                            <label class=\"btn btn-sm btn-action-borderless btn-outline-secondary \" (click)=\"displayTypeChanger( 'new_question', 'drag_and_drop')\">\n                            <input type=\"radio\" name=\"displayTypeNew\" id=\"drag_and_drop\" value=\"drag_and_drop\" > Drag'n'Drop\n                            </label>\n                        </div>\n                    </td>\n\n                    <td>\n                        <div *ngIf=\"!list_of_questions.new_question['question_type_description']\">\n                            <p align=\"center\" class='text-muted'>Please check type of question.</p>\n                        </div>\n                        <div style=\"padding: 0px 3px !important;\" [hidden]=\"list_of_questions.new_question['question_type_description'] != 'textfield input'\">\n                            <textarea class='textAreaExpectedAnswer form-control create_form_input_shadow' rows=4 name='questionExpectedAnswer' id='questionExpectedAnswer_new_question' question_id='new_question' placeholder=\"Expected answer\">{{list_of_questions['new_question']['expected_response']}}</textarea>\n                        </div>\n                        <div *ngIf=\"list_of_questions.new_question['question_type_description'] == 'drag_and_drop'\">\n                            drag and drop\n                        </div>\n                        <div *ngIf=\"list_of_questions.new_question['display_type_description'] == 'Checkbox' && list_of_questions.new_question['question_type_description'] = 'selected input'\">\n                            <div *ngFor=\"let ans of list_of_questions.new_question['answer_prompt'] | keyvalue\">\n                                <div><input class=\"answerChoice\" type=\"checkbox\" id=\"checkbox_{{ans.key}}\" value=\"{{ans.value}}\" title=\"Select the right answer. You can chose multiple.\" />\n                                    <label for=\"checkbox${id}\" style=\"margin:0px 0px; width:92%\">\n                                      <div class=\"input-group mb-1\">\n                                          <div class=\"input-group-prepend\" style=\"width: 15%;\">\n                                              <input type=\"number\" class=\"answer_order_edit text_adjust answer_order_edit${id}\" min=\"1\" id=\"answer_order_edit_{{ans.key}}\" style=\"width: 90%;\" value=\"{{list_of_questions.new_question['answer_sort'][ans.key] }}\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Set priority of the answer.\">\n                                          </div>\n                                          <input class=\"form-control\" type=\"text\" id=\"answerId${id}\" value=\"\" aria-describedby=\"basic-addon2\"/>\n                                          <div class=\"input-group-append\">\n                                              <button class=\"btn btn-outline-danger buttonRemoveAnswer buttonRemoveAnswerForQuestionId${id}\" id='buttonRemoveAnswer${i}' type=\"button\" >-</button>\n                                          </div>\n                                      </div>\n                                  </label>\n                                </div>\n                                <!-- <input type=\"checkbox\" value=\"\" >{{ans.value}} -->\n                            </div>\n                        </div>\n\n                        <div *ngIf=\"list_of_questions.new_question['display_type_description'] == 'Dropdown' && list_of_questions.new_question['question_type_description'] = 'selected input'\">\n                            <div *ngFor=\"let ans of list_of_questions.new_question['answer_prompt'] | keyvalue\"> {{ans.value}}</div>\n                        </div>\n\n                        <div *ngIf=\"list_of_questions.new_question['display_type_description'] == 'Radio' && list_of_questions.new_question['question_type_description'] = 'selected input'\">\n                            <div *ngFor=\"let ans of list_of_questions.new_question['answer_prompt'] | keyvalue\">{{ans.value}}</div>\n                        </div>\n                        <div style=\"padding-right: 3px !important;\" class=\"input-group mb-3 create_form_input_shadow\" [hidden]=\"!list_of_questions.new_question['question_type_description'] || list_of_questions.new_question['question_type_description'] == 'textfield input' || list_of_questions.new_question['question_type_description'] == 'drag_and_drop'\">\n                            <div class=\"input-group-prepend\" style=\"width: 25px\">\n                                <button class=\"btn btn-success create_form_answer_add btn-action-borderless\" id='buttonAddNewAnswer_new_question' type=\"button\" (click)=\"addAnswer('new_question')\" question_id=\"new_question\">+</button>\n                            </div>\n                            <input type=\"text\" class=\"form-control create_form_input_shadowless  edit_quiz_input_text_add\" question_id=\"new_question\" id=\"newAnswerFor_new_question\" placeholder='Add an answer' aria-describedby=\"basic-addon2\">\n                        </div>\n                    </td>\n                    <td>\n                        admin notes\n                        <div id='conluence_field${id}'></div>\n                        <div id='module_field${id}'></div>\n                        <div id='point_value_field${id}'></div>\n                    </td>\n                    <td style='text-align: center'>\n                        <div>\n                            <button class='btn btn-outline-primary btn-action-borderless' style=\"width: 100%\">🔍 Preview</button>\n                            <button class='btn btn-outline-success btn-action-borderless' style=\"width: 100%\">+ Add</button>\n                        </div>\n                    </td>\n                </tr>\n            </tbody>\n            <div>\n            </div>\n        </table>\n        {{list_of_questions | json }}\n\n\n    </div>\n</div>\n<div *ngIf=\"!currentUser || !engagements\" class=\" loading_box \">\n    <img class=\"loading_box-ing \" src='./../../assets/loading.gif'>\n</div>"
 
 /***/ }),
 
@@ -57,12 +57,193 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AdminCreatequizComponent", function() { return AdminCreatequizComponent; });
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
+/* harmony import */ var _connector_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../connector.service */ "./src/app/connector.service.ts");
+/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/common */ "./node_modules/@angular/common/fesm5/common.js");
+/* harmony import */ var _question__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./../question */ "./src/app/question.ts");
+
+
+
+
 
 
 var AdminCreatequizComponent = /** @class */ (function () {
-    function AdminCreatequizComponent() {
+    function AdminCreatequizComponent(_ConnectorService, location, _route, _r) {
+        var _this = this;
+        this._ConnectorService = _ConnectorService;
+        this.location = location;
+        this._route = _route;
+        this._r = _r;
+        this.currentUser = JSON.parse(localStorage['user']);
+        this.categories_list = null;
+        this.topic_list = null;
+        this.selected_category = null;
+        this.selected_topic = null;
+        this.selected_eng = null;
+        this.topic_cat_eng_message = {
+            'display': false,
+            'status': "",
+            'message': ""
+        };
+        this.list_of_questions = {
+            'new_question': new _question__WEBPACK_IMPORTED_MODULE_5__["Question"]()
+        };
+        this._route.paramMap.subscribe(function (params) {
+            _this.currentEng_id = params.get('eng');
+        });
+        this._ConnectorService.user.subscribe(function (user) {
+            if (user) {
+                _this.currentUser = user;
+                _this._ConnectorService.getCatsTopsEngs(user.email).then(function (res) {
+                    console.log("RES =>", res);
+                    if (res['status'] == 'success') {
+                        _this.engagements = res['engs'];
+                        _this.engagements_obj = _this.sortCategoriesByEngs(_this.orderByEngID(res['engs']), res['categories']);
+                        _this.categories_list = _this.engagements_obj[_this.currentEng_id]['categories'];
+                        _this.bucket_list = res['bucket_list'];
+                        _this.selected_eng = _this.currentEng_id;
+                    }
+                }).catch(function (err) {
+                    console.log("ERROR =>", err);
+                });
+            }
+            if (user && !user.admin) {
+                _this._r.navigate(["/" + _this.currentEng_id + "/home"]);
+            }
+        });
     }
     AdminCreatequizComponent.prototype.ngOnInit = function () {
+    };
+    // LISTENERS ===============================================================================================================================================================================================
+    AdminCreatequizComponent.prototype.valueChanger = function (target, value) {
+        console.log(target, value);
+        if (target == 'engagement') {
+            if (this.selected_eng != value) {
+                console.log("this.engagements_obj =>", this.engagements_obj);
+                console.log("this.engagements_obj[target] =>", this.engagements_obj[value]);
+                this.categories_list = this.engagements_obj[value]['categories'];
+                this.topic_list = null;
+                this.selected_topic = null;
+                this.selected_category = null;
+                this.selected_eng = value;
+                document.getElementById('category_selector')['value'] = '';
+                document.getElementById('topic_selector')['value'] = '';
+                this.topic_cat_eng_message.display = false;
+            }
+        }
+        else if (target == 'category') {
+            if (this.selected_category != value) {
+                this.selected_category = value;
+                this.topic_list = this.engagements_obj[this.selected_eng]['categories'][value];
+                document.getElementById('topic_selector')['value'] = '';
+                this.topic_cat_eng_message.display = false;
+            }
+        }
+        else if (target == 'topic') {
+            this.selected_topic = value;
+            var check_bool = false;
+            for (var el in this.topic_list) {
+                if (this.topic_list[el]['topic'] == value) {
+                    this.selected_topic = null;
+                    document.getElementById('topic_selector')['value'] = '';
+                    this.topic_cat_eng_message.display = true;
+                    this.topic_cat_eng_message.status = 'fail';
+                    this.topic_cat_eng_message.message = 'Such topic already exists. Please give it another name.';
+                    check_bool = true;
+                    break;
+                }
+            }
+            if (!check_bool) {
+                this.topic_cat_eng_message.display = true;
+                this.topic_cat_eng_message.status = 'success';
+                this.topic_cat_eng_message.message = 'Looks good!';
+            }
+        }
+    };
+    AdminCreatequizComponent.prototype.displayTypeChanger = function (target, value) {
+        // this.list_of_questions['new_question']
+        // this.list_of_questions[target]
+        // console.log("displayTypeChanger(target, value) => ", target, value)
+        if (value === 'textfield input') {
+            // console.log("manual")
+            this.list_of_questions[target]['display_type_description'] = "Manual input";
+            this.list_of_questions[target]['question_type_description'] = 'textfield input';
+            this.list_of_questions[target]['display_type_id'] = 1;
+        }
+        else if (value === 'drag_and_drop') {
+            // console.log('drag_and_drop')
+            this.list_of_questions[target]['display_type_description'] = value;
+            this.list_of_questions[target]['question_type_description'] = value;
+            this.list_of_questions[target]['display_type_id'] = 1;
+        }
+        else {
+            // console.log("selected input")
+            this.list_of_questions[target]['question_type_description'] = "selected input";
+            if (value === "Checkbox") {
+                this.list_of_questions[target]['display_type_description'] = "Checkbox";
+                this.list_of_questions[target]['display_type_id'] = 2;
+            }
+            else if (value === "Dropdown") {
+                this.list_of_questions[target]['display_type_description'] = "Dropdown";
+                this.list_of_questions[target]['display_type_id'] = 3;
+            }
+            else if (value === "Radio") {
+                this.list_of_questions[target]['display_type_description'] = "Radio";
+                this.list_of_questions[target]['display_type_id'] = 1;
+            }
+        }
+        // console.log(`this.list_of_questions[target] =>`, this.list_of_questions[target])
+    };
+    AdminCreatequizComponent.prototype.addAnswer = function (target) {
+        var value = document.getElementById("newAnswerFor_" + target)['value'];
+        if (value.length < 1) {
+            console.log("empty input");
+            return;
+        }
+        document.getElementById("newAnswerFor_" + target)['value'] = '';
+        var answers_list = this.list_of_questions[target]['answer_prompt'];
+        for (var el in answers_list) {
+            if (answers_list[el] == value) {
+                console.log("Such answer already exists");
+                return;
+            }
+        }
+        var key = "added" + (Object.keys(answers_list).length + 1);
+        this.list_of_questions[target]['answer_prompt'][key] = value;
+        this.list_of_questions[target]['answer_sort'][key] = 1;
+        this.list_of_questions[target]['answer_correct'][key] = false;
+        this.list_of_questions[target]['answer_soft_delete'][key] = false;
+    };
+    //  MISC ===========================================================================================================================================================================================
+    AdminCreatequizComponent.prototype.orderByEngID = function (engs) {
+        var res = {};
+        for (var el in engs) {
+            if (engs[el]['soft_delete']) {
+                continue;
+            }
+            res[engs[el]['engagement_id']] = engs[el];
+        }
+        console.log("orderByEngID(engs) =>", res);
+        return res;
+    };
+    AdminCreatequizComponent.prototype.sortCategoriesByEngs = function (engs, list) {
+        // engs and list are arrays
+        for (var cat in list) {
+            for (var topic in list[cat]) {
+                var eng_id = list[cat][topic]['engagement_id'];
+                if (!engs[eng_id]) {
+                    continue;
+                }
+                if (!engs[list[cat][topic]['engagement_id']]['categories']) {
+                    engs[list[cat][topic]['engagement_id']]['categories'] = {};
+                }
+                if (!engs[list[cat][topic]['engagement_id']]['categories'][cat]) {
+                    engs[list[cat][topic]['engagement_id']]['categories'][cat] = {};
+                }
+                engs[list[cat][topic]['engagement_id']]['categories'][cat][list[cat][topic]['topic_id']] = list[cat][topic];
+            }
+        }
+        return engs;
     };
     AdminCreatequizComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
@@ -70,7 +251,7 @@ var AdminCreatequizComponent = /** @class */ (function () {
             template: __webpack_require__(/*! ./admin-createquiz.component.html */ "./src/app/admin-createquiz/admin-createquiz.component.html"),
             styles: [__webpack_require__(/*! ./admin-createquiz.component.css */ "./src/app/admin-createquiz/admin-createquiz.component.css")]
         }),
-        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [])
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_connector_service__WEBPACK_IMPORTED_MODULE_3__["ConnectorService"], _angular_common__WEBPACK_IMPORTED_MODULE_4__["Location"], _angular_router__WEBPACK_IMPORTED_MODULE_2__["ActivatedRoute"], _angular_router__WEBPACK_IMPORTED_MODULE_2__["Router"]])
     ], AdminCreatequizComponent);
     return AdminCreatequizComponent;
 }());
@@ -485,7 +666,7 @@ var AdminGradeComponent = /** @class */ (function () {
                         _this._ConnectorService.getQuizForGrading(_this.currentUser.email, _this.target).then(function (res) {
                             if (res['status'] == 'success') {
                                 _this.quiz = _this.filterQuiz(res['quiz']);
-                                // console.log("RESPONSE =>", res)
+                                console.log("RESPONSE =>", res);
                                 _this.quiz_name = unescape(res['quiz_name']['quiz_name']);
                                 _this.submit_id = res['submit_id'];
                                 // console.log("QUIZ =>", this.quiz)
@@ -504,7 +685,7 @@ var AdminGradeComponent = /** @class */ (function () {
                             // console.log("res =>", res)
                             if (res['status'] == 'success') {
                                 _this.quiz = _this.filterQuiz(res['quiz']);
-                                // console.log("RESPONSE =>", res)
+                                console.log("RESPONSE =>", res);
                                 _this.quiz_name = unescape(res['quiz_name']['quiz_name']);
                                 _this.submit_id = _this.target;
                                 // console.log("QUIZ =>", this.quiz)
@@ -887,7 +1068,7 @@ module.exports = ".home-main {\n    width: 80%;\n    margin: 0px auto;\n    disp
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div *ngIf='currentUser && currentUser.admin' class=\"quiz-selection element-animation-fadeIn\" align=\"center\" id=\"body_fadeOut\">\n    <div style=\"height: 10%; justify-content: center; display: flex; flex-direction: column;flex-wrap: wrap;\">\n        <h1 class=\"text-center\">Welcome, {{currentUser.first_name}} {{currentUser.last_name}}</h1>\n    </div>\n    <div class=\"home-main\" id=\"homeCategories\">\n        <div class=\"home-category\">\n            <div class=\"home-category-title\">\n                <h1>Grader</h1>\n            </div>\n            <div class=\"home-category-element\">\n                <a class=\"admin_link\" [routerLink]=\"['/',currentEng_id, 'adminhomegrade']\">\n                    <button *ngIf=\"gradings_counter>0\" class=\"btn btn-outline-success btn-lg dropbtn admin-button\" [disabled]=\"!currentUser.admin_grader && !currentUser.admin_owner\" type=\"button\">Grade a Quiz ({{gradings_counter}})</button>\n                    <button *ngIf=\"!gradings_counter || gradings_counter<1\" class=\"btn btn-outline-success btn-lg dropbtn admin-button\" disabled type=\"button\">No quizzes to grade</button>\n                </a>\n            </div>\n        </div>\n        <div class=\"home-category\">\n            <div class=\"home-category-title\">\n                <h1>Editor</h1>\n            </div>\n            <div class=\"home-category-element\">\n                <a class=\"admin_link\" [routerLink]=\"['/',currentEng_id, 'admincreatequiz']\">\n                    <button class=\"btn btn-outline-primary btn-lg dropbtn admin-button\" type=\"button\" [disabled]=\"!currentUser.admin_editor && !currentUser.admin_owner\">Create a Quiz</button>\n                </a>\n                <a class=\"admin_link\" [routerLink]=\"['/',currentEng_id, 'adminhomeedit']\">\n                    <button class=\"btn btn-lg btn-outline-primary dropbtn admin-button\" type=\"button\" [disabled]=\"!currentUser.admin_editor && !currentUser.admin_owner\">Edit a Quiz</button>\n                </a>\n            </div>\n        </div>\n        <div class=\"home-category\">\n            <div class=\"home-category-title\">\n                <h1>Quiz Controls</h1>\n            </div>\n            <div class=\"home-category-element\">\n                <a class=\"admin_link\" [routerLink]=\"['/',currentEng_id, 'AdminEditpermissions']\">\n                    <button class=\"btn btn-outline-dark btn-lg dropbtn admin-button\" [disabled]=\"!currentUser.admin_permissions && !currentUser.admin_owner\" type=\"button\">Quiz Permissions</button>\n                </a>\n                <a class=\"admin_link\" [routerLink]=\"['/',currentEng_id, 'AdminEditsubmissions']\">\n                    <button class=\"btn btn-outline-dark btn-lg dropbtn admin-button\" [disabled]=\"!currentUser.admin_permissions && !currentUser.admin_owner\" type=\"button\">Quiz Submissions</button>\n                </a>\n            </div>\n        </div>\n        <div class=\"home-category\">\n            <div class=\"home-category-title\">\n                <h1>Super Admin</h1>\n            </div>\n            <div class=\"home-category-element\">\n                <a class=\"admin_link\" [routerLink]=\"['/',currentEng_id, 'AdminEditusersComponent']\">\n                    <button class=\"btn btn-outline-danger btn-lg dropbtn admin-button\" [disabled]=\"!currentUser.admin_permissions && !currentUser.admin_owner\" type=\"button\">User Permissions</button>\n                </a>\n                <a class=\"admin_link\" [routerLink]=\"['/',currentEng_id, 'AdminEditengagements']\">\n                    <button class=\"btn btn-outline-danger btn-lg dropbtn admin-button\" [disabled]=\"!currentUser.admin_permissions && !currentUser.admin_owner\" type=\"button\">Edit Engagements</button>\n                </a>\n            </div>\n        </div>\n    </div>\n</div>"
+module.exports = "<div *ngIf='currentUser && currentUser.admin' class=\"quiz-selection element-animation-fadeIn\" align=\"center\" id=\"body_fadeOut\">\n    <div style=\"height: 10%; justify-content: center; display: flex; flex-direction: column;flex-wrap: wrap;\">\n        <h1 class=\"text-center\">Welcome, {{currentUser.first_name}} {{currentUser.last_name}}</h1>\n    </div>\n    <div class=\"home-main\" id=\"homeCategories\" *ngIf=\"currentEng\">\n        <div class=\"home-category\">\n            <div class=\"home-category-title\">\n                <h1>Grader</h1>\n            </div>\n            <div class=\"home-category-element\">\n                <a class=\"admin_link\" [routerLink]=\"['/', currentEng_id, 'adminhomegrade']\">\n                    <button *ngIf=\"gradings_counter>0\" class=\"btn btn-outline-success btn-lg dropbtn admin-button\" [disabled]=\"!currentUser.admin_grader && !currentUser.admin_owner\" type=\"button\">Grade a Quiz ({{gradings_counter}})</button>\n                    <button *ngIf=\"!gradings_counter || gradings_counter<1\" class=\"btn btn-outline-success btn-lg dropbtn admin-button\" disabled type=\"button\">No quizzes to grade</button>\n                </a>\n            </div>\n        </div>\n        <div class=\"home-category\">\n            <div class=\"home-category-title\">\n                <h1>Editor</h1>\n            </div>\n            <div class=\"home-category-element\">\n                <a class=\"admin_link\" [routerLink]=\"['/',currentEng_id, 'admincreatequiz']\">\n                    <button class=\"btn btn-outline-primary btn-lg dropbtn admin-button\" type=\"button\" [disabled]=\"!currentUser.admin_editor && !currentUser.admin_owner\">Create a Quiz</button>\n                </a>\n                <a class=\"admin_link\" [routerLink]=\"['/',currentEng_id, 'adminhomeedit']\">\n                    <button class=\"btn btn-lg btn-outline-primary dropbtn admin-button\" type=\"button\" [disabled]=\"!currentUser.admin_editor && !currentUser.admin_owner\">Edit a Quiz</button>\n                </a>\n            </div>\n        </div>\n        <div class=\"home-category\">\n            <div class=\"home-category-title\">\n                <h1>Quiz Controls</h1>\n            </div>\n            <div class=\"home-category-element\">\n                <a class=\"admin_link\" [routerLink]=\"['/',currentEng_id, 'AdminEditpermissions']\">\n                    <button class=\"btn btn-outline-dark btn-lg dropbtn admin-button\" [disabled]=\"!currentUser.admin_permissions && !currentUser.admin_owner\" type=\"button\">Quiz Permissions</button>\n                </a>\n                <a class=\"admin_link\" [routerLink]=\"['/',currentEng_id, 'AdminEditsubmissions']\">\n                    <button class=\"btn btn-outline-dark btn-lg dropbtn admin-button\" [disabled]=\"!currentUser.admin_permissions && !currentUser.admin_owner\" type=\"button\">Quiz Submissions</button>\n                </a>\n            </div>\n        </div>\n        <div class=\"home-category\">\n            <div class=\"home-category-title\">\n                <h1>Super Admin</h1>\n            </div>\n            <div class=\"home-category-element\">\n                <a class=\"admin_link\" [routerLink]=\"['/',currentEng_id, 'AdminEditusersComponent']\">\n                    <button class=\"btn btn-outline-danger btn-lg dropbtn admin-button\" [disabled]=\"!currentUser.admin_permissions && !currentUser.admin_owner\" type=\"button\">User Permissions</button>\n                </a>\n                <a class=\"admin_link\" [routerLink]=\"['/',currentEng_id, 'AdminEditengagements']\">\n                    <button class=\"btn btn-outline-danger btn-lg dropbtn admin-button\" [disabled]=\"!currentUser.admin_permissions && !currentUser.admin_owner\" type=\"button\">Edit Engagements</button>\n                </a>\n            </div>\n        </div>\n    </div>\n</div>"
 
 /***/ }),
 
@@ -922,6 +1103,7 @@ var AdminHomeComponent = /** @class */ (function () {
         this.currentUser = null;
         this.gradings_counter = null;
         this.your_list = null;
+        this.currentEng = null;
         this._route.paramMap.subscribe(function (params) {
             _this.currentEng_id = params.get('eng');
         });
@@ -936,6 +1118,9 @@ var AdminHomeComponent = /** @class */ (function () {
                     _this.gradings_counter = res;
                 });
             }
+        });
+        this._ConnectorService.currentEng.subscribe(function (eng) {
+            _this.currentEng = eng;
         });
     }
     AdminHomeComponent.prototype.ngOnInit = function () {
@@ -1275,7 +1460,7 @@ var AppComponent = /** @class */ (function () {
         for (var i = 3; i < loc.length; i++) {
             new_loc += "/" + loc[i];
         }
-        console.log(loc);
+        // console.log(loc)
         // this._r.navigate([new_loc]);
         this._r.navigateByUrl("/" + eng_id + "/home");
     };
@@ -1303,7 +1488,7 @@ var AppComponent = /** @class */ (function () {
         var _this = this;
         // console.log("App component is here! this.currentEng =>", this.currentEng)
         var loc = location.href.split('/');
-        console.log("THIS LOCATION =>", loc);
+        // console.log("THIS LOCATION =>", loc)
         if (loc[3]) {
             if (localStorage['cur_eng']) {
                 if (localStorage['cur_eng']['engagement_id'] != loc[3]) {
@@ -1313,7 +1498,7 @@ var AppComponent = /** @class */ (function () {
                                 _this.currentEng = res[el];
                                 localStorage['cur_eng'] = res[el];
                                 _this._c.setMainInfo({ 'currentEng': res[el] });
-                                console.log("NEW ENGAGEMENT WAS DETECTED =>", res[el]);
+                                // console.log("NEW ENGAGEMENT WAS DETECTED =>", res[el])
                                 return;
                             }
                         }
@@ -1327,7 +1512,7 @@ var AppComponent = /** @class */ (function () {
                             _this.currentEng = res[el];
                             localStorage['cur_eng'] = res[el];
                             _this._c.setMainInfo({ 'currentEng': res[el] });
-                            console.log("SETTING A NEW ENGAGEMENT");
+                            // console.log("SETTING A NEW ENGAGEMENT")
                             return;
                         }
                     }
@@ -1335,7 +1520,7 @@ var AppComponent = /** @class */ (function () {
                     _this._r.navigateByUrl('/');
                 })
                     .catch(function (err) {
-                    console.log("ERR =>", err);
+                    // console.log( "ERR =>", err)
                 });
             }
         }
@@ -1760,6 +1945,21 @@ var ConnectorService = /** @class */ (function () {
                 'email': email
             };
             that.http.post('/api/submitGrades', obj).subscribe(function (res) {
+                resolve(res);
+            }, function (err) {
+                reject(err);
+            });
+        });
+    };
+    // ==============================================================================
+    // CREATE QUIZ FUNCTIONS ========================================================
+    ConnectorService.prototype.getCatsTopsEngs = function (email) {
+        var that = this;
+        return new Promise(function (resolve, reject) {
+            var obj = {
+                'email': email
+            };
+            that.http.post('/api/getCatsTopsEngs', obj).subscribe(function (res) {
                 resolve(res);
             }, function (err) {
                 reject(err);
@@ -3227,6 +3427,68 @@ var OopsComponent = /** @class */ (function () {
         tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [])
     ], OopsComponent);
     return OopsComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/question.ts":
+/*!*****************************!*\
+  !*** ./src/app/question.ts ***!
+  \*****************************/
+/*! exports provided: Question */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Question", function() { return Question; });
+var Question = /** @class */ (function () {
+    function Question(answer_prompt, base64, answer_correct, answer_soft_delete, display_type_description, display_type_id, image, point_value, prompt, question_type_description, question_type_id, quiz_id, quiz_name, sort, topic, topic_id, training_module, question_soft_delete, expected_response, question_sort, answer_sort) {
+        if (answer_prompt === void 0) { answer_prompt = {}; }
+        if (base64 === void 0) { base64 = null; }
+        if (answer_correct === void 0) { answer_correct = {}; }
+        if (answer_soft_delete === void 0) { answer_soft_delete = {}; }
+        if (display_type_description === void 0) { display_type_description = ''; }
+        if (display_type_id === void 0) { display_type_id = null; }
+        if (image === void 0) { image = false; }
+        if (point_value === void 0) { point_value = 1; }
+        if (prompt === void 0) { prompt = ''; }
+        if (question_type_description === void 0) { question_type_description = ''; }
+        if (question_type_id === void 0) { question_type_id = null; }
+        if (quiz_id === void 0) { quiz_id = null; }
+        if (quiz_name === void 0) { quiz_name = ''; }
+        if (sort === void 0) { sort = 1; }
+        if (topic === void 0) { topic = ''; }
+        if (topic_id === void 0) { topic_id = null; }
+        if (training_module === void 0) { training_module = ''; }
+        if (question_soft_delete === void 0) { question_soft_delete = false; }
+        if (expected_response === void 0) { expected_response = ''; }
+        if (question_sort === void 0) { question_sort = 1; }
+        if (answer_sort === void 0) { answer_sort = {}; }
+        this.answer_prompt = answer_prompt;
+        this.base64 = base64;
+        this.answer_correct = answer_correct;
+        this.answer_soft_delete = answer_soft_delete;
+        this.display_type_description = display_type_description;
+        this.display_type_id = display_type_id;
+        this.image = image;
+        this.point_value = point_value;
+        this.prompt = prompt;
+        this.question_type_description = question_type_description;
+        this.question_type_id = question_type_id;
+        this.quiz_id = quiz_id;
+        this.quiz_name = quiz_name;
+        this.sort = sort;
+        this.topic = topic;
+        this.topic_id = topic_id;
+        this.training_module = training_module;
+        this.question_soft_delete = question_soft_delete;
+        this.expected_response = expected_response;
+        this.question_sort = question_sort;
+        this.answer_sort = answer_sort;
+    }
+    return Question;
 }());
 
 

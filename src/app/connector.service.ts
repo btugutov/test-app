@@ -263,7 +263,28 @@ export class ConnectorService {
       })
     }
   // ==============================================================================
+  // CREATE QUIZ FUNCTIONS ========================================================
 
+  getCatsTopsEngs(email){
+    var that = this;
+      return new Promise(function (resolve, reject) {
+        let obj = {
+          'email': email
+        }
+        that.http.post('/api/getCatsTopsEngs', obj).subscribe(
+          res => {
+            resolve(res)
+          },
+          err => {
+            reject(err)
+          }
+        );
+      })
+  }
+
+
+
+  // ==============================================================================
   // MISC FUNCTIONS
   objToToArray(obj) { // object has to be a list
     let result = [];

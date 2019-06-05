@@ -1,3 +1,170 @@
-<p>
-  admin-createquiz works!
-</p>
+<div class="admin-create-quiz" *ngIf="currentUser && engagements">
+    <div class="admin-create-quiz-title">
+        <h1>Create a new quiz</h1>
+    </div>
+    <div class="admin-create-quiz-body">
+        <div class="admin-create-quiz-body-topic-cat-eng-box">
+            <div class="input-group">
+                <div class="admin-create-quiz-body-topic-cat-eng-box-select-box">
+                    <span class="text-muted">Engagement</span>
+                    <select class="custom-select" (change)="valueChanger('engagement', $event.target.value)">
+                      <option *ngFor="let eng of engagements" [selected]="eng.engagement_id==currentEng_id"
+                        [disabled]="eng.soft_delete" value={{eng.engagement_id}}>{{eng.engagement_name}}</option>
+                    </select>
+                </div>
+                <div class="admin-create-quiz-body-topic-cat-eng-box-select-box">
+                    <span class="text-muted">Category</span>
+                    <input [disabled]="!selected_eng" class="custom-select" type="text" id="category_selector" list="categories" (change)="valueChanger('category', $event.target.value)" />
+                    <datalist id="categories">
+                    <select class="custom-select">
+                      <option *ngFor="let c of categories_list | keyvalue" [value]="c.key"></option>
+                    </select>
+                  </datalist>
+                </div>
+                <div class="admin-create-quiz-body-topic-cat-eng-box-select-box">
+                    <span class="text-muted">Topic</span>
+                    <input [disabled]="!selected_category" id="topic_selector" class="custom-select" type="text" list="topics" (change)="valueChanger('topic', $event.target.value)" />
+                    <datalist id="topics">
+                    <select class="custom-select">
+                      <option *ngFor="let t of topic_list | keyvalue" [value]="t.value['topic']">(Already exists)</option>
+                    </select>
+                  </datalist>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="topic_cat_eng_message.display" style="margin-top: 15px">
+            <div *ngIf="topic_cat_eng_message.status == 'fail'" class="alert alert-warning shadow" role="alert">
+                <strong>Warning!</strong> {{topic_cat_eng_message.message}}
+            </div>
+            <div *ngIf="topic_cat_eng_message.status == 'success'" class="alert alert-success shadow" role="alert">
+                <strong>Nice!</strong> {{topic_cat_eng_message.message}}
+            </div>
+        </div>
+        <div *ngIf='topic_cat_eng_message.display == false' style="height: 81px;">
+
+        </div>
+    </div>
+
+    <div class='admin-create-quiz-form' style="margin-top: 25px;">
+        <table class="table table-borderless">
+            <thead class="thead-light">
+                <tr style="height: 50px">
+                    <th class="border-0 text-uppercase small font-weight-bold text-center" style="width: 5%">ID/Order</th>
+                    <th class="border-0 text-uppercase small font-weight-bold text-center">Question prompt</th>
+                    <th class="border-0 text-uppercase small font-weight-bold text-center">Image</th>
+                    <th class="border-0 text-uppercase small font-weight-bold text-center" style="width: 7%">Display Type</th>
+                    <th class="border-0 text-uppercase small font-weight-bold text-center">List of choices/Expected Answer</th>
+                    <th class="border-0 text-uppercase small font-weight-bold text-center">Admin notes</th>
+                    <th class="border-0 text-uppercase small font-weight-bold text-center" style="width: 5%">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="create_form_row">
+                    <td class='text-center table-row'>
+                        <p>New</p>
+                        <div>
+                            <input style="width: 100%; padding: 0px 0px !important" class="edit_sort_value text_adjust form-control create_form_input_shadow" min=0 max=99 type="number" value=1 title="Set Question Priority" data-toggle="tooltip" data-placement="bottom" title="Tooltip on bottom">
+                        </div>
+                    </td>
+                    <td style="padding: 0px 3px !important;">
+                        <textarea class='textAreaPrompt form-control create_form_input_shadow text_adjust' rows=4 name='questionPromts' question_id=${id} id='questionPromt${id}' data=${id}></textarea>
+                    </td>
+                    <td class='create_form_img_box' align="center">
+                        <div *ngIf="!list_of_questions.new_question['image']">
+                            <label for="file-upload" style="width: 100%;" class="custom-file-upload btn btn-sm btn-outline-secondary btn-action-borderless">
+                                &#8682; Upload Picture
+                          </label>
+                            <input id="file-upload" type="file" />
+                        </div>
+                        <div *ngIf="list_of_questions.new_question['image']">
+                            <img src="/images/pathToYourImage.png" class="img-fluid" alt="Responsive image">
+                        </div>
+                    </td>
+                    <td>
+                        <div class="btn-group-vertical btn-group-toggle" data-toggle="buttons">
+                            <label class="btn btn-sm btn-action-borderless btn-outline-secondary" (click)="displayTypeChanger('new_question', 'textfield input')" checked>
+                              <input type="radio" name="displayTypeNew" id="manual_input"  value="textfield input" ng-checked='true' /> Manual Input
+                            </label>
+                            <label class="btn btn-sm btn-action-borderless btn-outline-secondary" (click)="displayTypeChanger('new_question', 'Radio')">
+                              <input type="radio" name="displayTypeNew " id="radio "  value="Radio" /> Radio
+                            </label>
+                            <label class="btn btn-sm btn-action-borderless btn-outline-secondary " (click)="displayTypeChanger( 'new_question', 'Dropdown')">
+                            <input type="radio" name="displayTypeNew" id="dropdown" value="Dropdown" > Dropdown
+                            </label>
+                            <label class="btn btn-sm btn-action-borderless btn-outline-secondary" (click)="displayTypeChanger('new_question', 'Checkbox')">
+                              <input type="radio" name="displayTypeNew " id="checkbox " value="Checkbox "> Checkbox
+                            </label>
+                            <label class="btn btn-sm btn-action-borderless btn-outline-secondary " (click)="displayTypeChanger( 'new_question', 'drag_and_drop')">
+                            <input type="radio" name="displayTypeNew" id="drag_and_drop" value="drag_and_drop" > Drag'n'Drop
+                            </label>
+                        </div>
+                    </td>
+
+                    <td>
+                        <div *ngIf="!list_of_questions.new_question['question_type_description']">
+                            <p align="center" class='text-muted'>Please check type of question.</p>
+                        </div>
+                        <div style="padding: 0px 3px !important;" [hidden]="list_of_questions.new_question['question_type_description'] != 'textfield input'">
+                            <textarea class='textAreaExpectedAnswer form-control create_form_input_shadow' rows=4 name='questionExpectedAnswer' id='questionExpectedAnswer_new_question' question_id='new_question' placeholder="Expected answer">{{list_of_questions['new_question']['expected_response']}}</textarea>
+                        </div>
+                        <div *ngIf="list_of_questions.new_question['question_type_description'] == 'drag_and_drop'">
+                            drag and drop
+                        </div>
+                        <div *ngIf="list_of_questions.new_question['display_type_description'] == 'Checkbox' && list_of_questions.new_question['question_type_description'] = 'selected input'">
+                            <div *ngFor="let ans of list_of_questions.new_question['answer_prompt'] | keyvalue">
+                                <div><input class="answerChoice" type="checkbox" id="checkbox_{{ans.key}}" value="{{ans.value}}" title="Select the right answer. You can chose multiple." />
+                                    <label for="checkbox${id}" style="margin:0px 0px; width:92%">
+                                      <div class="input-group mb-1">
+                                          <div class="input-group-prepend" style="width: 15%;">
+                                              <input type="number" class="answer_order_edit text_adjust answer_order_edit${id}" min="1" id="answer_order_edit_{{ans.key}}" style="width: 90%;" value="{{list_of_questions.new_question['answer_sort'][ans.key] }}" data-toggle="tooltip" data-placement="bottom" title="Set priority of the answer.">
+                                          </div>
+                                          <input class="form-control" type="text" id="answerId${id}" value="" aria-describedby="basic-addon2"/>
+                                          <div class="input-group-append">
+                                              <button class="btn btn-outline-danger buttonRemoveAnswer buttonRemoveAnswerForQuestionId${id}" id='buttonRemoveAnswer${i}' type="button" >-</button>
+                                          </div>
+                                      </div>
+                                  </label>
+                                </div>
+                                <!-- <input type="checkbox" value="" >{{ans.value}} -->
+                            </div>
+                        </div>
+
+                        <div *ngIf="list_of_questions.new_question['display_type_description'] == 'Dropdown' && list_of_questions.new_question['question_type_description'] = 'selected input'">
+                            <div *ngFor="let ans of list_of_questions.new_question['answer_prompt'] | keyvalue"> {{ans.value}}</div>
+                        </div>
+
+                        <div *ngIf="list_of_questions.new_question['display_type_description'] == 'Radio' && list_of_questions.new_question['question_type_description'] = 'selected input'">
+                            <div *ngFor="let ans of list_of_questions.new_question['answer_prompt'] | keyvalue">{{ans.value}}</div>
+                        </div>
+                        <div style="padding-right: 3px !important;" class="input-group mb-3 create_form_input_shadow" [hidden]="!list_of_questions.new_question['question_type_description'] || list_of_questions.new_question['question_type_description'] == 'textfield input' || list_of_questions.new_question['question_type_description'] == 'drag_and_drop'">
+                            <div class="input-group-prepend" style="width: 25px">
+                                <button class="btn btn-success create_form_answer_add btn-action-borderless" id='buttonAddNewAnswer_new_question' type="button" (click)="addAnswer('new_question')" question_id="new_question">+</button>
+                            </div>
+                            <input type="text" class="form-control create_form_input_shadowless  edit_quiz_input_text_add" question_id="new_question" id="newAnswerFor_new_question" placeholder='Add an answer' aria-describedby="basic-addon2">
+                        </div>
+                    </td>
+                    <td>
+                        admin notes
+                        <div id='conluence_field${id}'></div>
+                        <div id='module_field${id}'></div>
+                        <div id='point_value_field${id}'></div>
+                    </td>
+                    <td style='text-align: center'>
+                        <div>
+                            <button class='btn btn-outline-primary btn-action-borderless' style="width: 100%">🔍 Preview</button>
+                            <button class='btn btn-outline-success btn-action-borderless' style="width: 100%">+ Add</button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+            <div>
+            </div>
+        </table>
+        {{list_of_questions | json }}
+
+
+    </div>
+</div>
+<div *ngIf="!currentUser || !engagements" class=" loading_box ">
+    <img class="loading_box-ing " src='./../../assets/loading.gif'>
+</div>

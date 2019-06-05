@@ -2,13 +2,13 @@
     <div style="height: 10%; justify-content: center; display: flex; flex-direction: column;flex-wrap: wrap;">
         <h1 class="text-center">Welcome, {{currentUser.first_name}} {{currentUser.last_name}}</h1>
     </div>
-    <div class="home-main" id="homeCategories">
+    <div class="home-main" id="homeCategories" *ngIf="currentEng">
         <div class="home-category">
             <div class="home-category-title">
                 <h1>Grader</h1>
             </div>
             <div class="home-category-element">
-                <a class="admin_link" [routerLink]="['/',currentEng_id, 'adminhomegrade']">
+                <a class="admin_link" [routerLink]="['/', currentEng_id, 'adminhomegrade']">
                     <button *ngIf="gradings_counter>0" class="btn btn-outline-success btn-lg dropbtn admin-button" [disabled]="!currentUser.admin_grader && !currentUser.admin_owner" type="button">Grade a Quiz ({{gradings_counter}})</button>
                     <button *ngIf="!gradings_counter || gradings_counter<1" class="btn btn-outline-success btn-lg dropbtn admin-button" disabled type="button">No quizzes to grade</button>
                 </a>

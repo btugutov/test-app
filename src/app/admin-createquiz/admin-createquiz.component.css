@@ -1,0 +1,102 @@
+.admin-create-quiz {
+    margin-top: 50px;
+}
+
+.admin-create-quiz-title {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    align-items: center;
+    align-content: center;
+}
+
+.admin-create-quiz-body {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    align-items: center;
+    align-content: center;
+}
+
+.admin-create-quiz-body-topic-cat-eng-box {
+    /* max-width: 400px; */
+}
+
+.admin-create-quiz-body-topic-cat-eng-box-select-box {
+    margin: 0px 10px;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    align-items: center;
+    align-content: center;
+}
+
+.thead-light {
+    background: #e9ecef;
+    color: #7f8082;
+}
+
+.select-label {
+    margin-bottom: 0px !important;
+    margin-left: 5px;
+}
+
+.table-row {
+    /* padding: 0px 0px !important; */
+    /* display: ; */
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    align-items: center;
+    align-content: center;
+}
+
+.create_form_img_box {
+    width: 15%;
+}
+
+.create_form_answer_add {
+    width: 100%;
+    padding: 0px 0px !important;
+}
+
+input[type="file"] {
+    display: none;
+}
+
+.custom-file-upload {
+    border: 1px solid #ccc;
+    display: inline-block;
+    padding: 6px 12px;
+    cursor: pointer;
+}
+
+.create_form_input_shadow {
+    box-shadow: 0 0 0 0.2rem rgba(179, 182, 185, 0.25);
+    border-radius: 0px;
+}
+
+.create_form_input_shadow:focus {
+    box-shadow: 0 0 0 0.2rem #4f91cd59;
+    /* background-color: none repeat scroll 0 0 rgba(0, 0, 0, 0.01); */
+}
+
+.btn-shadow {
+    box-shadow: 0 0 0 0.2rem rgba(179, 182, 185, 0.25);
+}
+
+.create_form_input_shadowless {
+    box-shadow: none;
+    border-radius: 0px;
+    border: none;
+}
+
+.create_form_input_shadowless:focus {
+    box-shadow: none;
+    border: none;
+    /* background-color: none repeat scroll 0 0 rgba(0, 0, 0, 0.01); */
+}

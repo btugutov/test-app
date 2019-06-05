@@ -621,7 +621,30 @@ module.exports = function(app) {
                                             return;
                                             UNCOMMENT IT !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                                               */
-                                        console.log("NEED TO CONTINUE!!!")
+                                        // console.log("NEED TO CONTINUE!!!")
+                                        // console.log("cur_quizzes =>", cur_quizzes[0])
+                                        let submit_id = cur_quizzes[0]['submit_id']
+                                        get_completed_quiz_by_submissions(submit_id).then(result2 => {
+                                                response_message.status = 'success';
+                                                response_message.quiz = unescapingObj(result2);
+                                                response_message.message = 'continue this'
+                                                get_quiz_name_by_topic_id(topic_id).then(quiz_name => {
+                                                        response_message.quiz_name = quiz_name[0];
+                                                        res.json(response_message);
+                                                    })
+                                                    .catch(function(error) {
+                                                        log_event('ERROR', error, 'gradeHome');
+                                                        error_handler(error, res, getLineNumber())
+                                                        response_message.message = error;
+                                                        res.json(response_message)
+                                                    });
+                                            })
+                                            .catch(function(error) {
+                                                log_event('ERROR', error, 'continue_grade');
+                                                error_handler(error, res, getLineNumber())
+                                                response_message.message = error;
+                                                res.json(response_message)
+                                            });
                                     }
                                 }
                             }
@@ -814,14 +837,117 @@ module.exports = function(app) {
         }
     })
 
-
-
-    // ========================END OF ADMING FUNCTIONS=========================
-
     // ************************************************************************
-    // ************************* END OF ADMIN FUNCTIONS ***********************
+    // ************************ END OF GRADING FUNCTIONS **********************
     // ************************************************************************
 
+
+
+
+    // ************************************************************************
+    // ************************************************************************
+    // ********************                         ***************************
+    // ********************  CREATE QUIZ  FUNCTIONS ***************************
+    // ********************                         ***************************
+    // ************************************************************************
+    // ************************************************************************
+    /*  
+    app.get('/api/ADDRESS', (req, res, next) => {
+        let function_name = FUNCTION_NAME
+        let response_message = {
+            'status': 'failed',
+            'message': ''
+        }
+        try {
+            preload_block(res, req.body['email'], undefined, undefined)
+                .catch(function(error) {
+                    debugLog("ERROR HERE" + error);
+                    response_message.message = error;
+                    res.json(response_message)
+                })
+                .then(returnObj => {
+                    let currentUser = returnObj['currentUser']
+                    if (currentUser.admin_grader || currentUser.admin_owner) {
+                        DO ALL THE LOGIC HERE
+                        res.json(RETURN_RESULT)
+                    }else {
+                            response_message.message = 'You have no permission.';
+                            res.json(response_message)
+                        }
+                    }).catch(function(error) {
+                        log_event('ERROR', error, 'function_name');
+                        error_handler(error, res, getLineNumber());
+                        response_message.message = error;
+                        res.json(response_message)
+                    });
+            } catch (err) {
+                response_message.status = err;
+                res.json(err)
+            }
+    });
+
+
+    */
+    app.post('/api/getCatsTopsEngs', (req, res, next) => {
+        let response_message = {
+            'status': 'failed',
+            'message': ''
+        }
+        try {
+            preload_block(res, req.body['email'], undefined, undefined)
+                .catch(function(error) {
+                    debugLog("ERROR HERE" + error);
+                    response_message.message = error;
+                    res.json(response_message)
+                })
+                .then(returnObj => {
+                    let currentUser = returnObj['currentUser']
+                        // check to make sure that user has grading permissions before accepting data from the post
+                    if (currentUser.admin_editor || currentUser.admin_owner) {
+                        get_table_complete('KA_engagement').then(res_engs => {
+                            response_message.engs = res_engs;
+                            get_table_complete('KA_test_topic').then(function(catResult) {
+                                response_message.categories = groupByKey(catResult, 'category', 'topic_id');
+                                get_table_complete('KA_bucket').then(bl => {
+                                    response_message.bucket_list = bl;
+                                    response_message.status = 'success';
+                                    res.json(response_message)
+                                }).catch(function(error) {
+                                    log_event('ERROR', error, 'get_table_complete');
+                                    error_handler(error, res, getLineNumber())
+                                })
+                            }).catch(function(error) {
+                                log_event('ERROR', error, 'get_table_complete');
+                                error_handler(error, res, getLineNumber())
+                            })
+                        }).catch(function(error) {
+                            log_event('ERROR', error, 'get_table_complete');
+                            error_handler(error, res, getLineNumber());
+                            response_message.message = error;
+                            res.json(response_message)
+                        });
+
+                    } else {
+                        response_message.message = 'You have no permission.';
+                        res.json(response_message)
+                    }
+                }).catch(function(error) {
+                    log_event('ERROR', error, 'preload_block');
+                    error_handler(error, res, getLineNumber());
+                    response_message.message = error;
+                    res.json(response_message)
+                });
+        } catch (err) {
+            response_message.status = err;
+            res.json(err)
+        }
+    });
+
+
+
+    // ************************************************************************
+    // ******************* END OF CREATE QUIZ  FUNCTIONS **********************
+    // ************************************************************************
 
 
 

@@ -1851,3 +1851,8 @@ a.disabled {
 .loading_box {
     max-height: fit-content
 }
+
+.btn-action-borderless {
+    border: none !important;
+    border-radius: 0px !important;
+}

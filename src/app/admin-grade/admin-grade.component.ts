@@ -39,7 +39,7 @@ export class AdminGradeComponent implements OnInit {
             this._ConnectorService.getQuizForGrading(this.currentUser.email, this.target).then(res => {
               if(res['status'] == 'success'){
                 this.quiz = this.filterQuiz(res['quiz'])
-                // console.log("RESPONSE =>", res)
+                console.log("RESPONSE =>", res)
                 this.quiz_name = unescape(res['quiz_name']['quiz_name'])
                 this.submit_id = res['submit_id']
                 // console.log("QUIZ =>", this.quiz)
@@ -56,7 +56,7 @@ export class AdminGradeComponent implements OnInit {
               // console.log("res =>", res)
               if(res['status'] == 'success'){
                 this.quiz = this.filterQuiz(res['quiz'])
-                // console.log("RESPONSE =>", res)
+                console.log("RESPONSE =>", res)
                 this.quiz_name = unescape(res['quiz_name']['quiz_name'])
                 this.submit_id = this.target;
                 // console.log("QUIZ =>", this.quiz)

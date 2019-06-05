@@ -13,10 +13,11 @@ export class AdminHomeComponent implements OnInit {
   currentUser = null;
   gradings_counter = null;
   your_list = null;
+  currentEng = null;
   constructor(private _ConnectorService: ConnectorService, private location: Location, private _route: ActivatedRoute, private _r: Router) {
     this._route.paramMap.subscribe(params => {
       this.currentEng_id = params.get('eng');
-    })
+    });
     this._ConnectorService.user.subscribe(user => {
       this.currentUser = user;
       if(user && !user.admin){
@@ -29,6 +30,9 @@ export class AdminHomeComponent implements OnInit {
         })
       }
     });
+    this._ConnectorService.currentEng.subscribe(eng => {
+      this.currentEng = eng;
+    })
   }
 
   ngOnInit() {

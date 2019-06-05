@@ -208,7 +208,7 @@ export class AppComponent implements OnInit {
     for(let i = 3; i < loc.length; i++){
       new_loc+="/"+loc[i];
     }
-    console.log(loc)
+    // console.log(loc)
     // this._r.navigate([new_loc]);
     this._r.navigateByUrl(`/${eng_id}/home`)
   }
@@ -238,7 +238,7 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     // console.log("App component is here! this.currentEng =>", this.currentEng)
     let loc = location.href.split('/');
-    console.log("THIS LOCATION =>", loc)
+    // console.log("THIS LOCATION =>", loc)
     if(loc[3]){
       if(localStorage['cur_eng']){
         if(localStorage['cur_eng']['engagement_id'] != loc[3]){
@@ -248,7 +248,7 @@ export class AppComponent implements OnInit {
                 this.currentEng = res[el];
                 localStorage['cur_eng'] = res[el];
                 this._c.setMainInfo({'currentEng': res[el]});
-                console.log("NEW ENGAGEMENT WAS DETECTED =>", res[el])
+                // console.log("NEW ENGAGEMENT WAS DETECTED =>", res[el])
                 return;
               }
             }
@@ -261,7 +261,7 @@ export class AppComponent implements OnInit {
               this.currentEng = res[el];
               localStorage['cur_eng'] = res[el];
               this._c.setMainInfo({'currentEng': res[el]});
-              console.log("SETTING A NEW ENGAGEMENT")
+              // console.log("SETTING A NEW ENGAGEMENT")
               return;
             }
           }
@@ -269,7 +269,7 @@ export class AppComponent implements OnInit {
           this._r.navigateByUrl('/');
         })
         .catch(function(err){
-          console.log( "ERR =>", err)
+          // console.log( "ERR =>", err)
         })
       }
     }
