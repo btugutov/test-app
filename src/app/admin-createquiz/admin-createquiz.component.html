@@ -74,10 +74,11 @@
                             <label for="file-upload" style="width: 100%;" class="custom-file-upload btn btn-sm btn-outline-secondary btn-action-borderless">
                                 &#8682; Upload Picture
                           </label>
-                            <input id="file-upload" type="file" />
+                            <input id="file-upload" type="file" (change)="inputEditor('img', 'new_question', 'base64', null, $event.target.files)" accept="image/*" />
                         </div>
-                        <div *ngIf="list_of_questions.new_question['image']">
-                            <img src="/images/pathToYourImage.png" class="img-fluid" alt="Responsive image">
+                        <div *ngIf="list_of_questions.new_question['image']" style="position: relative">
+                            <img src="{{list_of_questions.new_question['base64']}}" class="img-fluid" alt="Responsive image">
+                            <button class="btn btn-sm btn-outline-danger btn-image-remove" (click)="removeImg('new_question')">x</button>
                         </div>
                     </td>
                     <td>
@@ -123,16 +124,16 @@
                         <div *ngIf="list_of_questions.new_question['display_type_description'] == 'Checkbox' && list_of_questions.new_question['question_type_description'] = 'selected input'">
                             <div *ngFor="let ans of list_of_questions.new_question['answer_prompt'] | keyvalue">
                                 <div>
-                                    <input class="answerChoice" (change)="answerEditor('new_question', 'answer_correct', ans.key, !list_of_questions.new_question['answer_correct'][ans.key])" [checked]=list_of_questions.new_question.answer_correct[ans.key] type="checkbox" id="checkbox_{{ans.key}}"
-                                        title="Select the right answer. You can chose multiple." />
+                                    <input class="answerChoice" style="margin: 5px" (change)="inputEditor('answer','new_question', 'answer_correct', ans.key, !list_of_questions.new_question['answer_correct'][ans.key])" [checked]=list_of_questions.new_question.answer_correct[ans.key] type="checkbox"
+                                        id="checkbox_{{ans.key}}" title="Select the right answer. You can chose multiple." />
                                     <label for="checkbox_{{ans.key}}" style="margin:0px 0px; width:92%">
                                       <div class="input-group mb-1">
                                           <div class="input-group-prepend" style="width: 15%;">
-                                              <input type="number"  (change)="answerEditor('new_question', 'answer_sort', ans.key, $event.target.value)" class="answer_order_edit" min="1" id="answer_order_edit_{{ans.key}}" style="width: 90%;" value="{{list_of_questions.new_question['answer_sort'][ans.key] }}" data-toggle="tooltip" data-placement="bottom" title="Set priority of the answer.">
+                                              <input type="number" (change)="inputEditor('answer','new_question', 'answer_sort', ans.key, $event.target.value)" class="answer_order_edit form-control create_form_input_shadow" min="1" id="answer_order_edit_{{ans.key}}" style="width: 90%;" value="{{list_of_questions.new_question['answer_sort'][ans.key] }}" data-toggle="tooltip" data-placement="bottom" title="Set priority of the answer.">
                                           </div>
-                                          <input class="form-control" type="text" id="answerId${id}" value="" aria-describedby="basic-addon2" value='{{ans.value}}' (change)="answerEditor('new_question', 'answer_prompt', ans.key, $event.target.value)"/>
+                                          <input class="form-control create_form_input_shadow" type="text" id="answerId${id}" value="" aria-describedby="basic-addon2" value='{{ans.value}}' (change)="inputEditor('answer','new_question', 'answer_prompt', ans.key, $event.target.value)"/>
                                           <div class="input-group-append">
-                                              <button class="btn btn-outline-danger buttonRemoveAnswer" (click)="answerEditor('new_question', 'answer_soft_delete', ans.key, true)" [hidden]="list_of_questions.new_question['answer_soft_delete'][ans.key]" id='buttonRemoveAnswer${i}' type="button" >-</button>
+                                              <button class="btn btn-outline-danger buttonRemoveAnswer" (click)="inputEditor('answer','new_question', 'answer_soft_delete', ans.key, true)" [hidden]="list_of_questions.new_question['answer_soft_delete'][ans.key]" id='buttonRemoveAnswer${i}' type="button" >-</button>
                                           </div>
                                       </div>
                                   </label>
@@ -143,47 +144,44 @@
 
                         <!-- DROPDOWN/SELECT -->
                         <div *ngIf="list_of_questions.new_question['display_type_description'] == 'Dropdown' && list_of_questions.new_question['question_type_description'] = 'selected input'">
-                            <div *ngFor="let ans of list_of_questions.new_question['answer_prompt'] | keyvalue" class="custom-control custom-radio">
-                                <input type="radio" id="select_answer_{{ans.key}}" name="select_for_question_new_question" class="custom-control-input">
-                                <label class="custom-control-label" for="select_answer_{{ans.key}}">{{ans.value}}</label>
-                            </div>
-                            <!-- 
-                            <div *ngFor="let ans of list_of_questions.new_question['answer_prompt'] | keyvalue">
-                                    <div><input class="answerChoice" type="checkbox" id="checkbox_{{ans.key}}" value="{{ans.value}}" title="Select the right answer. You can chose multiple." />
-                                        <label for="checkbox${id}" style="margin:0px 0px; width:92%">
-                                            <div class="input-group mb-1">
-                                                <div class="input-group-prepend" style="width: 15%;">
-                                                    <input type="number" class="answer_order_edit answer_order_edit${id}" min="1" id="answer_order_edit_{{ans.key}}" style="width: 90%;" value="{{list_of_questions.new_question['answer_sort'][ans.key] }}" data-toggle="tooltip" data-placement="bottom" title="Set priority of the answer.">
+                            <div *ngFor="let ans of list_of_questions.new_question['answer_prompt'] | keyvalue" class="custom-radio">
+                                <div>
+                                    <input class="answerChoice" style="margin: 5px" (change)="inputEditor('answer','new_question', 'answer_correct', ans.key, !list_of_questions.new_question['answer_correct'][ans.key])" [checked]=list_of_questions.new_question.answer_correct[ans.key] type="radio"
+                                        id="checkbox_{{ans.key}}" title="Select the right answer. You can chose only one answer." name="radio_answer_for_question_new_question" />
+                                    <label for="checkbox_{{ans.key}}" style="margin:0px 0px; width:92%">
+                                                <div class="input-group mb-1">
+                                                    <div class="input-group-prepend" style="width: 15%;">
+                                                        <input type="number"  (change)="inputEditor('answer','new_question', 'answer_sort', ans.key, $event.target.value)" class="form-control answer_order_edit create_form_input_shadow" min="1" id="answer_order_edit_{{ans.key}}" style="width: 90%;" value="{{list_of_questions.new_question['answer_sort'][ans.key] }}" data-toggle="tooltip" data-placement="bottom" title="Set priority of the answer.">
+                                                    </div>
+                                                    <input class="form-control create_form_input_shadow" type="text" id="answerId${id}" value="" aria-describedby="basic-addon2" value='{{ans.value}}' (change)="inputEditor('answer','new_question', 'answer_prompt', ans.key, $event.target.value)"/>
+                                                    <div class="input-group-append">
+                                                        <button class="btn btn-outline-danger buttonRemoveAnswer" (click)="inputEditor('answer','new_question', 'answer_soft_delete', ans.key, true)" [hidden]="list_of_questions.new_question['answer_soft_delete'][ans.key]" id='buttonRemoveAnswer${i}' type="button" >-</button>
+                                                    </div>
                                                 </div>
-                                                <input class="form-control" type="text" id="answerId${id}" value="" aria-describedby="basic-addon2"/>
-                                                <div class="input-group-append">
-                                                    <button class="btn btn-outline-danger buttonRemoveAnswer buttonRemoveAnswerForQuestionId${id}" id='buttonRemoveAnswer${i}' type="button" >-</button>
-                                                </div>
-                                            </div>
-                                        </label>
-                                    </div>
+                                            </label>
                                 </div>
-                                -->
+                            </div>
                         </div>
 
 
                         <!-- RADIO -->
                         <div *ngIf="list_of_questions.new_question['display_type_description'] == 'Radio' && list_of_questions.new_question['question_type_description'] = 'selected input'">
-                            <div *ngFor="let ans of list_of_questions.new_question['answer_prompt'] | keyvalue">
-                                <div><input class="answerChoice" type="checkbox" id="checkbox_{{ans.key}}" value="{{ans.value}}" title="Select the right answer. You can chose multiple." />
-                                    <label for="checkbox${id}" style="margin:0px 0px; width:92%">
-                                              <div class="input-group mb-1">
-                                                  <div class="input-group-prepend" style="width: 15%;">
-                                                      <input type="number" class="answer_order_edit text_adjust answer_order_edit${id}" min="1" id="answer_order_edit_{{ans.key}}" style="width: 90%;" value="{{list_of_questions.new_question['answer_sort'][ans.key] }}" data-toggle="tooltip" data-placement="bottom" title="Set priority of the answer.">
-                                                  </div>
-                                                  <input class="form-control" type="text" id="answerId${id}" value="" aria-describedby="basic-addon2"/>
-                                                  <div class="input-group-append">
-                                                      <button class="btn btn-outline-danger buttonRemoveAnswer buttonRemoveAnswerForQuestionId${id}" id='buttonRemoveAnswer${i}' type="button" >-</button>
-                                                  </div>
-                                              </div>
-                                          </label>
+                            <div *ngFor="let ans of list_of_questions.new_question['answer_prompt'] | keyvalue" class="custom-radio">
+                                <div>
+                                    <input class="answerChoice" style="margin: 5px" (change)="inputEditor('answer','new_question', 'answer_correct', ans.key, !list_of_questions.new_question['answer_correct'][ans.key])" [checked]=list_of_questions.new_question.answer_correct[ans.key] type="radio"
+                                        id="checkbox_{{ans.key}}" title="Select the right answer. You can chose only one answer." name="radio_answer_for_question_new_question" />
+                                    <label for="checkbox_{{ans.key}}" style="margin:0px 0px; width:92%">
+                                        <div class="input-group mb-1">
+                                            <div class="input-group-prepend" style="width: 15%;">
+                                                <input type="number"  (change)="inputEditor('answer','new_question', 'answer_sort', ans.key, $event.target.value)" class="form-control answer_order_edit create_form_input_shadow" min="1" id="answer_order_edit_{{ans.key}}" style="width: 90%;" value="{{list_of_questions.new_question['answer_sort'][ans.key] }}" data-toggle="tooltip" data-placement="bottom" title="Set priority of the answer.">
+                                            </div>
+                                            <input class="form-control create_form_input_shadow" type="text" id="answerId${id}" value="" aria-describedby="basic-addon2" value='{{ans.value}}' (change)="inputEditor('answer','new_question', 'answer_prompt', ans.key, $event.target.value)"/>
+                                            <div class="input-group-append">
+                                                <button class="btn btn-outline-danger buttonRemoveAnswer" (click)="inputEditor('answer','new_question', 'answer_soft_delete', ans.key, true)" [hidden]="list_of_questions.new_question['answer_soft_delete'][ans.key]" id='buttonRemoveAnswer${i}' type="button" >-</button>
+                                            </div>
+                                        </div>
+                                    </label>
                                 </div>
-                                <!-- <input type="checkbox" value="" >{{ans.value}} -->
                             </div>
                         </div>
 

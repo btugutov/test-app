@@ -76,12 +76,12 @@ input[type="file"] {
 }
 
 .create_form_input_shadow {
-    box-shadow: 0 0 0 0.2rem rgba(179, 182, 185, 0.25);
+    box-shadow: 0 0 0 1px rgba(179, 182, 185, 0.25);
     border-radius: 0px;
 }
 
 .create_form_input_shadow:focus {
-    box-shadow: 0 0 0 0.2rem #4f91cd59;
+    box-shadow: 0 0 0 1px #4f91cd59;
     /* background-color: none repeat scroll 0 0 rgba(0, 0, 0, 0.01); */
 }
 
@@ -99,4 +99,35 @@ input[type="file"] {
     box-shadow: none;
     border: none;
     /* background-color: none repeat scroll 0 0 rgba(0, 0, 0, 0.01); */
+}
+
+.answer_order_edit {
+    padding: 0px 0px !important
+}
+
+.btn-success.focus,
+.btn-success:focus {
+    box-shadow: none !important
+}
+
+.focus,
+.active {
+    box-shadow: none !important
+}
+
+.btn:focus {
+    box-shadow: none !important
+}
+
+.btn-image-remove {
+    position: absolute;
+    top: 15px;
+    right: 0%;
+    height: 25px;
+    width: 25px;
+    transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    cursor: pointer;
+    padding: 0px 0px;
+    text-align: center;
 }
