@@ -174,7 +174,7 @@ export class AdminCreatequizComponent implements OnInit {
     let answers_list = this.list_of_questions[target]['answer_prompt'];
     for (let el in answers_list) {
       if (answers_list[el] == value) {
-        console.log("Such answer already exists")
+        this.errorHandler(target, "Such answer already exists")
         return;
       }
     }
@@ -214,7 +214,7 @@ export class AdminCreatequizComponent implements OnInit {
       this.list_of_questions[q_id][q_key][a_id] = value;
     } else if (target == 'img') { // image uploader
       if (value[0].size > 5242880) {
-        alert("The image is too heavy. Upload limit is 5mb per image.");
+        this.errorHandler(q_id, "The image is too heavy. Upload limit is 5mb per image.")
         return;
       }
       this._ConnectorService.imgToBase64(value).then(data => {
@@ -226,7 +226,6 @@ export class AdminCreatequizComponent implements OnInit {
       })
     } else if (target == 'drag_and_drop') { // drag and drop logic
       console.log(`target => ${target} | q_id => ${q_id} | q_key => ${q_key} | a_id => ${a_id} | value => ${value}`)
-
       if (value == 'add_edit') {
         a_id.value = '';
         alert("lol")
@@ -247,7 +246,11 @@ export class AdminCreatequizComponent implements OnInit {
     console.log(this.list_of_questions[id]['temp_bucket_storage'])
     let input_val = this.list_of_questions[id]['temp_bucket_storage']['answer_input'];
     let bucket_val = this.list_of_questions[id]['temp_bucket_storage']['bucket_id'];
-    if(!input_val || !bucket_val){
+    if(!input_val ){
+      this.errorHandler(id, "Please enter a bucket choice value.")
+      return;
+    }else if(!bucket_val){
+      this.errorHandler(id, "Please choose one of the buckets.")
       return;
     }
     let counter = 0;
@@ -287,6 +290,36 @@ export class AdminCreatequizComponent implements OnInit {
 
 
   //  MISC ===========================================================================================================================================================================================
+
+  errorHandler(id, message){
+    if(!this.list_of_questions[id+"_error"]){
+      this.list_of_questions[id+"_error"] = {
+        'error_bool': true,
+        'errors' : []
+      }
+      this.clearErrorMessageTimer(id, 5000)
+    }
+    this.list_of_questions[id+"_error"]['errors'].push(message);
+  }
+  errorHandlerRemover(id){
+    delete this.list_of_questions[id+'_error'];
+    return true
+  }
+  clearErrors(id, keys){
+    for(let el in keys){
+      delete this.list_of_questions[id][keys][ this.list_of_questions[id][keys[el]] ]
+    }
+  }
+  clearErrorMessageTimer(id, time){
+    let that = this;
+    console.log('1st this =>', this)
+    setTimeout(
+      function(){
+        delete that.list_of_questions[id+'_error'];
+      }
+      , time)
+  }
+
   orderByEngID(engs) {
     let res = {};
     for (let el in engs) {
