@@ -206,21 +206,21 @@ export class AdminCreatequizComponent implements OnInit {
         }
         return;
       }
-      console.log(`q_id => ${q_id}, q_key => ${q_key}, a_id => ${a_id}, value => ${value}`)
-      console.log('this.list_of_questions[q_id][q_key][a_id] =>', this.list_of_questions[q_id][q_key][a_id])
       this.list_of_questions[q_id][q_key][a_id] = value;
     }else if(target == 'img'){ // image uploader
       if(value[0].size > 5242880){
         alert("The image is too heavy. Upload limit is 5mb per image.");
         return;
       }
-      console.log('value =>', value)
       this._ConnectorService.imgToBase64(value).then(data => {
         this.list_of_questions[q_id][q_key] = String(data);
         this.list_of_questions[q_id]['image'] = true;
     }).catch(function(err){
+      alert(err)
       console.log("ERROR =>", err)
     })
+    }else{
+      this.list_of_questions[q_id][q_key] = value;
     }
   }
   removeImg(q_id){

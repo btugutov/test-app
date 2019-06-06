@@ -63,11 +63,13 @@
                     <td class='text-center table-row'>
                         <p>New</p>
                         <div>
-                            <input style="width: 100%; padding: 0px 0px !important" class="edit_sort_value text_adjust form-control create_form_input_shadow" min=0 max=99 type="number" value=1 title="Set Question Priority" data-toggle="tooltip" data-placement="bottom" title="Tooltip on bottom">
+                            <input style="width: 100%; padding: 0px 0px !important" (change)="inputEditor('question_sort', 'new_question', 'question_sort', null, $event.target.value)" class="edit_sort_value text_adjust form-control create_form_input_shadow" min=1 max=99 type="number"
+                                value=1 title="Set Question Priority" data-toggle="tooltip" data-placement="bottom" title="Tooltip on bottom" value="{{list_of_questions['new_question']['answer_prompt']}}">
                         </div>
                     </td>
                     <td style="padding: 0px 3px !important;">
-                        <textarea class='textAreaPrompt form-control create_form_input_shadow text_adjust' rows=4 name='questionPromts' question_id=${id} id='questionPromt${id}' data=${id}></textarea>
+                        <textarea class='textAreaPrompt form-control create_form_input_shadow text_adjust' (change)="inputEditor('answer_prompt', 'new_question', 'answer_prompt', null, $event.target.value)" rows=4 name='questionPromts' question_id=${id} id='questionPromt${id}'
+                            data=${id}></textarea>
                     </td>
                     <td class='create_form_img_box' align="center">
                         <div *ngIf="!list_of_questions.new_question['image']">
@@ -110,7 +112,8 @@
 
                         <!-- MANUAL INPUT -->
                         <div style="padding: 0px 3px !important;" [hidden]="list_of_questions.new_question['question_type_description'] != 'textfield input'">
-                            <textarea class='textAreaExpectedAnswer form-control create_form_input_shadow' rows=4 name='questionExpectedAnswer' id='questionExpectedAnswer_new_question' question_id='new_question' placeholder="Expected answer">{{list_of_questions['new_question']['expected_response']}}</textarea>
+                            <textarea (change)="inputEditor('expected_response', 'new_question', 'expected_response', null, $event.target.value)" class='textAreaExpectedAnswer form-control create_form_input_shadow' rows=4 name='questionExpectedAnswer' id='questionExpectedAnswer_new_question'
+                                question_id='new_question' placeholder="Expected answer" value="{{list_of_questions['new_question']['expected_response']}}"></textarea>
                         </div>
 
 
