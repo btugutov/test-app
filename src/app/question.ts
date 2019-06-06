@@ -21,8 +21,9 @@ export class Question {
       public question_soft_delete: boolean = false,
       public expected_response: string = '',
       public question_sort: number = 1,
-      public answer_sort: Object = {}
-
+      public answer_sort: Object = {},
+      public answer_bucket_id: Object = {},
+      public temp_bucket_storage: Object = { },
     ) { }
   }
 

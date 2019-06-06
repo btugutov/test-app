@@ -25,7 +25,10 @@ export class AdminCreatequizComponent implements OnInit {
     'status': "",
     'message': ""
   };
-
+  temp_bucket_storage = {
+    'answer_input': '',
+    'bucket_id': null
+  }
   list_of_questions = {
     'new_question': new Question()
   };
@@ -57,6 +60,7 @@ export class AdminCreatequizComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.list_of_questions.new_question.temp_bucket_storage = this.temp_bucket_storage;
   }
 
   // LISTENERS ===============================================================================================================================================================================================
@@ -133,10 +137,10 @@ export class AdminCreatequizComponent implements OnInit {
         // we need to make sure that there are no more thatn 1 right answer in the 'answer_correct' list.
         // The loop bellow leaves only first found answer as correct.
         for (let el in this.list_of_questions[target]['answer_correct']) {
-          if(this.list_of_questions[target]['answer_correct'][el]){
-            if(!one_found){
+          if (this.list_of_questions[target]['answer_correct'][el]) {
+            if (!one_found) {
               one_found = true
-            }else{
+            } else {
               this.list_of_questions[target]['answer_correct'][el] = false
             }
           }
@@ -149,10 +153,10 @@ export class AdminCreatequizComponent implements OnInit {
         // we need to make sure that there are no more thatn 1 right answer in the 'answer_correct' list.
         // The loop bellow leaves only first found answer as correct.
         for (let el in this.list_of_questions[target]['answer_correct']) {
-          if(this.list_of_questions[target]['answer_correct'][el]){
-            if(!one_found){
+          if (this.list_of_questions[target]['answer_correct'][el]) {
+            if (!one_found) {
               one_found = true
-            }else{
+            } else {
               this.list_of_questions[target]['answer_correct'][el] = false
             }
           }
@@ -186,6 +190,7 @@ export class AdminCreatequizComponent implements OnInit {
     this.list_of_questions[target]['answer_correct'][key] = false;
     this.list_of_questions[target]['answer_soft_delete'][key] = false;
   }
+
   inputEditor(target, q_id, q_key, a_id, value) {
     if (target == 'answer') {
       if (q_key == 'answer_soft_delete') {
@@ -207,31 +212,76 @@ export class AdminCreatequizComponent implements OnInit {
         return;
       }
       this.list_of_questions[q_id][q_key][a_id] = value;
-    }else if(target == 'img'){ // image uploader
-      if(value[0].size > 5242880){
+    } else if (target == 'img') { // image uploader
+      if (value[0].size > 5242880) {
         alert("The image is too heavy. Upload limit is 5mb per image.");
         return;
       }
       this._ConnectorService.imgToBase64(value).then(data => {
         this.list_of_questions[q_id][q_key] = String(data);
         this.list_of_questions[q_id]['image'] = true;
-    }).catch(function(err){
-      alert(err)
-      console.log("ERROR =>", err)
-    })
-    }else{
+      }).catch(function (err) {
+        alert(err)
+        console.log("ERROR =>", err)
+      })
+    } else if (target == 'drag_and_drop') { // drag and drop logic
+      console.log(`target => ${target} | q_id => ${q_id} | q_key => ${q_key} | a_id => ${a_id} | value => ${value}`)
+
+      if (value == 'add_edit') {
+        a_id.value = '';
+        alert("lol")
+      }else{
+        this.list_of_questions[q_id][q_key][a_id] = value;
+      }
+    } else {
       this.list_of_questions[q_id][q_key] = value;
     }
   }
-  removeImg(q_id){
+
+  removeImg(q_id) {
     this.list_of_questions[q_id]['base64'] = '';
     this.list_of_questions[q_id]['image'] = false;
   }
+
+  dragAndDropAdder(id) {
+    console.log(this.list_of_questions[id]['temp_bucket_storage'])
+    let input_val = this.list_of_questions[id]['temp_bucket_storage']['answer_input'];
+    let bucket_val = this.list_of_questions[id]['temp_bucket_storage']['bucket_id'];
+    if(!input_val || !bucket_val){
+      return;
+    }
+    let counter = 0;
+    while (this.list_of_questions[id]['answer_prompt']['new' + counter]) {
+      counter++;
+    }
+    let new_id = 'new' + counter; // new answer ID
+    this.list_of_questions[id]['answer_prompt'][new_id] = input_val;
+    this.list_of_questions[id]['answer_bucket_id'][new_id] = bucket_val;
+    this.list_of_questions[id]['answer_soft_delete'][new_id] = false;
+    this.list_of_questions[id]['answer_correct'][new_id] = false;
+    this.list_of_questions[id]['temp_bucket_storage']['answer_input'] = null;
+    this.list_of_questions[id]['temp_bucket_storage']['bucket_id'] = null;
+
+    document.getElementById(`bucket_input_add_input_${id}`)['value'] = '';
+    document.getElementById(`bucket_list_pick_${id}`)['value'] = '';
+
+
+    // let value = document.getElementById(`bucket_input_add_input_${id}`)['value']
+    // let bucket_id = document.getElementById(`bucket_list_pick_${id}`)['value']
+    // console.log("BUCKET ID =>", document.getElementById(`bucket_list_pick_${id}`))
+    // if (!value || !bucket_id || value.length < 1) {
+    //   console.log("!value || !bucket_id || value.length < 1 ====>", (!value), (!bucket_id), (value.length < 1))
+    //   return;
+    // }
+   
+  }
+
   inputTest(target) {
     console.log("=============================")
     console.log(target)
     console.log("=============================")
   }
+
 
 
 

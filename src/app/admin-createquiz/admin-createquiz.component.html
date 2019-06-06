@@ -118,8 +118,30 @@
 
 
                         <!-- DRAG AND DROP  -->
-                        <div *ngIf="list_of_questions.new_question['question_type_description'] == 'drag_and_drop'">
-                            drag and drop
+                        <div class="input-group mt-2" *ngIf="list_of_questions.new_question['question_type_description'] == 'drag_and_drop'">
+                            <div *ngFor="let ans of list_of_questions.new_question['answer_prompt'] | keyvalue" class="input-group mt-1">
+                                <input type="text" (change)="inputEditor('drag_and_drop', 'new_question', 'answer_prompt', ans.key, $event.target.value)" class="form-control bucket_input_edit bucket_input_edit_question_new_question" id="bucket_input_edit_new_question" placeholder='Add a choice'
+                                    style="padding: 0px;" value="{{ans.value}}">
+                                <select list="bucket_list" (change)="inputEditor('drag_and_drop', 'new_question', 'answer_bucket_id', ans.key, $event.target.value)" class="form-control bucket_list_pick" id="bucket_list_pick_new_question" placeholder='Bucket' style="padding: 0px;">
+                                    <option type='button' class="bucket_list_settings" value="add_edit">Add/Edit </option>
+                                    <option disabled style="margin-top:8px; border-top:1px solid #666; padding:0;">____________</option>
+                                    <option *ngFor="let b of bucket_list" value="{{b.bucket_id}}" [selected]="list_of_questions.new_question['answer_bucket_id'][ans.key] == b.bucket_id">{{b.bucket_name}}</option>
+                                </select>
+                                <div class="input-group-append">
+                                    <button type="button" class='btn btn-danger'>-</button>
+                                </div>
+                            </div>
+
+                            <div class="input-group-prepend">
+                                <button class="btn btn-outline-success bucket_input_add_button btn-action-borderless" (click)="dragAndDropAdder('new_question')" style="font-size: smaller; padding: 8px;" id='bucket_input_add_button_new_question' type="button">+</button>
+                            </div>
+                            <input type="text" (change)="inputEditor('drag_and_drop', 'new_question', 'temp_bucket_storage', 'answer_input', $event.target.value)" class="form-control bucket_input_add" id="bucket_input_add_input_new_question" placeholder='Add a choice' style="padding: 0px;">
+                            <select list="bucket_list" type="text" (change)="inputEditor('drag_and_drop', 'new_question', 'temp_bucket_storage', 'bucket_id', $event.target.value)" class="form-control bucket_list_pick" id="bucket_list_pick_new_question" placeholder='Bucket' style="padding: 0px;">
+                                    <option value="" selected disabled class="text-muted">Choose bucket</option>
+                                    <option type='button' class="bucket_list_settings" value="add_edit">Add/Edit </option>
+                                    <option disabled style="margin-top:8px; border-top:1px solid #666; padding:0;">____________</option>
+                                    <option *ngFor="let b of bucket_list" value="{{b.bucket_id}}">{{b.bucket_name}}</option>
+                            </select>
                         </div>
 
 
