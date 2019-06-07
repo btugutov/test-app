@@ -109,22 +109,15 @@ export class AdminCreatequizComponent implements OnInit {
     }
   }
   displayTypeChanger(target, value) {
-    // this.list_of_questions['new_question']
-    // this.list_of_questions[target]
-
-    // console.log("displayTypeChanger(target, value) => ", target, value)
     if (value === 'textfield input') {
-      // console.log("manual")
       this.list_of_questions[target]['display_type_description'] = "Manual input";
       this.list_of_questions[target]['question_type_description'] = 'textfield input';
       this.list_of_questions[target]['display_type_id'] = 1;
     } else if (value === 'drag_and_drop') {
-      // console.log('drag_and_drop')
       this.list_of_questions[target]['display_type_description'] = value;
       this.list_of_questions[target]['question_type_description'] = value;
       this.list_of_questions[target]['display_type_id'] = 1;
     } else {
-      // console.log("selected input")
       this.list_of_questions[target]['question_type_description'] = "selected input";
       if (value === "Checkbox") {
         this.list_of_questions[target]['display_type_description'] = "Checkbox";
@@ -174,7 +167,7 @@ export class AdminCreatequizComponent implements OnInit {
     let answers_list = this.list_of_questions[target]['answer_prompt'];
     for (let el in answers_list) {
       if (answers_list[el] == value) {
-        this.errorHandler(target, "Such answer already exists")
+        this.errorHandler(target, "add_answer", "Such answer already exists")
         return;
       }
     }
@@ -189,6 +182,7 @@ export class AdminCreatequizComponent implements OnInit {
     this.list_of_questions[target]['answer_sort'][key] = 1;
     this.list_of_questions[target]['answer_correct'][key] = false;
     this.list_of_questions[target]['answer_soft_delete'][key] = false;
+    this.clearErrors(target, 'add_answer');
   }
 
   inputEditor(target, q_id, q_key, a_id, value) {
@@ -214,15 +208,16 @@ export class AdminCreatequizComponent implements OnInit {
       this.list_of_questions[q_id][q_key][a_id] = value;
     } else if (target == 'img') { // image uploader
       if (value[0].size > 5242880) {
-        this.errorHandler(q_id, "The image is too heavy. Upload limit is 5mb per image.")
+        this.errorHandler(q_id, "image_uploader","The image is too heavy. Upload limit is 5mb per image.")
         return;
       }
       this._ConnectorService.imgToBase64(value).then(data => {
         this.list_of_questions[q_id][q_key] = String(data);
         this.list_of_questions[q_id]['image'] = true;
+        this.clearErrors(q_id, 'image_uploader')
       }).catch(function (err) {
-        alert(err)
         console.log("ERROR =>", err)
+        this.errorHandler(q_id, "image_uploader", JSON.stringify(err))
       })
     } else if (target == 'drag_and_drop') { // drag and drop logic
       console.log(`target => ${target} | q_id => ${q_id} | q_key => ${q_key} | a_id => ${a_id} | value => ${value}`)
@@ -246,11 +241,16 @@ export class AdminCreatequizComponent implements OnInit {
     console.log(this.list_of_questions[id]['temp_bucket_storage'])
     let input_val = this.list_of_questions[id]['temp_bucket_storage']['answer_input'];
     let bucket_val = this.list_of_questions[id]['temp_bucket_storage']['bucket_id'];
-    if(!input_val ){
-      this.errorHandler(id, "Please enter a bucket choice value.")
-      return;
-    }else if(!bucket_val){
-      this.errorHandler(id, "Please choose one of the buckets.")
+    this.clearErrors(id, 'bucket_input');
+    this.clearErrors(id, 'bucket_list');
+    if(!input_val || !bucket_val){
+      if(!input_val){
+        this.errorHandler(id, "bucket_input" ,"Please enter a bucket choice value.")
+      }
+      if(!bucket_val){
+        this.errorHandler(id, "bucket_list","Please choose one of the buckets.")
+      }
+      console.log ("ERRORS!!")
       return;
     }
     let counter = 0;
@@ -278,7 +278,15 @@ export class AdminCreatequizComponent implements OnInit {
     // }
    
   }
-
+  checkModuleLink(id){
+    if(this.validURL(this.list_of_questions[id]['training_url'])){
+      this.clearErrors(id, 'training_url')
+      window.open(this.list_of_questions[id]['training_url'], "_blank")
+    }else{
+      console.log("NOT GOOD!")
+      this.errorHandler(id, 'training_url', "Confluence link is invalid")
+    }
+  }
   inputTest(target) {
     console.log("=============================")
     console.log(target)
@@ -291,23 +299,30 @@ export class AdminCreatequizComponent implements OnInit {
 
   //  MISC ===========================================================================================================================================================================================
 
-  errorHandler(id, message){
+  errorHandler(id, source, message){
     if(!this.list_of_questions[id+"_error"]){
       this.list_of_questions[id+"_error"] = {
         'error_bool': true,
-        'errors' : []
+        'errors' : {
+        }
       }
-      this.clearErrorMessageTimer(id, 5000)
+      // this.clearErrorMessageTimer(id, 5000)
     }
-    this.list_of_questions[id+"_error"]['errors'].push(message);
+    this.list_of_questions[id+"_error"]['errors'][source] = message;
   }
   errorHandlerRemover(id){
     delete this.list_of_questions[id+'_error'];
     return true
   }
-  clearErrors(id, keys){
-    for(let el in keys){
-      delete this.list_of_questions[id][keys][ this.list_of_questions[id][keys[el]] ]
+  clearErrors(id, source){
+    try{
+      delete this.list_of_questions[id+"_error"]['errors'][source]
+      if(Object.keys(this.list_of_questions[id+"_error"]['errors']).length<1){
+        delete this.list_of_questions[id+"_error"]
+      }
+    }
+    catch(err){
+      // console.log( `clearErrors : error =>`, err)
     }
   }
   clearErrorMessageTimer(id, time){
@@ -349,5 +364,15 @@ export class AdminCreatequizComponent implements OnInit {
       }
     }
     return engs;
+  }
+
+ validURL(str) {
+    var pattern = new RegExp('^(https?:\\/\\/)?'+ // protocol
+      '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|'+ // domain name
+      '((\\d{1,3}\\.){3}\\d{1,3}))'+ // OR ip (v4) address
+      '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*'+ // port and path
+      '(\\?[;&a-z\\d%_.~+=-]*)?'+ // query string
+      '(\\#[-a-z\\d_]*)?$','i'); // fragment locator
+    return !!pattern.test(str);
   }
 }

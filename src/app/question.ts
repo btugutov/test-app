@@ -24,6 +24,7 @@ export class Question {
       public answer_sort: Object = {},
       public answer_bucket_id: Object = {},
       public temp_bucket_storage: Object = { },
+      public training_url: String = ''
     ) { }
   }
 

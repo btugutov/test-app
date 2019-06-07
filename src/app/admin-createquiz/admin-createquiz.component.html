@@ -64,13 +64,12 @@
                     <td class='text-center table-row'>
                         <p>New</p>
                         <div>
-                            <input style="width: 100%; padding: 0px 0px !important" (change)="inputEditor('question_sort', 'new_question', 'question_sort', null, $event.target.value)" class="edit_sort_value text_adjust form-control create_form_input_shadow" min=1 max=99 type="number"
-                                value=1 title="Set Question Priority" data-toggle="tooltip" data-placement="bottom" title="Tooltip on bottom" value="{{list_of_questions['new_question']['answer_prompt']}}">
+                            <input style="width: 100%; padding: 0px 0px !important" (change)="inputEditor('question_sort', 'new_question', 'question_sort', null, $event.target.value)" class="edit_sort_value form-control create_form_input_shadow" min=1 max=99 type="number" value=1
+                                title="Set Question Priority" data-toggle="tooltip" data-placement="bottom" title="Tooltip on bottom" value="{{list_of_questions['new_question']['answer_prompt']}}">
                         </div>
                     </td>
                     <td style="padding: 0px 3px !important;">
-                        <textarea class='textAreaPrompt form-control create_form_input_shadow text_adjust' (change)="inputEditor('answer_prompt', 'new_question', 'answer_prompt', null, $event.target.value)" rows=4 name='questionPromts' question_id=${id} id='questionPromt${id}'
-                            data=${id}></textarea>
+                        <textarea class='textAreaPrompt form-control create_form_input_shadow' (change)="inputEditor('answer_prompt', 'new_question', 'answer_prompt', null, $event.target.value)" rows=4 name='questionPromts' question_id=${id} id='questionPromt${id}' data=${id}></textarea>
                     </td>
                     <td class='create_form_img_box' align="center">
                         <div *ngIf="!list_of_questions.new_question['image']">
@@ -264,10 +263,21 @@
 
                     </td>
                     <td>
-                        admin notes
-                        <div id='conluence_field${id}'></div>
-                        <div id='module_field${id}'></div>
-                        <div id='point_value_field${id}'></div>
+                        <div class="input-group">
+                            <input class="create_form_input_shadow form-control " type="text" placeholder="Confluence link" (change)="inputEditor(null,'new_question', 'training_url', null, $event.target.value)">
+                            <div class="input-group-append">
+                                <button type='button' class='buttonConfluenceLink btn btn-xs  btn-outline-dark' id='buttonConfluenceLinkForQuestion${id}' (click)="checkModuleLink('new_question')">Check</button>
+                            </div>
+                        </div>
+                        <div id='module_field${id}'>
+                            <input class="create_form_input_shadow form-control" id='editModuleForQuestionId${id}' type="text" placeholder="Module note">
+                        </div>
+                        <div class="input-group mb-3" style="width: 75%">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-addon3">Question value</span>
+                            </div>
+                            <input class="form-control create_form_input_shadow" id='editPointValueForQuestionId${id}' type="number" min="1" max="10">
+                        </div>
                     </td>
                     <td style='text-align: center'>
                         <div>
@@ -282,8 +292,8 @@
                 <tr *ngIf="list_of_questions.new_question_error">
                     <td colspan="7" (click)="errorHandlerRemover('new_question')">
                         <div class="alert alert-danger" role="alert">
-                            <p class="text-center" *ngFor="let el of list_of_questions.new_question_error.errors">
-                                {{el}}
+                            <p class="text-center" *ngFor="let el of list_of_questions.new_question_error.errors | keyvalue">
+                                {{el.value}}
                             </p>
                         </div>
                     </td>
