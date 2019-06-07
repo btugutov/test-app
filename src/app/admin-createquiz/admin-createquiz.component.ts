@@ -34,6 +34,9 @@ export class AdminCreatequizComponent implements OnInit {
   };
   modal_mesage_bool = false;
   modal_message = {};
+  bucketList_reloader = {
+    'new_question': true
+  };
 
   constructor(private _ConnectorService: ConnectorService, private location: Location, private _route: ActivatedRoute, private _r: Router) {
     this._route.paramMap.subscribe(params => {
@@ -162,11 +165,14 @@ export class AdminCreatequizComponent implements OnInit {
   }
 
   addAnswer(target) {
+    console.log('add answer for =>', target)
     let value = document.getElementById(`newAnswerFor_${target}`)['value'];
+    console.log("document.getElementById(`newAnswerFor_${target}`) =>", document.getElementById(`newAnswerFor_${target}`) )
     if (value.length < 1) {
       console.log("empty input");
       return;
     }
+    console.log("Value =>", value)
     document.getElementById(`newAnswerFor_${target}`)['value'] = '';
     let answers_list = this.list_of_questions[target]['answer_prompt'];
     for (let el in answers_list) {
@@ -175,17 +181,25 @@ export class AdminCreatequizComponent implements OnInit {
         return;
       }
     }
-    let key = 'added'
-    if (Object.keys(answers_list).length > 0) {
-      console.log("NEW NUMBER =>", Number(Object.keys(answers_list)[Object.keys(answers_list).length - 1].split('added')[1]) + 1)
-      key += Number(Object.keys(answers_list)[Object.keys(answers_list).length - 1].split('added')[1]) + 1;
-    } else {
-      key += 1;
+    // let key = 'added'
+    // if (Object.keys(answers_list).length > 0) {
+    //   console.log("NEW NUMBER =>", Number(Object.keys(answers_list)[Object.keys(answers_list).length - 1].split('added')[1]) + 1)
+    //   key += Number(Object.keys(answers_list)[Object.keys(answers_list).length - 1].split('added')[1]) + 1;
+    // } else {
+    //   key += 1;
+    // }
+    let counter = 0;
+    let temp_id = 'new0'
+    for(let el in this.list_of_questions[target]['answer_prompt']){
+      if(el.includes('new')){
+        temp_id = el
+      }
     }
-    this.list_of_questions[target]['answer_prompt'][key] = value;
-    this.list_of_questions[target]['answer_sort'][key] = 1;
-    this.list_of_questions[target]['answer_correct'][key] = false;
-    this.list_of_questions[target]['answer_soft_delete'][key] = false;
+    temp_id = temp_id.slice(0,3) + (Number(temp_id.slice(3,4)) + 1)
+    this.list_of_questions[target]['answer_prompt'][temp_id] = value;
+    this.list_of_questions[target]['answer_sort'][temp_id] = 1;
+    this.list_of_questions[target]['answer_correct'][temp_id] = false;
+    this.list_of_questions[target]['answer_soft_delete'][temp_id] = false;
     this.clearErrors(target, 'add_answer');
   }
 
@@ -224,7 +238,7 @@ export class AdminCreatequizComponent implements OnInit {
         this.errorHandler(q_id, "image_uploader", JSON.stringify(err))
       })
     } else if (target == 'drag_and_drop') { // drag and drop logic
-      console.log(`target => ${target} | q_id => ${q_id} | q_key => ${q_key} | a_id => ${a_id} | value => ${value}`)
+      // console.log(`target => ${target} | q_id => ${q_id} | q_key => ${q_key} | a_id => ${a_id} | value => ${value}`)
       if (value == 'add_edit') {
         a_id.value = '';
         alert("lol")
@@ -257,19 +271,31 @@ export class AdminCreatequizComponent implements OnInit {
       return;
     }
     let counter = 0;
-    while (this.list_of_questions[id]['answer_prompt']['new' + counter]) {
-      counter++;
+    let temp_id = 'new0'
+    for(let el in this.list_of_questions[id]['answer_prompt']){
+      if(el.includes('new')){
+        temp_id = el
+      }
     }
-    let new_id = 'new' + counter; // new answer ID
+    temp_id = temp_id.slice(0,3) + (Number(temp_id.slice(3,4)) + 1)
+    let that = this;
+    let new_id = temp_id; // new answer ID
     this.list_of_questions[id]['answer_prompt'][new_id] = input_val;
     this.list_of_questions[id]['answer_bucket_id'][new_id] = bucket_val;
     this.list_of_questions[id]['answer_soft_delete'][new_id] = false;
     this.list_of_questions[id]['answer_correct'][new_id] = false;
+    this.list_of_questions[id]['answer_sort'][new_id] = 1;
     this.list_of_questions[id]['temp_bucket_storage']['answer_input'] = null;
     this.list_of_questions[id]['temp_bucket_storage']['bucket_id'] = null;
-
+    this.bucketList_reloader[id] = false;
     document.getElementById(`bucket_input_add_input_${id}`)['value'] = '';
-    document.getElementById(`bucket_list_pick_${id}`)['value'] = '';
+    console.log("document.getElementById(`bucket_list_pick_${id}`)['value']  =>", document.getElementById(`bucket_list_pick_${id}`)  )
+    // there was a weird bug with the choose bucket dropdown. It just didn't reset the old value after adding a new bucket choice
+    // so, by calling "  this.bucketList_reloader[id] = false " we delete the choose bucket dropdown ...
+    setTimeout(function(){
+      // ... and put it back after 50 miliseconds
+      that.bucketList_reloader[id] = true;
+    }, 50)
    
   }
 
@@ -285,14 +311,32 @@ export class AdminCreatequizComponent implements OnInit {
 
   addQuestion(){
     let counter = 1;
-    while(this.list_of_questions['added_'+counter]){
-      counter++;
+    for(let el in this.list_of_questions){
+      console.log("EL =>>>>", el)
+      if(el.includes('added_')){
+        console.log("added is already here!", el.split('_')[1])
+        counter = Number(el.split('_')[1]) + 1;
+      }
     }
+    
     let new_id = 'added_'+counter;
+    console.log("New ID =>", new_id)
     this.list_of_questions[new_id] = this.list_of_questions['new_question'];
+    this.bucketList_reloader[new_id] = true;
     this.list_of_questions['new_question'] = new Question();
   }
+  removeDragAndDropChoice(id, c_id){ // id = question_id, c_id = choice id
+    console.log(id, c_id)
+    try{
+      delete this.list_of_questions[id]['answer_prompt'][c_id]
+      delete this.list_of_questions[id]['answer_correct'][c_id]
+      delete this.list_of_questions[id]['answer_soft_delete'][c_id]
+      delete this.list_of_questions[id]['answer_bucket_id'][c_id]
+    }
+    catch(err){
 
+    }
+  }
   inputTest(target) {
     console.log("=============================")
     console.log(target)

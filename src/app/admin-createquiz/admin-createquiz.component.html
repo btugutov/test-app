@@ -80,88 +80,89 @@
                 </tr>
             </thead>
             <tbody>
-                <tr class="create_form_row">
-                    <td class='text-center table-row'>
-                        <p>New</p>
+                <tr *ngFor='let q of list_of_questions | keyvalue' class="create_form_row">
+                    <!-- QEUSTIONS -->
+                    <td *ngIf="!q.value['error_bool']" class='text-center table-row'>
+                        <p>{{q.key}}</p>
                         <div>
-                            <input style="width: 100%; padding: 0px 0px !important" (change)="inputEditor('question_sort', 'new_question', 'question_sort', null, $event.target.value)" class="edit_sort_value form-control create_form_input_shadow" min=1 max=99 type="number" value=1
-                                title="Set Question Priority" data-toggle="tooltip" data-placement="bottom" title="Tooltip on bottom" value="{{list_of_questions['new_question']['answer_prompt']}}">
+                            <input style="width: 100%; padding: 0px 0px !important" (change)="inputEditor('question_sort', q.key, 'question_sort', null, $event.target.value)" class="edit_sort_value form-control create_form_input_shadow" min=1 max=99 type="number" value=1 title="Set Question Priority"
+                                data-toggle="tooltip" data-placement="bottom" title="Tooltip on bottom" value="{{list_of_questions[q.key]['question_sort']}}">
                         </div>
                     </td>
-                    <td style="padding: 0px 3px !important;">
-                        <textarea class='textAreaPrompt form-control create_form_input_shadow' (change)="inputEditor('answer_prompt', 'new_question', 'answer_prompt', null, $event.target.value)" rows=4 name='questionPromts' question_id=${id} id='questionPromt${id}' data=${id}></textarea>
+                    <td *ngIf="!q.value['error_bool']" style="padding: 0px 3px !important;">
+                        <textarea class='textAreaPrompt form-control create_form_input_shadow' (change)="inputEditor('prompt', q.key, 'prompt', null, $event.target.value)" rows=4 name='questionPromts' id='questionPromt_{{q.key}}' value="{{q.value['prompt']}}"></textarea>
                     </td>
-                    <td class='create_form_img_box' align="center">
-                        <div *ngIf="!list_of_questions.new_question['image']">
+                    <td *ngIf="!q.value['error_bool']" class='create_form_img_box' align="center">
+                        <div *ngIf="!q.value['image']">
                             <label for="file-upload" style="width: 100%;" class="custom-file-upload btn btn-sm btn-outline-secondary btn-action-borderless">
                                     &#8682; Upload Picture
                                 </label>
-                            <input id="file-upload" type="file" (change)="inputEditor('img', 'new_question', 'base64', null, $event.target.files)" accept="image/*" />
+                            <input id="file-upload" type="file" (change)="inputEditor('img', q.key, 'base64', null, $event.target.files)" accept="image/*" />
                         </div>
-                        <div *ngIf="list_of_questions.new_question['image']" style="position: relative">
-                            <img src="{{list_of_questions.new_question['base64']}}" class="img-fluid" alt="Responsive image">
-                            <button class="btn btn-sm btn-outline-danger btn-image-remove" (click)="removeImg('new_question')">x</button>
+                        <div *ngIf="q.value['image']" style="position: relative">
+                            <img src="{{q.value['base64']}}" class="img-fluid" alt="Responsive image">
+                            <button class="btn btn-sm btn-outline-danger btn-image-remove" (click)="removeImg(q.key)">x</button>
                         </div>
                     </td>
-                    <td>
+                    <td *ngIf="!q.value['error_bool']">
                         <div class="btn-group-vertical btn-group-toggle" data-toggle="buttons">
-                            <label class="btn btn-sm btn-action-borderless btn-outline-secondary" (click)="displayTypeChanger('new_question', 'textfield input')" checked>
+                            <label class="btn btn-sm btn-action-borderless btn-outline-secondary" (click)="displayTypeChanger(q.key, 'textfield input')" checked>
                                     <input type="radio" name="displayTypeNew" id="manual_input" value="textfield input"
                                         ng-checked='true' /> Manual Input
                                 </label>
-                            <label class="btn btn-sm btn-action-borderless btn-outline-secondary" (click)="displayTypeChanger('new_question', 'Radio')">
+                            <label class="btn btn-sm btn-action-borderless btn-outline-secondary" (click)="displayTypeChanger(q.key, 'Radio')">
                                     <input type="radio" name="displayTypeNew " id="radio " value="Radio" /> Radio
                                 </label>
-                            <label class="btn btn-sm btn-action-borderless btn-outline-secondary " (click)="displayTypeChanger( 'new_question', 'Dropdown')">
+                            <label class="btn btn-sm btn-action-borderless btn-outline-secondary " (click)="displayTypeChanger( q.key, 'Dropdown')">
                                     <input type="radio" name="displayTypeNew" id="dropdown" value="Dropdown"> Dropdown
                                 </label>
-                            <label class="btn btn-sm btn-action-borderless btn-outline-secondary" (click)="displayTypeChanger('new_question', 'Checkbox')">
+                            <label class="btn btn-sm btn-action-borderless btn-outline-secondary" (click)="displayTypeChanger(q.key, 'Checkbox')">
                                     <input type="radio" name="displayTypeNew " id="checkbox " value="Checkbox "> Checkbox
                                 </label>
-                            <label class="btn btn-sm btn-action-borderless btn-outline-secondary " (click)="displayTypeChanger( 'new_question', 'drag_and_drop')">
+                            <label class="btn btn-sm btn-action-borderless btn-outline-secondary " (click)="displayTypeChanger( q.key, 'drag_and_drop')">
                                     <input type="radio" name="displayTypeNew" id="drag_and_drop" value="drag_and_drop">
                                     Drag'n'Drop
                                 </label>
                         </div>
                     </td>
-                    <td>
+                    <td *ngIf="!q.value['error_bool']">
                         <!-- NOT SELECTED -->
-                        <div *ngIf="!list_of_questions.new_question['question_type_description']">
+                        <div *ngIf="!q.value['question_type_description']">
                             <p align="center" class='text-muted'>Please check type of question.</p>
                         </div>
 
 
                         <!-- MANUAL INPUT -->
-                        <div style="padding: 0px 3px !important;" [hidden]="list_of_questions.new_question['question_type_description'] != 'textfield input'">
-                            <textarea (change)="inputEditor('expected_response', 'new_question', 'expected_response', null, $event.target.value)" class='textAreaExpectedAnswer form-control create_form_input_shadow' rows=4 name='questionExpectedAnswer' id='questionExpectedAnswer_new_question'
-                                question_id='new_question' placeholder="Expected answer" value="{{list_of_questions['new_question']['expected_response']}}"></textarea>
+                        <div style="padding: 0px 3px !important;" [hidden]="q.value['question_type_description'] != 'textfield input'">
+                            <textarea (change)="inputEditor('expected_response', q.key, 'expected_response', null, $event.target.value)" class='textAreaExpectedAnswer form-control create_form_input_shadow' rows=4 placeholder="Expected answer" value="{{q.value['expected_response']}}"></textarea>
                         </div>
 
 
                         <!-- DRAG AND DROP  -->
-                        <div class="input-group mt-2" *ngIf="list_of_questions.new_question['question_type_description'] == 'drag_and_drop'">
-                            <div *ngFor="let ans of list_of_questions.new_question['answer_prompt'] | keyvalue" class="input-group mt-1">
-                                <input type="text" (change)="inputEditor('drag_and_drop', 'new_question', 'answer_prompt', ans.key, $event.target.value)" class="form-control bucket_input_edit bucket_input_edit_question_new_question" id="bucket_input_edit_new_question" placeholder='Add a choice'
-                                    style="padding: 0px;" value="{{ans.value}}">
-                                <select list="bucket_list" (change)="inputEditor('drag_and_drop', 'new_question', 'answer_bucket_id', ans.key, $event.target.value)" class="form-control bucket_list_pick" id="bucket_list_pick_new_question" placeholder='Bucket' style="padding: 0px;">
+                        <div class="input-group mt-2" *ngIf="q.value['question_type_description'] == 'drag_and_drop'">
+                            <div *ngFor="let ans of q.value['answer_prompt'] | keyvalue" class="input-group mt-1">
+                                <input type="text" (change)="inputEditor('drag_and_drop', q.key, 'answer_prompt', ans.key, $event.target.value)" class="form-control bucket_input_edit bucket_input_edit_question_{{q.key}}" id="bucket_input_edit_{{q.key}}" placeholder='Add a choice' style="padding: 0px;"
+                                    value="{{ans.value}}">
+                                <select list="bucket_list" (change)="inputEditor('drag_and_drop', q.key, 'answer_bucket_id', ans.key, $event.target.value)" class="form-control bucket_list_pick" id="bucket_list_pick_{{q.key}}" placeholder='Bucket' style="padding: 0px;">
                                         <option type='button' class="bucket_list_settings" value="add_edit">Add/Edit
                                         </option>
                                         <option disabled style="margin-top:8px; border-top:1px solid #666; padding:0;">
                                             ____________</option>
                                         <option *ngFor="let b of bucket_list" value="{{b.bucket_id}}"
-                                            [selected]="list_of_questions.new_question['answer_bucket_id'][ans.key] == b.bucket_id">
+                                            [selected]="q.value['answer_bucket_id'][ans.key] == b.bucket_id">
                                             {{b.bucket_name}}</option>
                                     </select>
                                 <div class="input-group-append">
-                                    <button type="button" class='btn btn-danger'>-</button>
+                                    <button type="button" class='btn btn-danger' (click)="removeDragAndDropChoice(q.key, ans.key)">-</button>
                                 </div>
                             </div>
 
                             <div class="input-group-prepend">
-                                <button class="btn btn-outline-success bucket_input_add_button btn-action-borderless" (click)="dragAndDropAdder('new_question')" style="font-size: smaller; padding: 8px;" id='bucket_input_add_button_new_question' type="button">+</button>
+                                <button class="btn btn-outline-success bucket_input_add_button btn-action-borderless" (click)="dragAndDropAdder(q.key)" style="font-size: smaller; padding: 8px;" id='bucket_input_add_button_{{q.key}}' type="button">+</button>
                             </div>
-                            <input type="text" (change)="inputEditor('drag_and_drop', 'new_question', 'temp_bucket_storage', 'answer_input', $event.target.value)" class="form-control bucket_input_add" id="bucket_input_add_input_new_question" placeholder='Add a choice' style="padding: 0px;">
-                            <select list="bucket_list" type="text" (change)="inputEditor('drag_and_drop', 'new_question', 'temp_bucket_storage', 'bucket_id', $event.target.value)" class="form-control bucket_list_pick" id="bucket_list_pick_new_question" placeholder='Bucket' style="padding: 0px;">
+                            <input type="text" (change)="inputEditor('drag_and_drop', q.key, 'temp_bucket_storage', 'answer_input', $event.target.value)" class="form-control bucket_input_add" id="bucket_input_add_input_{{q.key}}" placeholder='Add a choice' style="padding: 0px;">
+                            <select *ngIf="bucketList_reloader[q.key]" list="bucket_list" type="text" (change)="inputEditor('drag_and_drop', q.key, 'temp_bucket_storage', 'bucket_id', $event.target.value)" class="form-control bucket_list_pick" id="bucket_list_pick_{{q.key}}" placeholder='Bucket'
+                                style="padding: 0px;">
                                     <option value="" selected disabled class="text-muted">Choose bucket</option>
                                     <option type='button' class="bucket_list_settings" value="add_edit">Add/Edit </option>
                                     <option disabled style="margin-top:8px; border-top:1px solid #666; padding:0;">
@@ -172,30 +173,30 @@
 
 
                         <!-- CHECKBOX  -->
-                        <div *ngIf="list_of_questions.new_question['display_type_description'] == 'Checkbox' && list_of_questions.new_question['question_type_description'] = 'selected input'">
-                            <div *ngFor="let ans of list_of_questions.new_question['answer_prompt'] | keyvalue">
+                        <div *ngIf="q.value['display_type_description'] == 'Checkbox' && q.value['question_type_description'] = 'selected input'">
+                            <div *ngFor="let ans of q.value['answer_prompt'] | keyvalue">
                                 <div>
-                                    <input class="answerChoice" style="margin: 5px" (change)="inputEditor('answer','new_question', 'answer_correct', ans.key, !list_of_questions.new_question['answer_correct'][ans.key])" [checked]=list_of_questions.new_question.answer_correct[ans.key] type="checkbox"
-                                        id="checkbox_{{ans.key}}" title="Select the right answer. You can chose multiple." />
+                                    <input class="answerChoice" style="margin: 5px" (change)="inputEditor('answer', q.key, 'answer_correct', ans.key, !q.value['answer_correct'][ans.key])" [checked]=q.value.answer_correct[ans.key] type="checkbox" id="checkbox_{{ans.key}}" title="Select the right answer. You can chose multiple."
+                                    />
                                     <label for="checkbox_{{ans.key}}" style="margin:0px 0px; width:92%">
                                             <div class="input-group mb-1">
                                                 <div class="input-group-prepend" style="width: 15%;">
                                                     <input type="number"
-                                                        (change)="inputEditor('answer','new_question', 'answer_sort', ans.key, $event.target.value)"
+                                                        (change)="inputEditor('answer', q.key, 'answer_sort', ans.key, $event.target.value)"
                                                         class="answer_order_edit form-control create_form_input_shadow"
                                                         min="1" id="answer_order_edit_{{ans.key}}" style="width: 90%;"
-                                                        value="{{list_of_questions.new_question['answer_sort'][ans.key] }}"
+                                                        value="{{q.value['answer_sort'][ans.key] }}"
                                                         data-toggle="tooltip" data-placement="bottom"
                                                         title="Set priority of the answer.">
                                                 </div>
                                                 <input class="form-control create_form_input_shadow" type="text"
                                                     id="answerId${id}" value="" aria-describedby="basic-addon2"
                                                     value='{{ans.value}}'
-                                                    (change)="inputEditor('answer','new_question', 'answer_prompt', ans.key, $event.target.value)" />
+                                                    (change)="inputEditor('answer', q.key, 'answer_prompt', ans.key, $event.target.value)" />
                                                 <div class="input-group-append">
                                                     <button class="btn btn-outline-danger buttonRemoveAnswer"
-                                                        (click)="inputEditor('answer','new_question', 'answer_soft_delete', ans.key, true)"
-                                                        [hidden]="list_of_questions.new_question['answer_soft_delete'][ans.key]"
+                                                        (click)="inputEditor('answer', q.key, 'answer_soft_delete', ans.key, true)"
+                                                        [hidden]="q.value['answer_soft_delete'][ans.key]"
                                                         id='buttonRemoveAnswer${i}' type="button">-</button>
                                                 </div>
                                             </div>
@@ -206,30 +207,30 @@
 
 
                         <!-- DROPDOWN/SELECT -->
-                        <div *ngIf="list_of_questions.new_question['display_type_description'] == 'Dropdown' && list_of_questions.new_question['question_type_description'] = 'selected input'">
-                            <div *ngFor="let ans of list_of_questions.new_question['answer_prompt'] | keyvalue" class="custom-radio">
+                        <div *ngIf="q.value['display_type_description'] == 'Dropdown' && q.value['question_type_description'] = 'selected input'">
+                            <div *ngFor="let ans of q.value['answer_prompt'] | keyvalue" class="custom-radio">
                                 <div>
-                                    <input class="answerChoice" style="margin: 5px" (change)="inputEditor('answer','new_question', 'answer_correct', ans.key, !list_of_questions.new_question['answer_correct'][ans.key])" [checked]=list_of_questions.new_question.answer_correct[ans.key] type="radio"
-                                        id="checkbox_{{ans.key}}" title="Select the right answer. You can chose only one answer." name="radio_answer_for_question_new_question" />
+                                    <input class="answerChoice" style="margin: 5px" (change)="inputEditor('answer',q.key, 'answer_correct', ans.key, !q.value['answer_correct'][ans.key])" [checked]=q.value.answer_correct[ans.key] type="radio" id="checkbox_{{ans.key}}" title="Select the right answer. You can chose only one answer."
+                                        name="radio_answer_for_question_{{q.key}}" />
                                     <label for="checkbox_{{ans.key}}" style="margin:0px 0px; width:92%">
                                             <div class="input-group mb-1">
                                                 <div class="input-group-prepend" style="width: 15%;">
                                                     <input type="number"
-                                                        (change)="inputEditor('answer','new_question', 'answer_sort', ans.key, $event.target.value)"
+                                                        (change)="inputEditor('answer',q.key, 'answer_sort', ans.key, $event.target.value)"
                                                         class="form-control answer_order_edit create_form_input_shadow"
                                                         min="1" id="answer_order_edit_{{ans.key}}" style="width: 90%;"
-                                                        value="{{list_of_questions.new_question['answer_sort'][ans.key] }}"
+                                                        value="{{q.value['answer_sort'][ans.key] }}"
                                                         data-toggle="tooltip" data-placement="bottom"
                                                         title="Set priority of the answer.">
                                                 </div>
                                                 <input class="form-control create_form_input_shadow" type="text"
                                                     id="answerId${id}" value="" aria-describedby="basic-addon2"
                                                     value='{{ans.value}}'
-                                                    (change)="inputEditor('answer','new_question', 'answer_prompt', ans.key, $event.target.value)" />
+                                                    (change)="inputEditor('answer',q.key, 'answer_prompt', ans.key, $event.target.value)" />
                                                 <div class="input-group-append">
                                                     <button class="btn btn-outline-danger buttonRemoveAnswer"
-                                                        (click)="inputEditor('answer','new_question', 'answer_soft_delete', ans.key, true)"
-                                                        [hidden]="list_of_questions.new_question['answer_soft_delete'][ans.key]"
+                                                        (click)="inputEditor('answer',q.key, 'answer_soft_delete', ans.key, true)"
+                                                        [hidden]="q.value['answer_soft_delete'][ans.key]"
                                                         id='buttonRemoveAnswer${i}' type="button">-</button>
                                                 </div>
                                             </div>
@@ -240,30 +241,30 @@
 
 
                         <!-- RADIO -->
-                        <div *ngIf="list_of_questions.new_question['display_type_description'] == 'Radio' && list_of_questions.new_question['question_type_description'] = 'selected input'">
-                            <div *ngFor="let ans of list_of_questions.new_question['answer_prompt'] | keyvalue" class="custom-radio">
+                        <div *ngIf="q.value['display_type_description'] == 'Radio' && q.value['question_type_description'] = 'selected input'">
+                            <div *ngFor="let ans of q.value['answer_prompt'] | keyvalue" class="custom-radio">
                                 <div>
-                                    <input class="answerChoice" style="margin: 5px" (change)="inputEditor('answer','new_question', 'answer_correct', ans.key, !list_of_questions.new_question['answer_correct'][ans.key])" [checked]=list_of_questions.new_question.answer_correct[ans.key] type="radio"
-                                        id="checkbox_{{ans.key}}" title="Select the right answer. You can chose only one answer." name="radio_answer_for_question_new_question" />
+                                    <input class="answerChoice" style="margin: 5px" (change)="inputEditor('answer',q.key, 'answer_correct', ans.key, !q.value['answer_correct'][ans.key])" [checked]=q.value.answer_correct[ans.key] type="radio" id="checkbox_{{ans.key}}" title="Select the right answer. You can chose only one answer."
+                                        name="radio_answer_for_question_{{q.key}}" />
                                     <label for="checkbox_{{ans.key}}" style="margin:0px 0px; width:92%">
                                             <div class="input-group mb-1">
                                                 <div class="input-group-prepend" style="width: 15%;">
                                                     <input type="number"
-                                                        (change)="inputEditor('answer','new_question', 'answer_sort', ans.key, $event.target.value)"
+                                                        (change)="inputEditor('answer',q.key, 'answer_sort', ans.key, $event.target.value)"
                                                         class="form-control answer_order_edit create_form_input_shadow"
                                                         min="1" id="answer_order_edit_{{ans.key}}" style="width: 90%;"
-                                                        value="{{list_of_questions.new_question['answer_sort'][ans.key] }}"
+                                                        value="{{q.value['answer_sort'][ans.key] }}"
                                                         data-toggle="tooltip" data-placement="bottom"
                                                         title="Set priority of the answer.">
                                                 </div>
                                                 <input class="form-control create_form_input_shadow" type="text"
                                                     id="answerId${id}" value="" aria-describedby="basic-addon2"
                                                     value='{{ans.value}}'
-                                                    (change)="inputEditor('answer','new_question', 'answer_prompt', ans.key, $event.target.value)" />
+                                                    (change)="inputEditor('answer',q.key, 'answer_prompt', ans.key, $event.target.value)" />
                                                 <div class="input-group-append">
                                                     <button class="btn btn-outline-danger buttonRemoveAnswer"
-                                                        (click)="inputEditor('answer','new_question', 'answer_soft_delete', ans.key, true)"
-                                                        [hidden]="list_of_questions.new_question['answer_soft_delete'][ans.key]"
+                                                        (click)="inputEditor('answer',q.key, 'answer_soft_delete', ans.key, true)"
+                                                        [hidden]="q.value['answer_soft_delete'][ans.key]"
                                                         id='buttonRemoveAnswer${i}' type="button">-</button>
                                                 </div>
                                             </div>
@@ -274,32 +275,32 @@
 
 
                         <!-- ADD ANSWER FORM -->
-                        <div style="padding-right: 3px !important;" class="input-group mb-3 create_form_input_shadow" [hidden]="!list_of_questions.new_question['question_type_description'] || list_of_questions.new_question['question_type_description'] == 'textfield input' || list_of_questions.new_question['question_type_description'] == 'drag_and_drop'">
+                        <div style="padding-right: 3px !important;" class="input-group mb-3 create_form_input_shadow" [hidden]="!q.value['question_type_description'] || q.value['question_type_description'] == 'textfield input' || q.value['question_type_description'] == 'drag_and_drop'">
                             <div class="input-group-prepend" style="width: 25px">
-                                <button class="btn btn-success create_form_answer_add btn-action-borderless" id='buttonAddNewAnswer_new_question' type="button" (click)="addAnswer('new_question')" question_id="new_question">+</button>
+                                <button class="btn btn-success create_form_answer_add btn-action-borderless" id='buttonAddNewAnswer_{{q.key}}' type="button" (click)="addAnswer(q.key)">+</button>
                             </div>
-                            <input type="text" class="form-control create_form_input_shadowless  edit_quiz_input_text_add" question_id="new_question" id="newAnswerFor_new_question" placeholder='Add an answer' aria-describedby="basic-addon2">
+                            <input type="text" class="form-control create_form_input_shadowless  edit_quiz_input_text_add" id="newAnswerFor_{{q.key}}" placeholder='Add an answer' aria-describedby="basic-addon2">
                         </div>
 
                     </td>
-                    <td>
+                    <td *ngIf="!q.value['error_bool']">
                         <div class="input-group">
-                            <input class="create_form_input_shadow form-control " type="text" placeholder="Confluence link" (change)="inputEditor(null,'new_question', 'training_url', null, $event.target.value)">
+                            <input class="create_form_input_shadow form-control " type="text" placeholder="Confluence link" (change)="inputEditor(null,q.key, 'training_url', null, $event.target.value)">
                             <div class="input-group-append">
-                                <button type='button' class='buttonConfluenceLink btn btn-xs  btn-outline-dark' id='buttonConfluenceLinkForQuestion${id}' (click)="checkModuleLink('new_question')">Check</button>
+                                <button type='button' class='buttonConfluenceLink btn btn-xs  btn-outline-dark' id='buttonConfluenceLinkForQuestion${id}' (click)="checkModuleLink(q.key)">Check</button>
                             </div>
                         </div>
                         <div id='module_field${id}'>
-                            <input class="create_form_input_shadow form-control" (change)="inputEditor('training_module', 'new_question','training_module', null, $event.target.value)" id='editModuleForQuestionId${id}' type="text" placeholder="Module note">
+                            <input class="create_form_input_shadow form-control" (change)="inputEditor('training_module', q.key,'training_module', null, $event.target.value)" id='editModuleForQuestionId${id}' type="text" placeholder="Module note">
                         </div>
                         <div class="input-group  mb-3" style="width: 75%">
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="basic-addon3">Question value</span>
                             </div>
-                            <input class="form-control create_form_input_shadow" (change)="inputEditor('point_value', 'new_question','point_value', null, $event.target.value)" type="number" min="1" max="10">
+                            <input class="form-control create_form_input_shadow" (change)="inputEditor('point_value', q.key,'point_value', null, $event.target.value)" type="number" min="1" max="10">
                         </div>
                     </td>
-                    <td style='text-align: center'>
+                    <td style='text-align: center' *ngIf="!q.value['error_bool']">
                         <div>
                             <button class='btn btn-outline-primary btn-action-borderless' disabled style="width: 100%">🔍
                                     Preview</button>
@@ -307,9 +308,11 @@
                                     Add</button>
                         </div>
                     </td>
-
+                    <td *ngIf="q.value['error_bool']">
+                        ERROR
+                    </td>
                 </tr>
-                <tr *ngIf="list_of_questions.new_question_error" class="create_form_row">
+                <!-- <tr *ngIf="list_of_questions.new_question_error" class="create_form_row">
                     <td colspan="7" (click)="errorHandlerRemover('new_question')" class="errorHandlerBox">
                         <div class="alert alert-danger shadow errorHandler" role="alert">
                             <p class="text-center" *ngFor="let el of list_of_questions.new_question_error.errors | keyvalue">
@@ -317,10 +320,8 @@
                             </p>
                         </div>
                     </td>
-                </tr>
+                </tr> -->
             </tbody>
-            <div>
-            </div>
         </table>
         {{list_of_questions | json }}
 
