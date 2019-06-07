@@ -32,6 +32,8 @@ export class AdminCreatequizComponent implements OnInit {
   list_of_questions = {
     'new_question': new Question()
   };
+  modal_mesage_bool = false;
+  modal_message = {};
 
   constructor(private _ConnectorService: ConnectorService, private location: Location, private _route: ActivatedRoute, private _r: Router) {
     this._route.paramMap.subscribe(params => {
@@ -63,7 +65,7 @@ export class AdminCreatequizComponent implements OnInit {
     this.list_of_questions.new_question.temp_bucket_storage = this.temp_bucket_storage;
   }
 
-  // LISTENERS ===============================================================================================================================================================================================
+  // LISTENERS ========================================================================================================================================================================================
 
   valueChanger(target, value) { // engagement/category/topic changer
     console.log(target, value)
@@ -108,6 +110,7 @@ export class AdminCreatequizComponent implements OnInit {
       }
     }
   }
+
   displayTypeChanger(target, value) {
     if (value === 'textfield input') {
       this.list_of_questions[target]['display_type_description'] = "Manual input";
@@ -157,6 +160,7 @@ export class AdminCreatequizComponent implements OnInit {
       }
     }
   }
+
   addAnswer(target) {
     let value = document.getElementById(`newAnswerFor_${target}`)['value'];
     if (value.length < 1) {
@@ -250,7 +254,6 @@ export class AdminCreatequizComponent implements OnInit {
       if(!bucket_val){
         this.errorHandler(id, "bucket_list","Please choose one of the buckets.")
       }
-      console.log ("ERRORS!!")
       return;
     }
     let counter = 0;
@@ -267,17 +270,9 @@ export class AdminCreatequizComponent implements OnInit {
 
     document.getElementById(`bucket_input_add_input_${id}`)['value'] = '';
     document.getElementById(`bucket_list_pick_${id}`)['value'] = '';
-
-
-    // let value = document.getElementById(`bucket_input_add_input_${id}`)['value']
-    // let bucket_id = document.getElementById(`bucket_list_pick_${id}`)['value']
-    // console.log("BUCKET ID =>", document.getElementById(`bucket_list_pick_${id}`))
-    // if (!value || !bucket_id || value.length < 1) {
-    //   console.log("!value || !bucket_id || value.length < 1 ====>", (!value), (!bucket_id), (value.length < 1))
-    //   return;
-    // }
    
   }
+
   checkModuleLink(id){
     if(this.validURL(this.list_of_questions[id]['training_url'])){
       this.clearErrors(id, 'training_url')
@@ -287,6 +282,17 @@ export class AdminCreatequizComponent implements OnInit {
       this.errorHandler(id, 'training_url', "Confluence link is invalid")
     }
   }
+
+  addQuestion(){
+    let counter = 1;
+    while(this.list_of_questions['added_'+counter]){
+      counter++;
+    }
+    let new_id = 'added_'+counter;
+    this.list_of_questions[new_id] = this.list_of_questions['new_question'];
+    this.list_of_questions['new_question'] = new Question();
+  }
+
   inputTest(target) {
     console.log("=============================")
     console.log(target)
@@ -294,10 +300,15 @@ export class AdminCreatequizComponent implements OnInit {
   }
 
 
+  // MODAL FUNCTIONS ==================================================================================================================================================================================
+
+  closeModal(){
+    this.modal_mesage_bool = false;
+  }
 
 
 
-  //  MISC ===========================================================================================================================================================================================
+  //  MISC ============================================================================================================================================================================================
 
   errorHandler(id, source, message){
     if(!this.list_of_questions[id+"_error"]){

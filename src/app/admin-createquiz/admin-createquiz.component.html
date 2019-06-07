@@ -1,4 +1,24 @@
 <div class="admin-create-quiz" *ngIf="currentUser && engagements">
+    <div [hidden]="!modal_mesage_bool" class="modal_message_box">
+        <div class="modal-dialog modal-dialog-centered modal_message" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalCenteredLabel">Modal title</h5>
+                    <button type="button" class="close" (click)="closeModal()" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                </div>
+                <div class="modal-body">
+                    {{modal_mesage}}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" (click)="closeModal()" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="admin-create-quiz-title">
         <h1>Create a new quiz</h1>
     </div>
@@ -270,28 +290,28 @@
                             </div>
                         </div>
                         <div id='module_field${id}'>
-                            <input class="create_form_input_shadow form-control" id='editModuleForQuestionId${id}' type="text" placeholder="Module note">
+                            <input class="create_form_input_shadow form-control" (change)="inputEditor('training_module', 'new_question','training_module', null, $event.target.value)" id='editModuleForQuestionId${id}' type="text" placeholder="Module note">
                         </div>
-                        <div class="input-group mb-3" style="width: 75%">
+                        <div class="input-group  mb-3" style="width: 75%">
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="basic-addon3">Question value</span>
                             </div>
-                            <input class="form-control create_form_input_shadow" id='editPointValueForQuestionId${id}' type="number" min="1" max="10">
+                            <input class="form-control create_form_input_shadow" (change)="inputEditor('point_value', 'new_question','point_value', null, $event.target.value)" type="number" min="1" max="10">
                         </div>
                     </td>
                     <td style='text-align: center'>
                         <div>
-                            <button class='btn btn-outline-primary btn-action-borderless' style="width: 100%">🔍
+                            <button class='btn btn-outline-primary btn-action-borderless' disabled style="width: 100%">🔍
                                     Preview</button>
-                            <button class='btn btn-outline-success btn-action-borderless' style="width: 100%">+
+                            <button class='btn btn-outline-success btn-action-borderless' (click)="addQuestion()" style="width: 100%">+
                                     Add</button>
                         </div>
                     </td>
 
                 </tr>
-                <tr *ngIf="list_of_questions.new_question_error">
-                    <td colspan="7" (click)="errorHandlerRemover('new_question')">
-                        <div class="alert alert-danger" role="alert">
+                <tr *ngIf="list_of_questions.new_question_error" class="create_form_row">
+                    <td colspan="7" (click)="errorHandlerRemover('new_question')" class="errorHandlerBox">
+                        <div class="alert alert-danger shadow errorHandler" role="alert">
                             <p class="text-center" *ngFor="let el of list_of_questions.new_question_error.errors | keyvalue">
                                 {{el.value}}
                             </p>
