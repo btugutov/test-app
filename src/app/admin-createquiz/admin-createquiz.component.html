@@ -39,7 +39,7 @@
                                     </tr>
                                 </tbody>
                         </table>
-                        <table [hidden]="!bucket_list_confirm_bool" class="table table-borderless table-sm">
+                        <table [hidden]="!bucket_list_confirm_bool" class="table table-borderless table-sm ">
                                 <thead class="thead-light">
                                     <tr>
                                         <th>ID</th>
@@ -123,8 +123,8 @@
     </div>
 
     <div class='admin-create-quiz-form' style="margin-top: 25px;">
-        <table class="table table-borderless">
-            <thead class="thead-light">
+        <table class="table table-borderless ">
+            <thead class="thead-light sticky-top">
                 <tr style="height: 50px">
                     <th class="border-0 text-uppercase small font-weight-bold text-center" style="width: 5%">ID/Order
                     </th>
@@ -140,7 +140,7 @@
             </thead>
             <tbody>
                 <tr *ngFor='let q of list_of_questions | keyvalue' class="create_form_row">
-                    <!-- QEUSTIONS -->
+                    <!-- QUESTIONS -->
                     <td *ngIf="!q.value['error_bool']" class='text-center table-row'>
                         <p>{{q.key}}</p>
                         <div>
@@ -165,20 +165,19 @@
                     </td>
                     <td *ngIf="!q.value['error_bool']">
                         <div class="btn-group-vertical btn-group-toggle" data-toggle="buttons">
-                            <label class="btn btn-sm btn-action-borderless btn-outline-secondary" (click)="displayTypeChanger(q.key, 'textfield input')" checked>
-                                    <input type="radio" name="displayTypeNew" id="manual_input" value="textfield input"
-                                        ng-checked='true' /> Manual Input
+                            <label class="btn btn-sm btn-action-borderless btn-outline-secondary" [ngClass]="{ 'active': q.value.display_type_description == 'Manual input' }" (click)="displayTypeChanger(q.key, 'textfield input')">
+                                    <input type="radio" name="displayTypeNew" id="manual_input" value="textfield input" checked="checked"/> Manual Input
                                 </label>
-                            <label class="btn btn-sm btn-action-borderless btn-outline-secondary" (click)="displayTypeChanger(q.key, 'Radio')">
+                            <label class="btn btn-sm btn-action-borderless btn-outline-secondary" [ngClass]="{ 'active': q.value.display_type_description == 'Radio' }"  (click)="displayTypeChanger(q.key, 'Radio')">
                                     <input type="radio" name="displayTypeNew " id="radio " value="Radio" /> Radio
                                 </label>
-                            <label class="btn btn-sm btn-action-borderless btn-outline-secondary " (click)="displayTypeChanger( q.key, 'Dropdown')">
+                            <label class="btn btn-sm btn-action-borderless btn-outline-secondary " [ngClass]="{ 'active': q.value.display_type_description == 'Dropdown' }"  (click)="displayTypeChanger( q.key, 'Dropdown')">
                                     <input type="radio" name="displayTypeNew" id="dropdown" value="Dropdown"> Dropdown
                                 </label>
-                            <label class="btn btn-sm btn-action-borderless btn-outline-secondary" (click)="displayTypeChanger(q.key, 'Checkbox')">
+                            <label class="btn btn-sm btn-action-borderless btn-outline-secondary" [ngClass]="{ 'active': q.value.display_type_description == 'Checkbox' }"  (click)="displayTypeChanger(q.key, 'Checkbox')">
                                     <input type="radio" name="displayTypeNew " id="checkbox " value="Checkbox "> Checkbox
                                 </label>
-                            <label class="btn btn-sm btn-action-borderless btn-outline-secondary " (click)="displayTypeChanger( q.key, 'drag_and_drop')">
+                            <label class="btn btn-sm btn-action-borderless btn-outline-secondary " [ngClass]="{ 'active': q.value.display_type_description == 'drag_and_drop' }"  (click)="displayTypeChanger( q.key, 'drag_and_drop')">
                                     <input type="radio" name="displayTypeNew" id="drag_and_drop" value="drag_and_drop">
                                     Drag'n'Drop
                                 </label>
@@ -193,7 +192,7 @@
 
                         <!-- MANUAL INPUT -->
                         <div style="padding: 0px 3px !important;" [hidden]="q.value['question_type_description'] != 'textfield input'">
-                            <textarea (change)="inputEditor('expected_response', q.key, 'expected_response', null, $event.target.value)" class='textAreaExpectedAnswer form-control create_form_input_shadow' rows=4 placeholder="Expected answer" value="{{q.value['expected_response']}}"></textarea>
+                            <textarea (change)="inputEditor('expected_response', q.key, 'expected_response', null, $event.target.value)" class='textAreaExpectedAnswer form-control create_form_input_shadow' rows=4 placeholder="Expected answer (optional)" value="{{q.value['expected_response']}}"></textarea>
                         </div>
 
 
@@ -347,19 +346,19 @@
                     <!-- ADMIN NOTES -->
                     <td *ngIf="!q.value['error_bool']">
                         <div class="input-group">
-                            <input class="create_form_input_shadow form-control " value="{{list_of_questions[q.key]['training_url']}}" type="text" placeholder="Confluence link" (change)="inputEditor(null, q.key, 'training_url', null, $event.target.value)">
+                            <input class="create_form_input_shadow form-control " value="{{list_of_questions[q.key]['training_url']}}" type="text" placeholder="Confluence link (optional)" (change)="inputEditor(null, q.key, 'training_url', null, $event.target.value)">
                             <div class="input-group-append">
-                                <button type='button' class='buttonConfluenceLink btn btn-xs  btn-outline-dark' id='buttonConfluenceLinkForQuestion${id}' (click)="checkModuleLink(q.key)">Check</button>
+                                <button type='button' class='buttonConfluenceLink btn btn-xs  btn-outline-secondary' id='buttonConfluenceLinkForQuestion${id}' (click)="checkModuleLink(q.key)">Check</button>
                             </div>
                         </div>
                         <div id='module_field${id}'>
-                            <input class="create_form_input_shadow form-control" value="{{list_of_questions[q.key]['training_module']}}" (change)="inputEditor('training_module', q.key,'training_module', null, $event.target.value)" id='editModuleForQuestionId${id}' type="text" placeholder="Module note">
+                            <input class="create_form_input_shadow form-control" value="{{list_of_questions[q.key]['training_module']}}" (change)="inputEditor('training_module', q.key,'training_module', null, $event.target.value)" id='editModuleForQuestionId${id}' type="text" placeholder="Module note (optional)">
                         </div>
-                        <div class="input-group  mb-3" style="width: 75%">
+                        <div class="input-group  mb-3" style="width: 185px;">
                             <div class="input-group-prepend">
-                                <span class="input-group-text" id="basic-addon3">Question value</span>
+                                <span class="input-group-text bg-secondary text-white" id="basic-addon3">Question value</span>
                             </div>
-                            <input class="form-control create_form_input_shadow"  value="{{list_of_questions[q.key]['point_value']}}"   (change)="inputEditor('point_value', q.key,'point_value', null, $event.target.value)" type="number" min="1" max="10">
+                            <input class="form-control create_form_input_shadow"  value="{{list_of_questions[q.key]['point_value']}}"   (change)="inputEditor('point_value', q.key,'point_value', null, $event.target.value)" type="number" min="1" max="10" style="padding: 0px 5px;">
                         </div>
                     </td>
 
@@ -371,9 +370,19 @@
                             <button *ngIf="q.key != 'new_question'" class='btn btn-outline-danger btn-action-borderless' (click)="removeQuestion(q.key)" style="width: 100%">Remove</button>
                         </div>
                     </td>
-                    <td *ngIf="q.value['error_bool']">
-                        ERROR
+
+                    <!-- ERROR -->
+                    <td colspan="7" *ngIf="q.value['error_bool']" style="padding: 10px 10px !important">
+                        <div class="alert alert-warning shadow" role="alert" style="width: 500px; margin: 0px auto;">
+                            <button type="button" class="close" (click)="errorRemoveById(q.key)">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            <p class="text-center text-monospace"><strong >Oops! Something went wrong.</strong></p>
+                           <p *ngFor="let error of q.value['errors'] | keyvalue" class="text-center" style="margin-bottom: 0px !important">{{error.value}}</p>
+                        </div>
                     </td>
+
+
                 </tr>
                 <!-- <tr *ngIf="list_of_questions.new_question_error" class="create_form_row">
                     <td colspan="7" (click)="errorHandlerRemover('new_question')" class="errorHandlerBox">
@@ -386,10 +395,21 @@
                 </tr> -->
             </tbody>
         </table>
-        {{list_of_questions | json }}
-
-
+        <div [hidden]="!submit_ready" class="alert alert-success text-center shadow" style="width: 500px; margin: 0px auto;" role="alert">
+                <strong>All questions are good!</strong>
+            </div>
+        <div class="d-flex justify-content-center" style="margin-top: 50px">
+            <button [hidden]="submit_ready" class="btn btn-lg btn-info btn-action-borderless shadow" (click)="validateQuiz()">Validate</button>
+            <div [hidden]="!submit_ready" class="shadow btn-group btn-group-lg text-monospace" role="group">
+                <button  class="btn btn-lg btn-success" (click)="validateQuiz()">Submit</button>
+                <button  class="btn btn-lg btn-warning" (click)="cancelSubmitQuiz()">Cancel</button>
+            </div>
+        </div>
+        <!-- <button class="btn btn-lg shadow" (click)="checkState()">Check State</button> -->
+        
+        
     </div>
+    
 </div>
 <div *ngIf="!currentUser || !engagements" class=" loading_box ">
     <img class="loading_box-ing " src='./../../assets/loading.gif'>

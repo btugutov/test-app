@@ -1856,3 +1856,13 @@ a.disabled {
     border: none !important;
     border-radius: 0px !important;
 }
+.bp-color{
+    color: #4f91cd
+}
+.bp-background{
+    background: #4f91cd
+}
+.bp-button{
+    background: #4f91cd;
+    color: white;
+}

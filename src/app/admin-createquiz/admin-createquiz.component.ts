@@ -23,6 +23,7 @@ export class AdminCreatequizComponent implements OnInit {
   selected_category = null;
   selected_topic = null;
   selected_eng = null;
+  submit_ready = false;
   topic_cat_eng_message = {
     'display': false,
     'status': "",
@@ -81,10 +82,45 @@ export class AdminCreatequizComponent implements OnInit {
     this.list_of_questions.new_question.temp_bucket_storage = this.temp_bucket_storage;
   }
 
+  // SUBMIT  ==========================================================================================================================================================================================
+
+  validateQuiz(){
+    let errors = this.validateAllQuestions();
+    if(Object.keys(errors).length>0 || this.topic_cat_eng_message.status != 'success'){
+      if(this.topic_cat_eng_message.status != 'success'){
+        console.log("ENGAGEMENT_CATEGORY_TOPIC ERROR!")
+        this.topic_cat_eng_message.display = true;
+        this.topic_cat_eng_message.message = "Please select engagement, category, topic.";
+        this.topic_cat_eng_message.status = 'fail';
+      }
+
+      console.log("SUBMIT errors =>", errors)
+      for(let error in errors){
+        console.log("ERROR =>", errors[error]['body'])
+        for(let el in errors[error]['body']){
+          console.log("EL =>", el)
+          //errors[error]['body'][el]
+          this.errorHandler(error, el, errors[error]['body'][el])
+        }
+      }
+    }else if(Object.keys(this.list_of_questions).length > 1){
+      console.log("ALL GOOD!")
+      this.submit_ready = true;
+    }
+  }
+  cancelSubmitQuiz(){
+    this.submit_ready = false;
+  }
+  submitQuiz(){
+    console.log("SUBMITTED1")
+  }
+
+
   // LISTENERS ========================================================================================================================================================================================
 
   valueChanger(target, value) { // engagement/category/topic changer
     console.log(target, value)
+    this.cancelSubmitQuiz()
     if (target == 'engagement') {
       if (this.selected_eng != value) {
         console.log("this.engagements_obj =>", this.engagements_obj);
@@ -128,6 +164,7 @@ export class AdminCreatequizComponent implements OnInit {
   }
 
   displayTypeChanger(target, value) {
+    this.cancelSubmitQuiz()
     if (value === 'textfield input') {
       this.list_of_questions[target]['display_type_description'] = "Manual input";
       this.list_of_questions[target]['question_type_description'] = 'textfield input';
@@ -178,6 +215,7 @@ export class AdminCreatequizComponent implements OnInit {
   }
 
   addAnswer(target) {
+    this.cancelSubmitQuiz()
     console.log('add answer for =>', target)
     let value = document.getElementById(`newAnswerFor_${target}`)['value'];
     console.log("document.getElementById(`newAnswerFor_${target}`) =>", document.getElementById(`newAnswerFor_${target}`) )
@@ -210,6 +248,7 @@ export class AdminCreatequizComponent implements OnInit {
   }
 
   inputEditor(target, q_id, q_key, a_id, value) {
+    this.cancelSubmitQuiz()
     if (target == 'answer') {
       if (q_key == 'answer_soft_delete') {
         delete this.list_of_questions[q_id]['answer_prompt'][a_id];
@@ -258,11 +297,13 @@ export class AdminCreatequizComponent implements OnInit {
   }
 
   removeImg(q_id) {
+    this.cancelSubmitQuiz()
     this.list_of_questions[q_id]['base64'] = '';
     this.list_of_questions[q_id]['image'] = false;
   }
 
   dragAndDropAdder(id) {
+    this.cancelSubmitQuiz()
     console.log(this.list_of_questions[id]['temp_bucket_storage'])
     let input_val = this.list_of_questions[id]['temp_bucket_storage']['answer_input'];
     let bucket_val = this.list_of_questions[id]['temp_bucket_storage']['bucket_id'];
@@ -324,6 +365,16 @@ export class AdminCreatequizComponent implements OnInit {
   }
 
   addQuestion(){
+    this.cancelSubmitQuiz()
+    let errs = this.validateQuestion("new_question");
+    if(errs.status == 'fail'){
+      for(let el in errs.body){
+        this.errorHandler('new_question', el, errs.body[el])
+      }
+      return;
+    }else{
+      this.errorHandlerRemover("new_question")
+    }
     let counter = 1;
     for(let el in this.list_of_questions){
       console.log("EL =>>>>", el)
@@ -340,10 +391,12 @@ export class AdminCreatequizComponent implements OnInit {
     this.list_of_questions['new_question'] = new Question();
   }
   removeQuestion(id){
+    this.cancelSubmitQuiz()
     console.log("ID =>", id)
     delete this.list_of_questions[id]
   }
   removeDragAndDropChoice(id, c_id){ // id = question_id, c_id = choice id
+    this.cancelSubmitQuiz()
     console.log(id, c_id)
     try{
       delete this.list_of_questions[id]['answer_prompt'][c_id]
@@ -375,9 +428,9 @@ export class AdminCreatequizComponent implements OnInit {
   bucketListEditorConfirm(){
     this.bucket_list_confirm_bool = true;
     this.bucket_list_confirm_list = this.differenceFinderBuckets(this.bucket_list, this.bucket_list_original)
-
   }
   bucketListEditorSave(){
+    this.cancelSubmitQuiz()
     this.bucket_list_confirm_bool = false;
     this.bucket_list_original = cloneDeep(this.bucket_list);
     this.closeModal();
@@ -402,11 +455,99 @@ export class AdminCreatequizComponent implements OnInit {
     }
   }
 
+  // VALIDATORS ========================================================================================================================================================================================
 
+  validateQuestion(id){
+    this.errorHandlerRemover(id)
+    let res = {
+      'status': "success",
+      'body': {}
+    }
+    let target = this.list_of_questions[id];
+
+    // Question order value
+    if(!target.question_sort || target.question_sort < 1){
+      res.body['order number'] = "Invalid order number.";
+    }
+
+    // Prompt
+    if(!target.prompt || target.prompt.length < 1){
+      res.body['Question prompt'] = "Question prompt is missing.";
+    }else if( escape(target.prompt).length > 3500){
+      res.body['prompt'] = "Question prompt is too long.";
+    }
+
+    // Question type
+    if(!target.display_type_description){
+      res.body['type'] = "Please select question display type.";
+    }
+
+    // Answers' validation
+    if(!res.body['type']){
+      if(target.display_type_description != "Manual input"){
+        if(Object.keys(target.answer_prompt).length< 1){
+          res.body['answers'] = "Please add answers.";
+        }else if(Object.keys(target.answer_prompt).length< 2){
+          res.body['answers'] = "Please add more answers.";
+        }else{
+          // drag and drop bucket count
+          if(target.display_type_description == "drag_and_drop"){
+            if(Object.keys(target.answer_bucket_id).length < 2){
+              res.body['answers'] = "Please add buckets."
+            }
+          }else{
+            // find number of right answers
+            let counter = 0;
+            for(let el in target.answer_correct){
+              if(target.answer_correct[el] == true){
+                counter++;
+              }
+            }
+            if(counter==0){
+              res.body['answers'] = "Please mark the right answers."
+            }
+          }
+        }
+      }
+    }
+
+    // Confluence link
+    if(target.training_url && !this.validURL(target.training_url)){
+      res.body['type'] = "Confluence link is invalid. Please check URL syntax.";
+    }
+
+    // Question value
+    if(!target.point_value){
+      res.body['type'] = "Invalid question value.";
+    }else if(target.point_value < 1 || target.point_value > 10){
+      res.body['type'] = "Please enter question value between 1 to 10.";
+    }
+
+    if(Object.keys(res.body).length>0){
+      res.status = "fail";
+    }
+    return res;
+  }
+  validateAllQuestions(){
+    let list = this.list_of_questions;
+    let res = {};
+    for(let el in list){
+      if(el == 'new_question' || el['error_bool']){
+        continue;
+      }
+      this.errorHandlerRemover(el);
+      let temp_res = this.validateQuestion(el);
+      if(temp_res.status == 'fail'){
+        res[el] = temp_res;
+      }
+    }
+    return res;
+  }
 
   //  MISC ============================================================================================================================================================================================
 
   errorHandler(id, source, message){
+    console.log(`WE GOT ERROR HERE! ID => ${id}, source => ${source}, message => ${message}`);
     if(!this.list_of_questions[id+"_error"]){
       this.list_of_questions[id+"_error"] = {
         'error_bool': true,
@@ -418,9 +559,24 @@ export class AdminCreatequizComponent implements OnInit {
     this.list_of_questions[id+"_error"]['errors'][source] = message;
   }
   errorHandlerRemover(id){
-    delete this.list_of_questions[id+'_error'];
+    try{
+      delete this.list_of_questions[id+'_error'];
+    }
+    catch(error){
+      console.log(error)
+    }
     return true
   }
+  errorRemoveById(id){
+    try{
+      delete this.list_of_questions[id];
+    }
+    catch(error){
+      console.log(error)
+    }
+    return true
+  }
+
   clearErrors(id, source){
     try{
       delete this.list_of_questions[id+"_error"]['errors'][source]
@@ -473,7 +629,7 @@ export class AdminCreatequizComponent implements OnInit {
     return engs;
   }
 
- validURL(str) {
+  validURL(str) {
     var pattern = new RegExp('^(https?:\\/\\/)?'+ // protocol
       '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|'+ // domain name
       '((\\d{1,3}\\.){3}\\d{1,3}))'+ // OR ip (v4) address
@@ -531,5 +687,9 @@ export class AdminCreatequizComponent implements OnInit {
       
     }
     return res;
+  }
+
+  checkState(){
+    console.log(this)
   }
 }

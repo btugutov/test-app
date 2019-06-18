@@ -155,14 +155,16 @@ input[type="file"] {
     position: fixed;
     z-index: 50;
     width: 100vw;
-  height: 100vh;
+    height: 100vh;
     background: rgba(179, 182, 185, 0.5)
 }
 
-.modal_message {}
+.modal_message {
+    max-height: 52vh;
+}
 
 .modal-edit-remove-bucket{
-    height: 600px;
+    height: 50vh !important;
     overflow-y: auto;
 }
 .modal-edit-remove-bucket td{
@@ -170,4 +172,15 @@ input[type="file"] {
 }
 .modal-dialog{
     width: 700px;
+    /* height: 100px; */
 }
+.fixed_header tbody{
+    display:block;
+    overflow:auto;
+    height:200px;
+    width:100%;
+  }
+  .fixed_header thead tr{
+    display:block;
+  }
+  
