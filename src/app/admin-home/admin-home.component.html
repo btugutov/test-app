@@ -4,7 +4,7 @@
     </div>
     <div class="home-main" id="homeCategories" *ngIf="currentEng">
         <div class="home-category">
-            <div class="home-category-title">
+            <div class="home-category-title bg-dark text-white" style="width: 100%; padding: 5px 0px;">
                 <h1>Grader</h1>
             </div>
             <div class="home-category-element">
@@ -15,7 +15,7 @@
             </div>
         </div>
         <div class="home-category">
-            <div class="home-category-title">
+            <div class="home-category-title bg-dark text-white" style="width: 100%; padding: 5px 0px;">
                 <h1>Editor</h1>
             </div>
             <div class="home-category-element">
@@ -28,28 +28,28 @@
             </div>
         </div>
         <div class="home-category">
-            <div class="home-category-title">
+            <div class="home-category-title bg-dark text-white" style="width: 100%; padding: 5px 0px;">
                 <h1>Quiz Controls</h1>
             </div>
             <div class="home-category-element">
                 <a class="admin_link" [routerLink]="['/',currentEng_id, 'AdminEditpermissions']">
-                    <button class="btn btn-outline-dark btn-lg dropbtn admin-button" [disabled]="!currentUser.admin_permissions && !currentUser.admin_owner" type="button">Quiz Permissions</button>
+                    <button class="btn btn-outline-secondary btn-lg dropbtn admin-button" [disabled]="!currentUser.admin_permissions && !currentUser.admin_owner" type="button">Quiz Permissions</button>
                 </a>
                 <a class="admin_link" [routerLink]="['/',currentEng_id, 'AdminEditsubmissions']">
-                    <button class="btn btn-outline-dark btn-lg dropbtn admin-button" [disabled]="!currentUser.admin_permissions && !currentUser.admin_owner" type="button">Quiz Submissions</button>
+                    <button class="btn btn-outline-secondary btn-lg dropbtn admin-button" [disabled]="!currentUser.admin_permissions && !currentUser.admin_owner" type="button">Quiz Submissions</button>
                 </a>
             </div>
         </div>
         <div class="home-category">
-            <div class="home-category-title">
+            <div class="home-category-title bg-dark text-white" style="width: 100%; padding: 5px 0px;">
                 <h1>Super Admin</h1>
             </div>
             <div class="home-category-element">
                 <a class="admin_link" [routerLink]="['/',currentEng_id, 'AdminEditusersComponent']">
-                    <button class="btn btn-outline-danger btn-lg dropbtn admin-button" [disabled]="!currentUser.admin_permissions && !currentUser.admin_owner" type="button">User Permissions</button>
+                    <button class="btn btn-outline-info btn-lg dropbtn admin-button" [disabled]="!currentUser.admin_permissions && !currentUser.admin_owner" type="button">User Permissions</button>
                 </a>
                 <a class="admin_link" [routerLink]="['/',currentEng_id, 'AdminEditengagements']">
-                    <button class="btn btn-outline-danger btn-lg dropbtn admin-button" [disabled]="!currentUser.admin_permissions && !currentUser.admin_owner" type="button">Edit Engagements</button>
+                    <button class="btn btn-outline-info btn-lg dropbtn admin-button" [disabled]="!currentUser.admin_permissions && !currentUser.admin_owner" type="button">Edit Engagements</button>
                 </a>
             </div>
         </div>

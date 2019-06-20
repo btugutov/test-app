@@ -658,6 +658,7 @@ function get_topic_info_for_editQuizHome(engagement_id) {
         }).catch(function(error) { reject(error); throw (error); })
     }).catch(function(error) {
         log_event('WARNING', error, functionName);
+        reject(error);
         throw (error);
     })
 }

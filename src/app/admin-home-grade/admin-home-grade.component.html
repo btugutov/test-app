@@ -16,8 +16,8 @@
         <button class=" btn btn-warning text-monospace button_hover_expand " *ngIf="your_list_length<1 " id="release_all " style="border-radius: 0px; width: 250px " disabled>No current quizzes</button>
     </div>
     <div class="grade-home-main " id="grade-home-main ">
-        <div *ngFor="let c of quizzes | keyvalue " class="home-category " style="box-shadow: 12px 12px 16px silver; ">
-            <div class="home-category-title ">
+        <div *ngFor="let c of quizzes | keyvalue " class="home-category">
+            <div class="home-category-title bg-dark text-white" style="width: 100%; padding: 5px 0px;">
                 <h3>{{c.key}}</h3>
             </div>
             <div *ngFor="let t of c.value | keyvalue " class="home-category-element ">

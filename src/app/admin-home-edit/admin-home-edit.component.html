@@ -1,3 +1,35 @@
-<p>
-  admin-home-edit works!
-</p>
+<div class="column_list element-animation-fadeIn" id="body_fadeOut">
+    <div *ngIf='popup_message' class="d-flex justify-content-center popup_message_slideIn">
+        <div *ngIf='popup_message.success' class="alert alert-success" role="alert">
+            <strong>Well done!</strong> {{popup_message.message}}
+        </div>
+        <div *ngIf='!popup_message.success' class="alert alert-danger" role="alert">
+            <h4 class="alert-heading">Oops! Please contact admin or developers!</h4> {{popup_message.message | json}}
+        </div>
+    </div>
+    <div style="display: flex; flex-direction: column; flex-wrap: nowrap; justify-content: center; align-items: stretch; align-content: center; height: 10%;">
+        <h1 style="margin: 0px auto">Choose a category and topic to edit</h1>
+    </div>
+    <!-- <div class="d-flex justify-content-center" *ngIf="quizzes" style="margin-top: 50px; ">
+        <div class="alert alert-success shadow" role="alert" style="display: flex; align-items: center; flex-direction: column;">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            <p class="badge btn-lg badge-light">Quiz is good</p>
+            <p class="badge badge-warning">Less than 6 questions </p>
+            <p class="badge btn-lg badge-danger">Quiz is disabled</p>
+        </div>
+    </div> -->
+    <div class="grade-home-main " id="grade-home-main ">
+        <div *ngFor="let c of quizzes | keyvalue " class="home-category " >
+            <div class="home-category-title bg-dark text-white" style="width: 100%; padding: 5px 0px;">
+                <h3 >{{c.key}}</h3>
+            </div>
+            <div *ngFor="let t of c.value | keyvalue " class="home-category-element ">
+                <a [routerLink]="[links[t.value.topic_id][ 'topic_link']] ">
+                    <button type="button " class="btn btn-lg" [ngClass]="{'btn-outline-secondary': t.value.question_count > 5 && !t.value.topic_soft_delete, 'btn-outline-warning': t.value.question_count <= 5 && !t.value.topic_soft_delete, 'btn-danger': t.value.topic_soft_delete}">{{t.value.topic}} ({{t.value.question_count}})</button>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

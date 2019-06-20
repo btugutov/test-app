@@ -1000,7 +1000,7 @@ var AdminEditpermissionsComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJzcmMvYXBwL2FkbWluLWVkaXRxdWl6L2FkbWluLWVkaXRxdWl6LmNvbXBvbmVudC5jc3MifQ== */"
+module.exports = ".admin-create-quiz {\n    margin-top: 50px;\n}\n\n.admin-create-quiz-title {\n    display: flex;\n    flex-direction: column;\n    flex-wrap: nowrap;\n    justify-content: flex-start;\n    align-items: center;\n    align-content: center;\n}\n\n.admin-create-quiz-body {\n    display: flex;\n    flex-direction: column;\n    flex-wrap: nowrap;\n    justify-content: flex-start;\n    align-items: center;\n    align-content: center;\n}\n\n.admin-create-quiz-body-topic-cat-eng-box {\n    /* max-width: 400px; */\n}\n\n.admin-create-quiz-body-topic-cat-eng-box-select-box {\n    margin: 0px 10px;\n    display: flex;\n    flex-direction: column;\n    flex-wrap: nowrap;\n    justify-content: flex-start;\n    align-items: center;\n    align-content: center;\n}\n\n.thead-light {\n    background: #e9ecef;\n    color: #7f8082;\n}\n\n.select-label {\n    margin-bottom: 0px !important;\n    margin-left: 5px;\n}\n\n.table-row {\n    /* padding: 0px 0px !important; */\n    /* display: ; */\n    display: flex;\n    flex-direction: column;\n    flex-wrap: nowrap;\n    justify-content: flex-start;\n    align-items: center;\n    align-content: center;\n}\n\n.create_form_img_box {\n    width: 15%;\n}\n\n.create_form_answer_add {\n    width: 100%;\n    padding: 0px 0px !important;\n}\n\ninput[type=\"file\"] {\n    display: none;\n}\n\n.custom-file-upload {\n    border: 1px solid #ccc;\n    display: inline-block;\n    padding: 6px 12px;\n    cursor: pointer;\n}\n\n.create_form_input_shadow {\n    box-shadow: 0 0 0 1px rgba(179, 182, 185, 0.25);\n    border-radius: 0px;\n}\n\n.create_form_input_shadow:focus {\n    box-shadow: 0 0 0 1px #4f91cd59;\n    /* background-color: none repeat scroll 0 0 rgba(0, 0, 0, 0.01); */\n}\n\n.btn-shadow {\n    box-shadow: 0 0 0 0.2rem rgba(179, 182, 185, 0.25);\n}\n\n.create_form_input_shadowless {\n    box-shadow: none;\n    border-radius: 0px;\n    border: none;\n}\n\n.create_form_input_shadowless:focus {\n    box-shadow: none;\n    border: none;\n    /* background-color: none repeat scroll 0 0 rgba(0, 0, 0, 0.01); */\n}\n\n.answer_order_edit {\n    padding: 0px 0px !important\n}\n\n.btn-success.focus,\n.btn-success:focus {\n    box-shadow: none !important\n}\n\n.focus,\n.active {\n    box-shadow: none !important\n}\n\n.btn:focus {\n    box-shadow: none !important\n}\n\n.btn-image-remove {\n    position: absolute;\n    top: 15px;\n    right: 0%;\n    height: 25px;\n    width: 25px;\n    -webkit-transform: translate(-50%, -50%);\n            transform: translate(-50%, -50%);\n    -ms-transform: translate(-50%, -50%);\n    cursor: pointer;\n    padding: 0px 0px;\n    text-align: center;\n}\n\n.bucket_list_pick {\n    border-radius: 0px;\n}\n\n.errorHandlerBox {\n    border-bottom: 1px solid silver;\n    padding: 15px 0px !important;\n}\n\n.errorHandler {\n    width: 70%;\n    max-width: 500px;\n    margin: 0px auto;\n}\n\n.create_form_row {\n    border: none !important;\n}\n\n.modal_message_box {\n    position: fixed;\n    z-index: 50;\n    width: 100vw;\n    height: 100vh;\n    background: rgba(179, 182, 185, 0.5)\n}\n\n.modal_message {\n    max-height: 52vh;\n}\n\n.modal-edit-remove-bucket{\n    height: 50vh !important;\n    overflow-y: auto;\n}\n\n.modal-edit-remove-bucket td{\n    /* padding: 0px 0px !important; */\n}\n\n.modal-dialog{\n    width: 700px;\n    /* height: 100px; */\n}\n\n.fixed_header tbody{\n    display:block;\n    overflow:auto;\n    height:200px;\n    width:100%;\n  }\n\n.fixed_header thead tr{\n    display:block;\n  }\n\n.alert-error{\n    color: #ffffff;\n    background-color: #fd5665;\n    border-color: #ff001b;\n  }\n  \n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNyYy9hcHAvYWRtaW4tZWRpdHF1aXovYWRtaW4tZWRpdHF1aXouY29tcG9uZW50LmNzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtJQUNJLGdCQUFnQjtBQUNwQjs7QUFFQTtJQUNJLGFBQWE7SUFDYixzQkFBc0I7SUFDdEIsaUJBQWlCO0lBQ2pCLDJCQUEyQjtJQUMzQixtQkFBbUI7SUFDbkIscUJBQXFCO0FBQ3pCOztBQUVBO0lBQ0ksYUFBYTtJQUNiLHNCQUFzQjtJQUN0QixpQkFBaUI7SUFDakIsMkJBQTJCO0lBQzNCLG1CQUFtQjtJQUNuQixxQkFBcUI7QUFDekI7O0FBRUE7SUFDSSxzQkFBc0I7QUFDMUI7O0FBRUE7SUFDSSxnQkFBZ0I7SUFDaEIsYUFBYTtJQUNiLHNCQUFzQjtJQUN0QixpQkFBaUI7SUFDakIsMkJBQTJCO0lBQzNCLG1CQUFtQjtJQUNuQixxQkFBcUI7QUFDekI7O0FBRUE7SUFDSSxtQkFBbUI7SUFDbkIsY0FBYztBQUNsQjs7QUFFQTtJQUNJLDZCQUE2QjtJQUM3QixnQkFBZ0I7QUFDcEI7O0FBRUE7SUFDSSxpQ0FBaUM7SUFDakMsZUFBZTtJQUNmLGFBQWE7SUFDYixzQkFBc0I7SUFDdEIsaUJBQWlCO0lBQ2pCLDJCQUEyQjtJQUMzQixtQkFBbUI7SUFDbkIscUJBQXFCO0FBQ3pCOztBQUVBO0lBQ0ksVUFBVTtBQUNkOztBQUVBO0lBQ0ksV0FBVztJQUNYLDJCQUEyQjtBQUMvQjs7QUFFQTtJQUNJLGFBQWE7QUFDakI7O0FBRUE7SUFDSSxzQkFBc0I7SUFDdEIscUJBQXFCO0lBQ3JCLGlCQUFpQjtJQUNqQixlQUFlO0FBQ25COztBQUVBO0lBQ0ksK0NBQStDO0lBQy9DLGtCQUFrQjtBQUN0Qjs7QUFFQTtJQUNJLCtCQUErQjtJQUMvQixrRUFBa0U7QUFDdEU7O0FBRUE7SUFDSSxrREFBa0Q7QUFDdEQ7O0FBRUE7SUFDSSxnQkFBZ0I7SUFDaEIsa0JBQWtCO0lBQ2xCLFlBQVk7QUFDaEI7O0FBRUE7SUFDSSxnQkFBZ0I7SUFDaEIsWUFBWTtJQUNaLGtFQUFrRTtBQUN0RTs7QUFFQTtJQUNJO0FBQ0o7O0FBRUE7O0lBRUk7QUFDSjs7QUFFQTs7SUFFSTtBQUNKOztBQUVBO0lBQ0k7QUFDSjs7QUFFQTtJQUNJLGtCQUFrQjtJQUNsQixTQUFTO0lBQ1QsU0FBUztJQUNULFlBQVk7SUFDWixXQUFXO0lBQ1gsd0NBQWdDO1lBQWhDLGdDQUFnQztJQUNoQyxvQ0FBb0M7SUFDcEMsZUFBZTtJQUNmLGdCQUFnQjtJQUNoQixrQkFBa0I7QUFDdEI7O0FBRUE7SUFDSSxrQkFBa0I7QUFDdEI7O0FBRUE7SUFDSSwrQkFBK0I7SUFDL0IsNEJBQTRCO0FBQ2hDOztBQUVBO0lBQ0ksVUFBVTtJQUNWLGdCQUFnQjtJQUNoQixnQkFBZ0I7QUFDcEI7O0FBRUE7SUFDSSx1QkFBdUI7QUFDM0I7O0FBRUE7SUFDSSxlQUFlO0lBQ2YsV0FBVztJQUNYLFlBQVk7SUFDWixhQUFhO0lBQ2I7QUFDSjs7QUFFQTtJQUNJLGdCQUFnQjtBQUNwQjs7QUFFQTtJQUNJLHVCQUF1QjtJQUN2QixnQkFBZ0I7QUFDcEI7O0FBQ0E7SUFDSSxpQ0FBaUM7QUFDckM7O0FBQ0E7SUFDSSxZQUFZO0lBQ1osbUJBQW1CO0FBQ3ZCOztBQUNBO0lBQ0ksYUFBYTtJQUNiLGFBQWE7SUFDYixZQUFZO0lBQ1osVUFBVTtFQUNaOztBQUNBO0lBQ0UsYUFBYTtFQUNmOztBQUNBO0lBQ0UsY0FBYztJQUNkLHlCQUF5QjtJQUN6QixxQkFBcUI7RUFDdkIiLCJmaWxlIjoic3JjL2FwcC9hZG1pbi1lZGl0cXVpei9hZG1pbi1lZGl0cXVpei5jb21wb25lbnQuY3NzIiwic291cmNlc0NvbnRlbnQiOlsiLmFkbWluLWNyZWF0ZS1xdWl6IHtcbiAgICBtYXJnaW4tdG9wOiA1MHB4O1xufVxuXG4uYWRtaW4tY3JlYXRlLXF1aXotdGl0bGUge1xuICAgIGRpc3BsYXk6IGZsZXg7XG4gICAgZmxleC1kaXJlY3Rpb246IGNvbHVtbjtcbiAgICBmbGV4LXdyYXA6IG5vd3JhcDtcbiAgICBqdXN0aWZ5LWNvbnRlbnQ6IGZsZXgtc3RhcnQ7XG4gICAgYWxpZ24taXRlbXM6IGNlbnRlcjtcbiAgICBhbGlnbi1jb250ZW50OiBjZW50ZXI7XG59XG5cbi5hZG1pbi1jcmVhdGUtcXVpei1ib2R5IHtcbiAgICBkaXNwbGF5OiBmbGV4O1xuICAgIGZsZXgtZGlyZWN0aW9uOiBjb2x1bW47XG4gICAgZmxleC13cmFwOiBub3dyYXA7XG4gICAganVzdGlmeS1jb250ZW50OiBmbGV4LXN0YXJ0O1xuICAgIGFsaWduLWl0ZW1zOiBjZW50ZXI7XG4gICAgYWxpZ24tY29udGVudDogY2VudGVyO1xufVxuXG4uYWRtaW4tY3JlYXRlLXF1aXotYm9keS10b3BpYy1jYXQtZW5nLWJveCB7XG4gICAgLyogbWF4LXdpZHRoOiA0MDBweDsgKi9cbn1cblxuLmFkbWluLWNyZWF0ZS1xdWl6LWJvZHktdG9waWMtY2F0LWVuZy1ib3gtc2VsZWN0LWJveCB7XG4gICAgbWFyZ2luOiAwcHggMTBweDtcbiAgICBkaXNwbGF5OiBmbGV4O1xuICAgIGZsZXgtZGlyZWN0aW9uOiBjb2x1bW47XG4gICAgZmxleC13cmFwOiBub3dyYXA7XG4gICAganVzdGlmeS1jb250ZW50OiBmbGV4LXN0YXJ0O1xuICAgIGFsaWduLWl0ZW1zOiBjZW50ZXI7XG4gICAgYWxpZ24tY29udGVudDogY2VudGVyO1xufVxuXG4udGhlYWQtbGlnaHQge1xuICAgIGJhY2tncm91bmQ6ICNlOWVjZWY7XG4gICAgY29sb3I6ICM3ZjgwODI7XG59XG5cbi5zZWxlY3QtbGFiZWwge1xuICAgIG1hcmdpbi1ib3R0b206IDBweCAhaW1wb3J0YW50O1xuICAgIG1hcmdpbi1sZWZ0OiA1cHg7XG59XG5cbi50YWJsZS1yb3cge1xuICAgIC8qIHBhZGRpbmc6IDBweCAwcHggIWltcG9ydGFudDsgKi9cbiAgICAvKiBkaXNwbGF5OiA7ICovXG4gICAgZGlzcGxheTogZmxleDtcbiAgICBmbGV4LWRpcmVjdGlvbjogY29sdW1uO1xuICAgIGZsZXgtd3JhcDogbm93cmFwO1xuICAgIGp1c3RpZnktY29udGVudDogZmxleC1zdGFydDtcbiAgICBhbGlnbi1pdGVtczogY2VudGVyO1xuICAgIGFsaWduLWNvbnRlbnQ6IGNlbnRlcjtcbn1cblxuLmNyZWF0ZV9mb3JtX2ltZ19ib3gge1xuICAgIHdpZHRoOiAxNSU7XG59XG5cbi5jcmVhdGVfZm9ybV9hbnN3ZXJfYWRkIHtcbiAgICB3aWR0aDogMTAwJTtcbiAgICBwYWRkaW5nOiAwcHggMHB4ICFpbXBvcnRhbnQ7XG59XG5cbmlucHV0W3R5cGU9XCJmaWxlXCJdIHtcbiAgICBkaXNwbGF5OiBub25lO1xufVxuXG4uY3VzdG9tLWZpbGUtdXBsb2FkIHtcbiAgICBib3JkZXI6IDFweCBzb2xpZCAjY2NjO1xuICAgIGRpc3BsYXk6IGlubGluZS1ibG9jaztcbiAgICBwYWRkaW5nOiA2cHggMTJweDtcbiAgICBjdXJzb3I6IHBvaW50ZXI7XG59XG5cbi5jcmVhdGVfZm9ybV9pbnB1dF9zaGFkb3cge1xuICAgIGJveC1zaGFkb3c6IDAgMCAwIDFweCByZ2JhKDE3OSwgMTgyLCAxODUsIDAuMjUpO1xuICAgIGJvcmRlci1yYWRpdXM6IDBweDtcbn1cblxuLmNyZWF0ZV9mb3JtX2lucHV0X3NoYWRvdzpmb2N1cyB7XG4gICAgYm94LXNoYWRvdzogMCAwIDAgMXB4ICM0ZjkxY2Q1OTtcbiAgICAvKiBiYWNrZ3JvdW5kLWNvbG9yOiBub25lIHJlcGVhdCBzY3JvbGwgMCAwIHJnYmEoMCwgMCwgMCwgMC4wMSk7ICovXG59XG5cbi5idG4tc2hhZG93IHtcbiAgICBib3gtc2hhZG93OiAwIDAgMCAwLjJyZW0gcmdiYSgxNzksIDE4MiwgMTg1LCAwLjI1KTtcbn1cblxuLmNyZWF0ZV9mb3JtX2lucHV0X3NoYWRvd2xlc3Mge1xuICAgIGJveC1zaGFkb3c6IG5vbmU7XG4gICAgYm9yZGVyLXJhZGl1czogMHB4O1xuICAgIGJvcmRlcjogbm9uZTtcbn1cblxuLmNyZWF0ZV9mb3JtX2lucHV0X3NoYWRvd2xlc3M6Zm9jdXMge1xuICAgIGJveC1zaGFkb3c6IG5vbmU7XG4gICAgYm9yZGVyOiBub25lO1xuICAgIC8qIGJhY2tncm91bmQtY29sb3I6IG5vbmUgcmVwZWF0IHNjcm9sbCAwIDAgcmdiYSgwLCAwLCAwLCAwLjAxKTsgKi9cbn1cblxuLmFuc3dlcl9vcmRlcl9lZGl0IHtcbiAgICBwYWRkaW5nOiAwcHggMHB4ICFpbXBvcnRhbnRcbn1cblxuLmJ0bi1zdWNjZXNzLmZvY3VzLFxuLmJ0bi1zdWNjZXNzOmZvY3VzIHtcbiAgICBib3gtc2hhZG93OiBub25lICFpbXBvcnRhbnRcbn1cblxuLmZvY3VzLFxuLmFjdGl2ZSB7XG4gICAgYm94LXNoYWRvdzogbm9uZSAhaW1wb3J0YW50XG59XG5cbi5idG46Zm9jdXMge1xuICAgIGJveC1zaGFkb3c6IG5vbmUgIWltcG9ydGFudFxufVxuXG4uYnRuLWltYWdlLXJlbW92ZSB7XG4gICAgcG9zaXRpb246IGFic29sdXRlO1xuICAgIHRvcDogMTVweDtcbiAgICByaWdodDogMCU7XG4gICAgaGVpZ2h0OiAyNXB4O1xuICAgIHdpZHRoOiAyNXB4O1xuICAgIHRyYW5zZm9ybTogdHJhbnNsYXRlKC01MCUsIC01MCUpO1xuICAgIC1tcy10cmFuc2Zvcm06IHRyYW5zbGF0ZSgtNTAlLCAtNTAlKTtcbiAgICBjdXJzb3I6IHBvaW50ZXI7XG4gICAgcGFkZGluZzogMHB4IDBweDtcbiAgICB0ZXh0LWFsaWduOiBjZW50ZXI7XG59XG5cbi5idWNrZXRfbGlzdF9waWNrIHtcbiAgICBib3JkZXItcmFkaXVzOiAwcHg7XG59XG5cbi5lcnJvckhhbmRsZXJCb3gge1xuICAgIGJvcmRlci1ib3R0b206IDFweCBzb2xpZCBzaWx2ZXI7XG4gICAgcGFkZGluZzogMTVweCAwcHggIWltcG9ydGFudDtcbn1cblxuLmVycm9ySGFuZGxlciB7XG4gICAgd2lkdGg6IDcwJTtcbiAgICBtYXgtd2lkdGg6IDUwMHB4O1xuICAgIG1hcmdpbjogMHB4IGF1dG87XG59XG5cbi5jcmVhdGVfZm9ybV9yb3cge1xuICAgIGJvcmRlcjogbm9uZSAhaW1wb3J0YW50O1xufVxuXG4ubW9kYWxfbWVzc2FnZV9ib3gge1xuICAgIHBvc2l0aW9uOiBmaXhlZDtcbiAgICB6LWluZGV4OiA1MDtcbiAgICB3aWR0aDogMTAwdnc7XG4gICAgaGVpZ2h0OiAxMDB2aDtcbiAgICBiYWNrZ3JvdW5kOiByZ2JhKDE3OSwgMTgyLCAxODUsIDAuNSlcbn1cblxuLm1vZGFsX21lc3NhZ2Uge1xuICAgIG1heC1oZWlnaHQ6IDUydmg7XG59XG5cbi5tb2RhbC1lZGl0LXJlbW92ZS1idWNrZXR7XG4gICAgaGVpZ2h0OiA1MHZoICFpbXBvcnRhbnQ7XG4gICAgb3ZlcmZsb3cteTogYXV0bztcbn1cbi5tb2RhbC1lZGl0LXJlbW92ZS1idWNrZXQgdGR7XG4gICAgLyogcGFkZGluZzogMHB4IDBweCAhaW1wb3J0YW50OyAqL1xufVxuLm1vZGFsLWRpYWxvZ3tcbiAgICB3aWR0aDogNzAwcHg7XG4gICAgLyogaGVpZ2h0OiAxMDBweDsgKi9cbn1cbi5maXhlZF9oZWFkZXIgdGJvZHl7XG4gICAgZGlzcGxheTpibG9jaztcbiAgICBvdmVyZmxvdzphdXRvO1xuICAgIGhlaWdodDoyMDBweDtcbiAgICB3aWR0aDoxMDAlO1xuICB9XG4gIC5maXhlZF9oZWFkZXIgdGhlYWQgdHJ7XG4gICAgZGlzcGxheTpibG9jaztcbiAgfVxuICAuYWxlcnQtZXJyb3J7XG4gICAgY29sb3I6ICNmZmZmZmY7XG4gICAgYmFja2dyb3VuZC1jb2xvcjogI2ZkNTY2NTtcbiAgICBib3JkZXItY29sb3I6ICNmZjAwMWI7XG4gIH1cbiAgIl19 */"
 
 /***/ }),
 
@@ -1011,7 +1011,7 @@ module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<p>\n  admin-editquiz works!\n</p>\n"
+module.exports = "<div class=\"admin-create-quiz\" *ngIf=\"currentUser && engagements\">\n    <div [hidden]=\"!modal_mesage_bool\" class=\"modal_message_box\">\n        <div class=\"modal-dialog modal-dialog-centered modal_message\" role=\"document\">\n            <!-- EDIT/REMOVE BUCKET LIST -->\n            <div class=\"modal-content \" *ngIf=\"modal_message.title == 'Edit/Remove Buckets'\">\n                <div>\n                    <div class=\"modal-header\">\n                        <h5 class=\"modal-title\" id=\"exampleModalCenteredLabel\">{{modal_message.title}}</h5>\n                        <button type=\"button\" class=\"close\" (click)=\"bucketListEditorClose()\" data-dismiss=\"modal\" aria-label=\"Close\">\n                              <span aria-hidden=\"true\">&times;</span>\n                            </button>\n                    </div>\n                    <div class=\"modal-body modal-edit-remove-bucket\">\n                        <table [hidden]=\"bucket_list_confirm_bool\" class=\"table table-borderless table-sm\">\n                                <thead class=\"thead-light\">\n                                    <tr>\n                                        <th>ID</th>\n                                        <th>Bucket Title</th>\n                                        <th>Action</th>\n                                    </tr>\n                                </thead>\n                                <tbody>\n                                    <tr *ngFor=\"let b of bucket_list; index as i\">\n                                        <th *ngIf=\"!b.soft_delete\" scope=\"row\">{{b.bucket_id}}</th>\n                                        <td *ngIf=\"!b.soft_delete\">\n                                            <input type=\"text\" class=\"form-control openBucketListSettings_inputs\" (change)=\"bucketListEditor(i, 'bucket_name', $event.target.value)\" value={{b.bucket_name}}>\n                                        </td>\n                                        <td *ngIf=\"!b.soft_delete\">\n                                            <button *ngIf=\"!b.soft_delete\" (click)=\"bucketListEditor(i, 'soft_delete', true)\" class='btn btn-outline-danger btn-action-borderless'>Disable</button>\n                                        </td>\n    \n                                        <th *ngIf=\"b.soft_delete\" class=\"table-secondary\" scope=\"row\">{{b.bucket_id}}</th>\n                                        <td *ngIf=\"b.soft_delete\" class=\"table-secondary\">\n                                            <input type=\"text\" disabled class=\"form-control openBucketListSettings_inputs\" (change)=\"bucketListEditor(i, 'bucket_name', $event.target.value)\" value={{b.bucket_name}}>\n                                        </td>\n                                        <td *ngIf=\"b.soft_delete\" class=\"table-secondary\">\n                                            <button *ngIf=\"b.soft_delete\" (click)=\"bucketListEditor(i, 'soft_delete', false)\" class='btn btn-outline-success btn-action-borderless'>Enable</button>\n                                        </td>\n                                    </tr>\n                                </tbody>\n                        </table>\n                        <table [hidden]=\"!bucket_list_confirm_bool\" class=\"table table-borderless table-sm \">\n                                <thead class=\"thead-light\">\n                                    <tr>\n                                        <th>ID</th>\n                                        <th>Bucket Name</th>\n                                        <th>Bucket change</th>\n                                        <th>Action</th>\n                                    </tr>\n                                </thead>\n                                <tbody>\n                                    <tr *ngFor=\"let b of bucket_list_confirm_list | keyvalue\">\n                                        <th  scope=\"row\">{{b.key}}</th>\n                                        <td>{{b.value['bucket_name']}}</td>\n                                        <td>\n                                            <p *ngIf=\"b.value['New Bucket name']\">New name: <span class=\"text-success\" >{{b.value['New Bucket name']}}</span></p>\n                                            <p *ngIf=\"b.value['status']\">Now is \n                                                <span *ngIf=\"!b.value['soft_delete']\" class=\"text-success\">{{b.value['status']}}</span>\n                                                <span *ngIf=\"b.value['soft_delete']\" class=\"text-danger\">{{b.value['status']}}</span>\n                                            </p>\n                                        </td>\n                                        <td>\n                                            <button  (click)=\"bucketUndoOne(b.key, b.value['index'])\" class='btn btn-outline-warning btn-action-borderless'>Undo</button>\n                                        </td>\n                                    </tr>\n                                </tbody>\n                        </table>\n\n                    </div>\n                    <div class=\"modal-footer\">\n                        <button type=\"button\" *ngIf=\"bucket_list_changes_bool\" class=\"btn btn-action-borderless btn-outline-danger\" (click)=\"bucketListEditorCancel()\" data-dismiss=\"modal\">Cancel changes</button>\n                        <button type=\"button\" *ngIf=\"!bucket_list_changes_bool\" class=\"btn btn-action-borderless btn-outline-info\" (click)=\"bucketListEditorClose()\" data-dismiss=\"modal\">Close</button>\n                        <button type=\"button\" [hidden]=\"bucket_list_confirm_bool\" class=\"btn btn-action-borderless btn-outline-warning\" (click)=\"bucketListEditorConfirm()\">Confirm</button>\n                        <button type=\"button\" [hidden]=\"!bucket_list_confirm_bool\" class=\"btn btn-action-borderless btn-outline-success\" (click)=\"bucketListEditorSave()\">Save</button>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n\n    <div class=\"admin-create-quiz-title\">\n        <h1>Edit a quiz</h1>\n    </div>\n    <div class=\"admin-create-quiz-body\">\n        <div class=\"admin-create-quiz-body-topic-cat-eng-box\">\n            <div class=\"input-group\">\n                <div class=\"admin-create-quiz-body-topic-cat-eng-box-select-box\">\n                    <span class=\"text-muted\">Engagement</span>\n                    <select class=\"custom-select\" (change)=\"valueChanger('engagement', $event.target.value)\">\n                        <option *ngFor=\"let eng of engagements\" [selected]=\"eng.engagement_id==currentEng_id\"\n                            [disabled]=\"eng.soft_delete\" value={{eng.engagement_id}}>{{eng.engagement_name}}</option>\n                    </select>\n                </div>\n                <div class=\"admin-create-quiz-body-topic-cat-eng-box-select-box\">\n                    <span class=\"text-muted\">Category</span>\n                    <input [disabled]=\"!selected_eng\" class=\"custom-select\" type=\"text\" id=\"category_selector\" list=\"categories\" (change)=\"valueChanger('category', $event.target.value)\" />\n                    <datalist id=\"categories\">\n                        <select class=\"custom-select\">\n                            <option *ngFor=\"let c of categories_list | keyvalue\" [value]=\"c.key\"></option>\n                        </select>\n                    </datalist>\n                </div>\n                <div class=\"admin-create-quiz-body-topic-cat-eng-box-select-box\">\n                    <span class=\"text-muted\">Topic</span>\n                    <input [disabled]=\"!selected_category\" id=\"topic_selector\" class=\"custom-select\" type=\"text\" list=\"topics\" (change)=\"valueChanger('topic', $event.target.value)\" />\n                    <datalist id=\"topics\">\n                        <select class=\"custom-select\">\n                            <option *ngFor=\"let t of topic_list | keyvalue\" [value]=\"t.value['topic']\">(Already exists)\n                            </option>\n                        </select>\n                    </datalist>\n                </div>\n            </div>\n        </div>\n        <div *ngIf=\"topic_cat_eng_message.display\" style=\"margin-top: 15px\">\n            <div *ngIf=\"topic_cat_eng_message.status == 'fail'\" class=\"alert alert-warning shadow\" role=\"alert\">\n                <strong>Warning!</strong> {{topic_cat_eng_message.message}}\n            </div>\n            <div *ngIf=\"topic_cat_eng_message.status == 'success'\" class=\"alert alert-success shadow\" role=\"alert\">\n                <strong>Nice!</strong> {{topic_cat_eng_message.message}}\n            </div>\n        </div>\n    </div>\n\n    <div class='admin-create-quiz-form' style=\"margin-top: 25px;\">\n        <table class=\"table table-borderless \">\n            <thead class=\"thead-light sticky-top\">\n                <tr style=\"height: 50px\">\n                    <th class=\"border-0 text-uppercase small font-weight-bold text-center\" style=\"width: 5%\">ID/Order\n                    </th>\n                    <th class=\"border-0 text-uppercase small font-weight-bold text-center\">Question prompt</th>\n                    <th class=\"border-0 text-uppercase small font-weight-bold text-center\">Image</th>\n                    <th class=\"border-0 text-uppercase small font-weight-bold text-center\" style=\"width: 7%\">Display Type\n                    </th>\n                    <th class=\"border-0 text-uppercase small font-weight-bold text-center\">List of choices/Expected Answer\n                    </th>\n                    <th class=\"border-0 text-uppercase small font-weight-bold text-center\">Admin notes</th>\n                    <th class=\"border-0 text-uppercase small font-weight-bold text-center\" style=\"width: 5%\">Action</th>\n                </tr>\n            </thead>\n            <tbody>\n                <tr *ngFor='let q of list_of_questions | keyvalue' class=\"create_form_row\">\n                    <!-- QUESTIONS -->\n                    <td *ngIf=\"!q.value['error_bool']\" class='text-center table-row'>\n                        <p>{{q.key}}</p>\n                        <div>\n                            <input style=\"width: 100%; padding: 0px 0px !important\" (change)=\"inputEditor('question_sort', q.key, 'question_sort', null, $event.target.value)\" class=\"edit_sort_value form-control create_form_input_shadow\" min=1 max=99 type=\"number\" value=1 title=\"Set Question Priority\"\n                                data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Tooltip on bottom\" value=\"{{list_of_questions[q.key]['question_sort']}}\">\n                        </div>\n                    </td>\n                    <td *ngIf=\"!q.value['error_bool']\" style=\"padding: 0px 3px !important;\">\n                        <textarea class='textAreaPrompt form-control create_form_input_shadow' (change)=\"inputEditor('prompt', q.key, 'prompt', null, $event.target.value)\" rows=4 name='questionPromts' id='questionPromt_{{q.key}}' value=\"{{q.value['prompt']}}\"></textarea>\n                    </td>\n                    <td *ngIf=\"!q.value['error_bool']\" class='create_form_img_box' align=\"center\">\n                        <div *ngIf=\"!q.value['image']\">\n                            <label for=\"file-upload\" style=\"width: 100%;\" class=\"custom-file-upload btn btn-sm btn-outline-secondary btn-action-borderless\">\n                                    &#8682; Upload Picture\n                                </label>\n                            <input id=\"file-upload\" type=\"file\" (change)=\"inputEditor('img', q.key, 'base64', null, $event.target.files)\" accept=\"image/*\" />\n                        </div>\n                        <div *ngIf=\"q.value['image']\" style=\"position: relative\">\n                            <img src=\"{{q.value['base64']}}\" class=\"img-fluid\" alt=\"Responsive image\">\n                            <button class=\"btn btn-sm btn-outline-danger btn-image-remove\" (click)=\"removeImg(q.key)\">x</button>\n                        </div>\n                    </td>\n                    <td *ngIf=\"!q.value['error_bool']\">\n                        <div class=\"btn-group-vertical btn-group-toggle\" data-toggle=\"buttons\">\n                            <label class=\"btn btn-sm btn-action-borderless btn-outline-secondary\" [ngClass]=\"{ 'active': q.value.display_type_description == 'Manual input' }\" (click)=\"displayTypeChanger(q.key, 'textfield input')\">\n                                    <input type=\"radio\" name=\"displayTypeNew\" id=\"manual_input\" value=\"textfield input\" checked=\"checked\"/> Manual Input\n                                </label>\n                            <label class=\"btn btn-sm btn-action-borderless btn-outline-secondary\" [ngClass]=\"{ 'active': q.value.display_type_description == 'Radio' }\"  (click)=\"displayTypeChanger(q.key, 'Radio')\">\n                                    <input type=\"radio\" name=\"displayTypeNew \" id=\"radio \" value=\"Radio\" /> Radio\n                                </label>\n                            <label class=\"btn btn-sm btn-action-borderless btn-outline-secondary \" [ngClass]=\"{ 'active': q.value.display_type_description == 'Dropdown' }\"  (click)=\"displayTypeChanger( q.key, 'Dropdown')\">\n                                    <input type=\"radio\" name=\"displayTypeNew\" id=\"dropdown\" value=\"Dropdown\"> Dropdown\n                                </label>\n                            <label class=\"btn btn-sm btn-action-borderless btn-outline-secondary\" [ngClass]=\"{ 'active': q.value.display_type_description == 'Checkbox' }\"  (click)=\"displayTypeChanger(q.key, 'Checkbox')\">\n                                    <input type=\"radio\" name=\"displayTypeNew \" id=\"checkbox \" value=\"Checkbox \"> Checkbox\n                                </label>\n                            <label class=\"btn btn-sm btn-action-borderless btn-outline-secondary \" [ngClass]=\"{ 'active': q.value.display_type_description == 'drag_and_drop' }\"  (click)=\"displayTypeChanger( q.key, 'drag_and_drop')\">\n                                    <input type=\"radio\" name=\"displayTypeNew\" id=\"drag_and_drop\" value=\"drag_and_drop\">\n                                    Drag'n'Drop\n                                </label>\n                        </div>\n                    </td>\n                    <td *ngIf=\"!q.value['error_bool']\">\n                        <!-- NOT SELECTED -->\n                        <div *ngIf=\"!q.value['question_type_description']\">\n                            <p align=\"center\" class='text-muted'>Please check type of question.</p>\n                        </div>\n\n\n                        <!-- MANUAL INPUT -->\n                        <div style=\"padding: 0px 3px !important;\" [hidden]=\"q.value['question_type_description'] != 'textfield input'\">\n                            <textarea (change)=\"inputEditor('expected_response', q.key, 'expected_response', null, $event.target.value)\" class='textAreaExpectedAnswer form-control create_form_input_shadow' rows=4 placeholder=\"Expected answer (optional)\" value=\"{{q.value['expected_response']}}\"></textarea>\n                        </div>\n\n\n                        <!-- DRAG AND DROP  -->\n                        <div class=\"input-group mt-2\" *ngIf=\"q.value['question_type_description'] == 'drag_and_drop'\">\n                            <div *ngFor=\"let ans of q.value['answer_prompt'] | keyvalue\" class=\"input-group mt-1\">\n                                <input type=\"text\" (change)=\"inputEditor('drag_and_drop', q.key, 'answer_prompt', ans.key, $event.target.value)\" class=\"form-control bucket_input_edit bucket_input_edit_question_{{q.key}}\" id=\"bucket_input_edit_{{q.key}}\" placeholder='Add a choice' style=\"padding: 0px;\"\n                                    value=\"{{ans.value}}\">\n                                <select list=\"bucket_list\" (change)=\"inputEditor('drag_and_drop', q.key, 'answer_bucket_id', ans.key, $event.target.value)\" class=\"form-control bucket_list_pick\" id=\"bucket_list_pick_{{q.key}}\" placeholder='Bucket' style=\"padding: 0px;\">\n                                        <option type='button' class=\"bucket_list_settings\" value=\"add_edit\">Add/Edit</option>\n                                        <option disabled style=\"margin-top:8px; border-top:1px solid #666; padding:0;\">\n                                            ____________</option>\n                                        <!-- <option *ngFor=\"let b of bucket_list\" value=\"{{b.bucket_id}}\"\n                                            [selected]=\"q['answer_bucket_id'][ans.key] == b.bucket_id\">\n                                            {{b.bucket_name}}</option> -->\n                                            <ng-container *ngFor=\"let b of bucket_list\">\n                                                    <option *ngIf=\"!b.soft_delete\" [selected]=\"q.value['answer_bucket_id'][ans.key] == b.bucket_id\" value=\"{{b.bucket_id}}\">{{b.bucket_name}}</option>\n                                                </ng-container>\n                                    </select>\n                                <div class=\"input-group-append\">\n                                    <button type=\"button\" class='btn btn-danger' (click)=\"removeDragAndDropChoice(q.key, ans.key)\">-</button>\n                                </div>\n                            </div>\n                            <div class=\"input-group-prepend\">\n                                <button class=\"btn btn-outline-success bucket_input_add_button btn-action-borderless\" (click)=\"dragAndDropAdder(q.key)\" style=\"font-size: smaller; padding: 8px;\" id='bucket_input_add_button_{{q.key}}' type=\"button\">+</button>\n                            </div>\n                            <input type=\"text\" (change)=\"inputEditor('drag_and_drop', q.key, 'temp_bucket_storage', 'answer_input', $event.target.value)\" class=\"form-control bucket_input_add\" id=\"bucket_input_add_input_{{q.key}}\" placeholder='Add a choice' style=\"padding: 0px;\">\n                            <select *ngIf=\"bucketList_reloader[q.key]\" list=\"bucket_list\" type=\"text\" (change)=\"inputEditor('drag_and_drop', q.key, 'temp_bucket_storage', 'bucket_id', $event.target.value)\" class=\"form-control bucket_list_pick\" id=\"bucket_list_pick_{{q.key}}\" placeholder='Bucket' style=\"padding: 0px;\">\n                                    <option value=\"\" selected disabled class=\"text-muted\">Choose bucket</option>\n                                    <option type='button' class=\"bucket_list_settings\" value=\"add_edit\">Add/Edit </option>\n                                    <option disabled style=\"margin-top:8px; border-top:1px solid #666; padding:0;\">____________</option>\n                                    <ng-container *ngFor=\"let b of bucket_list\">\n                                        <option *ngIf=\"!b.soft_delete\" value=\"{{b.bucket_id}}\">{{b.bucket_name}}</option>\n                                    </ng-container>\n                                </select>\n                        </div>\n\n\n                        <!-- CHECKBOX  -->\n                        <div *ngIf=\"q.value['display_type_description'] == 'Checkbox' && q.value['question_type_description'] = 'selected input'\">\n                            <div *ngFor=\"let ans of q.value['answer_prompt'] | keyvalue\">\n                                <div>\n                                    <input class=\"answerChoice\" style=\"margin: 5px\" (change)=\"inputEditor('answer', q.key, 'answer_correct', ans.key, !q.value['answer_correct'][ans.key])\" [checked]=q.value.answer_correct[ans.key] type=\"checkbox\" id=\"checkbox_{{ans.key}}\" title=\"Select the right answer. You can chose multiple.\"\n                                    />\n                                    <label for=\"checkbox_{{ans.key}}\" style=\"margin:0px 0px; width:92%\">\n                                            <div class=\"input-group mb-1\">\n                                                <div class=\"input-group-prepend\" style=\"width: 15%;\">\n                                                    <input type=\"number\"\n                                                        (change)=\"inputEditor('answer', q.key, 'answer_sort', ans.key, $event.target.value)\"\n                                                        class=\"answer_order_edit form-control create_form_input_shadow\"\n                                                        min=\"1\" id=\"answer_order_edit_{{ans.key}}\" style=\"width: 90%;\"\n                                                        value=\"{{q.value['answer_sort'][ans.key] }}\"\n                                                        data-toggle=\"tooltip\" data-placement=\"bottom\"\n                                                        title=\"Set priority of the answer.\">\n                                                </div>\n                                                <input class=\"form-control create_form_input_shadow\" type=\"text\"\n                                                    id=\"answerId${id}\" value=\"\" aria-describedby=\"basic-addon2\"\n                                                    value='{{ans.value}}'\n                                                    (change)=\"inputEditor('answer', q.key, 'answer_prompt', ans.key, $event.target.value)\" />\n                                                <div class=\"input-group-append\">\n                                                    <button class=\"btn btn-outline-danger buttonRemoveAnswer\"\n                                                        (click)=\"inputEditor('answer', q.key, 'answer_soft_delete', ans.key, true)\"\n                                                        [hidden]=\"q.value['answer_soft_delete'][ans.key]\"\n                                                        id='buttonRemoveAnswer${i}' type=\"button\">-</button>\n                                                </div>\n                                            </div>\n                                        </label>\n                                </div>\n                            </div>\n                        </div>\n\n\n                        <!-- DROPDOWN/SELECT -->\n                        <div *ngIf=\"q.value['display_type_description'] == 'Dropdown' && q.value['question_type_description'] = 'selected input'\">\n                            <div *ngFor=\"let ans of q.value['answer_prompt'] | keyvalue\" class=\"custom-radio\">\n                                <div>\n                                    <input class=\"answerChoice\" style=\"margin: 5px\" (change)=\"inputEditor('answer',q.key, 'answer_correct', ans.key, !q.value['answer_correct'][ans.key])\" [checked]=q.value.answer_correct[ans.key] type=\"radio\" id=\"checkbox_{{ans.key}}\" title=\"Select the right answer. You can chose only one answer.\"\n                                        name=\"radio_answer_for_question_{{q.key}}\" />\n                                    <label for=\"checkbox_{{ans.key}}\" style=\"margin:0px 0px; width:92%\">\n                                            <div class=\"input-group mb-1\">\n                                                <div class=\"input-group-prepend\" style=\"width: 15%;\">\n                                                    <input type=\"number\"\n                                                        (change)=\"inputEditor('answer',q.key, 'answer_sort', ans.key, $event.target.value)\"\n                                                        class=\"form-control answer_order_edit create_form_input_shadow\"\n                                                        min=\"1\" id=\"answer_order_edit_{{ans.key}}\" style=\"width: 90%;\"\n                                                        value=\"{{q.value['answer_sort'][ans.key] }}\"\n                                                        data-toggle=\"tooltip\" data-placement=\"bottom\"\n                                                        title=\"Set priority of the answer.\">\n                                                </div>\n                                                <input class=\"form-control create_form_input_shadow\" type=\"text\"\n                                                    id=\"answerId${id}\" value=\"\" aria-describedby=\"basic-addon2\"\n                                                    value='{{ans.value}}'\n                                                    (change)=\"inputEditor('answer',q.key, 'answer_prompt', ans.key, $event.target.value)\" />\n                                                <div class=\"input-group-append\">\n                                                    <button class=\"btn btn-outline-danger buttonRemoveAnswer\"\n                                                        (click)=\"inputEditor('answer',q.key, 'answer_soft_delete', ans.key, true)\"\n                                                        [hidden]=\"q.value['answer_soft_delete'][ans.key]\"\n                                                        id='buttonRemoveAnswer${i}' type=\"button\">-</button>\n                                                </div>\n                                            </div>\n                                        </label>\n                                </div>\n                            </div>\n                        </div>\n\n\n                        <!-- RADIO -->\n                        <div *ngIf=\"q.value['display_type_description'] == 'Radio' && q.value['question_type_description'] = 'selected input'\">\n                            <div *ngFor=\"let ans of q.value['answer_prompt'] | keyvalue\" class=\"custom-radio\">\n                                <div>\n                                    <input class=\"answerChoice\" style=\"margin: 5px\" (change)=\"inputEditor('answer',q.key, 'answer_correct', ans.key, !q.value['answer_correct'][ans.key])\" [checked]=q.value.answer_correct[ans.key] type=\"radio\" id=\"checkbox_{{ans.key}}\" title=\"Select the right answer. You can chose only one answer.\"\n                                        name=\"radio_answer_for_question_{{q.key}}\" />\n                                    <label for=\"checkbox_{{ans.key}}\" style=\"margin:0px 0px; width:92%\">\n                                            <div class=\"input-group mb-1\">\n                                                <div class=\"input-group-prepend\" style=\"width: 15%;\">\n                                                    <input type=\"number\"\n                                                        (change)=\"inputEditor('answer',q.key, 'answer_sort', ans.key, $event.target.value)\"\n                                                        class=\"form-control answer_order_edit create_form_input_shadow\"\n                                                        min=\"1\" id=\"answer_order_edit_{{ans.key}}\" style=\"width: 90%;\"\n                                                        value=\"{{q.value['answer_sort'][ans.key] }}\"\n                                                        data-toggle=\"tooltip\" data-placement=\"bottom\"\n                                                        title=\"Set priority of the answer.\">\n                                                </div>\n                                                <input class=\"form-control create_form_input_shadow\" type=\"text\"\n                                                    id=\"answerId${id}\" value=\"\" aria-describedby=\"basic-addon2\"\n                                                    value='{{ans.value}}'\n                                                    (change)=\"inputEditor('answer',q.key, 'answer_prompt', ans.key, $event.target.value)\" />\n                                                <div class=\"input-group-append\">\n                                                    <button class=\"btn btn-outline-danger buttonRemoveAnswer\"\n                                                        (click)=\"inputEditor('answer',q.key, 'answer_soft_delete', ans.key, true)\"\n                                                        [hidden]=\"q.value['answer_soft_delete'][ans.key]\"\n                                                        id='buttonRemoveAnswer${i}' type=\"button\">-</button>\n                                                </div>\n                                            </div>\n                                        </label>\n                                </div>\n                            </div>\n                        </div>\n\n\n                        <!-- ADD ANSWER FORM -->\n                        <div style=\"padding-right: 3px !important;\" class=\"input-group mb-3 create_form_input_shadow\" [hidden]=\"!q.value['question_type_description'] || q.value['question_type_description'] == 'textfield input' || q.value['question_type_description'] == 'drag_and_drop'\">\n                            <div class=\"input-group-prepend\" style=\"width: 25px\">\n                                <button class=\"btn btn-success create_form_answer_add btn-action-borderless\" id='buttonAddNewAnswer_{{q.key}}' type=\"button\" (click)=\"addAnswer(q.key)\">+</button>\n                            </div>\n                            <input type=\"text\" class=\"form-control create_form_input_shadowless  edit_quiz_input_text_add\" id=\"newAnswerFor_{{q.key}}\" placeholder='Add an answer' aria-describedby=\"basic-addon2\">\n                        </div>\n\n                    </td>\n\n                    <!-- ADMIN NOTES -->\n                    <td *ngIf=\"!q.value['error_bool']\">\n                        <div class=\"input-group\">\n                            <input class=\"create_form_input_shadow form-control \" value=\"{{list_of_questions[q.key]['training_url']}}\" type=\"text\" placeholder=\"Confluence link (optional)\" (change)=\"inputEditor(null, q.key, 'training_url', null, $event.target.value)\">\n                            <div class=\"input-group-append\">\n                                <button type='button' class='buttonConfluenceLink btn btn-xs  btn-outline-secondary' id='buttonConfluenceLinkForQuestion${id}' (click)=\"checkModuleLink(q.key)\">Check</button>\n                            </div>\n                        </div>\n                        <div id='module_field${id}'>\n                            <input class=\"create_form_input_shadow form-control\" value=\"{{list_of_questions[q.key]['training_module']}}\" (change)=\"inputEditor('training_module', q.key,'training_module', null, $event.target.value)\" id='editModuleForQuestionId${id}' type=\"text\" placeholder=\"Module note (optional)\">\n                        </div>\n                        <div class=\"input-group  mb-3\" style=\"width: 185px;\">\n                            <div class=\"input-group-prepend\">\n                                <span class=\"input-group-text bg-secondary text-white\" id=\"basic-addon3\">Question value</span>\n                            </div>\n                            <input class=\"form-control create_form_input_shadow\"  value=\"{{list_of_questions[q.key]['point_value']}}\"   (change)=\"inputEditor('point_value', q.key,'point_value', null, $event.target.value)\" type=\"number\" min=\"1\" max=\"10\" style=\"padding: 0px 5px;\">\n                        </div>\n                    </td>\n\n                    <!-- ACTION BUTTONS -->\n                    <td style='text-align: center' *ngIf=\"!q.value['error_bool']\">\n                        <div>\n                            <button class='btn btn-outline-primary btn-action-borderless' disabled style=\"width: 100%\">🔍 Preview</button>\n                            <button *ngIf=\"q.key == 'new_question'\" class='btn btn-outline-success btn-action-borderless' (click)=\"addQuestion()\" style=\"width: 100%\">+ Add</button>\n                            <button *ngIf=\"q.key != 'new_question'\" class='btn btn-outline-danger btn-action-borderless' (click)=\"removeQuestion(q.key)\" style=\"width: 100%\">Remove</button>\n                        </div>\n                    </td>\n\n                    <!-- ERROR -->\n                    <td colspan=\"7\" *ngIf=\"q.value['error_bool']\" style=\"padding: 10px 10px !important\">\n                        <div class=\"alert alert-warning shadow\" role=\"alert\" style=\"width: 500px; margin: 0px auto;\">\n                            <button type=\"button\" class=\"close\" (click)=\"errorRemoveById(q.key)\">\n                                <span aria-hidden=\"true\">&times;</span>\n                            </button>\n                            <p class=\"text-center text-monospace\"><strong>{{q.value['target']}} error(s):</strong></p>\n                           <p *ngFor=\"let error of q.value['errors'] | keyvalue\" class=\"text-center\" style=\"margin-bottom: 0px !important\">{{error.value}}</p>\n                        </div>\n                    </td>\n\n\n                </tr>\n                <!-- <tr *ngIf=\"list_of_questions.new_question_error\" class=\"create_form_row\">\n                    <td colspan=\"7\" (click)=\"errorHandlerRemover('new_question')\" class=\"errorHandlerBox\">\n                        <div class=\"alert alert-danger shadow errorHandler\" role=\"alert\">\n                            <p class=\"text-center\" *ngFor=\"let el of list_of_questions.new_question_error.errors | keyvalue\">\n                                {{el.value}}\n                            </p>\n                        </div>\n                    </td>\n                </tr> -->\n            </tbody>\n        </table>\n        <div [hidden]=\"!submit_ready\" class=\"alert alert-success text-center shadow\" style=\"width: 500px; margin: 0px auto;\" role=\"alert\">\n            <strong>All questions are good!</strong>\n        </div>\n        <div class=\"d-flex justify-content-center\" *ngIf=\"!submit_status.display\" style=\"margin-top: 50px\">\n            <button [hidden]=\"submit_ready\" class=\"btn btn-lg btn-info btn-action-borderless shadow\" (click)=\"validateQuiz()\">Validate</button>\n            <div [hidden]=\"!submit_ready\" class=\"shadow btn-group btn-group-lg text-monospace\" role=\"group\">\n                <button  class=\"btn btn-lg btn-success\" (click)=\"submitQuiz()\">Submit</button>\n                <button  class=\"btn btn-lg btn-warning\" (click)=\"cancelSubmitQuiz()\">Cancel</button>\n            </div>\n        </div>\n\n        <div class=\"d-flex justify-content-center\" *ngIf=\"submit_status.display && submit_status.status == 'success'\" style=\"margin-top: 50px; \">\n            <div class=\"alert alert-success shadow\" role=\"alert\" style=\"display: flex; align-items: center; flex-direction: column;\">\n                <h4 class=\"alert-heading\">Well done!</h4>\n                You successfully created a new quiz.\n                <br>\n                <a [hidden]=\"submit_ready\" class=\"btn btn-outline-light btn-action-borderless text-monospace\" (click)=\"goBack()\">Click here to go back to the admin portal</a>\n            </div>\n        </div>\n\n        <div class=\"d-flex justify-content-center\" *ngIf=\"submit_status.display && submit_status.status == 'fail'\" style=\"margin-top: 50px;\">\n            <div class=\"alert alert-error shadow\" role=\"alert\" style=\"display: flex; align-items: center; flex-direction: column;\">\n                <h4 class=\"alert-heading\">New quiz failed</h4>\n                Something went wrong on the backend.\n                {{submit_status.message}}\n                <a [hidden]=\"submit_ready\" class=\"btn btn-link btn-action-borderless text-monospace\" (click)=\"goBack()\">Click here to go back to the admin portal</a>\n            </div>\n        </div>\n        <!-- <button class=\"btn btn-lg shadow\" (click)=\"checkState()\">Check State</button> -->\n        \n        \n    </div>\n</div>\n<div *ngIf=\"!currentUser || !engagements\" class=\" loading_box \">\n    <img class=\"loading_box-ing \" src='./../../assets/loading.gif'>\n</div>"
 
 /***/ }),
 
@@ -1027,12 +1027,779 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AdminEditquizComponent", function() { return AdminEditquizComponent; });
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
+/* harmony import */ var _connector_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../connector.service */ "./src/app/connector.service.ts");
+/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/common */ "./node_modules/@angular/common/fesm5/common.js");
+/* harmony import */ var _question__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./../question */ "./src/app/question.ts");
+/* harmony import */ var lodash_cloneDeep__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! lodash/cloneDeep */ "./node_modules/lodash/cloneDeep.js");
+/* harmony import */ var lodash_cloneDeep__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(lodash_cloneDeep__WEBPACK_IMPORTED_MODULE_6__);
+
+
+
+
+
 
 
 var AdminEditquizComponent = /** @class */ (function () {
-    function AdminEditquizComponent() {
+    function AdminEditquizComponent(_ConnectorService, location, _route, _r) {
+        var _this = this;
+        this._ConnectorService = _ConnectorService;
+        this.location = location;
+        this._route = _route;
+        this._r = _r;
+        this.currentUser = JSON.parse(localStorage['user']);
+        this.categories_list = null;
+        this.topic_list = null;
+        this.selected_category = null;
+        this.selected_topic = null;
+        this.selected_eng = null;
+        this.submit_ready = false;
+        this.topic_cat_eng_message = {
+            'display': false,
+            'status': "",
+            'message': ""
+        };
+        this.temp_bucket_storage = {
+            'answer_input': '',
+            'bucket_id': null
+        };
+        this.list_of_questions = {};
+        this.modal_mesage_bool = false;
+        this.modal_message = {
+            'title': '',
+            'body': ''
+        };
+        this.bucket_list_confirm_bool = false;
+        this.bucket_list_confirm_list = null;
+        this.bucket_list_changes_bool = false;
+        this.bucket_list_changes_list = {};
+        this.bucketList_reloader = {
+            'new_question': true
+        };
+        this.submit_status = {
+            status: '',
+            message: '',
+            display: false
+        };
+        this.list_of_questions = {};
+        this._route.paramMap.subscribe(function (params) {
+            _this.currentEng_id = params.get('eng');
+            _this.topic_id = params.get('topicID');
+        });
+        this._ConnectorService.user.subscribe(function (user) {
+            if (user) {
+                _this.currentUser = user;
+                _this._ConnectorService.getCatsTopsEngs(user.email).then(function (res) {
+                    console.log("RES =>", res);
+                    if (res['status'] == 'success') {
+                        _this.main_content = lodash_cloneDeep__WEBPACK_IMPORTED_MODULE_6__(res);
+                        _this.engagements = res['engs'];
+                        _this.main_content['engs'] = _this.sortCategoriesByEngs(_this.orderByEngID(res['engs']), res['categories']);
+                        _this.engagements_obj = _this.sortCategoriesByEngs(_this.orderByEngID(res['engs']), res['categories']);
+                        _this.categories_list = _this.engagements_obj[_this.currentEng_id]['categories'];
+                        _this.bucket_list = _this.bucketListSoftdeleteChecker(lodash_cloneDeep__WEBPACK_IMPORTED_MODULE_6__(res['bucket_list']));
+                        _this.main_content['bucket_list'] = _this.bucketListSoftdeleteChecker(lodash_cloneDeep__WEBPACK_IMPORTED_MODULE_6__(res['bucket_list']));
+                        _this.bucket_list_original = _this.bucketListSoftdeleteChecker(lodash_cloneDeep__WEBPACK_IMPORTED_MODULE_6__(res['bucket_list']));
+                        console.log(_this.bucket_list);
+                        _this.selected_eng = _this.currentEng_id;
+                    }
+                }).catch(function (err) {
+                    console.log("ERROR =>", err);
+                });
+                _this._ConnectorService.getQuizByTopicIdForEdit(user.email, _this.topic_id).then(function (res) {
+                    console.log("RES =>", res);
+                    if (res) {
+                        console.log("got it!");
+                    }
+                    if (res['status'] == 'success') {
+                        console.log(res);
+                        for (var el in res['quiz1']) {
+                            if (res['quiz1'][el]['prompt']) {
+                                _this.list_of_questions[el] = res['quiz1'][el];
+                            }
+                        }
+                        _this.list_of_questions['new_question'] = new _question__WEBPACK_IMPORTED_MODULE_5__["Question"]();
+                        console.log("this.list_of_questions =>", _this.list_of_questions);
+                    }
+                    else {
+                    }
+                }).catch(function (err) {
+                    console.log("ERROR =>", err);
+                });
+            }
+            if (user && !user.admin) {
+                _this._r.navigate(["/" + _this.currentEng_id + "/home"]);
+            }
+        });
     }
     AdminEditquizComponent.prototype.ngOnInit = function () {
+    };
+    AdminEditquizComponent.prototype.addNewQuestion = function () {
+        console.log(this.list_of_questions);
+    };
+    AdminEditquizComponent.prototype.validateQuiz = function () {
+        var errors = this.validateAllQuestions();
+        if (Object.keys(errors).length > 0 || this.topic_cat_eng_message.status != 'success') {
+            if (this.topic_cat_eng_message.status != 'success') {
+                console.log("ENGAGEMENT_CATEGORY_TOPIC ERROR!");
+                this.topic_cat_eng_message.display = true;
+                this.topic_cat_eng_message.message = "Please select engagement, category, topic.";
+                this.topic_cat_eng_message.status = 'fail';
+            }
+            console.log("SUBMIT errors =>", errors);
+            for (var error in errors) {
+                console.log("ERROR =>", errors[error]['body']);
+                for (var el in errors[error]['body']) {
+                    console.log("EL =>", el);
+                    //errors[error]['body'][el]
+                    this.errorHandler(error, el, errors[error]['body'][el]);
+                }
+            }
+        }
+        else if (Object.keys(this.list_of_questions).length > 1) {
+            console.log("ALL GOOD!");
+            this.submit_ready = true;
+        }
+    };
+    AdminEditquizComponent.prototype.cancelSubmitQuiz = function () {
+        this.submit_ready = false;
+    };
+    AdminEditquizComponent.prototype.submitQuiz = function () {
+        var _this = this;
+        console.log("SUBMITTED1");
+        var quiz = lodash_cloneDeep__WEBPACK_IMPORTED_MODULE_6__(this.list_of_questions);
+        delete quiz['new_question'];
+        quiz['engagement_id'] = this.selected_eng;
+        quiz['bucket_list'] = this.differenceFinderBuckets(this.bucket_list, this.main_content.bucket_list);
+        quiz['topic'] = this.selected_topic;
+        quiz['category'] = this.selected_category;
+        this._ConnectorService.createQuiz(this.escapingQuiz(quiz), this.currentUser.email).then(function (res) {
+            console.log("res =>", res);
+            _this.submit_ready = false;
+            if (res['status'] == 'success') {
+                _this.submit_status.display = true;
+                _this.submit_status.status = 'success';
+            }
+            else {
+                _this.submit_status.display = true;
+                _this.submit_status.status = 'fail';
+                _this.submit_status.message = res['message'];
+            }
+        });
+    };
+    // LISTENERS ========================================================================================================================================================================================
+    AdminEditquizComponent.prototype.valueChanger = function (target, value) {
+        console.log(target, value);
+        this.cancelSubmitQuiz();
+        if (target == 'engagement') {
+            if (this.selected_eng != value) {
+                console.log("this.engagements_obj =>", this.engagements_obj);
+                console.log("this.engagements_obj[target] =>", this.engagements_obj[value]);
+                this.categories_list = this.engagements_obj[value]['categories'];
+                this.topic_list = null;
+                this.selected_topic = null;
+                this.selected_category = null;
+                this.selected_eng = value;
+                document.getElementById('category_selector')['value'] = '';
+                document.getElementById('topic_selector')['value'] = '';
+                this.topic_cat_eng_message.display = false;
+            }
+        }
+        else if (target == 'category') {
+            if (this.selected_category != value) {
+                this.selected_category = value;
+                this.topic_list = this.engagements_obj[this.selected_eng]['categories'][value];
+                document.getElementById('topic_selector')['value'] = '';
+                this.topic_cat_eng_message.display = false;
+            }
+        }
+        else if (target == 'topic') {
+            this.selected_topic = value;
+            var check_bool = false;
+            for (var el in this.topic_list) {
+                if (this.topic_list[el]['topic'] == value) {
+                    this.selected_topic = null;
+                    document.getElementById('topic_selector')['value'] = '';
+                    this.topic_cat_eng_message.display = true;
+                    this.topic_cat_eng_message.status = 'fail';
+                    this.topic_cat_eng_message.message = 'Such topic already exists. Please give it another name.';
+                    check_bool = true;
+                    break;
+                }
+            }
+            if (!check_bool) {
+                this.topic_cat_eng_message.display = true;
+                this.topic_cat_eng_message.status = 'success';
+                this.topic_cat_eng_message.message = 'Looks good!';
+            }
+        }
+    };
+    AdminEditquizComponent.prototype.displayTypeChanger = function (target, value) {
+        this.cancelSubmitQuiz();
+        if (value === 'textfield input') {
+            this.list_of_questions[target]['display_type_description'] = "Manual input";
+            this.list_of_questions[target]['question_type_description'] = 'textfield input';
+            this.list_of_questions[target]['display_type_id'] = 1;
+        }
+        else if (value === 'drag_and_drop') {
+            this.list_of_questions[target]['display_type_description'] = value;
+            this.list_of_questions[target]['question_type_description'] = value;
+            this.list_of_questions[target]['display_type_id'] = 1;
+        }
+        else {
+            this.list_of_questions[target]['question_type_description'] = "selected input";
+            if (value === "Checkbox") {
+                this.list_of_questions[target]['display_type_description'] = "Checkbox";
+                this.list_of_questions[target]['display_type_id'] = 2;
+            }
+            else if (value === "Dropdown") {
+                this.list_of_questions[target]['display_type_description'] = "Dropdown";
+                this.list_of_questions[target]['display_type_id'] = 3;
+                var one_found = false;
+                // In case if there are multiple correct answers (in example: as 'checkbox' question has multiple correct answers, in case if swithing to 'radio' or 'dropdown'),
+                // we need to make sure that there are no more thatn 1 right answer in the 'answer_correct' list.
+                // The loop bellow leaves only first found answer as correct.
+                for (var el in this.list_of_questions[target]['answer_correct']) {
+                    if (this.list_of_questions[target]['answer_correct'][el]) {
+                        if (!one_found) {
+                            one_found = true;
+                        }
+                        else {
+                            this.list_of_questions[target]['answer_correct'][el] = false;
+                        }
+                    }
+                }
+            }
+            else if (value === "Radio") {
+                this.list_of_questions[target]['display_type_description'] = "Radio";
+                this.list_of_questions[target]['display_type_id'] = 1;
+                var one_found = false;
+                // In case if there are multiple correct answers (in example: as 'checkbox' question has multiple correct answers, in case if swithing to 'radio' or 'dropdown'),
+                // we need to make sure that there are no more thatn 1 right answer in the 'answer_correct' list.
+                // The loop bellow leaves only first found answer as correct.
+                for (var el in this.list_of_questions[target]['answer_correct']) {
+                    if (this.list_of_questions[target]['answer_correct'][el]) {
+                        if (!one_found) {
+                            one_found = true;
+                        }
+                        else {
+                            this.list_of_questions[target]['answer_correct'][el] = false;
+                        }
+                    }
+                }
+            }
+        }
+    };
+    AdminEditquizComponent.prototype.addAnswer = function (target) {
+        this.cancelSubmitQuiz();
+        console.log('add answer for =>', target);
+        var value = document.getElementById("newAnswerFor_" + target)['value'];
+        console.log("document.getElementById(`newAnswerFor_${target}`) =>", document.getElementById("newAnswerFor_" + target));
+        if (value.length < 1) {
+            console.log("empty input");
+            return;
+        }
+        console.log("Value =>", value);
+        document.getElementById("newAnswerFor_" + target)['value'] = '';
+        var answers_list = this.list_of_questions[target]['answer_prompt'];
+        for (var el in answers_list) {
+            if (answers_list[el] == value) {
+                this.errorHandler(target, "add_answer", "Such answer already exists");
+                return;
+            }
+        }
+        var counter = 0;
+        var temp_id = 'new0';
+        for (var el in this.list_of_questions[target]['answer_prompt']) {
+            if (el.includes('new')) {
+                temp_id = el;
+            }
+        }
+        temp_id = temp_id.slice(0, 3) + (Number(temp_id.slice(3, 4)) + 1);
+        this.list_of_questions[target]['answer_prompt'][temp_id] = value;
+        this.list_of_questions[target]['answer_sort'][temp_id] = 1;
+        this.list_of_questions[target]['answer_correct'][temp_id] = false;
+        this.list_of_questions[target]['answer_soft_delete'][temp_id] = false;
+        this.clearErrors(target, 'add_answer');
+    };
+    AdminEditquizComponent.prototype.inputEditor = function (target, q_id, q_key, a_id, value) {
+        var _this = this;
+        this.cancelSubmitQuiz();
+        if (target == 'answer') {
+            if (q_key == 'answer_soft_delete') {
+                delete this.list_of_questions[q_id]['answer_prompt'][a_id];
+                delete this.list_of_questions[q_id]['answer_correct'][a_id];
+                delete this.list_of_questions[q_id]['answer_soft_delete'][a_id];
+                delete this.list_of_questions[q_id]['answer_sort'][a_id];
+                return;
+            }
+            var question_type = this.list_of_questions[q_id]['display_type_description'];
+            if ((question_type == 'Dropdown' || question_type == 'Radio') && q_key == 'answer_correct') {
+                for (var el in this.list_of_questions[q_id]['answer_correct']) {
+                    if (el == a_id) {
+                        this.list_of_questions[q_id]['answer_correct'][el] = true;
+                    }
+                    else {
+                        this.list_of_questions[q_id]['answer_correct'][el] = false;
+                    }
+                }
+                return;
+            }
+            this.list_of_questions[q_id][q_key][a_id] = value;
+        }
+        else if (target == 'img') { // image uploader
+            if (value[0].size > 5242880) {
+                this.errorHandler(q_id, "image_uploader", "The image is too heavy. Upload limit is 5mb per image.");
+                return;
+            }
+            this._ConnectorService.imgToBase64(value).then(function (data) {
+                _this.list_of_questions[q_id][q_key] = String(data);
+                _this.list_of_questions[q_id]['image'] = true;
+                _this.clearErrors(q_id, 'image_uploader');
+            }).catch(function (err) {
+                console.log("ERROR =>", err);
+                this.errorHandler(q_id, "image_uploader", JSON.stringify(err));
+            });
+        }
+        else if (target == 'drag_and_drop') { // drag and drop logic
+            if (value == 'add_edit') {
+                document.getElementById("bucket_list_pick_" + q_id)['value'] = '';
+                this.modal_message.title = "Edit/Remove Buckets";
+                this.modal_mesage_bool = true;
+            }
+            else {
+                this.list_of_questions[q_id][q_key][a_id] = value;
+            }
+        }
+        else {
+            this.list_of_questions[q_id][q_key] = value;
+        }
+    };
+    AdminEditquizComponent.prototype.removeImg = function (q_id) {
+        this.cancelSubmitQuiz();
+        this.list_of_questions[q_id]['base64'] = '';
+        this.list_of_questions[q_id]['image'] = false;
+    };
+    AdminEditquizComponent.prototype.dragAndDropAdder = function (id) {
+        this.cancelSubmitQuiz();
+        console.log(this.list_of_questions[id]['temp_bucket_storage']);
+        var input_val = this.list_of_questions[id]['temp_bucket_storage']['answer_input'];
+        var bucket_val = this.list_of_questions[id]['temp_bucket_storage']['bucket_id'];
+        this.clearErrors(id, 'bucket_input');
+        this.clearErrors(id, 'bucket_list');
+        if (!input_val || !bucket_val) {
+            if (!input_val) {
+                this.errorHandler(id, "bucket_input", "Please enter a bucket choice value.");
+            }
+            if (!bucket_val) {
+                this.errorHandler(id, "bucket_list", "Please choose one of the buckets.");
+            }
+            return;
+        }
+        var counter = 0;
+        var temp_id = 'new0';
+        for (var el in this.list_of_questions[id]['answer_prompt']) {
+            if (el.includes('new')) {
+                temp_id = el;
+            }
+        }
+        temp_id = temp_id.slice(0, 3) + (Number(temp_id.slice(3, 4)) + 1);
+        var new_id = temp_id; // new answer ID
+        try {
+            console.log("this.list_of_questions[id]['answer_prompt'] =>", this.list_of_questions[id]['answer_prompt']);
+            this.list_of_questions[id]['answer_prompt'][new_id] = input_val;
+            this.list_of_questions[id]['answer_bucket_id'][new_id] = bucket_val;
+            this.list_of_questions[id]['answer_soft_delete'][new_id] = false;
+            this.list_of_questions[id]['answer_correct'][new_id] = false;
+            this.list_of_questions[id]['answer_sort'][new_id] = 1;
+            this.list_of_questions[id]['temp_bucket_storage']['answer_input'] = null;
+            this.list_of_questions[id]['temp_bucket_storage']['bucket_id'] = null;
+            this.bucketList_reloader[id] = false;
+            document.getElementById("bucket_input_add_input_" + id)['value'] = '';
+            console.log(this.list_of_questions[id]);
+            console.log("document.getElementById(`bucket_list_pick_${id}`)['value']  =>", document.getElementById("bucket_list_pick_" + id));
+            // there was a weird bug with the choose bucket dropdown. It just didn't reset the old value after adding a new bucket choice
+            // so, by calling "  this.bucketList_reloader[id] = false " we delete the choose bucket dropdown ...
+            var that_1 = this;
+            setTimeout(function () {
+                // ... and put it back after 50 miliseconds
+                that_1.bucketList_reloader[id] = true;
+            }, 50);
+        }
+        catch (error) {
+            console.log("ERROR =>", error);
+        }
+    };
+    AdminEditquizComponent.prototype.checkModuleLink = function (id) {
+        if (this.validURL(this.list_of_questions[id]['training_url'])) {
+            this.clearErrors(id, 'training_url');
+            window.open(this.list_of_questions[id]['training_url'], "_blank");
+        }
+        else {
+            console.log("NOT GOOD!");
+            this.errorHandler(id, 'training_url', "Confluence link is invalid");
+        }
+    };
+    AdminEditquizComponent.prototype.addQuestion = function () {
+        this.cancelSubmitQuiz();
+        var errs = this.validateQuestion("new_question");
+        if (errs.status == 'fail') {
+            for (var el in errs.body) {
+                this.errorHandler('new_question', el, errs.body[el]);
+            }
+            return;
+        }
+        else {
+            this.errorHandlerRemover("new_question");
+        }
+        var counter = 1;
+        for (var el in this.list_of_questions) {
+            console.log("EL =>>>>", el);
+            if (el.includes('added_')) {
+                console.log("added is already here!", el.split('_')[1]);
+                counter = Number(el.split('_')[1]) + 1;
+            }
+        }
+        var new_id = 'added_' + counter;
+        console.log("New ID =>", new_id);
+        this.list_of_questions[new_id] = this.list_of_questions['new_question'];
+        this.bucketList_reloader[new_id] = true;
+        this.list_of_questions['new_question'] = new _question__WEBPACK_IMPORTED_MODULE_5__["Question"]();
+    };
+    AdminEditquizComponent.prototype.removeQuestion = function (id) {
+        this.cancelSubmitQuiz();
+        console.log("ID =>", id);
+        delete this.list_of_questions[id];
+    };
+    AdminEditquizComponent.prototype.removeDragAndDropChoice = function (id, c_id) {
+        this.cancelSubmitQuiz();
+        console.log(id, c_id);
+        try {
+            delete this.list_of_questions[id]['answer_prompt'][c_id];
+            delete this.list_of_questions[id]['answer_correct'][c_id];
+            delete this.list_of_questions[id]['answer_soft_delete'][c_id];
+            delete this.list_of_questions[id]['answer_bucket_id'][c_id];
+        }
+        catch (err) {
+        }
+    };
+    AdminEditquizComponent.prototype.inputTest = function (target) {
+        console.log("=============================");
+        console.log(target);
+        console.log("=============================");
+    };
+    // MODAL FUNCTIONS ==================================================================================================================================================================================
+    AdminEditquizComponent.prototype.closeModal = function () {
+        this.modal_mesage_bool = false;
+    };
+    AdminEditquizComponent.prototype.bucketListEditor = function (index, key, value) {
+        this.bucket_list[index][key] = value;
+        this.bucket_list_changes_bool = (Object.keys(this.differenceFinderBuckets(this.bucket_list, this.bucket_list_original)).length > 0);
+        console.log("counter =>", this.bucket_list_changes_bool);
+    };
+    AdminEditquizComponent.prototype.bucketListEditorConfirm = function () {
+        this.bucket_list_confirm_bool = true;
+        this.bucket_list_confirm_list = this.differenceFinderBuckets(this.bucket_list, this.bucket_list_original);
+    };
+    AdminEditquizComponent.prototype.bucketListEditorSave = function () {
+        this.cancelSubmitQuiz();
+        this.bucket_list_confirm_bool = false;
+        this.bucket_list_original = lodash_cloneDeep__WEBPACK_IMPORTED_MODULE_6__(this.bucket_list);
+        this.closeModal();
+        this.bucket_list_changes_bool = false;
+    };
+    AdminEditquizComponent.prototype.bucketListEditorCancel = function () {
+        this.bucket_list_confirm_bool = false;
+        this.bucket_list_changes_bool = false;
+        this.bucket_list = lodash_cloneDeep__WEBPACK_IMPORTED_MODULE_6__(this.bucket_list_original);
+    };
+    AdminEditquizComponent.prototype.bucketListEditorClose = function () {
+        this.bucketListEditorCancel();
+        this.bucket_list_changes_bool = false;
+        this.modal_mesage_bool = false;
+    };
+    AdminEditquizComponent.prototype.bucketUndoOne = function (id, index) {
+        this.bucket_list[index] = lodash_cloneDeep__WEBPACK_IMPORTED_MODULE_6__(this.bucket_list_original[index]);
+        delete this.bucket_list_confirm_list[id];
+        if (Object.keys(this.bucket_list_confirm_list).length < 1) {
+            this.bucket_list_confirm_bool = false;
+            this.bucket_list_confirm_list = null;
+        }
+    };
+    // VALIDATORS ========================================================================================================================================================================================
+    AdminEditquizComponent.prototype.validateQuestion = function (id) {
+        this.errorHandlerRemover(id);
+        var res = {
+            'status': "success",
+            'body': {}
+        };
+        var target = this.list_of_questions[id];
+        // Question order value
+        if (!target.question_sort || target.question_sort < 1) {
+            res.body['order number'] = "Invalid order number.";
+        }
+        // Prompt
+        if (!target.prompt || target.prompt.length < 1) {
+            res.body['Question prompt'] = "Question prompt is missing.";
+        }
+        else if (escape(target.prompt).length > 3500) {
+            res.body['prompt'] = "Question prompt is too long.";
+        }
+        // Question type
+        if (!target.display_type_description) {
+            res.body['type'] = "Please select question display type.";
+        }
+        // Answers' validation
+        if (!res.body['type']) {
+            if (target.display_type_description != "Manual input") {
+                if (Object.keys(target.answer_prompt).length < 1) {
+                    res.body['answers'] = "Please add answers.";
+                }
+                else if (Object.keys(target.answer_prompt).length < 2) {
+                    res.body['answers'] = "Please add more answers.";
+                }
+                else {
+                    for (var el in target.answer_prompt) {
+                        if (target.answer_prompt[el].length < 1) {
+                            res.body['answers_length'] = 'Some answers have no inputs at all.';
+                        }
+                    }
+                    // drag and drop bucket count
+                    if (target.display_type_description == "drag_and_drop") {
+                        if (Object.keys(target.answer_bucket_id).length < 2) {
+                            res.body['answers'] = "Please add buckets.";
+                        }
+                    }
+                    else {
+                        // find number of right answers
+                        var counter = 0;
+                        for (var el in target.answer_correct) {
+                            if (target.answer_correct[el] == true) {
+                                counter++;
+                            }
+                        }
+                        if (counter == 0) {
+                            res.body['answers'] = "Please mark the right answers.";
+                        }
+                    }
+                }
+            }
+        }
+        // Confluence link
+        if (target.training_url && !this.validURL(target.training_url)) {
+            res.body['type'] = "Confluence link is invalid. Please check URL syntax.";
+        }
+        // Question value
+        if (!target.point_value) {
+            res.body['type'] = "Invalid question value.";
+        }
+        else if (target.point_value < 1 || target.point_value > 10) {
+            res.body['type'] = "Please enter question value between 1 to 10.";
+        }
+        if (Object.keys(res.body).length > 0) {
+            res.status = "fail";
+        }
+        return res;
+    };
+    AdminEditquizComponent.prototype.validateAllQuestions = function () {
+        var list = this.list_of_questions;
+        var res = {};
+        for (var el in list) {
+            if (el == 'new_question' || el['error_bool']) {
+                continue;
+            }
+            this.errorHandlerRemover(el);
+            var temp_res = this.validateQuestion(el);
+            if (temp_res.status == 'fail') {
+                res[el] = temp_res;
+            }
+        }
+        return res;
+    };
+    //  MISC ============================================================================================================================================================================================
+    AdminEditquizComponent.prototype.errorHandler = function (id, source, message) {
+        console.log("WE GOT ERROR HERE! ID => " + id + ", source => " + source + ", message => " + message);
+        if (!this.list_of_questions[id + "_error"]) {
+            this.list_of_questions[id + "_error"] = {
+                'error_bool': true,
+                'errors': {},
+                'target': id
+            };
+            if (id == 'new_question') {
+                this.list_of_questions[id + "_error"]['target'] = "New question form";
+            }
+            // this.clearErrorMessageTimer(id, 5000)
+        }
+        this.list_of_questions[id + "_error"]['errors'][source] = message;
+    };
+    AdminEditquizComponent.prototype.errorHandlerRemover = function (id) {
+        try {
+            delete this.list_of_questions[id + '_error'];
+        }
+        catch (error) {
+            console.log(error);
+        }
+        return true;
+    };
+    AdminEditquizComponent.prototype.errorRemoveById = function (id) {
+        try {
+            delete this.list_of_questions[id];
+        }
+        catch (error) {
+            console.log(error);
+        }
+        return true;
+    };
+    AdminEditquizComponent.prototype.clearErrors = function (id, source) {
+        try {
+            delete this.list_of_questions[id + "_error"]['errors'][source];
+            if (Object.keys(this.list_of_questions[id + "_error"]['errors']).length < 1) {
+                delete this.list_of_questions[id + "_error"];
+            }
+        }
+        catch (err) {
+            // console.log( `clearErrors : error =>`, err)
+        }
+    };
+    AdminEditquizComponent.prototype.clearErrorMessageTimer = function (id, time) {
+        var that = this;
+        console.log('1st this =>', this);
+        setTimeout(function () {
+            delete that.list_of_questions[id + '_error'];
+        }, time);
+    };
+    AdminEditquizComponent.prototype.orderByEngID = function (engs) {
+        var res = {};
+        for (var el in engs) {
+            if (engs[el]['soft_delete']) {
+                continue;
+            }
+            res[engs[el]['engagement_id']] = engs[el];
+        }
+        console.log("orderByEngID(engs) =>", res);
+        return res;
+    };
+    AdminEditquizComponent.prototype.sortCategoriesByEngs = function (engs, list) {
+        // engs and list are arrays
+        for (var cat in list) {
+            for (var topic in list[cat]) {
+                var eng_id = list[cat][topic]['engagement_id'];
+                if (!engs[eng_id]) {
+                    continue;
+                }
+                if (!engs[list[cat][topic]['engagement_id']]['categories']) {
+                    engs[list[cat][topic]['engagement_id']]['categories'] = {};
+                }
+                if (!engs[list[cat][topic]['engagement_id']]['categories'][cat]) {
+                    engs[list[cat][topic]['engagement_id']]['categories'][cat] = {};
+                }
+                engs[list[cat][topic]['engagement_id']]['categories'][cat][list[cat][topic]['topic_id']] = list[cat][topic];
+            }
+        }
+        return engs;
+    };
+    AdminEditquizComponent.prototype.validURL = function (str) {
+        var pattern = new RegExp('^(https?:\\/\\/)?' + // protocol
+            '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' + // domain name
+            '((\\d{1,3}\\.){3}\\d{1,3}))' + // OR ip (v4) address
+            '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // port and path
+            '(\\?[;&a-z\\d%_.~+=-]*)?' + // query string
+            '(\\#[-a-z\\d_]*)?$', 'i'); // fragment locator
+        return !!pattern.test(str);
+    };
+    AdminEditquizComponent.prototype.arrayToList = function (list, key, type) {
+        var res = {};
+        for (var el in list) {
+            res[Number(list[el][key])] = list[el];
+        }
+        return res;
+    };
+    AdminEditquizComponent.prototype.bucketListSoftdeleteChecker = function (list) {
+        for (var el in list) {
+            if (!list[el]['soft_delete']) {
+                list[el]['soft_delete'] = false;
+            }
+        }
+        return list;
+    };
+    AdminEditquizComponent.prototype.differenceFinderBuckets = function (arr1, arr2) {
+        // array1 and array2 should by copies of each other
+        var res = {};
+        for (var bucket in arr1) {
+            if (arr1[bucket]['bucket_name'] != arr2[bucket]['bucket_name']) {
+                if (!res[arr1[bucket]['bucket_id']]) {
+                    res[arr1[bucket]['bucket_id']] = {
+                        'index': bucket,
+                        'bucket_name': arr2[bucket]['bucket_name']
+                    };
+                }
+                res[arr1[bucket]['bucket_id']]['New Bucket name'] = arr1[bucket]['bucket_name'];
+                res[arr1[bucket]['bucket_id']]['Old Bucket name'] = arr2[bucket]['bucket_name'];
+            }
+            if (arr1[bucket]['soft_delete'] != arr2[bucket]['soft_delete']) {
+                if (!arr1[bucket]['soft_delete'] && !arr2[bucket]['soft_delete']) {
+                    continue;
+                }
+                if (!res[arr1[bucket]['bucket_id']]) {
+                    res[arr1[bucket]['bucket_id']] = {
+                        'index': bucket,
+                        'bucket_name': arr2[bucket]['bucket_name']
+                    };
+                }
+                if (arr1[bucket]['soft_delete']) {
+                    res[arr1[bucket]['bucket_id']]['status'] = "Disabled";
+                }
+                else if (!arr1[bucket]['soft_delete']) {
+                    res[arr1[bucket]['bucket_id']]['status'] = "Enabled";
+                }
+                res[arr1[bucket]['bucket_id']]['soft_delete'] = arr1[bucket]['soft_delete'];
+            }
+        }
+        return res;
+    };
+    AdminEditquizComponent.prototype.escapingList = function (list) {
+        for (var el in list) {
+            list[el] = escape(list[el]);
+        }
+        return list;
+    };
+    AdminEditquizComponent.prototype.escapingBucketList = function (list) {
+        for (var el in list) {
+            list[el]['bucket_name'] = escape(list[el]['bucket_name']);
+        }
+        return list;
+    };
+    AdminEditquizComponent.prototype.escapingQuiz = function (q) {
+        for (var el in q) {
+            if (el == "new_question" || (typeof (q[el]) != 'object')) {
+                continue;
+            }
+            else if (el == "bucket_list") {
+                q[el] = this.escapingBucketList(q[el]);
+                continue;
+            }
+            console.log("EL =>", el);
+            q[el]['prompt'] = escape(q[el]['prompt']);
+            q[el]['training_url'] = escape(q[el]['training_url']);
+            q[el]['training_module'] = escape(q[el]['training_module']);
+            q[el]['expected_response'] = escape(q[el]['expected_response']);
+            for (var a in q[el]['answer_prompt']) {
+                q[el]['answer_prompt'][a] = escape(q[el]['answer_prompt'][a]);
+            }
+        }
+        q['topic'] = escape(q['topic']);
+        q['category'] = escape(q['category']);
+        return q;
+    };
+    AdminEditquizComponent.prototype.bucketListDifferencesFinder = function () {
+        var original_list = this.main_content;
+        var current_list = this.bucket_list;
+    };
+    AdminEditquizComponent.prototype.goBack = function () {
+        this.location.back();
+    };
+    AdminEditquizComponent.prototype.checkState = function () {
+        console.log(this);
     };
     AdminEditquizComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
@@ -1040,7 +1807,7 @@ var AdminEditquizComponent = /** @class */ (function () {
             template: __webpack_require__(/*! ./admin-editquiz.component.html */ "./src/app/admin-editquiz/admin-editquiz.component.html"),
             styles: [__webpack_require__(/*! ./admin-editquiz.component.css */ "./src/app/admin-editquiz/admin-editquiz.component.css")]
         }),
-        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [])
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_connector_service__WEBPACK_IMPORTED_MODULE_3__["ConnectorService"], _angular_common__WEBPACK_IMPORTED_MODULE_4__["Location"], _angular_router__WEBPACK_IMPORTED_MODULE_2__["ActivatedRoute"], _angular_router__WEBPACK_IMPORTED_MODULE_2__["Router"]])
     ], AdminEditquizComponent);
     return AdminEditquizComponent;
 }());
@@ -1384,7 +2151,7 @@ var AdminGradeComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJzcmMvYXBwL2FkbWluLWhvbWUtZWRpdC9hZG1pbi1ob21lLWVkaXQuY29tcG9uZW50LmNzcyJ9 */"
+module.exports = ".grade-home-main {\n    width: 80%;\n    margin: 0px auto;\n    display: flex;\n    flex-direction: row;\n    flex-wrap: wrap;\n    justify-content: space-around;\n    align-items: baseline;\n    align-content: center;\n}\n\n.grade-home-category {\n    min-width: 250px;\n    display: flex;\n    flex-direction: column;\n    flex-wrap: wrap;\n    justify-content: flex-start;\n    align-items: center;\n    align-content: center;\n    margin: 15px 15px;\n    box-shadow: 5px 10px 18px #888888;\n}\n\n.grade-home-category-title {\n    display: flex;\n    flex-direction: row;\n    flex-wrap: wrap;\n    justify-content: center;\n    align-items: center;\n    align-content: center;\n}\n\n.grade-home-category-element {\n    width: 100%;\n    display: flex;\n    flex-direction: column;\n    flex-wrap: wrap;\n    justify-content: flex-start;\n    align-items: center;\n    align-content: center;\n}\n\n.grade-home-category-element a {\n    width: 100%\n}\n\n.grade-home-category-element button {\n    width: 100%;\n    border: none;\n    border-radius: 0px;\n}\n\n.home-main {\n    width: 80%;\n    margin: 0px auto;\n    display: flex;\n    flex-direction: row;\n    flex-wrap: wrap;\n    justify-content: space-around;\n    align-items: baseline;\n    align-content: center;\n}\n\n.home-category {\n    min-width: 250px;\n    width: 250px;\n    max-width: 280px;\n    display: flex;\n    flex-direction: column;\n    flex-wrap: wrap;\n    justify-content: flex-start;\n    align-items: center;\n    align-content: center;\n    margin: 15px 15px;\n    background: rgba(255, 255, 255, 0.4);\n    transition: 0.8s;\n    color: #716c6c;\n    box-shadow: 1px 2px 10px #3534340f;\n}\n\n.home-category:hover {\n    color: black;\n    background: rgba(255, 255, 255, 0.8);\n    box-shadow: 5px 10px 18px #888888;\n}\n\n.home-category-element .btn {\n    white-space: normal !important;\n    word-wrap: break-word;\n    display: inline-block;\n    white-space: nowrap;\n    overflow: hidden;\n    text-overflow: ellipsis;\n}\n\n.home-category-title {\n    max-width: 250px;\n    display: flex;\n    flex-direction: row;\n    flex-wrap: wrap;\n    justify-content: center;\n    align-items: center;\n    align-content: center;\n    font-weight: normal;\n}\n\n.home-category-element {\n    width: 100%;\n    display: flex;\n    flex-direction: column;\n    flex-wrap: wrap;\n    justify-content: flex-start;\n    align-items: center;\n    align-content: center;\n}\n\n.home-category-element-inner-box {\n    width: 100%;\n    display: flex;\n    flex-direction: row;\n    flex-wrap: nowrap;\n    justify-content: flex-start;\n    align-items: center;\n    align-content: center;\n}\n\n.home-category-element a {\n    width: 100%\n}\n\n.home-category-element-inner-box a {\n    width: 50%;\n    border-radius: 0px;\n}\n\n.home-category-element button {\n    width: 100%;\n    border: none;\n    border-radius: 0px;\n}\n\n/* .home-category-element-hover {\n    background: linear-gradient(to right, #fbfbfb, #fbfbfb);\n    transition: all 0.3s\n}\n\n.home-category-element-hover:hover {\n    background: linear-gradient(to right, #fbfbfb, #c6c6c6)\n} */\n\n.home-category-element-hover {\n    position: relative;\n    background-image: linear-gradient( to right, #fbfbfb, #fbfbfb);\n    z-index: 1;\n}\n\n.home-category-element-hover::before {\n    position: absolute;\n    content: \"\";\n    top: 0;\n    right: 0;\n    bottom: 0;\n    left: 0;\n    background-image: linear-gradient( to right, #fbfbfb, #c6c6c6);\n    z-index: -1;\n    transition: opacity 0.5s linear;\n    opacity: 0;\n}\n\n.home-category-element-hover:hover::before {\n    opacity: 1;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNyYy9hcHAvYWRtaW4taG9tZS1lZGl0L2FkbWluLWhvbWUtZWRpdC5jb21wb25lbnQuY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBO0lBQ0ksVUFBVTtJQUNWLGdCQUFnQjtJQUNoQixhQUFhO0lBQ2IsbUJBQW1CO0lBQ25CLGVBQWU7SUFDZiw2QkFBNkI7SUFDN0IscUJBQXFCO0lBQ3JCLHFCQUFxQjtBQUN6Qjs7QUFFQTtJQUNJLGdCQUFnQjtJQUNoQixhQUFhO0lBQ2Isc0JBQXNCO0lBQ3RCLGVBQWU7SUFDZiwyQkFBMkI7SUFDM0IsbUJBQW1CO0lBQ25CLHFCQUFxQjtJQUNyQixpQkFBaUI7SUFDakIsaUNBQWlDO0FBQ3JDOztBQUVBO0lBQ0ksYUFBYTtJQUNiLG1CQUFtQjtJQUNuQixlQUFlO0lBQ2YsdUJBQXVCO0lBQ3ZCLG1CQUFtQjtJQUNuQixxQkFBcUI7QUFDekI7O0FBRUE7SUFDSSxXQUFXO0lBQ1gsYUFBYTtJQUNiLHNCQUFzQjtJQUN0QixlQUFlO0lBQ2YsMkJBQTJCO0lBQzNCLG1CQUFtQjtJQUNuQixxQkFBcUI7QUFDekI7O0FBRUE7SUFDSTtBQUNKOztBQUVBO0lBQ0ksV0FBVztJQUNYLFlBQVk7SUFDWixrQkFBa0I7QUFDdEI7O0FBRUE7SUFDSSxVQUFVO0lBQ1YsZ0JBQWdCO0lBQ2hCLGFBQWE7SUFDYixtQkFBbUI7SUFDbkIsZUFBZTtJQUNmLDZCQUE2QjtJQUM3QixxQkFBcUI7SUFDckIscUJBQXFCO0FBQ3pCOztBQUVBO0lBQ0ksZ0JBQWdCO0lBQ2hCLFlBQVk7SUFDWixnQkFBZ0I7SUFDaEIsYUFBYTtJQUNiLHNCQUFzQjtJQUN0QixlQUFlO0lBQ2YsMkJBQTJCO0lBQzNCLG1CQUFtQjtJQUNuQixxQkFBcUI7SUFDckIsaUJBQWlCO0lBQ2pCLG9DQUFvQztJQUNwQyxnQkFBZ0I7SUFDaEIsY0FBYztJQUNkLGtDQUFrQztBQUN0Qzs7QUFFQTtJQUNJLFlBQVk7SUFDWixvQ0FBb0M7SUFDcEMsaUNBQWlDO0FBQ3JDOztBQUVBO0lBQ0ksOEJBQThCO0lBQzlCLHFCQUFxQjtJQUNyQixxQkFBcUI7SUFDckIsbUJBQW1CO0lBQ25CLGdCQUFnQjtJQUNoQix1QkFBdUI7QUFDM0I7O0FBRUE7SUFDSSxnQkFBZ0I7SUFDaEIsYUFBYTtJQUNiLG1CQUFtQjtJQUNuQixlQUFlO0lBQ2YsdUJBQXVCO0lBQ3ZCLG1CQUFtQjtJQUNuQixxQkFBcUI7SUFDckIsbUJBQW1CO0FBQ3ZCOztBQUVBO0lBQ0ksV0FBVztJQUNYLGFBQWE7SUFDYixzQkFBc0I7SUFDdEIsZUFBZTtJQUNmLDJCQUEyQjtJQUMzQixtQkFBbUI7SUFDbkIscUJBQXFCO0FBQ3pCOztBQUVBO0lBQ0ksV0FBVztJQUNYLGFBQWE7SUFDYixtQkFBbUI7SUFDbkIsaUJBQWlCO0lBQ2pCLDJCQUEyQjtJQUMzQixtQkFBbUI7SUFDbkIscUJBQXFCO0FBQ3pCOztBQUVBO0lBQ0k7QUFDSjs7QUFFQTtJQUNJLFVBQVU7SUFDVixrQkFBa0I7QUFDdEI7O0FBRUE7SUFDSSxXQUFXO0lBQ1gsWUFBWTtJQUNaLGtCQUFrQjtBQUN0Qjs7QUFHQTs7Ozs7OztHQU9HOztBQUVIO0lBQ0ksa0JBQWtCO0lBQ2xCLDhEQUE4RDtJQUM5RCxVQUFVO0FBQ2Q7O0FBRUE7SUFDSSxrQkFBa0I7SUFDbEIsV0FBVztJQUNYLE1BQU07SUFDTixRQUFRO0lBQ1IsU0FBUztJQUNULE9BQU87SUFDUCw4REFBOEQ7SUFDOUQsV0FBVztJQUNYLCtCQUErQjtJQUMvQixVQUFVO0FBQ2Q7O0FBRUE7SUFDSSxVQUFVO0FBQ2QiLCJmaWxlIjoic3JjL2FwcC9hZG1pbi1ob21lLWVkaXQvYWRtaW4taG9tZS1lZGl0LmNvbXBvbmVudC5jc3MiLCJzb3VyY2VzQ29udGVudCI6WyIuZ3JhZGUtaG9tZS1tYWluIHtcbiAgICB3aWR0aDogODAlO1xuICAgIG1hcmdpbjogMHB4IGF1dG87XG4gICAgZGlzcGxheTogZmxleDtcbiAgICBmbGV4LWRpcmVjdGlvbjogcm93O1xuICAgIGZsZXgtd3JhcDogd3JhcDtcbiAgICBqdXN0aWZ5LWNvbnRlbnQ6IHNwYWNlLWFyb3VuZDtcbiAgICBhbGlnbi1pdGVtczogYmFzZWxpbmU7XG4gICAgYWxpZ24tY29udGVudDogY2VudGVyO1xufVxuXG4uZ3JhZGUtaG9tZS1jYXRlZ29yeSB7XG4gICAgbWluLXdpZHRoOiAyNTBweDtcbiAgICBkaXNwbGF5OiBmbGV4O1xuICAgIGZsZXgtZGlyZWN0aW9uOiBjb2x1bW47XG4gICAgZmxleC13cmFwOiB3cmFwO1xuICAgIGp1c3RpZnktY29udGVudDogZmxleC1zdGFydDtcbiAgICBhbGlnbi1pdGVtczogY2VudGVyO1xuICAgIGFsaWduLWNvbnRlbnQ6IGNlbnRlcjtcbiAgICBtYXJnaW46IDE1cHggMTVweDtcbiAgICBib3gtc2hhZG93OiA1cHggMTBweCAxOHB4ICM4ODg4ODg7XG59XG5cbi5ncmFkZS1ob21lLWNhdGVnb3J5LXRpdGxlIHtcbiAgICBkaXNwbGF5OiBmbGV4O1xuICAgIGZsZXgtZGlyZWN0aW9uOiByb3c7XG4gICAgZmxleC13cmFwOiB3cmFwO1xuICAgIGp1c3RpZnktY29udGVudDogY2VudGVyO1xuICAgIGFsaWduLWl0ZW1zOiBjZW50ZXI7XG4gICAgYWxpZ24tY29udGVudDogY2VudGVyO1xufVxuXG4uZ3JhZGUtaG9tZS1jYXRlZ29yeS1lbGVtZW50IHtcbiAgICB3aWR0aDogMTAwJTtcbiAgICBkaXNwbGF5OiBmbGV4O1xuICAgIGZsZXgtZGlyZWN0aW9uOiBjb2x1bW47XG4gICAgZmxleC13cmFwOiB3cmFwO1xuICAgIGp1c3RpZnktY29udGVudDogZmxleC1zdGFydDtcbiAgICBhbGlnbi1pdGVtczogY2VudGVyO1xuICAgIGFsaWduLWNvbnRlbnQ6IGNlbnRlcjtcbn1cblxuLmdyYWRlLWhvbWUtY2F0ZWdvcnktZWxlbWVudCBhIHtcbiAgICB3aWR0aDogMTAwJVxufVxuXG4uZ3JhZGUtaG9tZS1jYXRlZ29yeS1lbGVtZW50IGJ1dHRvbiB7XG4gICAgd2lkdGg6IDEwMCU7XG4gICAgYm9yZGVyOiBub25lO1xuICAgIGJvcmRlci1yYWRpdXM6IDBweDtcbn1cblxuLmhvbWUtbWFpbiB7XG4gICAgd2lkdGg6IDgwJTtcbiAgICBtYXJnaW46IDBweCBhdXRvO1xuICAgIGRpc3BsYXk6IGZsZXg7XG4gICAgZmxleC1kaXJlY3Rpb246IHJvdztcbiAgICBmbGV4LXdyYXA6IHdyYXA7XG4gICAganVzdGlmeS1jb250ZW50OiBzcGFjZS1hcm91bmQ7XG4gICAgYWxpZ24taXRlbXM6IGJhc2VsaW5lO1xuICAgIGFsaWduLWNvbnRlbnQ6IGNlbnRlcjtcbn1cblxuLmhvbWUtY2F0ZWdvcnkge1xuICAgIG1pbi13aWR0aDogMjUwcHg7XG4gICAgd2lkdGg6IDI1MHB4O1xuICAgIG1heC13aWR0aDogMjgwcHg7XG4gICAgZGlzcGxheTogZmxleDtcbiAgICBmbGV4LWRpcmVjdGlvbjogY29sdW1uO1xuICAgIGZsZXgtd3JhcDogd3JhcDtcbiAgICBqdXN0aWZ5LWNvbnRlbnQ6IGZsZXgtc3RhcnQ7XG4gICAgYWxpZ24taXRlbXM6IGNlbnRlcjtcbiAgICBhbGlnbi1jb250ZW50OiBjZW50ZXI7XG4gICAgbWFyZ2luOiAxNXB4IDE1cHg7XG4gICAgYmFja2dyb3VuZDogcmdiYSgyNTUsIDI1NSwgMjU1LCAwLjQpO1xuICAgIHRyYW5zaXRpb246IDAuOHM7XG4gICAgY29sb3I6ICM3MTZjNmM7XG4gICAgYm94LXNoYWRvdzogMXB4IDJweCAxMHB4ICMzNTM0MzQwZjtcbn1cblxuLmhvbWUtY2F0ZWdvcnk6aG92ZXIge1xuICAgIGNvbG9yOiBibGFjaztcbiAgICBiYWNrZ3JvdW5kOiByZ2JhKDI1NSwgMjU1LCAyNTUsIDAuOCk7XG4gICAgYm94LXNoYWRvdzogNXB4IDEwcHggMThweCAjODg4ODg4O1xufVxuXG4uaG9tZS1jYXRlZ29yeS1lbGVtZW50IC5idG4ge1xuICAgIHdoaXRlLXNwYWNlOiBub3JtYWwgIWltcG9ydGFudDtcbiAgICB3b3JkLXdyYXA6IGJyZWFrLXdvcmQ7XG4gICAgZGlzcGxheTogaW5saW5lLWJsb2NrO1xuICAgIHdoaXRlLXNwYWNlOiBub3dyYXA7XG4gICAgb3ZlcmZsb3c6IGhpZGRlbjtcbiAgICB0ZXh0LW92ZXJmbG93OiBlbGxpcHNpcztcbn1cblxuLmhvbWUtY2F0ZWdvcnktdGl0bGUge1xuICAgIG1heC13aWR0aDogMjUwcHg7XG4gICAgZGlzcGxheTogZmxleDtcbiAgICBmbGV4LWRpcmVjdGlvbjogcm93O1xuICAgIGZsZXgtd3JhcDogd3JhcDtcbiAgICBqdXN0aWZ5LWNvbnRlbnQ6IGNlbnRlcjtcbiAgICBhbGlnbi1pdGVtczogY2VudGVyO1xuICAgIGFsaWduLWNvbnRlbnQ6IGNlbnRlcjtcbiAgICBmb250LXdlaWdodDogbm9ybWFsO1xufVxuXG4uaG9tZS1jYXRlZ29yeS1lbGVtZW50IHtcbiAgICB3aWR0aDogMTAwJTtcbiAgICBkaXNwbGF5OiBmbGV4O1xuICAgIGZsZXgtZGlyZWN0aW9uOiBjb2x1bW47XG4gICAgZmxleC13cmFwOiB3cmFwO1xuICAgIGp1c3RpZnktY29udGVudDogZmxleC1zdGFydDtcbiAgICBhbGlnbi1pdGVtczogY2VudGVyO1xuICAgIGFsaWduLWNvbnRlbnQ6IGNlbnRlcjtcbn1cblxuLmhvbWUtY2F0ZWdvcnktZWxlbWVudC1pbm5lci1ib3gge1xuICAgIHdpZHRoOiAxMDAlO1xuICAgIGRpc3BsYXk6IGZsZXg7XG4gICAgZmxleC1kaXJlY3Rpb246IHJvdztcbiAgICBmbGV4LXdyYXA6IG5vd3JhcDtcbiAgICBqdXN0aWZ5LWNvbnRlbnQ6IGZsZXgtc3RhcnQ7XG4gICAgYWxpZ24taXRlbXM6IGNlbnRlcjtcbiAgICBhbGlnbi1jb250ZW50OiBjZW50ZXI7XG59XG5cbi5ob21lLWNhdGVnb3J5LWVsZW1lbnQgYSB7XG4gICAgd2lkdGg6IDEwMCVcbn1cblxuLmhvbWUtY2F0ZWdvcnktZWxlbWVudC1pbm5lci1ib3ggYSB7XG4gICAgd2lkdGg6IDUwJTtcbiAgICBib3JkZXItcmFkaXVzOiAwcHg7XG59XG5cbi5ob21lLWNhdGVnb3J5LWVsZW1lbnQgYnV0dG9uIHtcbiAgICB3aWR0aDogMTAwJTtcbiAgICBib3JkZXI6IG5vbmU7XG4gICAgYm9yZGVyLXJhZGl1czogMHB4O1xufVxuXG5cbi8qIC5ob21lLWNhdGVnb3J5LWVsZW1lbnQtaG92ZXIge1xuICAgIGJhY2tncm91bmQ6IGxpbmVhci1ncmFkaWVudCh0byByaWdodCwgI2ZiZmJmYiwgI2ZiZmJmYik7XG4gICAgdHJhbnNpdGlvbjogYWxsIDAuM3Ncbn1cblxuLmhvbWUtY2F0ZWdvcnktZWxlbWVudC1ob3Zlcjpob3ZlciB7XG4gICAgYmFja2dyb3VuZDogbGluZWFyLWdyYWRpZW50KHRvIHJpZ2h0LCAjZmJmYmZiLCAjYzZjNmM2KVxufSAqL1xuXG4uaG9tZS1jYXRlZ29yeS1lbGVtZW50LWhvdmVyIHtcbiAgICBwb3NpdGlvbjogcmVsYXRpdmU7XG4gICAgYmFja2dyb3VuZC1pbWFnZTogbGluZWFyLWdyYWRpZW50KCB0byByaWdodCwgI2ZiZmJmYiwgI2ZiZmJmYik7XG4gICAgei1pbmRleDogMTtcbn1cblxuLmhvbWUtY2F0ZWdvcnktZWxlbWVudC1ob3Zlcjo6YmVmb3JlIHtcbiAgICBwb3NpdGlvbjogYWJzb2x1dGU7XG4gICAgY29udGVudDogXCJcIjtcbiAgICB0b3A6IDA7XG4gICAgcmlnaHQ6IDA7XG4gICAgYm90dG9tOiAwO1xuICAgIGxlZnQ6IDA7XG4gICAgYmFja2dyb3VuZC1pbWFnZTogbGluZWFyLWdyYWRpZW50KCB0byByaWdodCwgI2ZiZmJmYiwgI2M2YzZjNik7XG4gICAgei1pbmRleDogLTE7XG4gICAgdHJhbnNpdGlvbjogb3BhY2l0eSAwLjVzIGxpbmVhcjtcbiAgICBvcGFjaXR5OiAwO1xufVxuXG4uaG9tZS1jYXRlZ29yeS1lbGVtZW50LWhvdmVyOmhvdmVyOjpiZWZvcmUge1xuICAgIG9wYWNpdHk6IDE7XG59Il19 */"
 
 /***/ }),
 
@@ -1395,7 +2162,7 @@ module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<p>\n  admin-home-edit works!\n</p>\n"
+module.exports = "<div class=\"column_list element-animation-fadeIn\" id=\"body_fadeOut\">\n    <div *ngIf='popup_message' class=\"d-flex justify-content-center popup_message_slideIn\">\n        <div *ngIf='popup_message.success' class=\"alert alert-success\" role=\"alert\">\n            <strong>Well done!</strong> {{popup_message.message}}\n        </div>\n        <div *ngIf='!popup_message.success' class=\"alert alert-danger\" role=\"alert\">\n            <h4 class=\"alert-heading\">Oops! Please contact admin or developers!</h4> {{popup_message.message | json}}\n        </div>\n    </div>\n    <div style=\"display: flex; flex-direction: column; flex-wrap: nowrap; justify-content: center; align-items: stretch; align-content: center; height: 10%;\">\n        <h1 style=\"margin: 0px auto\">Choose a category and topic to edit</h1>\n    </div>\n    <!-- <div class=\"d-flex justify-content-center\" *ngIf=\"quizzes\" style=\"margin-top: 50px; \">\n        <div class=\"alert alert-success shadow\" role=\"alert\" style=\"display: flex; align-items: center; flex-direction: column;\">\n            <button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">\n                <span aria-hidden=\"true\">&times;</span>\n              </button>\n            <p class=\"badge btn-lg badge-light\">Quiz is good</p>\n            <p class=\"badge badge-warning\">Less than 6 questions </p>\n            <p class=\"badge btn-lg badge-danger\">Quiz is disabled</p>\n        </div>\n    </div> -->\n    <div class=\"grade-home-main \" id=\"grade-home-main \">\n        <div *ngFor=\"let c of quizzes | keyvalue \" class=\"home-category \" >\n            <div class=\"home-category-title bg-dark text-white\" style=\"width: 100%; padding: 5px 0px;\">\n                <h3 >{{c.key}}</h3>\n            </div>\n            <div *ngFor=\"let t of c.value | keyvalue \" class=\"home-category-element \">\n                <a [routerLink]=\"[links[t.value.topic_id][ 'topic_link']] \">\n                    <button type=\"button \" class=\"btn btn-lg\" [ngClass]=\"{'btn-outline-secondary': t.value.question_count > 5 && !t.value.topic_soft_delete, 'btn-outline-warning': t.value.question_count <= 5 && !t.value.topic_soft_delete, 'btn-danger': t.value.topic_soft_delete}\">{{t.value.topic}} ({{t.value.question_count}})</button>\n                </a>\n            </div>\n        </div>\n    </div>\n</div>"
 
 /***/ }),
 
@@ -1411,10 +2178,73 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AdminHomeEditComponent", function() { return AdminHomeEditComponent; });
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
+/* harmony import */ var _connector_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../connector.service */ "./src/app/connector.service.ts");
+/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/common */ "./node_modules/@angular/common/fesm5/common.js");
+
+
+
 
 
 var AdminHomeEditComponent = /** @class */ (function () {
-    function AdminHomeEditComponent() {
+    function AdminHomeEditComponent(_ConnectorService, location, _route, _r) {
+        var _this = this;
+        this._ConnectorService = _ConnectorService;
+        this.location = location;
+        this._route = _route;
+        this._r = _r;
+        this.quizzes = null; // all submitted (not graded yet) quizzes
+        this.quizzes_counter = {};
+        this.currentEng_id = null; // current engagement id
+        this.currentUser = null;
+        this.your_list = null; // list of your current grading quizzes
+        this.your_list_length = 0;
+        this.links = {};
+        this.popup_message = null;
+        this._route.paramMap.subscribe(function (params) {
+            _this.currentEng_id = params.get('eng');
+        });
+        this._ConnectorService.pop_up_message.subscribe(function (message) {
+            _this.popup_message = message;
+            if (message) {
+                _this._ConnectorService.setMainInfo({ 'message': null });
+            }
+        });
+        this._ConnectorService.user.subscribe(function (user) {
+            _this.currentUser = user;
+            if (user && (!user.admin_grader && !user.admin_owner)) {
+                _this._r.navigate(["/" + _this.currentEng_id + "/home"]);
+            }
+            if (user && user.profile_id) {
+                _this._ConnectorService.getQuizzesForEdit(_this.currentUser['email'], _this.currentEng_id).then(function (res) {
+                    // console.log("res => ", res)
+                    if (res['status'] == 'success') {
+                        _this._ConnectorService.setMainInfo({ "quizzes": res });
+                        for (var c in res) {
+                            for (var t in res[c]) {
+                                for (var el in res[c][t]) {
+                                    if (!_this.links[res[c][t][el]['topic_id']]) {
+                                        _this.links[res[c][t][el]['topic_id']] = {
+                                            'topic_link': '',
+                                            'topic_id': null
+                                        };
+                                    }
+                                    _this.links[res[c][t][el]['topic_id']]['topic_link'] = "/" + _this.currentEng_id + "/AdminEditquiz/" + res[c][t][el]['topic_id'];
+                                    _this.links[res[c][t][el]['topic_id']]['topic_id'] = res[c][t][el]['topic_id'];
+                                }
+                            }
+                        }
+                        _this.quizzes = res['categories'];
+                        console.log("RESPONSE =>", res);
+                        console.log("LINKS =<", _this.links);
+                    }
+                    else if (res['status'] == 'fail') {
+                        console.log(res);
+                        alert(res['message']);
+                    }
+                });
+            }
+        });
     }
     AdminHomeEditComponent.prototype.ngOnInit = function () {
     };
@@ -1424,7 +2254,7 @@ var AdminHomeEditComponent = /** @class */ (function () {
             template: __webpack_require__(/*! ./admin-home-edit.component.html */ "./src/app/admin-home-edit/admin-home-edit.component.html"),
             styles: [__webpack_require__(/*! ./admin-home-edit.component.css */ "./src/app/admin-home-edit/admin-home-edit.component.css")]
         }),
-        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [])
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_connector_service__WEBPACK_IMPORTED_MODULE_3__["ConnectorService"], _angular_common__WEBPACK_IMPORTED_MODULE_4__["Location"], _angular_router__WEBPACK_IMPORTED_MODULE_2__["ActivatedRoute"], _angular_router__WEBPACK_IMPORTED_MODULE_2__["Router"]])
     ], AdminHomeEditComponent);
     return AdminHomeEditComponent;
 }());
@@ -1440,7 +2270,7 @@ var AdminHomeEditComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = ".grade-home-main {\n    width: 80%;\n    margin: 0px auto;\n    display: flex;\n    flex-direction: row;\n    flex-wrap: wrap;\n    justify-content: space-around;\n    align-items: baseline;\n    align-content: center;\n}\n\n.grade-home-category {\n    min-width: 250px;\n    display: flex;\n    flex-direction: column;\n    flex-wrap: wrap;\n    justify-content: flex-start;\n    align-items: center;\n    align-content: center;\n    margin: 15px 15px;\n    box-shadow: 5px 10px 18px #888888;\n}\n\n.grade-home-category-title {\n    display: flex;\n    flex-direction: row;\n    flex-wrap: wrap;\n    justify-content: center;\n    align-items: center;\n    align-content: center;\n}\n\n.grade-home-category-element {\n    width: 100%;\n    display: flex;\n    flex-direction: column;\n    flex-wrap: wrap;\n    justify-content: flex-start;\n    align-items: center;\n    align-content: center;\n}\n\n.grade-home-category-element a {\n    width: 100%\n}\n\n.grade-home-category-element button {\n    width: 100%;\n    border: none;\n    border-radius: 0px;\n}\n\n.home-main {\n    width: 80%;\n    margin: 0px auto;\n    display: flex;\n    flex-direction: row;\n    flex-wrap: wrap;\n    justify-content: space-around;\n    align-items: baseline;\n    align-content: center;\n}\n\n.home-category {\n    min-width: 250px;\n    width: 250px;\n    max-width: 280px;\n    display: flex;\n    flex-direction: column;\n    flex-wrap: wrap;\n    justify-content: flex-start;\n    align-items: center;\n    align-content: center;\n    margin: 15px 15px;\n    background: rgba(255, 255, 255, 0.4);\n    transition: 0.5s;\n    color: #716c6c;\n}\n\n.home-category:hover {\n    min-width: 280px;\n    max-width: 280px;\n    color: black;\n    background: rgba(255, 255, 255, 0.8);\n    box-shadow: 5px 10px 18px #888888;\n    margin: 15px 0px;\n}\n\n.home-category-element .btn {\n    white-space: normal !important;\n    word-wrap: break-word;\n    display: inline-block;\n    white-space: nowrap;\n    overflow: hidden;\n    text-overflow: ellipsis;\n}\n\n.home-category-title {\n    max-width: 250px;\n    display: flex;\n    flex-direction: row;\n    flex-wrap: wrap;\n    justify-content: center;\n    align-items: center;\n    align-content: center;\n    font-weight: normal;\n}\n\n.home-category-element {\n    width: 100%;\n    display: flex;\n    flex-direction: column;\n    flex-wrap: wrap;\n    justify-content: flex-start;\n    align-items: center;\n    align-content: center;\n}\n\n.home-category-element-inner-box {\n    width: 100%;\n    display: flex;\n    flex-direction: row;\n    flex-wrap: nowrap;\n    justify-content: flex-start;\n    align-items: center;\n    align-content: center;\n}\n\n.home-category-element a {\n    width: 100%\n}\n\n.home-category-element-inner-box a {\n    width: 50%;\n    border-radius: 0px;\n}\n\n.home-category-element button {\n    width: 100%;\n    border: none;\n    border-radius: 0px;\n}\n\n/* .home-category-element-hover {\n    background: linear-gradient(to right, #fbfbfb, #fbfbfb);\n    transition: all 0.3s\n}\n\n.home-category-element-hover:hover {\n    background: linear-gradient(to right, #fbfbfb, #c6c6c6)\n} */\n\n.home-category-element-hover {\n    position: relative;\n    background-image: linear-gradient( to right, #fbfbfb, #fbfbfb);\n    z-index: 1;\n}\n\n.home-category-element-hover::before {\n    position: absolute;\n    content: \"\";\n    top: 0;\n    right: 0;\n    bottom: 0;\n    left: 0;\n    background-image: linear-gradient( to right, #fbfbfb, #c6c6c6);\n    z-index: -1;\n    transition: opacity 0.5s linear;\n    opacity: 0;\n}\n\n.home-category-element-hover:hover::before {\n    opacity: 1;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNyYy9hcHAvYWRtaW4taG9tZS1ncmFkZS9hZG1pbi1ob21lLWdyYWRlLmNvbXBvbmVudC5jc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7SUFDSSxVQUFVO0lBQ1YsZ0JBQWdCO0lBQ2hCLGFBQWE7SUFDYixtQkFBbUI7SUFDbkIsZUFBZTtJQUNmLDZCQUE2QjtJQUM3QixxQkFBcUI7SUFDckIscUJBQXFCO0FBQ3pCOztBQUVBO0lBQ0ksZ0JBQWdCO0lBQ2hCLGFBQWE7SUFDYixzQkFBc0I7SUFDdEIsZUFBZTtJQUNmLDJCQUEyQjtJQUMzQixtQkFBbUI7SUFDbkIscUJBQXFCO0lBQ3JCLGlCQUFpQjtJQUNqQixpQ0FBaUM7QUFDckM7O0FBRUE7SUFDSSxhQUFhO0lBQ2IsbUJBQW1CO0lBQ25CLGVBQWU7SUFDZix1QkFBdUI7SUFDdkIsbUJBQW1CO0lBQ25CLHFCQUFxQjtBQUN6Qjs7QUFFQTtJQUNJLFdBQVc7SUFDWCxhQUFhO0lBQ2Isc0JBQXNCO0lBQ3RCLGVBQWU7SUFDZiwyQkFBMkI7SUFDM0IsbUJBQW1CO0lBQ25CLHFCQUFxQjtBQUN6Qjs7QUFFQTtJQUNJO0FBQ0o7O0FBRUE7SUFDSSxXQUFXO0lBQ1gsWUFBWTtJQUNaLGtCQUFrQjtBQUN0Qjs7QUFFQTtJQUNJLFVBQVU7SUFDVixnQkFBZ0I7SUFDaEIsYUFBYTtJQUNiLG1CQUFtQjtJQUNuQixlQUFlO0lBQ2YsNkJBQTZCO0lBQzdCLHFCQUFxQjtJQUNyQixxQkFBcUI7QUFDekI7O0FBRUE7SUFDSSxnQkFBZ0I7SUFDaEIsWUFBWTtJQUNaLGdCQUFnQjtJQUNoQixhQUFhO0lBQ2Isc0JBQXNCO0lBQ3RCLGVBQWU7SUFDZiwyQkFBMkI7SUFDM0IsbUJBQW1CO0lBQ25CLHFCQUFxQjtJQUNyQixpQkFBaUI7SUFDakIsb0NBQW9DO0lBQ3BDLGdCQUFnQjtJQUNoQixjQUFjO0FBQ2xCOztBQUVBO0lBQ0ksZ0JBQWdCO0lBQ2hCLGdCQUFnQjtJQUNoQixZQUFZO0lBQ1osb0NBQW9DO0lBQ3BDLGlDQUFpQztJQUNqQyxnQkFBZ0I7QUFDcEI7O0FBRUE7SUFDSSw4QkFBOEI7SUFDOUIscUJBQXFCO0lBQ3JCLHFCQUFxQjtJQUNyQixtQkFBbUI7SUFDbkIsZ0JBQWdCO0lBQ2hCLHVCQUF1QjtBQUMzQjs7QUFFQTtJQUNJLGdCQUFnQjtJQUNoQixhQUFhO0lBQ2IsbUJBQW1CO0lBQ25CLGVBQWU7SUFDZix1QkFBdUI7SUFDdkIsbUJBQW1CO0lBQ25CLHFCQUFxQjtJQUNyQixtQkFBbUI7QUFDdkI7O0FBRUE7SUFDSSxXQUFXO0lBQ1gsYUFBYTtJQUNiLHNCQUFzQjtJQUN0QixlQUFlO0lBQ2YsMkJBQTJCO0lBQzNCLG1CQUFtQjtJQUNuQixxQkFBcUI7QUFDekI7O0FBRUE7SUFDSSxXQUFXO0lBQ1gsYUFBYTtJQUNiLG1CQUFtQjtJQUNuQixpQkFBaUI7SUFDakIsMkJBQTJCO0lBQzNCLG1CQUFtQjtJQUNuQixxQkFBcUI7QUFDekI7O0FBRUE7SUFDSTtBQUNKOztBQUVBO0lBQ0ksVUFBVTtJQUNWLGtCQUFrQjtBQUN0Qjs7QUFFQTtJQUNJLFdBQVc7SUFDWCxZQUFZO0lBQ1osa0JBQWtCO0FBQ3RCOztBQUdBOzs7Ozs7O0dBT0c7O0FBRUg7SUFDSSxrQkFBa0I7SUFDbEIsOERBQThEO0lBQzlELFVBQVU7QUFDZDs7QUFFQTtJQUNJLGtCQUFrQjtJQUNsQixXQUFXO0lBQ1gsTUFBTTtJQUNOLFFBQVE7SUFDUixTQUFTO0lBQ1QsT0FBTztJQUNQLDhEQUE4RDtJQUM5RCxXQUFXO0lBQ1gsK0JBQStCO0lBQy9CLFVBQVU7QUFDZDs7QUFFQTtJQUNJLFVBQVU7QUFDZCIsImZpbGUiOiJzcmMvYXBwL2FkbWluLWhvbWUtZ3JhZGUvYWRtaW4taG9tZS1ncmFkZS5jb21wb25lbnQuY3NzIiwic291cmNlc0NvbnRlbnQiOlsiLmdyYWRlLWhvbWUtbWFpbiB7XG4gICAgd2lkdGg6IDgwJTtcbiAgICBtYXJnaW46IDBweCBhdXRvO1xuICAgIGRpc3BsYXk6IGZsZXg7XG4gICAgZmxleC1kaXJlY3Rpb246IHJvdztcbiAgICBmbGV4LXdyYXA6IHdyYXA7XG4gICAganVzdGlmeS1jb250ZW50OiBzcGFjZS1hcm91bmQ7XG4gICAgYWxpZ24taXRlbXM6IGJhc2VsaW5lO1xuICAgIGFsaWduLWNvbnRlbnQ6IGNlbnRlcjtcbn1cblxuLmdyYWRlLWhvbWUtY2F0ZWdvcnkge1xuICAgIG1pbi13aWR0aDogMjUwcHg7XG4gICAgZGlzcGxheTogZmxleDtcbiAgICBmbGV4LWRpcmVjdGlvbjogY29sdW1uO1xuICAgIGZsZXgtd3JhcDogd3JhcDtcbiAgICBqdXN0aWZ5LWNvbnRlbnQ6IGZsZXgtc3RhcnQ7XG4gICAgYWxpZ24taXRlbXM6IGNlbnRlcjtcbiAgICBhbGlnbi1jb250ZW50OiBjZW50ZXI7XG4gICAgbWFyZ2luOiAxNXB4IDE1cHg7XG4gICAgYm94LXNoYWRvdzogNXB4IDEwcHggMThweCAjODg4ODg4O1xufVxuXG4uZ3JhZGUtaG9tZS1jYXRlZ29yeS10aXRsZSB7XG4gICAgZGlzcGxheTogZmxleDtcbiAgICBmbGV4LWRpcmVjdGlvbjogcm93O1xuICAgIGZsZXgtd3JhcDogd3JhcDtcbiAgICBqdXN0aWZ5LWNvbnRlbnQ6IGNlbnRlcjtcbiAgICBhbGlnbi1pdGVtczogY2VudGVyO1xuICAgIGFsaWduLWNvbnRlbnQ6IGNlbnRlcjtcbn1cblxuLmdyYWRlLWhvbWUtY2F0ZWdvcnktZWxlbWVudCB7XG4gICAgd2lkdGg6IDEwMCU7XG4gICAgZGlzcGxheTogZmxleDtcbiAgICBmbGV4LWRpcmVjdGlvbjogY29sdW1uO1xuICAgIGZsZXgtd3JhcDogd3JhcDtcbiAgICBqdXN0aWZ5LWNvbnRlbnQ6IGZsZXgtc3RhcnQ7XG4gICAgYWxpZ24taXRlbXM6IGNlbnRlcjtcbiAgICBhbGlnbi1jb250ZW50OiBjZW50ZXI7XG59XG5cbi5ncmFkZS1ob21lLWNhdGVnb3J5LWVsZW1lbnQgYSB7XG4gICAgd2lkdGg6IDEwMCVcbn1cblxuLmdyYWRlLWhvbWUtY2F0ZWdvcnktZWxlbWVudCBidXR0b24ge1xuICAgIHdpZHRoOiAxMDAlO1xuICAgIGJvcmRlcjogbm9uZTtcbiAgICBib3JkZXItcmFkaXVzOiAwcHg7XG59XG5cbi5ob21lLW1haW4ge1xuICAgIHdpZHRoOiA4MCU7XG4gICAgbWFyZ2luOiAwcHggYXV0bztcbiAgICBkaXNwbGF5OiBmbGV4O1xuICAgIGZsZXgtZGlyZWN0aW9uOiByb3c7XG4gICAgZmxleC13cmFwOiB3cmFwO1xuICAgIGp1c3RpZnktY29udGVudDogc3BhY2UtYXJvdW5kO1xuICAgIGFsaWduLWl0ZW1zOiBiYXNlbGluZTtcbiAgICBhbGlnbi1jb250ZW50OiBjZW50ZXI7XG59XG5cbi5ob21lLWNhdGVnb3J5IHtcbiAgICBtaW4td2lkdGg6IDI1MHB4O1xuICAgIHdpZHRoOiAyNTBweDtcbiAgICBtYXgtd2lkdGg6IDI4MHB4O1xuICAgIGRpc3BsYXk6IGZsZXg7XG4gICAgZmxleC1kaXJlY3Rpb246IGNvbHVtbjtcbiAgICBmbGV4LXdyYXA6IHdyYXA7XG4gICAganVzdGlmeS1jb250ZW50OiBmbGV4LXN0YXJ0O1xuICAgIGFsaWduLWl0ZW1zOiBjZW50ZXI7XG4gICAgYWxpZ24tY29udGVudDogY2VudGVyO1xuICAgIG1hcmdpbjogMTVweCAxNXB4O1xuICAgIGJhY2tncm91bmQ6IHJnYmEoMjU1LCAyNTUsIDI1NSwgMC40KTtcbiAgICB0cmFuc2l0aW9uOiAwLjVzO1xuICAgIGNvbG9yOiAjNzE2YzZjO1xufVxuXG4uaG9tZS1jYXRlZ29yeTpob3ZlciB7XG4gICAgbWluLXdpZHRoOiAyODBweDtcbiAgICBtYXgtd2lkdGg6IDI4MHB4O1xuICAgIGNvbG9yOiBibGFjaztcbiAgICBiYWNrZ3JvdW5kOiByZ2JhKDI1NSwgMjU1LCAyNTUsIDAuOCk7XG4gICAgYm94LXNoYWRvdzogNXB4IDEwcHggMThweCAjODg4ODg4O1xuICAgIG1hcmdpbjogMTVweCAwcHg7XG59XG5cbi5ob21lLWNhdGVnb3J5LWVsZW1lbnQgLmJ0biB7XG4gICAgd2hpdGUtc3BhY2U6IG5vcm1hbCAhaW1wb3J0YW50O1xuICAgIHdvcmQtd3JhcDogYnJlYWstd29yZDtcbiAgICBkaXNwbGF5OiBpbmxpbmUtYmxvY2s7XG4gICAgd2hpdGUtc3BhY2U6IG5vd3JhcDtcbiAgICBvdmVyZmxvdzogaGlkZGVuO1xuICAgIHRleHQtb3ZlcmZsb3c6IGVsbGlwc2lzO1xufVxuXG4uaG9tZS1jYXRlZ29yeS10aXRsZSB7XG4gICAgbWF4LXdpZHRoOiAyNTBweDtcbiAgICBkaXNwbGF5OiBmbGV4O1xuICAgIGZsZXgtZGlyZWN0aW9uOiByb3c7XG4gICAgZmxleC13cmFwOiB3cmFwO1xuICAgIGp1c3RpZnktY29udGVudDogY2VudGVyO1xuICAgIGFsaWduLWl0ZW1zOiBjZW50ZXI7XG4gICAgYWxpZ24tY29udGVudDogY2VudGVyO1xuICAgIGZvbnQtd2VpZ2h0OiBub3JtYWw7XG59XG5cbi5ob21lLWNhdGVnb3J5LWVsZW1lbnQge1xuICAgIHdpZHRoOiAxMDAlO1xuICAgIGRpc3BsYXk6IGZsZXg7XG4gICAgZmxleC1kaXJlY3Rpb246IGNvbHVtbjtcbiAgICBmbGV4LXdyYXA6IHdyYXA7XG4gICAganVzdGlmeS1jb250ZW50OiBmbGV4LXN0YXJ0O1xuICAgIGFsaWduLWl0ZW1zOiBjZW50ZXI7XG4gICAgYWxpZ24tY29udGVudDogY2VudGVyO1xufVxuXG4uaG9tZS1jYXRlZ29yeS1lbGVtZW50LWlubmVyLWJveCB7XG4gICAgd2lkdGg6IDEwMCU7XG4gICAgZGlzcGxheTogZmxleDtcbiAgICBmbGV4LWRpcmVjdGlvbjogcm93O1xuICAgIGZsZXgtd3JhcDogbm93cmFwO1xuICAgIGp1c3RpZnktY29udGVudDogZmxleC1zdGFydDtcbiAgICBhbGlnbi1pdGVtczogY2VudGVyO1xuICAgIGFsaWduLWNvbnRlbnQ6IGNlbnRlcjtcbn1cblxuLmhvbWUtY2F0ZWdvcnktZWxlbWVudCBhIHtcbiAgICB3aWR0aDogMTAwJVxufVxuXG4uaG9tZS1jYXRlZ29yeS1lbGVtZW50LWlubmVyLWJveCBhIHtcbiAgICB3aWR0aDogNTAlO1xuICAgIGJvcmRlci1yYWRpdXM6IDBweDtcbn1cblxuLmhvbWUtY2F0ZWdvcnktZWxlbWVudCBidXR0b24ge1xuICAgIHdpZHRoOiAxMDAlO1xuICAgIGJvcmRlcjogbm9uZTtcbiAgICBib3JkZXItcmFkaXVzOiAwcHg7XG59XG5cblxuLyogLmhvbWUtY2F0ZWdvcnktZWxlbWVudC1ob3ZlciB7XG4gICAgYmFja2dyb3VuZDogbGluZWFyLWdyYWRpZW50KHRvIHJpZ2h0LCAjZmJmYmZiLCAjZmJmYmZiKTtcbiAgICB0cmFuc2l0aW9uOiBhbGwgMC4zc1xufVxuXG4uaG9tZS1jYXRlZ29yeS1lbGVtZW50LWhvdmVyOmhvdmVyIHtcbiAgICBiYWNrZ3JvdW5kOiBsaW5lYXItZ3JhZGllbnQodG8gcmlnaHQsICNmYmZiZmIsICNjNmM2YzYpXG59ICovXG5cbi5ob21lLWNhdGVnb3J5LWVsZW1lbnQtaG92ZXIge1xuICAgIHBvc2l0aW9uOiByZWxhdGl2ZTtcbiAgICBiYWNrZ3JvdW5kLWltYWdlOiBsaW5lYXItZ3JhZGllbnQoIHRvIHJpZ2h0LCAjZmJmYmZiLCAjZmJmYmZiKTtcbiAgICB6LWluZGV4OiAxO1xufVxuXG4uaG9tZS1jYXRlZ29yeS1lbGVtZW50LWhvdmVyOjpiZWZvcmUge1xuICAgIHBvc2l0aW9uOiBhYnNvbHV0ZTtcbiAgICBjb250ZW50OiBcIlwiO1xuICAgIHRvcDogMDtcbiAgICByaWdodDogMDtcbiAgICBib3R0b206IDA7XG4gICAgbGVmdDogMDtcbiAgICBiYWNrZ3JvdW5kLWltYWdlOiBsaW5lYXItZ3JhZGllbnQoIHRvIHJpZ2h0LCAjZmJmYmZiLCAjYzZjNmM2KTtcbiAgICB6LWluZGV4OiAtMTtcbiAgICB0cmFuc2l0aW9uOiBvcGFjaXR5IDAuNXMgbGluZWFyO1xuICAgIG9wYWNpdHk6IDA7XG59XG5cbi5ob21lLWNhdGVnb3J5LWVsZW1lbnQtaG92ZXI6aG92ZXI6OmJlZm9yZSB7XG4gICAgb3BhY2l0eTogMTtcbn0iXX0= */"
+module.exports = ".grade-home-main {\n    width: 80%;\n    margin: 0px auto;\n    display: flex;\n    flex-direction: row;\n    flex-wrap: wrap;\n    justify-content: space-around;\n    align-items: baseline;\n    align-content: center;\n}\n\n.grade-home-category {\n    min-width: 250px;\n    display: flex;\n    flex-direction: column;\n    flex-wrap: wrap;\n    justify-content: flex-start;\n    align-items: center;\n    align-content: center;\n    margin: 15px 15px;\n    box-shadow: 5px 10px 18px #888888;\n}\n\n.grade-home-category-title {\n    display: flex;\n    flex-direction: row;\n    flex-wrap: wrap;\n    justify-content: center;\n    align-items: center;\n    align-content: center;\n}\n\n.grade-home-category-element {\n    width: 100%;\n    display: flex;\n    flex-direction: column;\n    flex-wrap: wrap;\n    justify-content: flex-start;\n    align-items: center;\n    align-content: center;\n}\n\n.grade-home-category-element a {\n    width: 100%\n}\n\n.grade-home-category-element button {\n    width: 100%;\n    border: none;\n    border-radius: 0px;\n}\n\n.home-main {\n    width: 80%;\n    margin: 0px auto;\n    display: flex;\n    flex-direction: row;\n    flex-wrap: wrap;\n    justify-content: space-around;\n    align-items: baseline;\n    align-content: center;\n}\n\n.home-category {\n    min-width: 250px;\n    width: 250px;\n    max-width: 280px;\n    display: flex;\n    flex-direction: column;\n    flex-wrap: wrap;\n    justify-content: flex-start;\n    align-items: center;\n    align-content: center;\n    margin: 15px 15px;\n    background: rgba(255, 255, 255, 0.4);\n    transition: 0.8s;\n    color: #716c6c;\n    box-shadow: 1px 2px 10px #3534340f;\n}\n\n.home-category:hover {\n    color: black;\n    background: rgba(255, 255, 255, 0.8);\n    box-shadow: 5px 10px 18px #888888;\n}\n\n.home-category-element .btn {\n    white-space: normal !important;\n    word-wrap: break-word;\n    display: inline-block;\n    white-space: nowrap;\n    overflow: hidden;\n    text-overflow: ellipsis;\n}\n\n.home-category-title {\n    max-width: 250px;\n    display: flex;\n    flex-direction: row;\n    flex-wrap: wrap;\n    justify-content: center;\n    align-items: center;\n    align-content: center;\n    font-weight: normal;\n}\n\n.home-category-element {\n    width: 100%;\n    display: flex;\n    flex-direction: column;\n    flex-wrap: wrap;\n    justify-content: flex-start;\n    align-items: center;\n    align-content: center;\n}\n\n.home-category-element-inner-box {\n    width: 100%;\n    display: flex;\n    flex-direction: row;\n    flex-wrap: nowrap;\n    justify-content: flex-start;\n    align-items: center;\n    align-content: center;\n}\n\n.home-category-element a {\n    width: 100%\n}\n\n.home-category-element-inner-box a {\n    width: 50%;\n    border-radius: 0px;\n}\n\n.home-category-element button {\n    width: 100%;\n    border: none;\n    border-radius: 0px;\n}\n\n/* .home-category-element-hover {\n    background: linear-gradient(to right, #fbfbfb, #fbfbfb);\n    transition: all 0.3s\n}\n\n.home-category-element-hover:hover {\n    background: linear-gradient(to right, #fbfbfb, #c6c6c6)\n} */\n\n.home-category-element-hover {\n    position: relative;\n    background-image: linear-gradient( to right, #fbfbfb, #fbfbfb);\n    z-index: 1;\n}\n\n.home-category-element-hover::before {\n    position: absolute;\n    content: \"\";\n    top: 0;\n    right: 0;\n    bottom: 0;\n    left: 0;\n    background-image: linear-gradient( to right, #fbfbfb, #c6c6c6);\n    z-index: -1;\n    transition: opacity 0.5s linear;\n    opacity: 0;\n}\n\n.home-category-element-hover:hover::before {\n    opacity: 1;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNyYy9hcHAvYWRtaW4taG9tZS1ncmFkZS9hZG1pbi1ob21lLWdyYWRlLmNvbXBvbmVudC5jc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7SUFDSSxVQUFVO0lBQ1YsZ0JBQWdCO0lBQ2hCLGFBQWE7SUFDYixtQkFBbUI7SUFDbkIsZUFBZTtJQUNmLDZCQUE2QjtJQUM3QixxQkFBcUI7SUFDckIscUJBQXFCO0FBQ3pCOztBQUVBO0lBQ0ksZ0JBQWdCO0lBQ2hCLGFBQWE7SUFDYixzQkFBc0I7SUFDdEIsZUFBZTtJQUNmLDJCQUEyQjtJQUMzQixtQkFBbUI7SUFDbkIscUJBQXFCO0lBQ3JCLGlCQUFpQjtJQUNqQixpQ0FBaUM7QUFDckM7O0FBRUE7SUFDSSxhQUFhO0lBQ2IsbUJBQW1CO0lBQ25CLGVBQWU7SUFDZix1QkFBdUI7SUFDdkIsbUJBQW1CO0lBQ25CLHFCQUFxQjtBQUN6Qjs7QUFFQTtJQUNJLFdBQVc7SUFDWCxhQUFhO0lBQ2Isc0JBQXNCO0lBQ3RCLGVBQWU7SUFDZiwyQkFBMkI7SUFDM0IsbUJBQW1CO0lBQ25CLHFCQUFxQjtBQUN6Qjs7QUFFQTtJQUNJO0FBQ0o7O0FBRUE7SUFDSSxXQUFXO0lBQ1gsWUFBWTtJQUNaLGtCQUFrQjtBQUN0Qjs7QUFFQTtJQUNJLFVBQVU7SUFDVixnQkFBZ0I7SUFDaEIsYUFBYTtJQUNiLG1CQUFtQjtJQUNuQixlQUFlO0lBQ2YsNkJBQTZCO0lBQzdCLHFCQUFxQjtJQUNyQixxQkFBcUI7QUFDekI7O0FBRUE7SUFDSSxnQkFBZ0I7SUFDaEIsWUFBWTtJQUNaLGdCQUFnQjtJQUNoQixhQUFhO0lBQ2Isc0JBQXNCO0lBQ3RCLGVBQWU7SUFDZiwyQkFBMkI7SUFDM0IsbUJBQW1CO0lBQ25CLHFCQUFxQjtJQUNyQixpQkFBaUI7SUFDakIsb0NBQW9DO0lBQ3BDLGdCQUFnQjtJQUNoQixjQUFjO0lBQ2Qsa0NBQWtDO0FBQ3RDOztBQUVBO0lBQ0ksWUFBWTtJQUNaLG9DQUFvQztJQUNwQyxpQ0FBaUM7QUFDckM7O0FBRUE7SUFDSSw4QkFBOEI7SUFDOUIscUJBQXFCO0lBQ3JCLHFCQUFxQjtJQUNyQixtQkFBbUI7SUFDbkIsZ0JBQWdCO0lBQ2hCLHVCQUF1QjtBQUMzQjs7QUFFQTtJQUNJLGdCQUFnQjtJQUNoQixhQUFhO0lBQ2IsbUJBQW1CO0lBQ25CLGVBQWU7SUFDZix1QkFBdUI7SUFDdkIsbUJBQW1CO0lBQ25CLHFCQUFxQjtJQUNyQixtQkFBbUI7QUFDdkI7O0FBRUE7SUFDSSxXQUFXO0lBQ1gsYUFBYTtJQUNiLHNCQUFzQjtJQUN0QixlQUFlO0lBQ2YsMkJBQTJCO0lBQzNCLG1CQUFtQjtJQUNuQixxQkFBcUI7QUFDekI7O0FBRUE7SUFDSSxXQUFXO0lBQ1gsYUFBYTtJQUNiLG1CQUFtQjtJQUNuQixpQkFBaUI7SUFDakIsMkJBQTJCO0lBQzNCLG1CQUFtQjtJQUNuQixxQkFBcUI7QUFDekI7O0FBRUE7SUFDSTtBQUNKOztBQUVBO0lBQ0ksVUFBVTtJQUNWLGtCQUFrQjtBQUN0Qjs7QUFFQTtJQUNJLFdBQVc7SUFDWCxZQUFZO0lBQ1osa0JBQWtCO0FBQ3RCOztBQUdBOzs7Ozs7O0dBT0c7O0FBRUg7SUFDSSxrQkFBa0I7SUFDbEIsOERBQThEO0lBQzlELFVBQVU7QUFDZDs7QUFFQTtJQUNJLGtCQUFrQjtJQUNsQixXQUFXO0lBQ1gsTUFBTTtJQUNOLFFBQVE7SUFDUixTQUFTO0lBQ1QsT0FBTztJQUNQLDhEQUE4RDtJQUM5RCxXQUFXO0lBQ1gsK0JBQStCO0lBQy9CLFVBQVU7QUFDZDs7QUFFQTtJQUNJLFVBQVU7QUFDZCIsImZpbGUiOiJzcmMvYXBwL2FkbWluLWhvbWUtZ3JhZGUvYWRtaW4taG9tZS1ncmFkZS5jb21wb25lbnQuY3NzIiwic291cmNlc0NvbnRlbnQiOlsiLmdyYWRlLWhvbWUtbWFpbiB7XG4gICAgd2lkdGg6IDgwJTtcbiAgICBtYXJnaW46IDBweCBhdXRvO1xuICAgIGRpc3BsYXk6IGZsZXg7XG4gICAgZmxleC1kaXJlY3Rpb246IHJvdztcbiAgICBmbGV4LXdyYXA6IHdyYXA7XG4gICAganVzdGlmeS1jb250ZW50OiBzcGFjZS1hcm91bmQ7XG4gICAgYWxpZ24taXRlbXM6IGJhc2VsaW5lO1xuICAgIGFsaWduLWNvbnRlbnQ6IGNlbnRlcjtcbn1cblxuLmdyYWRlLWhvbWUtY2F0ZWdvcnkge1xuICAgIG1pbi13aWR0aDogMjUwcHg7XG4gICAgZGlzcGxheTogZmxleDtcbiAgICBmbGV4LWRpcmVjdGlvbjogY29sdW1uO1xuICAgIGZsZXgtd3JhcDogd3JhcDtcbiAgICBqdXN0aWZ5LWNvbnRlbnQ6IGZsZXgtc3RhcnQ7XG4gICAgYWxpZ24taXRlbXM6IGNlbnRlcjtcbiAgICBhbGlnbi1jb250ZW50OiBjZW50ZXI7XG4gICAgbWFyZ2luOiAxNXB4IDE1cHg7XG4gICAgYm94LXNoYWRvdzogNXB4IDEwcHggMThweCAjODg4ODg4O1xufVxuXG4uZ3JhZGUtaG9tZS1jYXRlZ29yeS10aXRsZSB7XG4gICAgZGlzcGxheTogZmxleDtcbiAgICBmbGV4LWRpcmVjdGlvbjogcm93O1xuICAgIGZsZXgtd3JhcDogd3JhcDtcbiAgICBqdXN0aWZ5LWNvbnRlbnQ6IGNlbnRlcjtcbiAgICBhbGlnbi1pdGVtczogY2VudGVyO1xuICAgIGFsaWduLWNvbnRlbnQ6IGNlbnRlcjtcbn1cblxuLmdyYWRlLWhvbWUtY2F0ZWdvcnktZWxlbWVudCB7XG4gICAgd2lkdGg6IDEwMCU7XG4gICAgZGlzcGxheTogZmxleDtcbiAgICBmbGV4LWRpcmVjdGlvbjogY29sdW1uO1xuICAgIGZsZXgtd3JhcDogd3JhcDtcbiAgICBqdXN0aWZ5LWNvbnRlbnQ6IGZsZXgtc3RhcnQ7XG4gICAgYWxpZ24taXRlbXM6IGNlbnRlcjtcbiAgICBhbGlnbi1jb250ZW50OiBjZW50ZXI7XG59XG5cbi5ncmFkZS1ob21lLWNhdGVnb3J5LWVsZW1lbnQgYSB7XG4gICAgd2lkdGg6IDEwMCVcbn1cblxuLmdyYWRlLWhvbWUtY2F0ZWdvcnktZWxlbWVudCBidXR0b24ge1xuICAgIHdpZHRoOiAxMDAlO1xuICAgIGJvcmRlcjogbm9uZTtcbiAgICBib3JkZXItcmFkaXVzOiAwcHg7XG59XG5cbi5ob21lLW1haW4ge1xuICAgIHdpZHRoOiA4MCU7XG4gICAgbWFyZ2luOiAwcHggYXV0bztcbiAgICBkaXNwbGF5OiBmbGV4O1xuICAgIGZsZXgtZGlyZWN0aW9uOiByb3c7XG4gICAgZmxleC13cmFwOiB3cmFwO1xuICAgIGp1c3RpZnktY29udGVudDogc3BhY2UtYXJvdW5kO1xuICAgIGFsaWduLWl0ZW1zOiBiYXNlbGluZTtcbiAgICBhbGlnbi1jb250ZW50OiBjZW50ZXI7XG59XG5cbi5ob21lLWNhdGVnb3J5IHtcbiAgICBtaW4td2lkdGg6IDI1MHB4O1xuICAgIHdpZHRoOiAyNTBweDtcbiAgICBtYXgtd2lkdGg6IDI4MHB4O1xuICAgIGRpc3BsYXk6IGZsZXg7XG4gICAgZmxleC1kaXJlY3Rpb246IGNvbHVtbjtcbiAgICBmbGV4LXdyYXA6IHdyYXA7XG4gICAganVzdGlmeS1jb250ZW50OiBmbGV4LXN0YXJ0O1xuICAgIGFsaWduLWl0ZW1zOiBjZW50ZXI7XG4gICAgYWxpZ24tY29udGVudDogY2VudGVyO1xuICAgIG1hcmdpbjogMTVweCAxNXB4O1xuICAgIGJhY2tncm91bmQ6IHJnYmEoMjU1LCAyNTUsIDI1NSwgMC40KTtcbiAgICB0cmFuc2l0aW9uOiAwLjhzO1xuICAgIGNvbG9yOiAjNzE2YzZjO1xuICAgIGJveC1zaGFkb3c6IDFweCAycHggMTBweCAjMzUzNDM0MGY7XG59XG5cbi5ob21lLWNhdGVnb3J5OmhvdmVyIHtcbiAgICBjb2xvcjogYmxhY2s7XG4gICAgYmFja2dyb3VuZDogcmdiYSgyNTUsIDI1NSwgMjU1LCAwLjgpO1xuICAgIGJveC1zaGFkb3c6IDVweCAxMHB4IDE4cHggIzg4ODg4ODtcbn1cblxuLmhvbWUtY2F0ZWdvcnktZWxlbWVudCAuYnRuIHtcbiAgICB3aGl0ZS1zcGFjZTogbm9ybWFsICFpbXBvcnRhbnQ7XG4gICAgd29yZC13cmFwOiBicmVhay13b3JkO1xuICAgIGRpc3BsYXk6IGlubGluZS1ibG9jaztcbiAgICB3aGl0ZS1zcGFjZTogbm93cmFwO1xuICAgIG92ZXJmbG93OiBoaWRkZW47XG4gICAgdGV4dC1vdmVyZmxvdzogZWxsaXBzaXM7XG59XG5cbi5ob21lLWNhdGVnb3J5LXRpdGxlIHtcbiAgICBtYXgtd2lkdGg6IDI1MHB4O1xuICAgIGRpc3BsYXk6IGZsZXg7XG4gICAgZmxleC1kaXJlY3Rpb246IHJvdztcbiAgICBmbGV4LXdyYXA6IHdyYXA7XG4gICAganVzdGlmeS1jb250ZW50OiBjZW50ZXI7XG4gICAgYWxpZ24taXRlbXM6IGNlbnRlcjtcbiAgICBhbGlnbi1jb250ZW50OiBjZW50ZXI7XG4gICAgZm9udC13ZWlnaHQ6IG5vcm1hbDtcbn1cblxuLmhvbWUtY2F0ZWdvcnktZWxlbWVudCB7XG4gICAgd2lkdGg6IDEwMCU7XG4gICAgZGlzcGxheTogZmxleDtcbiAgICBmbGV4LWRpcmVjdGlvbjogY29sdW1uO1xuICAgIGZsZXgtd3JhcDogd3JhcDtcbiAgICBqdXN0aWZ5LWNvbnRlbnQ6IGZsZXgtc3RhcnQ7XG4gICAgYWxpZ24taXRlbXM6IGNlbnRlcjtcbiAgICBhbGlnbi1jb250ZW50OiBjZW50ZXI7XG59XG5cbi5ob21lLWNhdGVnb3J5LWVsZW1lbnQtaW5uZXItYm94IHtcbiAgICB3aWR0aDogMTAwJTtcbiAgICBkaXNwbGF5OiBmbGV4O1xuICAgIGZsZXgtZGlyZWN0aW9uOiByb3c7XG4gICAgZmxleC13cmFwOiBub3dyYXA7XG4gICAganVzdGlmeS1jb250ZW50OiBmbGV4LXN0YXJ0O1xuICAgIGFsaWduLWl0ZW1zOiBjZW50ZXI7XG4gICAgYWxpZ24tY29udGVudDogY2VudGVyO1xufVxuXG4uaG9tZS1jYXRlZ29yeS1lbGVtZW50IGEge1xuICAgIHdpZHRoOiAxMDAlXG59XG5cbi5ob21lLWNhdGVnb3J5LWVsZW1lbnQtaW5uZXItYm94IGEge1xuICAgIHdpZHRoOiA1MCU7XG4gICAgYm9yZGVyLXJhZGl1czogMHB4O1xufVxuXG4uaG9tZS1jYXRlZ29yeS1lbGVtZW50IGJ1dHRvbiB7XG4gICAgd2lkdGg6IDEwMCU7XG4gICAgYm9yZGVyOiBub25lO1xuICAgIGJvcmRlci1yYWRpdXM6IDBweDtcbn1cblxuXG4vKiAuaG9tZS1jYXRlZ29yeS1lbGVtZW50LWhvdmVyIHtcbiAgICBiYWNrZ3JvdW5kOiBsaW5lYXItZ3JhZGllbnQodG8gcmlnaHQsICNmYmZiZmIsICNmYmZiZmIpO1xuICAgIHRyYW5zaXRpb246IGFsbCAwLjNzXG59XG5cbi5ob21lLWNhdGVnb3J5LWVsZW1lbnQtaG92ZXI6aG92ZXIge1xuICAgIGJhY2tncm91bmQ6IGxpbmVhci1ncmFkaWVudCh0byByaWdodCwgI2ZiZmJmYiwgI2M2YzZjNilcbn0gKi9cblxuLmhvbWUtY2F0ZWdvcnktZWxlbWVudC1ob3ZlciB7XG4gICAgcG9zaXRpb246IHJlbGF0aXZlO1xuICAgIGJhY2tncm91bmQtaW1hZ2U6IGxpbmVhci1ncmFkaWVudCggdG8gcmlnaHQsICNmYmZiZmIsICNmYmZiZmIpO1xuICAgIHotaW5kZXg6IDE7XG59XG5cbi5ob21lLWNhdGVnb3J5LWVsZW1lbnQtaG92ZXI6OmJlZm9yZSB7XG4gICAgcG9zaXRpb246IGFic29sdXRlO1xuICAgIGNvbnRlbnQ6IFwiXCI7XG4gICAgdG9wOiAwO1xuICAgIHJpZ2h0OiAwO1xuICAgIGJvdHRvbTogMDtcbiAgICBsZWZ0OiAwO1xuICAgIGJhY2tncm91bmQtaW1hZ2U6IGxpbmVhci1ncmFkaWVudCggdG8gcmlnaHQsICNmYmZiZmIsICNjNmM2YzYpO1xuICAgIHotaW5kZXg6IC0xO1xuICAgIHRyYW5zaXRpb246IG9wYWNpdHkgMC41cyBsaW5lYXI7XG4gICAgb3BhY2l0eTogMDtcbn1cblxuLmhvbWUtY2F0ZWdvcnktZWxlbWVudC1ob3Zlcjpob3Zlcjo6YmVmb3JlIHtcbiAgICBvcGFjaXR5OiAxO1xufSJdfQ== */"
 
 /***/ }),
 
@@ -1451,7 +2281,7 @@ module.exports = ".grade-home-main {\n    width: 80%;\n    margin: 0px auto;\n  
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"column_list element-animation-fadeIn\" id=\"body_fadeOut\">\n    <div *ngIf='popup_message' class=\"d-flex justify-content-center popup_message_slideIn\">\n        <div *ngIf='popup_message.success' class=\"alert alert-success\" role=\"alert\">\n            <strong>Well done!</strong> {{popup_message.message}}\n        </div>\n        <div *ngIf='!popup_message.success' class=\"alert alert-danger\" role=\"alert\">\n            <h4 class=\"alert-heading\">Oops! Please contact admin or developers!</h4> {{popup_message.message | json}}\n        </div>\n    </div>\n    <div style=\"display: flex; flex-direction: column; flex-wrap: nowrap; justify-content: center; align-items: stretch; align-content: center; height: 10%;\">\n        <h1 style=\"margin: 0px auto\">Choose a category and topic to grade</h1>\n    </div>\n    <div class=\"d-flex justify-content-center\">\n        <button class=\"btn btn-warning text-monospace button_hover_expand\" *ngIf=\"your_list_length>1\" id=\"release_all\" style=\"border-radius: 0px; width: 250px\" (click)=\"releaseAllSubmittedQuiz()\">Release all {{your_list_length}} quizzes</button>\n        <button class=\"btn btn-warning text-monospace button_hover_expand\" *ngIf=\"your_list_length==1\" id=\"release_all\" style=\"border-radius: 0px; width: 250px\" (click)=\"releaseOneSubmittedQuiz()\">Release the current quiz</button>\n        <button class=\" btn btn-warning text-monospace button_hover_expand \" *ngIf=\"your_list_length<1 \" id=\"release_all \" style=\"border-radius: 0px; width: 250px \" disabled>No current quizzes</button>\n    </div>\n    <div class=\"grade-home-main \" id=\"grade-home-main \">\n        <div *ngFor=\"let c of quizzes | keyvalue \" class=\"home-category \" style=\"box-shadow: 12px 12px 16px silver; \">\n            <div class=\"home-category-title \">\n                <h3>{{c.key}}</h3>\n            </div>\n            <div *ngFor=\"let t of c.value | keyvalue \" class=\"home-category-element \">\n                <div *ngIf=\"your_list[links[t.key][ 'topic_id']] \" style=\"width:100%\" align='center'>\n                    <span> <span unselectable=\"on \" class=\"font-weight-bolder \"> {{t.key}}</span> <span class=\"text-black-10 text-monospace \">  #{{your_list[links[t.key]['topic_id']]['submit_id']}}</span></span>\n                    <div class=\"home-category-element-inner-box \">\n                        <button class=\"btn btn-outline-info btn-sm text-monospace \" style=\"border: none \" [routerLink]=\"[your_list[links[t.key][ 'topic_id']][ 'continue_link']] \">Continue</button>\n                        <button class=\"btn btn-outline-warning btn-sm text-monospace \" style=\"border: none \" (click)=\"releaseQuiz(your_list[links[t.key][ 'topic_id']][ 'submit_id'], links[t.key][ 'topic_id']) \">Release</button>\n                    </div>\n                </div>\n                <a *ngIf=\"your_list[links[t.key][ 'topic_id']]==n ull \" [routerLink]=\"[links[t.key][ 'topic_link']] \">\n                    <button type=\"button \" class=\"btn btn-outline-secondary \">{{t.key}}\n                        ({{  quizzes_counter[links[t.key]['topic_id']] }})\n                        {{your_list[links[t.key]['topic_id']]}}</button>\n                </a>\n            </div>\n        </div>\n    </div>\n</div>"
+module.exports = "<div class=\"column_list element-animation-fadeIn\" id=\"body_fadeOut\">\n    <div *ngIf='popup_message' class=\"d-flex justify-content-center popup_message_slideIn\">\n        <div *ngIf='popup_message.success' class=\"alert alert-success\" role=\"alert\">\n            <strong>Well done!</strong> {{popup_message.message}}\n        </div>\n        <div *ngIf='!popup_message.success' class=\"alert alert-danger\" role=\"alert\">\n            <h4 class=\"alert-heading\">Oops! Please contact admin or developers!</h4> {{popup_message.message | json}}\n        </div>\n    </div>\n    <div style=\"display: flex; flex-direction: column; flex-wrap: nowrap; justify-content: center; align-items: stretch; align-content: center; height: 10%;\">\n        <h1 style=\"margin: 0px auto\">Choose a category and topic to grade</h1>\n    </div>\n    <div class=\"d-flex justify-content-center\">\n        <button class=\"btn btn-warning text-monospace button_hover_expand\" *ngIf=\"your_list_length>1\" id=\"release_all\" style=\"border-radius: 0px; width: 250px\" (click)=\"releaseAllSubmittedQuiz()\">Release all {{your_list_length}} quizzes</button>\n        <button class=\"btn btn-warning text-monospace button_hover_expand\" *ngIf=\"your_list_length==1\" id=\"release_all\" style=\"border-radius: 0px; width: 250px\" (click)=\"releaseOneSubmittedQuiz()\">Release the current quiz</button>\n        <button class=\" btn btn-warning text-monospace button_hover_expand \" *ngIf=\"your_list_length<1 \" id=\"release_all \" style=\"border-radius: 0px; width: 250px \" disabled>No current quizzes</button>\n    </div>\n    <div class=\"grade-home-main \" id=\"grade-home-main \">\n        <div *ngFor=\"let c of quizzes | keyvalue \" class=\"home-category\">\n            <div class=\"home-category-title bg-dark text-white\" style=\"width: 100%; padding: 5px 0px;\">\n                <h3>{{c.key}}</h3>\n            </div>\n            <div *ngFor=\"let t of c.value | keyvalue \" class=\"home-category-element \">\n                <div *ngIf=\"your_list[links[t.key][ 'topic_id']] \" style=\"width:100%\" align='center'>\n                    <span> <span unselectable=\"on \" class=\"font-weight-bolder \"> {{t.key}}</span> <span class=\"text-black-10 text-monospace \">  #{{your_list[links[t.key]['topic_id']]['submit_id']}}</span></span>\n                    <div class=\"home-category-element-inner-box \">\n                        <button class=\"btn btn-outline-info btn-sm text-monospace \" style=\"border: none \" [routerLink]=\"[your_list[links[t.key][ 'topic_id']][ 'continue_link']] \">Continue</button>\n                        <button class=\"btn btn-outline-warning btn-sm text-monospace \" style=\"border: none \" (click)=\"releaseQuiz(your_list[links[t.key][ 'topic_id']][ 'submit_id'], links[t.key][ 'topic_id']) \">Release</button>\n                    </div>\n                </div>\n                <a *ngIf=\"your_list[links[t.key][ 'topic_id']]==n ull \" [routerLink]=\"[links[t.key][ 'topic_link']] \">\n                    <button type=\"button \" class=\"btn btn-outline-secondary \">{{t.key}}\n                        ({{  quizzes_counter[links[t.key]['topic_id']] }})\n                        {{your_list[links[t.key]['topic_id']]}}</button>\n                </a>\n            </div>\n        </div>\n    </div>\n</div>"
 
 /***/ }),
 
@@ -1622,7 +2452,7 @@ var AdminHomeGradeComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = ".home-main {\n    width: 80%;\n    margin: 0px auto;\n    display: flex;\n    flex-direction: row;\n    flex-wrap: wrap;\n    justify-content: space-around;\n    align-items: baseline;\n    align-content: center;\n}\n\n.home-category {\n    min-width: 250px;\n    width: 250px;\n    max-width: 280px;\n    display: flex;\n    flex-direction: column;\n    flex-wrap: wrap;\n    justify-content: flex-start;\n    align-items: center;\n    align-content: center;\n    margin: 15px 15px;\n    background: rgba(255, 255, 255, 0.4);\n    transition: 0.5s;\n    color: #716c6c;\n}\n\n.home-category:hover {\n    min-width: 280px;\n    max-width: 280px;\n    color: black;\n    background: rgba(255, 255, 255, 0.8);\n    box-shadow: 5px 10px 18px #888888;\n    margin: 15px 0px;\n}\n\n.home-category-element .btn {\n    white-space: normal !important;\n    word-wrap: break-word;\n    display: inline-block;\n    white-space: nowrap;\n    overflow: hidden;\n    text-overflow: ellipsis;\n}\n\n.home-category-title {\n    max-width: 250px;\n    display: flex;\n    flex-direction: row;\n    flex-wrap: wrap;\n    justify-content: center;\n    align-items: center;\n    align-content: center;\n    font-weight: normal;\n}\n\n.home-category-element {\n    width: 100%;\n    display: flex;\n    flex-direction: column;\n    flex-wrap: wrap;\n    justify-content: flex-start;\n    align-items: center;\n    align-content: center;\n}\n\n.home-category-element-inner-box {\n    width: 100%;\n    display: flex;\n    flex-direction: row;\n    flex-wrap: wrap;\n    justify-content: flex-start;\n    align-items: center;\n    align-content: center;\n}\n\n.home-category-element a {\n    width: 100%\n}\n\n.home-category-element-inner-box a {\n    width: 50%;\n    border-radius: 0px;\n}\n\n.home-category-element button {\n    width: 100%;\n    border: none;\n    border-radius: 0px;\n}\n\n/* .home-category-element-hover {\n    background: linear-gradient(to right, #fbfbfb, #fbfbfb);\n    transition: all 0.3s\n}\n\n.home-category-element-hover:hover {\n    background: linear-gradient(to right, #fbfbfb, #c6c6c6)\n} */\n\n.home-category-element-hover {\n    position: relative;\n    background-image: linear-gradient( to right, #fbfbfb, #fbfbfb);\n    z-index: 1;\n}\n\n.home-category-element-hover::before {\n    position: absolute;\n    content: \"\";\n    top: 0;\n    right: 0;\n    bottom: 0;\n    left: 0;\n    background-image: linear-gradient( to right, #fbfbfb, #c6c6c6);\n    z-index: -1;\n    transition: opacity 0.5s linear;\n    opacity: 0;\n}\n\n.home-category-element-hover:hover::before {\n    opacity: 1;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNyYy9hcHAvYWRtaW4taG9tZS9hZG1pbi1ob21lLmNvbXBvbmVudC5jc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7SUFDSSxVQUFVO0lBQ1YsZ0JBQWdCO0lBQ2hCLGFBQWE7SUFDYixtQkFBbUI7SUFDbkIsZUFBZTtJQUNmLDZCQUE2QjtJQUM3QixxQkFBcUI7SUFDckIscUJBQXFCO0FBQ3pCOztBQUVBO0lBQ0ksZ0JBQWdCO0lBQ2hCLFlBQVk7SUFDWixnQkFBZ0I7SUFDaEIsYUFBYTtJQUNiLHNCQUFzQjtJQUN0QixlQUFlO0lBQ2YsMkJBQTJCO0lBQzNCLG1CQUFtQjtJQUNuQixxQkFBcUI7SUFDckIsaUJBQWlCO0lBQ2pCLG9DQUFvQztJQUNwQyxnQkFBZ0I7SUFDaEIsY0FBYztBQUNsQjs7QUFFQTtJQUNJLGdCQUFnQjtJQUNoQixnQkFBZ0I7SUFDaEIsWUFBWTtJQUNaLG9DQUFvQztJQUNwQyxpQ0FBaUM7SUFDakMsZ0JBQWdCO0FBQ3BCOztBQUVBO0lBQ0ksOEJBQThCO0lBQzlCLHFCQUFxQjtJQUNyQixxQkFBcUI7SUFDckIsbUJBQW1CO0lBQ25CLGdCQUFnQjtJQUNoQix1QkFBdUI7QUFDM0I7O0FBRUE7SUFDSSxnQkFBZ0I7SUFDaEIsYUFBYTtJQUNiLG1CQUFtQjtJQUNuQixlQUFlO0lBQ2YsdUJBQXVCO0lBQ3ZCLG1CQUFtQjtJQUNuQixxQkFBcUI7SUFDckIsbUJBQW1CO0FBQ3ZCOztBQUVBO0lBQ0ksV0FBVztJQUNYLGFBQWE7SUFDYixzQkFBc0I7SUFDdEIsZUFBZTtJQUNmLDJCQUEyQjtJQUMzQixtQkFBbUI7SUFDbkIscUJBQXFCO0FBQ3pCOztBQUVBO0lBQ0ksV0FBVztJQUNYLGFBQWE7SUFDYixtQkFBbUI7SUFDbkIsZUFBZTtJQUNmLDJCQUEyQjtJQUMzQixtQkFBbUI7SUFDbkIscUJBQXFCO0FBQ3pCOztBQUVBO0lBQ0k7QUFDSjs7QUFFQTtJQUNJLFVBQVU7SUFDVixrQkFBa0I7QUFDdEI7O0FBRUE7SUFDSSxXQUFXO0lBQ1gsWUFBWTtJQUNaLGtCQUFrQjtBQUN0Qjs7QUFHQTs7Ozs7OztHQU9HOztBQUVIO0lBQ0ksa0JBQWtCO0lBQ2xCLDhEQUE4RDtJQUM5RCxVQUFVO0FBQ2Q7O0FBRUE7SUFDSSxrQkFBa0I7SUFDbEIsV0FBVztJQUNYLE1BQU07SUFDTixRQUFRO0lBQ1IsU0FBUztJQUNULE9BQU87SUFDUCw4REFBOEQ7SUFDOUQsV0FBVztJQUNYLCtCQUErQjtJQUMvQixVQUFVO0FBQ2Q7O0FBRUE7SUFDSSxVQUFVO0FBQ2QiLCJmaWxlIjoic3JjL2FwcC9hZG1pbi1ob21lL2FkbWluLWhvbWUuY29tcG9uZW50LmNzcyIsInNvdXJjZXNDb250ZW50IjpbIi5ob21lLW1haW4ge1xuICAgIHdpZHRoOiA4MCU7XG4gICAgbWFyZ2luOiAwcHggYXV0bztcbiAgICBkaXNwbGF5OiBmbGV4O1xuICAgIGZsZXgtZGlyZWN0aW9uOiByb3c7XG4gICAgZmxleC13cmFwOiB3cmFwO1xuICAgIGp1c3RpZnktY29udGVudDogc3BhY2UtYXJvdW5kO1xuICAgIGFsaWduLWl0ZW1zOiBiYXNlbGluZTtcbiAgICBhbGlnbi1jb250ZW50OiBjZW50ZXI7XG59XG5cbi5ob21lLWNhdGVnb3J5IHtcbiAgICBtaW4td2lkdGg6IDI1MHB4O1xuICAgIHdpZHRoOiAyNTBweDtcbiAgICBtYXgtd2lkdGg6IDI4MHB4O1xuICAgIGRpc3BsYXk6IGZsZXg7XG4gICAgZmxleC1kaXJlY3Rpb246IGNvbHVtbjtcbiAgICBmbGV4LXdyYXA6IHdyYXA7XG4gICAganVzdGlmeS1jb250ZW50OiBmbGV4LXN0YXJ0O1xuICAgIGFsaWduLWl0ZW1zOiBjZW50ZXI7XG4gICAgYWxpZ24tY29udGVudDogY2VudGVyO1xuICAgIG1hcmdpbjogMTVweCAxNXB4O1xuICAgIGJhY2tncm91bmQ6IHJnYmEoMjU1LCAyNTUsIDI1NSwgMC40KTtcbiAgICB0cmFuc2l0aW9uOiAwLjVzO1xuICAgIGNvbG9yOiAjNzE2YzZjO1xufVxuXG4uaG9tZS1jYXRlZ29yeTpob3ZlciB7XG4gICAgbWluLXdpZHRoOiAyODBweDtcbiAgICBtYXgtd2lkdGg6IDI4MHB4O1xuICAgIGNvbG9yOiBibGFjaztcbiAgICBiYWNrZ3JvdW5kOiByZ2JhKDI1NSwgMjU1LCAyNTUsIDAuOCk7XG4gICAgYm94LXNoYWRvdzogNXB4IDEwcHggMThweCAjODg4ODg4O1xuICAgIG1hcmdpbjogMTVweCAwcHg7XG59XG5cbi5ob21lLWNhdGVnb3J5LWVsZW1lbnQgLmJ0biB7XG4gICAgd2hpdGUtc3BhY2U6IG5vcm1hbCAhaW1wb3J0YW50O1xuICAgIHdvcmQtd3JhcDogYnJlYWstd29yZDtcbiAgICBkaXNwbGF5OiBpbmxpbmUtYmxvY2s7XG4gICAgd2hpdGUtc3BhY2U6IG5vd3JhcDtcbiAgICBvdmVyZmxvdzogaGlkZGVuO1xuICAgIHRleHQtb3ZlcmZsb3c6IGVsbGlwc2lzO1xufVxuXG4uaG9tZS1jYXRlZ29yeS10aXRsZSB7XG4gICAgbWF4LXdpZHRoOiAyNTBweDtcbiAgICBkaXNwbGF5OiBmbGV4O1xuICAgIGZsZXgtZGlyZWN0aW9uOiByb3c7XG4gICAgZmxleC13cmFwOiB3cmFwO1xuICAgIGp1c3RpZnktY29udGVudDogY2VudGVyO1xuICAgIGFsaWduLWl0ZW1zOiBjZW50ZXI7XG4gICAgYWxpZ24tY29udGVudDogY2VudGVyO1xuICAgIGZvbnQtd2VpZ2h0OiBub3JtYWw7XG59XG5cbi5ob21lLWNhdGVnb3J5LWVsZW1lbnQge1xuICAgIHdpZHRoOiAxMDAlO1xuICAgIGRpc3BsYXk6IGZsZXg7XG4gICAgZmxleC1kaXJlY3Rpb246IGNvbHVtbjtcbiAgICBmbGV4LXdyYXA6IHdyYXA7XG4gICAganVzdGlmeS1jb250ZW50OiBmbGV4LXN0YXJ0O1xuICAgIGFsaWduLWl0ZW1zOiBjZW50ZXI7XG4gICAgYWxpZ24tY29udGVudDogY2VudGVyO1xufVxuXG4uaG9tZS1jYXRlZ29yeS1lbGVtZW50LWlubmVyLWJveCB7XG4gICAgd2lkdGg6IDEwMCU7XG4gICAgZGlzcGxheTogZmxleDtcbiAgICBmbGV4LWRpcmVjdGlvbjogcm93O1xuICAgIGZsZXgtd3JhcDogd3JhcDtcbiAgICBqdXN0aWZ5LWNvbnRlbnQ6IGZsZXgtc3RhcnQ7XG4gICAgYWxpZ24taXRlbXM6IGNlbnRlcjtcbiAgICBhbGlnbi1jb250ZW50OiBjZW50ZXI7XG59XG5cbi5ob21lLWNhdGVnb3J5LWVsZW1lbnQgYSB7XG4gICAgd2lkdGg6IDEwMCVcbn1cblxuLmhvbWUtY2F0ZWdvcnktZWxlbWVudC1pbm5lci1ib3ggYSB7XG4gICAgd2lkdGg6IDUwJTtcbiAgICBib3JkZXItcmFkaXVzOiAwcHg7XG59XG5cbi5ob21lLWNhdGVnb3J5LWVsZW1lbnQgYnV0dG9uIHtcbiAgICB3aWR0aDogMTAwJTtcbiAgICBib3JkZXI6IG5vbmU7XG4gICAgYm9yZGVyLXJhZGl1czogMHB4O1xufVxuXG5cbi8qIC5ob21lLWNhdGVnb3J5LWVsZW1lbnQtaG92ZXIge1xuICAgIGJhY2tncm91bmQ6IGxpbmVhci1ncmFkaWVudCh0byByaWdodCwgI2ZiZmJmYiwgI2ZiZmJmYik7XG4gICAgdHJhbnNpdGlvbjogYWxsIDAuM3Ncbn1cblxuLmhvbWUtY2F0ZWdvcnktZWxlbWVudC1ob3Zlcjpob3ZlciB7XG4gICAgYmFja2dyb3VuZDogbGluZWFyLWdyYWRpZW50KHRvIHJpZ2h0LCAjZmJmYmZiLCAjYzZjNmM2KVxufSAqL1xuXG4uaG9tZS1jYXRlZ29yeS1lbGVtZW50LWhvdmVyIHtcbiAgICBwb3NpdGlvbjogcmVsYXRpdmU7XG4gICAgYmFja2dyb3VuZC1pbWFnZTogbGluZWFyLWdyYWRpZW50KCB0byByaWdodCwgI2ZiZmJmYiwgI2ZiZmJmYik7XG4gICAgei1pbmRleDogMTtcbn1cblxuLmhvbWUtY2F0ZWdvcnktZWxlbWVudC1ob3Zlcjo6YmVmb3JlIHtcbiAgICBwb3NpdGlvbjogYWJzb2x1dGU7XG4gICAgY29udGVudDogXCJcIjtcbiAgICB0b3A6IDA7XG4gICAgcmlnaHQ6IDA7XG4gICAgYm90dG9tOiAwO1xuICAgIGxlZnQ6IDA7XG4gICAgYmFja2dyb3VuZC1pbWFnZTogbGluZWFyLWdyYWRpZW50KCB0byByaWdodCwgI2ZiZmJmYiwgI2M2YzZjNik7XG4gICAgei1pbmRleDogLTE7XG4gICAgdHJhbnNpdGlvbjogb3BhY2l0eSAwLjVzIGxpbmVhcjtcbiAgICBvcGFjaXR5OiAwO1xufVxuXG4uaG9tZS1jYXRlZ29yeS1lbGVtZW50LWhvdmVyOmhvdmVyOjpiZWZvcmUge1xuICAgIG9wYWNpdHk6IDE7XG59Il19 */"
+module.exports = ".home-main {\n    width: 80%;\n    margin: 0px auto;\n    display: flex;\n    flex-direction: row;\n    flex-wrap: wrap;\n    justify-content: space-around;\n    align-items: baseline;\n    align-content: center;\n}\n\n.home-category {\n    min-width: 250px;\n    width: 350px;\n    display: flex;\n    flex-direction: column;\n    flex-wrap: wrap;\n    justify-content: flex-start;\n    align-items: center;\n    align-content: center;\n    margin: 15px 15px;\n    background: rgba(255, 255, 255, 0.4);\n    transition: 0.8s;\n    color: #716c6c;\n    box-shadow: 1px 2px 10px #3534340f;\n}\n\n.home-category:hover {\n    color: black;\n    background: rgba(255, 255, 255, 0.8);\n    box-shadow: 5px 10px 18px #888888;\n}\n\n.home-category-element .btn {\n    white-space: normal !important;\n    word-wrap: break-word;\n    display: inline-block;\n    white-space: nowrap;\n    overflow: hidden;\n    text-overflow: ellipsis;\n}\n\n.home-category-title {\n    max-width: 350px;\n    display: flex;\n    flex-direction: row;\n    flex-wrap: wrap;\n    justify-content: center;\n    align-items: center;\n    align-content: center;\n    font-weight: normal;\n}\n\n.home-category-element {\n    width: 100%;\n    display: flex;\n    flex-direction: column;\n    flex-wrap: wrap;\n    justify-content: flex-start;\n    align-items: center;\n    align-content: center;\n}\n\n.home-category-element-inner-box {\n    width: 100%;\n    display: flex;\n    flex-direction: row;\n    flex-wrap: wrap;\n    justify-content: flex-start;\n    align-items: center;\n    align-content: center;\n}\n\n.home-category-element a {\n    width: 100%\n}\n\n.home-category-element-inner-box a {\n    width: 50%;\n    border-radius: 0px;\n}\n\n.home-category-element button {\n    width: 100%;\n    border: none;\n    border-radius: 0px;\n}\n\n/* .home-category-element-hover {\n    background: linear-gradient(to right, #fbfbfb, #fbfbfb);\n    transition: all 0.3s\n}\n\n.home-category-element-hover:hover {\n    background: linear-gradient(to right, #fbfbfb, #c6c6c6)\n} */\n\n.home-category-element-hover {\n    position: relative;\n    background-image: linear-gradient( to right, #fbfbfb, #fbfbfb);\n    z-index: 1;\n}\n\n.home-category-element-hover::before {\n    position: absolute;\n    content: \"\";\n    top: 0;\n    right: 0;\n    bottom: 0;\n    left: 0;\n    background-image: linear-gradient( to right, #fbfbfb, #c6c6c6);\n    z-index: -1;\n    transition: opacity 0.5s linear;\n    opacity: 0;\n}\n\n.home-category-element-hover:hover::before {\n    opacity: 1;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNyYy9hcHAvYWRtaW4taG9tZS9hZG1pbi1ob21lLmNvbXBvbmVudC5jc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7SUFDSSxVQUFVO0lBQ1YsZ0JBQWdCO0lBQ2hCLGFBQWE7SUFDYixtQkFBbUI7SUFDbkIsZUFBZTtJQUNmLDZCQUE2QjtJQUM3QixxQkFBcUI7SUFDckIscUJBQXFCO0FBQ3pCOztBQUVBO0lBQ0ksZ0JBQWdCO0lBQ2hCLFlBQVk7SUFDWixhQUFhO0lBQ2Isc0JBQXNCO0lBQ3RCLGVBQWU7SUFDZiwyQkFBMkI7SUFDM0IsbUJBQW1CO0lBQ25CLHFCQUFxQjtJQUNyQixpQkFBaUI7SUFDakIsb0NBQW9DO0lBQ3BDLGdCQUFnQjtJQUNoQixjQUFjO0lBQ2Qsa0NBQWtDO0FBQ3RDOztBQUVBO0lBQ0ksWUFBWTtJQUNaLG9DQUFvQztJQUNwQyxpQ0FBaUM7QUFDckM7O0FBRUE7SUFDSSw4QkFBOEI7SUFDOUIscUJBQXFCO0lBQ3JCLHFCQUFxQjtJQUNyQixtQkFBbUI7SUFDbkIsZ0JBQWdCO0lBQ2hCLHVCQUF1QjtBQUMzQjs7QUFFQTtJQUNJLGdCQUFnQjtJQUNoQixhQUFhO0lBQ2IsbUJBQW1CO0lBQ25CLGVBQWU7SUFDZix1QkFBdUI7SUFDdkIsbUJBQW1CO0lBQ25CLHFCQUFxQjtJQUNyQixtQkFBbUI7QUFDdkI7O0FBRUE7SUFDSSxXQUFXO0lBQ1gsYUFBYTtJQUNiLHNCQUFzQjtJQUN0QixlQUFlO0lBQ2YsMkJBQTJCO0lBQzNCLG1CQUFtQjtJQUNuQixxQkFBcUI7QUFDekI7O0FBRUE7SUFDSSxXQUFXO0lBQ1gsYUFBYTtJQUNiLG1CQUFtQjtJQUNuQixlQUFlO0lBQ2YsMkJBQTJCO0lBQzNCLG1CQUFtQjtJQUNuQixxQkFBcUI7QUFDekI7O0FBRUE7SUFDSTtBQUNKOztBQUVBO0lBQ0ksVUFBVTtJQUNWLGtCQUFrQjtBQUN0Qjs7QUFFQTtJQUNJLFdBQVc7SUFDWCxZQUFZO0lBQ1osa0JBQWtCO0FBQ3RCOztBQUdBOzs7Ozs7O0dBT0c7O0FBRUg7SUFDSSxrQkFBa0I7SUFDbEIsOERBQThEO0lBQzlELFVBQVU7QUFDZDs7QUFFQTtJQUNJLGtCQUFrQjtJQUNsQixXQUFXO0lBQ1gsTUFBTTtJQUNOLFFBQVE7SUFDUixTQUFTO0lBQ1QsT0FBTztJQUNQLDhEQUE4RDtJQUM5RCxXQUFXO0lBQ1gsK0JBQStCO0lBQy9CLFVBQVU7QUFDZDs7QUFFQTtJQUNJLFVBQVU7QUFDZCIsImZpbGUiOiJzcmMvYXBwL2FkbWluLWhvbWUvYWRtaW4taG9tZS5jb21wb25lbnQuY3NzIiwic291cmNlc0NvbnRlbnQiOlsiLmhvbWUtbWFpbiB7XG4gICAgd2lkdGg6IDgwJTtcbiAgICBtYXJnaW46IDBweCBhdXRvO1xuICAgIGRpc3BsYXk6IGZsZXg7XG4gICAgZmxleC1kaXJlY3Rpb246IHJvdztcbiAgICBmbGV4LXdyYXA6IHdyYXA7XG4gICAganVzdGlmeS1jb250ZW50OiBzcGFjZS1hcm91bmQ7XG4gICAgYWxpZ24taXRlbXM6IGJhc2VsaW5lO1xuICAgIGFsaWduLWNvbnRlbnQ6IGNlbnRlcjtcbn1cblxuLmhvbWUtY2F0ZWdvcnkge1xuICAgIG1pbi13aWR0aDogMjUwcHg7XG4gICAgd2lkdGg6IDM1MHB4O1xuICAgIGRpc3BsYXk6IGZsZXg7XG4gICAgZmxleC1kaXJlY3Rpb246IGNvbHVtbjtcbiAgICBmbGV4LXdyYXA6IHdyYXA7XG4gICAganVzdGlmeS1jb250ZW50OiBmbGV4LXN0YXJ0O1xuICAgIGFsaWduLWl0ZW1zOiBjZW50ZXI7XG4gICAgYWxpZ24tY29udGVudDogY2VudGVyO1xuICAgIG1hcmdpbjogMTVweCAxNXB4O1xuICAgIGJhY2tncm91bmQ6IHJnYmEoMjU1LCAyNTUsIDI1NSwgMC40KTtcbiAgICB0cmFuc2l0aW9uOiAwLjhzO1xuICAgIGNvbG9yOiAjNzE2YzZjO1xuICAgIGJveC1zaGFkb3c6IDFweCAycHggMTBweCAjMzUzNDM0MGY7XG59XG5cbi5ob21lLWNhdGVnb3J5OmhvdmVyIHtcbiAgICBjb2xvcjogYmxhY2s7XG4gICAgYmFja2dyb3VuZDogcmdiYSgyNTUsIDI1NSwgMjU1LCAwLjgpO1xuICAgIGJveC1zaGFkb3c6IDVweCAxMHB4IDE4cHggIzg4ODg4ODtcbn1cblxuLmhvbWUtY2F0ZWdvcnktZWxlbWVudCAuYnRuIHtcbiAgICB3aGl0ZS1zcGFjZTogbm9ybWFsICFpbXBvcnRhbnQ7XG4gICAgd29yZC13cmFwOiBicmVhay13b3JkO1xuICAgIGRpc3BsYXk6IGlubGluZS1ibG9jaztcbiAgICB3aGl0ZS1zcGFjZTogbm93cmFwO1xuICAgIG92ZXJmbG93OiBoaWRkZW47XG4gICAgdGV4dC1vdmVyZmxvdzogZWxsaXBzaXM7XG59XG5cbi5ob21lLWNhdGVnb3J5LXRpdGxlIHtcbiAgICBtYXgtd2lkdGg6IDM1MHB4O1xuICAgIGRpc3BsYXk6IGZsZXg7XG4gICAgZmxleC1kaXJlY3Rpb246IHJvdztcbiAgICBmbGV4LXdyYXA6IHdyYXA7XG4gICAganVzdGlmeS1jb250ZW50OiBjZW50ZXI7XG4gICAgYWxpZ24taXRlbXM6IGNlbnRlcjtcbiAgICBhbGlnbi1jb250ZW50OiBjZW50ZXI7XG4gICAgZm9udC13ZWlnaHQ6IG5vcm1hbDtcbn1cblxuLmhvbWUtY2F0ZWdvcnktZWxlbWVudCB7XG4gICAgd2lkdGg6IDEwMCU7XG4gICAgZGlzcGxheTogZmxleDtcbiAgICBmbGV4LWRpcmVjdGlvbjogY29sdW1uO1xuICAgIGZsZXgtd3JhcDogd3JhcDtcbiAgICBqdXN0aWZ5LWNvbnRlbnQ6IGZsZXgtc3RhcnQ7XG4gICAgYWxpZ24taXRlbXM6IGNlbnRlcjtcbiAgICBhbGlnbi1jb250ZW50OiBjZW50ZXI7XG59XG5cbi5ob21lLWNhdGVnb3J5LWVsZW1lbnQtaW5uZXItYm94IHtcbiAgICB3aWR0aDogMTAwJTtcbiAgICBkaXNwbGF5OiBmbGV4O1xuICAgIGZsZXgtZGlyZWN0aW9uOiByb3c7XG4gICAgZmxleC13cmFwOiB3cmFwO1xuICAgIGp1c3RpZnktY29udGVudDogZmxleC1zdGFydDtcbiAgICBhbGlnbi1pdGVtczogY2VudGVyO1xuICAgIGFsaWduLWNvbnRlbnQ6IGNlbnRlcjtcbn1cblxuLmhvbWUtY2F0ZWdvcnktZWxlbWVudCBhIHtcbiAgICB3aWR0aDogMTAwJVxufVxuXG4uaG9tZS1jYXRlZ29yeS1lbGVtZW50LWlubmVyLWJveCBhIHtcbiAgICB3aWR0aDogNTAlO1xuICAgIGJvcmRlci1yYWRpdXM6IDBweDtcbn1cblxuLmhvbWUtY2F0ZWdvcnktZWxlbWVudCBidXR0b24ge1xuICAgIHdpZHRoOiAxMDAlO1xuICAgIGJvcmRlcjogbm9uZTtcbiAgICBib3JkZXItcmFkaXVzOiAwcHg7XG59XG5cblxuLyogLmhvbWUtY2F0ZWdvcnktZWxlbWVudC1ob3ZlciB7XG4gICAgYmFja2dyb3VuZDogbGluZWFyLWdyYWRpZW50KHRvIHJpZ2h0LCAjZmJmYmZiLCAjZmJmYmZiKTtcbiAgICB0cmFuc2l0aW9uOiBhbGwgMC4zc1xufVxuXG4uaG9tZS1jYXRlZ29yeS1lbGVtZW50LWhvdmVyOmhvdmVyIHtcbiAgICBiYWNrZ3JvdW5kOiBsaW5lYXItZ3JhZGllbnQodG8gcmlnaHQsICNmYmZiZmIsICNjNmM2YzYpXG59ICovXG5cbi5ob21lLWNhdGVnb3J5LWVsZW1lbnQtaG92ZXIge1xuICAgIHBvc2l0aW9uOiByZWxhdGl2ZTtcbiAgICBiYWNrZ3JvdW5kLWltYWdlOiBsaW5lYXItZ3JhZGllbnQoIHRvIHJpZ2h0LCAjZmJmYmZiLCAjZmJmYmZiKTtcbiAgICB6LWluZGV4OiAxO1xufVxuXG4uaG9tZS1jYXRlZ29yeS1lbGVtZW50LWhvdmVyOjpiZWZvcmUge1xuICAgIHBvc2l0aW9uOiBhYnNvbHV0ZTtcbiAgICBjb250ZW50OiBcIlwiO1xuICAgIHRvcDogMDtcbiAgICByaWdodDogMDtcbiAgICBib3R0b206IDA7XG4gICAgbGVmdDogMDtcbiAgICBiYWNrZ3JvdW5kLWltYWdlOiBsaW5lYXItZ3JhZGllbnQoIHRvIHJpZ2h0LCAjZmJmYmZiLCAjYzZjNmM2KTtcbiAgICB6LWluZGV4OiAtMTtcbiAgICB0cmFuc2l0aW9uOiBvcGFjaXR5IDAuNXMgbGluZWFyO1xuICAgIG9wYWNpdHk6IDA7XG59XG5cbi5ob21lLWNhdGVnb3J5LWVsZW1lbnQtaG92ZXI6aG92ZXI6OmJlZm9yZSB7XG4gICAgb3BhY2l0eTogMTtcbn0iXX0= */"
 
 /***/ }),
 
@@ -1633,7 +2463,7 @@ module.exports = ".home-main {\n    width: 80%;\n    margin: 0px auto;\n    disp
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div *ngIf='currentUser && currentUser.admin' class=\"quiz-selection element-animation-fadeIn\" align=\"center\" id=\"body_fadeOut\">\n    <div style=\"height: 10%; justify-content: center; display: flex; flex-direction: column;flex-wrap: wrap;\">\n        <h1 class=\"text-center\">Welcome, {{currentUser.first_name}} {{currentUser.last_name}}</h1>\n    </div>\n    <div class=\"home-main\" id=\"homeCategories\" *ngIf=\"currentEng\">\n        <div class=\"home-category\">\n            <div class=\"home-category-title\">\n                <h1>Grader</h1>\n            </div>\n            <div class=\"home-category-element\">\n                <a class=\"admin_link\" [routerLink]=\"['/', currentEng_id, 'adminhomegrade']\">\n                    <button *ngIf=\"gradings_counter>0\" class=\"btn btn-outline-success btn-lg dropbtn admin-button\" [disabled]=\"!currentUser.admin_grader && !currentUser.admin_owner\" type=\"button\">Grade a Quiz ({{gradings_counter}})</button>\n                    <button *ngIf=\"!gradings_counter || gradings_counter<1\" class=\"btn btn-outline-success btn-lg dropbtn admin-button\" disabled type=\"button\">No quizzes to grade</button>\n                </a>\n            </div>\n        </div>\n        <div class=\"home-category\">\n            <div class=\"home-category-title\">\n                <h1>Editor</h1>\n            </div>\n            <div class=\"home-category-element\">\n                <a class=\"admin_link\" [routerLink]=\"['/',currentEng_id, 'admincreatequiz']\">\n                    <button class=\"btn btn-outline-primary btn-lg dropbtn admin-button\" type=\"button\" [disabled]=\"!currentUser.admin_editor && !currentUser.admin_owner\">Create a Quiz</button>\n                </a>\n                <a class=\"admin_link\" [routerLink]=\"['/',currentEng_id, 'adminhomeedit']\">\n                    <button class=\"btn btn-lg btn-outline-primary dropbtn admin-button\" type=\"button\" [disabled]=\"!currentUser.admin_editor && !currentUser.admin_owner\">Edit a Quiz</button>\n                </a>\n            </div>\n        </div>\n        <div class=\"home-category\">\n            <div class=\"home-category-title\">\n                <h1>Quiz Controls</h1>\n            </div>\n            <div class=\"home-category-element\">\n                <a class=\"admin_link\" [routerLink]=\"['/',currentEng_id, 'AdminEditpermissions']\">\n                    <button class=\"btn btn-outline-dark btn-lg dropbtn admin-button\" [disabled]=\"!currentUser.admin_permissions && !currentUser.admin_owner\" type=\"button\">Quiz Permissions</button>\n                </a>\n                <a class=\"admin_link\" [routerLink]=\"['/',currentEng_id, 'AdminEditsubmissions']\">\n                    <button class=\"btn btn-outline-dark btn-lg dropbtn admin-button\" [disabled]=\"!currentUser.admin_permissions && !currentUser.admin_owner\" type=\"button\">Quiz Submissions</button>\n                </a>\n            </div>\n        </div>\n        <div class=\"home-category\">\n            <div class=\"home-category-title\">\n                <h1>Super Admin</h1>\n            </div>\n            <div class=\"home-category-element\">\n                <a class=\"admin_link\" [routerLink]=\"['/',currentEng_id, 'AdminEditusersComponent']\">\n                    <button class=\"btn btn-outline-danger btn-lg dropbtn admin-button\" [disabled]=\"!currentUser.admin_permissions && !currentUser.admin_owner\" type=\"button\">User Permissions</button>\n                </a>\n                <a class=\"admin_link\" [routerLink]=\"['/',currentEng_id, 'AdminEditengagements']\">\n                    <button class=\"btn btn-outline-danger btn-lg dropbtn admin-button\" [disabled]=\"!currentUser.admin_permissions && !currentUser.admin_owner\" type=\"button\">Edit Engagements</button>\n                </a>\n            </div>\n        </div>\n    </div>\n</div>"
+module.exports = "<div *ngIf='currentUser && currentUser.admin' class=\"quiz-selection element-animation-fadeIn\" align=\"center\" id=\"body_fadeOut\">\n    <div style=\"height: 10%; justify-content: center; display: flex; flex-direction: column;flex-wrap: wrap;\">\n        <h1 class=\"text-center\">Welcome, {{currentUser.first_name}} {{currentUser.last_name}}</h1>\n    </div>\n    <div class=\"home-main\" id=\"homeCategories\" *ngIf=\"currentEng\">\n        <div class=\"home-category\">\n            <div class=\"home-category-title bg-dark text-white\" style=\"width: 100%; padding: 5px 0px;\">\n                <h1>Grader</h1>\n            </div>\n            <div class=\"home-category-element\">\n                <a class=\"admin_link\" [routerLink]=\"['/', currentEng_id, 'adminhomegrade']\">\n                    <button *ngIf=\"gradings_counter>0\" class=\"btn btn-outline-success btn-lg dropbtn admin-button\" [disabled]=\"!currentUser.admin_grader && !currentUser.admin_owner\" type=\"button\">Grade a Quiz ({{gradings_counter}})</button>\n                    <button *ngIf=\"!gradings_counter || gradings_counter<1\" class=\"btn btn-outline-success btn-lg dropbtn admin-button\" disabled type=\"button\">No quizzes to grade</button>\n                </a>\n            </div>\n        </div>\n        <div class=\"home-category\">\n            <div class=\"home-category-title bg-dark text-white\" style=\"width: 100%; padding: 5px 0px;\">\n                <h1>Editor</h1>\n            </div>\n            <div class=\"home-category-element\">\n                <a class=\"admin_link\" [routerLink]=\"['/',currentEng_id, 'admincreatequiz']\">\n                    <button class=\"btn btn-outline-primary btn-lg dropbtn admin-button\" type=\"button\" [disabled]=\"!currentUser.admin_editor && !currentUser.admin_owner\">Create a Quiz</button>\n                </a>\n                <a class=\"admin_link\" [routerLink]=\"['/',currentEng_id, 'adminhomeedit']\">\n                    <button class=\"btn btn-lg btn-outline-primary dropbtn admin-button\" type=\"button\" [disabled]=\"!currentUser.admin_editor && !currentUser.admin_owner\">Edit a Quiz</button>\n                </a>\n            </div>\n        </div>\n        <div class=\"home-category\">\n            <div class=\"home-category-title bg-dark text-white\" style=\"width: 100%; padding: 5px 0px;\">\n                <h1>Quiz Controls</h1>\n            </div>\n            <div class=\"home-category-element\">\n                <a class=\"admin_link\" [routerLink]=\"['/',currentEng_id, 'AdminEditpermissions']\">\n                    <button class=\"btn btn-outline-secondary btn-lg dropbtn admin-button\" [disabled]=\"!currentUser.admin_permissions && !currentUser.admin_owner\" type=\"button\">Quiz Permissions</button>\n                </a>\n                <a class=\"admin_link\" [routerLink]=\"['/',currentEng_id, 'AdminEditsubmissions']\">\n                    <button class=\"btn btn-outline-secondary btn-lg dropbtn admin-button\" [disabled]=\"!currentUser.admin_permissions && !currentUser.admin_owner\" type=\"button\">Quiz Submissions</button>\n                </a>\n            </div>\n        </div>\n        <div class=\"home-category\">\n            <div class=\"home-category-title bg-dark text-white\" style=\"width: 100%; padding: 5px 0px;\">\n                <h1>Super Admin</h1>\n            </div>\n            <div class=\"home-category-element\">\n                <a class=\"admin_link\" [routerLink]=\"['/',currentEng_id, 'AdminEditusersComponent']\">\n                    <button class=\"btn btn-outline-info btn-lg dropbtn admin-button\" [disabled]=\"!currentUser.admin_permissions && !currentUser.admin_owner\" type=\"button\">User Permissions</button>\n                </a>\n                <a class=\"admin_link\" [routerLink]=\"['/',currentEng_id, 'AdminEditengagements']\">\n                    <button class=\"btn btn-outline-info btn-lg dropbtn admin-button\" [disabled]=\"!currentUser.admin_permissions && !currentUser.admin_owner\" type=\"button\">Edit Engagements</button>\n                </a>\n            </div>\n        </div>\n    </div>\n</div>"
 
 /***/ }),
 
@@ -2549,6 +3379,36 @@ var ConnectorService = /** @class */ (function () {
                 'quiz': quiz
             };
             that.http.post('/api/createQuiz', obj).subscribe(function (res) {
+                resolve(res);
+            }, function (err) {
+                reject(err);
+            });
+        });
+    };
+    // ==============================================================================
+    // EDIT QUIZ FUNCTIONS ========================================================
+    ConnectorService.prototype.getQuizzesForEdit = function (email, eng_id) {
+        var that = this;
+        return new Promise(function (resolve, reject) {
+            var obj = {
+                'email': email,
+                'eng_id': eng_id
+            };
+            that.http.post('/api/getQuizzesForEdit', obj).subscribe(function (res) {
+                resolve(res);
+            }, function (err) {
+                reject(err);
+            });
+        });
+    };
+    ConnectorService.prototype.getQuizByTopicIdForEdit = function (email, topic_id) {
+        var that = this;
+        return new Promise(function (resolve, reject) {
+            var obj = {
+                'email': email,
+                'topic_id': topic_id
+            };
+            that.http.post('/api/getQuizByTopicIdForEdit', obj).subscribe(function (res) {
                 resolve(res);
             }, function (err) {
                 reject(err);

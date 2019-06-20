@@ -264,26 +264,26 @@ export class ConnectorService {
     }
   // ==============================================================================
   // CREATE QUIZ FUNCTIONS ========================================================
-
+  
   getCatsTopsEngs(email){
     var that = this;
-      return new Promise(function (resolve, reject) {
-        let obj = {
-          'email': email
+    return new Promise(function (resolve, reject) {
+      let obj = {
+        'email': email
+      }
+      that.http.post('/api/getCatsTopsEngs', obj).subscribe(
+        res => {
+          resolve(res)
+        },
+        err => {
+          reject(err)
         }
-        that.http.post('/api/getCatsTopsEngs', obj).subscribe(
-          res => {
-            resolve(res)
-          },
-          err => {
-            reject(err)
-          }
         );
       })
-  }
-
-  createQuiz(quiz, email){
-    var that = this;
+    }
+    
+    createQuiz(quiz, email){
+      var that = this;
       return new Promise(function (resolve, reject) {
         let obj = {
           'email': email,
@@ -296,12 +296,47 @@ export class ConnectorService {
           err => {
             reject(err)
           }
-        );
-      })
+          );
+        })
+      }
+      
+  // ==============================================================================
+  
+  // EDIT QUIZ FUNCTIONS ========================================================
+  getQuizzesForEdit(email, eng_id) {
+    var that = this;
+    return new Promise(function (resolve, reject) {
+      let obj = {
+        'email': email,
+        'eng_id': eng_id
+      }
+      that.http.post('/api/getQuizzesForEdit', obj).subscribe(
+        res => {
+          resolve(res)
+        },
+        err => {
+          reject(err)
+        }
+      );
+    })
   }
-
-
-
+  getQuizByTopicIdForEdit(email, topic_id) {
+    var that = this;
+    return new Promise(function (resolve, reject) {
+      let obj = {
+        'email': email,
+        'topic_id': topic_id
+      }
+      that.http.post('/api/getQuizByTopicIdForEdit', obj).subscribe(
+        res => {
+          resolve(res)
+        },
+        err => {
+          reject(err)
+        }
+      );
+    })
+  }
 
   // ==============================================================================
   // MISC FUNCTIONS
