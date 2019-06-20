@@ -282,6 +282,25 @@ export class ConnectorService {
       })
   }
 
+  createQuiz(quiz, email){
+    var that = this;
+      return new Promise(function (resolve, reject) {
+        let obj = {
+          'email': email,
+          'quiz': quiz
+        }
+        that.http.post('/api/createQuiz', obj).subscribe(
+          res => {
+            resolve(res)
+          },
+          err => {
+            reject(err)
+          }
+        );
+      })
+  }
+
+
 
 
   // ==============================================================================

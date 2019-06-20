@@ -183,4 +183,9 @@ input[type="file"] {
   .fixed_header thead tr{
     display:block;
   }
+  .alert-error{
+    color: #ffffff;
+    background-color: #fd5665;
+    border-color: #ff001b;
+  }
   

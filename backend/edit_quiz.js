@@ -32,12 +32,77 @@ function get_topic_to_edit_MSSQL(topic_id) {
     })
 };
 
+
+function restore_bucketlist_hardcopy() {
+    let functionName = 'restore_bucketlist_hardcopy';
+    let list = {
+        0: {bucket_id: 1, bucket_name: "Verify Ownership", soft_delete: false},
+        1: {bucket_id: 2, bucket_name: "No verification necessary", soft_delete: false},
+        2: {bucket_id: 3, bucket_name: "Confluence", soft_delete: false},
+        3: {bucket_id: 4, bucket_name: "Ticketmaster", soft_delete: false},
+        4: {bucket_id: 5, bucket_name: "Support Tool", soft_delete: false},
+        5: {bucket_id: 6, bucket_name: "1 - Ticket ID", soft_delete: false},
+        6: {bucket_id: 7, bucket_name: "2 - Ticket origin", soft_delete: false},
+        7: {bucket_id: 8, bucket_name: "3 - User provided info", soft_delete: false},
+        8: {bucket_id: 9, bucket_name: "4 - User provided message", soft_delete: false},
+        9: {bucket_id: 10, bucket_name: "5 - Attachments", soft_delete: false},
+        10: {bucket_id: 11, bucket_name: "6 - Related account", soft_delete: false},
+        11: {bucket_id: 12, bucket_name: "7 - Note from agent", soft_delete: false},
+        12: {bucket_id: 13, bucket_name: "8 - Response from agent", soft_delete: false},
+        13: {bucket_id: 14, bucket_name: "Purchases & Billing", soft_delete: false},
+        14: {bucket_id: 15, bucket_name: "Activity", soft_delete: false},
+        15: {bucket_id: 16, bucket_name: "Security", soft_delete: false},
+        16: {bucket_id: 17, bucket_name: "Security > Two Factor", soft_delete: false},
+        17: {bucket_id: 18, bucket_name: "Security > Phone Number", soft_delete: false},
+        18: {bucket_id: 19, bucket_name: "Security > Steam Guard", soft_delete: false},
+        19: {bucket_id: 20, bucket_name: "Re-categorize", soft_delete: false},
+        20: {bucket_id: 21, bucket_name: "Escalate", soft_delete: false},
+        21: {bucket_id: 22, bucket_name: "Assist the user", soft_delete: false},
+        22: {bucket_id: 23, bucket_name: "1.", soft_delete: false},
+        23: {bucket_id: 24, bucket_name: "2.", soft_delete: false},
+        24: {bucket_id: 25, bucket_name: "3.", soft_delete: false},
+        25: {bucket_id: 26, bucket_name: "4.", soft_delete: false},
+        26: {bucket_id: 27, bucket_name: "5.", soft_delete: false},
+        27: {bucket_id: 28, bucket_name: "Not a part of the process", soft_delete: false},
+        28: {bucket_id: 33, bucket_name: "Send closing response, close ticket", soft_delete: false},
+        29: {bucket_id: 35, bucket_name: "Respond, don't close ticket yet", soft_delete: false},
+        30: {bucket_id: 36, bucket_name: "Accounts", soft_delete: false},
+        31: {bucket_id: 37, bucket_name: "Billing", soft_delete: false},
+        32: {bucket_id: 38, bucket_name: "Tech/Games", soft_delete: false},
+        33: {bucket_id: 39, bucket_name: "Confirm", soft_delete: false},
+        34: {bucket_id: 40, bucket_name: "Set expectations", soft_delete: false},
+        35: {bucket_id: 41, bucket_name: "Assure", soft_delete: false},
+        36: {bucket_id: 42, bucket_name: "Relate", soft_delete: false},
+    }
+
+    for(let el in list){
+        update_bucket_table_MSSQL(list[el]['bucket_id'], escape(list[el]['bucket_name']))
+    }
+};
+
+function get_topic_by_topicName_MSSQL(topic_name) {
+    let functionName = 'get_topic_by_topicName_MSSQL';
+    return new Promise(function(resolve, reject) {
+        let query_quiz = `SELECT * FROM [dbo].[KA_test_topic]
+        WHERE topic = ${topic_name}`;
+        return dbQueryMethod.query(query_quiz).then(result => {
+            resolve(result)
+            return result;
+        }).catch(function(error) { reject(error); throw (error); })
+    }).catch(function(error) {
+        log_event('WARNING', error, functionName);
+        throw (error);
+    })
+};
+
 function add_test_topic_table_and_get_topic_id_MSSQL(topic, requires0, requires1, category, engagement_id) {
     let functionName = 'add_test_topic_table_MSSQL';
     return new Promise(function(resolve, reject) {
         let insert = `INSERT INTO dbo.[KA_test_topic] 
         ([topic],[requires0],[requires1],[category],[engagement_id]) 
-        VALUES ('${topic}', ${requires0}, ${requires1}, '${category}', '${engagement_id}')`
+        VALUES ('${topic}', ${requires0}, ${requires1}, '${category}', '${engagement_id}')
+        
+        SELECT SCOPE_IDENTITY()`
         dbQueryMethod.queryRaw(insert).then(result => {
             resolve(result)
             return result;
@@ -643,10 +708,16 @@ function get_bucket_id_by_name(bucket_name) {
     })
 }
 
-function update_bucket_table_MSSQL(bucket_id, bucket_name) {
+function update_bucket_table_MSSQL(bucket_id, bucket_name, soft_delete) {
+    if(soft_delete == false){
+        soft_delete = 1;
+    }else{
+        soft_delete = 0;
+    }
+    console.log(`STARTING update_bucket_table_MSSQL: bucket_id => ${bucket_id}, bucket_name => ${bucket_name}, soft_delete => ${soft_delete}`)
     let functionName = 'update_bucket_table_MSSQL';
     return new Promise(function(resolve, reject) {
-        let query = `UPDATE KA_bucket SET bucket_name = '${bucket_name}' WHERE bucket_id = ${bucket_id}`
+        let query = `UPDATE KA_bucket SET bucket_name = '${bucket_name}', soft_delete = ${soft_delete}  WHERE bucket_id = ${bucket_id}`
         dbQueryMethod.queryRaw(query).then(result => {
             resolve(result)
             return result;
@@ -1079,6 +1150,7 @@ function update_KA_quiz_questions_from_admin_edit_quiz(question_id, quiz_id) {
 
 function update_topic_main_LOOP(obj, i, edit_by, obj_topic_id, bucket_list) {
     let functionName = 'update_topic_main_LOOP';
+    console.log("STARTING update_topic_main_LOOP")
     return new Promise(function(resolve, reject) {
         try {
             let question_type_id;
@@ -1290,6 +1362,7 @@ function update_topic_table_loop(topic_id, topic, soft_delete, category, engagem
     if (soft_delete === undefined) { soft_delete = false }
     if (topic_id === undefined) { topic_id = 0 }
     if (engagement_id == undefined) { engagement_id = 2 }
+    console.log("starting update_topic_table_loop")
     return new Promise(function(resolve, reject) {
         try {
             topic = topic.trim();
@@ -1297,7 +1370,9 @@ function update_topic_table_loop(topic_id, topic, soft_delete, category, engagem
         } catch (tryError) {
             log_event('ERROR', tryError, functionName);
         }
+        console.log(`update_topic_table_loop returning get_topic_by_topic_id_for_edit_MSSQL => topic_id: ${topic_id};  soft_delete: ${soft_delete};  engagement_id: ${engagement_id}`)
         get_topic_by_topic_id_for_edit_MSSQL(topic_id).then(topic_table => {
+            console.log("get_topic_by_topic_id_for_edit_MSSQL RETURNED THIS =>", topic_table)
             if (topic_table.length > 0) {
                 let delta = false;
                 try {
@@ -1332,13 +1407,18 @@ function update_topic_table_loop(topic_id, topic, soft_delete, category, engagem
                     reject(tryError);
                 }
             } else {
+                console.log("LOOKS LIKE get_topic_by_topic_id_for_edit_MSSQL RETURNED topic_table EMPTY")
                 try {
                     let requires0 = null;
                     let requires1 = null;
-
+                    console.log(`TRYING TO RUN add_test_topic_table_and_get_topic_id_MSSQL: topic => ${topic}; category => ${category}; engagement_id => ${engagement_id}`);
                     add_test_topic_table_and_get_topic_id_MSSQL(topic, requires0, requires1, category, engagement_id).then(new_topic_object => {
-                        resolve(new_topic_object['recordset'][0]['topic_id']);
-                        return new_topic_object['recordset'][0]['topic_id'];
+                        /*
+                            Bug found: add_test_topic_table_and_get_topic_id_MSSQL returns recordset as undefined
+                        */
+                        console.log("add_test_topic_table_and_get_topic_id_MSSQL RETURNED THIS =>", new_topic_object)
+                        resolve(new_topic_object['recordset'][0]['']);
+                        return new_topic_object['recordset'][0][''];
                     }).catch(function(error) { reject(error); throw (error); })
 
                     /*
@@ -1425,7 +1505,7 @@ function update_quizzes_table_loop(topic_id, topic) {
     })
 }
 
-function update_bucket_list_LOOP(object, edit_by) {
+function update_bucket_list_LOOP(bucket_list, edit_by) {
     let functionName = 'update_bucket_list_LOOP';
     return new Promise(function(resolve, reject) {
         get_bucket_table_MSSQL().then(bucket_table => {
@@ -1434,33 +1514,30 @@ function update_bucket_list_LOOP(object, edit_by) {
             // return "complete"
             // tresting loop override
 
-            if (Object.keys(object).length == 0) {
-                //console.log('nothing to do')
+            if (Object.keys(bucket_list).length == 0) {
                 resolve('nothing to do')
+                // return true;
             } else {
-                //console.log('object')
-                //console.log(object)
-                //console.log(bucket_table)
-                for (let index in Object.keys(object)) {
-                    //console.log('object')
-                    //console.log(Object.keys(object)[index], ' : ' ,Object.values(object)[index])
-                    let bucket_id = Object.keys(object)[index]
-                    let bucket_name = Object.values(object)[index]
+                for (let index in bucket_list) {
+                    if(!bucket_list[index]['bucket_id'] || !bucket_list[index]['bucket_name'] ){
+                        continue;
+                    }
                     let found = false;
                     for (var i = 0; i < bucket_table.length; i++) {
-                        if (bucket_table[i]['bucket_id'] == bucket_id) {
+                        if (bucket_table[i]['bucket_id'] == bucket_list[index]['bucket_id'] ) {
                             found = true;
                             break;
                         }
                     }
+                    console.log(`update_bucket_list_LOOP ================================= bucket_id => ${bucket_list[index]['bucket_id'] }; bucket_name => ${bucket_list[index]['bucket_name']};`)
                     if (found == true) {
-                        //console.log('found == true')
-                        update_bucket_table_MSSQL(bucket_id, bucket_name)
+                        console.log('BUCKET FOUND!')
+                        update_bucket_table_MSSQL(bucket_list[index]['bucket_id'] , bucket_list[index]['bucket_name'], bucket_list[index]['soft_delete'])
                             .then(resolve('complete'))
                             .catch(function(error) { log_event('WARNING', error, functionName); })
                     } else if (found == false) {
-                        //console.log('else')
-                        add_bucket_table_MSSQL(bucket_name)
+                        console.log('else CREATING A NEW BUCKET!')
+                        add_bucket_table_MSSQL(bucket_list[index]['bucket_name'])
                             .then(resolve('complete'))
                             .catch(function(error) { log_event('WARNING', error, functionName); })
                     } else {
@@ -1482,31 +1559,56 @@ function update_bucket_list_LOOP(object, edit_by) {
 function recusive_object_hanlder(this_topic_id, object, current_index, edit_by) {
     let functionName = 'recusive_object_hanlder';
     if (current_index == undefined) { current_index = 0 }
-    //console.log('===============')
-    //console.log(current_index)
-    //console.log('===============')
-    //console.log(Object.keys(object).length)
-    //console.log('===============')
+    // console.log('======recusive_object_hanlder=========')
+    // console.log(current_index)
+    // console.log('===============')
+    // console.log(Object.keys(object).length)
+    // console.log('===============')
+    // console.log(object)
+    // console.log('==============')
 
     return new Promise(function(resolve, reject) {
         let max = Object.keys(object).length;
+
+        // =====
+        let objKeys = Object.keys(object)
+        for(let i = 0; i < Object.keys(object).length; i++){
+            let indexKey = objKeys[i];
+            if(typeof object[indexKey] === 'object' && indexKey != 'bucket_list' && indexKey != 'logEvent'){
+                console.log("LOOPING! >>>>>> indexKey:", indexKey)
+                update_topic_main_LOOP(object[indexKey], indexKey, edit_by, this_topic_id, object['bucket_list']).then(result =>{
+                    console.log("RESULT =>", result)
+                })
+            }
+        }
+        console.log("recusive_object_hanlder is done!!!!!")
+        resolve(true)
+        return true;
+        //=====
         if (max <= current_index) {
-            resolve('complete')
-            return 'complete'
+            console.log(`max => ${max}; current_index => ${current_index}`)
+            let objKeys = Object.keys(object)
+            console.log(objKeys)
+            console.log("recusive_object_hanlder IS COMPLETED!")
+            resolve(true)
+            // restore_bucketlist_hardcopy();
+            return true
         } else {
             let objKeys = Object.keys(object)
             let indexKey = objKeys[current_index]
-                // console.log('======================================================================')
+            console.log('======================================================================')
+            console.log(`indexKey => ${indexKey}; objKeys => ${objKeys}; typeof object[indexKey] === 'object' && indexKey != 'bucket_list' && indexKey != 'logEvent' => ${typeof object[indexKey] === 'object'} ${indexKey != 'bucket_list'} ${indexKey != 'logEvent'}`)
             if (typeof object[indexKey] === 'object' && indexKey != 'bucket_list' && indexKey != 'logEvent') {
-                //console.log(indexKey)
+                console.log("ADDING",indexKey)
                 update_topic_main_LOOP(object[indexKey], indexKey, edit_by, this_topic_id, object['bucket_list']).then(result => {
                     current_index += 1;
-                    recusive_object_hanlder(this_topic_id, object, current_index, edit_by)
+                    return recusive_object_hanlder(this_topic_id, object, current_index, edit_by)
                 }).catch(function(error) {
                     reject(error);
                     throw (error);
                 })
             } else {
+                console.log("SKIPPING", indexKey)
                 current_index += 1;
                 recusive_object_hanlder(this_topic_id, object, current_index, edit_by)
             }
@@ -1521,27 +1623,33 @@ function recusive_object_hanlder(this_topic_id, object, current_index, edit_by) 
 function update_topic_main(object, edit_by, engagement_id) {
     let functionName = 'update_topic_main';
     console.log('===============')
-    console.log(object)
+    console.log("starting update_topic_main")
     console.log('===============')
     return new Promise(function(resolve, reject) {
         try {
             update_topic_table_loop(object['topic_id'], object['topic'], object['topic_soft_delete'], object['category'], object['engagement_id']).then(this_topic_id => {
-                //console.log('======================================================================')
+                console.log('=============================update_topic_table_loop: this_topic_id=========================================', this_topic_id)
                 update_quizzes_table_loop(this_topic_id, object['topic']).then(wait => {
-                    //console.log('======================================================================')
+                    console.log('============================update_quizzes_table_loop: wait==========================================', wait)
                     update_bucket_list_LOOP(object['bucket_list'], edit_by).then(bucket_id => {
-                        //console.log('======================================================================')
+                        console.log('============================update_bucket_list_LOOP: bucket_id==========================================', bucket_id)
                         try {
                             recusive_object_hanlder(this_topic_id, object, 0, edit_by).then(wait2 => {
+                                if(wait2){
+                                    console.log("WAIT2 => ", wait2)
+                                }
+                                console.log("update_topic_main IS COMPLETED!")
                                 resolve(`${functionName} is complete`);
-                                return `${functionName} is complete`
+                                return 'success'
                             }).catch(function(error) {
                                 log_event('ERROR', error, functionName);
                                 reject(error);
+                                console.log("ERROR =>", error)
                                 throw (error);
                             })
                         } catch (tryError) {
                             log_event('ERROR', tryError, functionName);
+                            console.log(tryError)
                         }
                     }).catch(function(error) {
                         log_event('WARNING', error, functionName);

@@ -942,7 +942,35 @@ module.exports = function(app) {
             res.json(err)
         }
     });
-
+    app.post('/api/createQuiz', (req, res, next) => {
+        let response_message = {
+            'status': 'failed',
+            'message': ''
+        }
+        preload_block(res, req.body.email, undefined, undefined)
+        .catch(function(error) {
+            debugLog("ERROR HERE" + error);
+            response_message.message = error;
+            res.json(response_message);
+        })
+        .then(returnObj => {
+            let currentUser = returnObj['currentUser']
+            let quiz = returnObj['quiz']
+            // var submitted_quiz = JSON.parse(Object.keys(req.body)) // quiz comes escaped
+            update_topic_main(req.body.quiz, currentUser.profile_id).then(result => {
+                console.log("update_topic_main RETURNED =>", result)
+                debugLog('update_topic_main COMPLETE');
+                response_message.status = 'success'
+                response_message.message = result;
+                res.json(response_message)
+            })
+            .catch(function(error) {
+                debugLog("ERROR HERE" + error);
+                response_message.message = error;
+                res.json(response_message);
+            });
+        })
+    })
 
 
     // ************************************************************************

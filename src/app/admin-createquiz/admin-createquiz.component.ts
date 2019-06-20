@@ -44,9 +44,16 @@ export class AdminCreatequizComponent implements OnInit {
   bucket_list_confirm_bool = false;
   bucket_list_confirm_list = null;
   bucket_list_changes_bool = false;
+  bucket_list_changes_list = {};
   bucketList_reloader = {
     'new_question': true
   };
+  submit_status = {
+    status: '',
+    message: '',
+    display: false
+  }
+
 
   constructor(private _ConnectorService: ConnectorService, private location: Location, private _route: ActivatedRoute, private _r: Router) {
     this._route.paramMap.subscribe(params => {
@@ -58,12 +65,13 @@ export class AdminCreatequizComponent implements OnInit {
         this._ConnectorService.getCatsTopsEngs(user.email).then(res => {
           console.log("RES =>", res)
           if (res['status'] == 'success') {
-            this.main_content = res;
+            this.main_content = cloneDeep(res);
             this.engagements = res['engs'];
             this.main_content['engs'] = this.sortCategoriesByEngs(this.orderByEngID(res['engs']), res['categories'])
             this.engagements_obj = this.sortCategoriesByEngs(this.orderByEngID(res['engs']), res['categories']);
             this.categories_list = this.engagements_obj[this.currentEng_id]['categories'];
             this.bucket_list = this.bucketListSoftdeleteChecker(cloneDeep(res['bucket_list']));
+            this.main_content['bucket_list'] = this.bucketListSoftdeleteChecker(cloneDeep(res['bucket_list']));
             this.bucket_list_original = this.bucketListSoftdeleteChecker(cloneDeep(res['bucket_list']));
             console.log(this.bucket_list)
             this.selected_eng = this.currentEng_id;
@@ -112,7 +120,25 @@ export class AdminCreatequizComponent implements OnInit {
     this.submit_ready = false;
   }
   submitQuiz(){
-    console.log("SUBMITTED1")
+    console.log("SUBMITTED1");
+    let quiz = cloneDeep(this.list_of_questions);
+    delete quiz['new_question'];
+    quiz['engagement_id'] = this.selected_eng;
+    quiz['bucket_list'] = this.differenceFinderBuckets(this.bucket_list, this.main_content.bucket_list);
+    quiz['topic'] = this.selected_topic;
+    quiz['category'] = this.selected_category; 
+    this._ConnectorService.createQuiz( this.escapingQuiz(quiz),  this.currentUser.email).then(res => {
+      console.log("res =>", res)
+      this.submit_ready = false;
+      if(res['status'] == 'success'){
+        this.submit_status.display = true;
+        this.submit_status.status = 'success'
+      }else{
+        this.submit_status.display = true;
+        this.submit_status.status = 'fail';
+        this.submit_status.message = res['message'];
+      }
+    })
   }
 
 
@@ -490,6 +516,11 @@ export class AdminCreatequizComponent implements OnInit {
         }else if(Object.keys(target.answer_prompt).length< 2){
           res.body['answers'] = "Please add more answers.";
         }else{
+          for(let el in target.answer_prompt){
+            if(target.answer_prompt[el].length < 1){
+              res.body['answers_length'] = 'Some answers have no inputs at all.'
+            }
+          }
           // drag and drop bucket count
           if(target.display_type_description == "drag_and_drop"){
             if(Object.keys(target.answer_bucket_id).length < 2){
@@ -552,7 +583,11 @@ export class AdminCreatequizComponent implements OnInit {
       this.list_of_questions[id+"_error"] = {
         'error_bool': true,
         'errors' : {
-        }
+        },
+        'target': id
+      }
+      if(id == 'new_question'){
+        this.list_of_questions[id+"_error"]['target'] = "New question form";
       }
       // this.clearErrorMessageTimer(id, 5000)
     }
@@ -688,7 +723,47 @@ export class AdminCreatequizComponent implements OnInit {
     }
     return res;
   }
+  escapingList(list) { // escaping a map/dictionary
+    for (let el in list) {
+        list[el] = escape(list[el]);
+    }
+    return list;
+  }
+  escapingBucketList(list) {
+    for (let el in list) {
+        list[el]['bucket_name'] = escape(list[el]['bucket_name'] );
+    }
+    return list;
+  }
+  escapingQuiz(q) {
+    for (let el in q) {
+      if(el == "new_question" || ( typeof(q[el]) != 'object' )){
+        continue;
+      }else if(el == "bucket_list"){
+        q[el] = this.escapingBucketList(q[el])
+        continue;
+      }
+      console.log("EL =>", el)
+      q[el]['prompt'] = escape(q[el]['prompt']);
+      q[el]['training_url'] = escape(q[el]['training_url']);
+      q[el]['training_module'] = escape(q[el]['training_module']);
+      q[el]['expected_response'] = escape(q[el]['expected_response']);
+      for (let a in q[el]['answer_prompt']) {
+        q[el]['answer_prompt'][a] = escape(q[el]['answer_prompt'][a])
+      }
+    }
+    q['topic'] = escape(q['topic'])
+    q['category'] = escape(q['category'])
+    return q;
+  }
+  bucketListDifferencesFinder(){
+    let original_list = this.main_content;
+    let current_list = this.bucket_list;
+  }
 
+  goBack(){
+    this.location.back();
+  }
   checkState(){
     console.log(this)
   }

@@ -377,7 +377,7 @@
                             <button type="button" class="close" (click)="errorRemoveById(q.key)">
                                 <span aria-hidden="true">&times;</span>
                             </button>
-                            <p class="text-center text-monospace"><strong >Oops! Something went wrong.</strong></p>
+                            <p class="text-center text-monospace"><strong>{{q.value['target']}} error(s):</strong></p>
                            <p *ngFor="let error of q.value['errors'] | keyvalue" class="text-center" style="margin-bottom: 0px !important">{{error.value}}</p>
                         </div>
                     </td>
@@ -396,13 +396,31 @@
             </tbody>
         </table>
         <div [hidden]="!submit_ready" class="alert alert-success text-center shadow" style="width: 500px; margin: 0px auto;" role="alert">
-                <strong>All questions are good!</strong>
-            </div>
-        <div class="d-flex justify-content-center" style="margin-top: 50px">
+            <strong>All questions are good!</strong>
+        </div>
+        <div class="d-flex justify-content-center" *ngIf="!submit_status.display" style="margin-top: 50px">
             <button [hidden]="submit_ready" class="btn btn-lg btn-info btn-action-borderless shadow" (click)="validateQuiz()">Validate</button>
             <div [hidden]="!submit_ready" class="shadow btn-group btn-group-lg text-monospace" role="group">
-                <button  class="btn btn-lg btn-success" (click)="validateQuiz()">Submit</button>
+                <button  class="btn btn-lg btn-success" (click)="submitQuiz()">Submit</button>
                 <button  class="btn btn-lg btn-warning" (click)="cancelSubmitQuiz()">Cancel</button>
+            </div>
+        </div>
+
+        <div class="d-flex justify-content-center" *ngIf="submit_status.display && submit_status.status == 'success'" style="margin-top: 50px; ">
+            <div class="alert alert-success shadow" role="alert" style="display: flex; align-items: center; flex-direction: column;">
+                <h4 class="alert-heading">Well done!</h4>
+                You successfully created a new quiz.
+                <br>
+                <a [hidden]="submit_ready" class="btn btn-outline-light btn-action-borderless text-monospace" (click)="goBack()">Click here to go back to the admin portal</a>
+            </div>
+        </div>
+
+        <div class="d-flex justify-content-center" *ngIf="submit_status.display && submit_status.status == 'fail'" style="margin-top: 50px;">
+            <div class="alert alert-error shadow" role="alert" style="display: flex; align-items: center; flex-direction: column;">
+                <h4 class="alert-heading">New quiz failed</h4>
+                Something went wrong on the backend.
+                {{submit_status.message}}
+                <a [hidden]="submit_ready" class="btn btn-link btn-action-borderless text-monospace" (click)="goBack()">Click here to go back to the admin portal</a>
             </div>
         </div>
         <!-- <button class="btn btn-lg shadow" (click)="checkState()">Check State</button> -->
