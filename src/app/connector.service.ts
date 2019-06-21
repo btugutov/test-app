@@ -137,135 +137,135 @@ export class ConnectorService {
     })
   }
   // ==============================================================================
-  
+
   // GRADING FUNCTIONS ============================================================
-    getCompletedQuizzesLength(profile_id, eng_id) {
-      var that = this;
-      return new Promise(function (resolve, reject) {
-        let obj = {
-          'profile_id': profile_id,
-          'eng_id': eng_id
+  getCompletedQuizzesLength(profile_id, eng_id) {
+    var that = this;
+    return new Promise(function (resolve, reject) {
+      let obj = {
+        'profile_id': profile_id,
+        'eng_id': eng_id
+      }
+      that.http.post('/api/getCompletedQuizzesLength', obj).subscribe(
+        res => {
+          resolve(res)
+        },
+        err => {
+          reject(err)
         }
-        that.http.post('/api/getCompletedQuizzesLength', obj).subscribe(
-          res => {
-            resolve(res)
-          },
-          err => {
-            reject(err)
-          }
-        );
-      })
-    }
+      );
+    })
+  }
 
-    getCompletedQuizzes(profile_id, eng_id) {
-      var that = this;
-      return new Promise(function (resolve, reject) {
-        let obj = {
-          'profile_id': profile_id,
-          'eng_id': eng_id
+  getCompletedQuizzes(profile_id, eng_id) {
+    var that = this;
+    return new Promise(function (resolve, reject) {
+      let obj = {
+        'profile_id': profile_id,
+        'eng_id': eng_id
+      }
+      that.http.post('/api/getCompletedQuizzes', obj).subscribe(
+        res => {
+          resolve(res)
+        },
+        err => {
+          reject(err)
         }
-        that.http.post('/api/getCompletedQuizzes', obj).subscribe(
-          res => {
-            resolve(res)
-          },
-          err => {
-            reject(err)
-          }
-        );
-      })
-    }
+      );
+    })
+  }
 
-    releaseSubmittedQuiz(submit_id, topic_id, email){
-      var that = this;
-      return new Promise(function (resolve, reject) {
-        let obj = {
-          'submit_id': submit_id,
-          'topic_id': topic_id,
-          'email': email
+  releaseSubmittedQuiz(submit_id, topic_id, email) {
+    var that = this;
+    return new Promise(function (resolve, reject) {
+      let obj = {
+        'submit_id': submit_id,
+        'topic_id': topic_id,
+        'email': email
+      }
+      that.http.post('/api/releaseSubmittedQuiz', obj).subscribe(
+        res => {
+          resolve(res)
+        },
+        err => {
+          reject(err)
         }
-        that.http.post('/api/releaseSubmittedQuiz', obj).subscribe(
-          res => {
-            resolve(res)
-          },
-          err => {
-            reject(err)
-          }
-        );
-      })
-    }
-    releaseAllSubmittedQuiz(ids, email){
-      var that = this;
-      return new Promise(function (resolve, reject) {
-        let obj = {
-          'ids': ids,
-          'email': email
+      );
+    })
+  }
+  releaseAllSubmittedQuiz(ids, email) {
+    var that = this;
+    return new Promise(function (resolve, reject) {
+      let obj = {
+        'ids': ids,
+        'email': email
+      }
+      that.http.post('/api/releaseAllSubmittedQuiz', obj).subscribe(
+        res => {
+          resolve(res)
+        },
+        err => {
+          reject(err)
         }
-        that.http.post('/api/releaseAllSubmittedQuiz', obj).subscribe(
-          res => {
-            resolve(res)
-          },
-          err => {
-            reject(err)
-          }
-        );
-      })
-    }
-    getQuizForGrading(email, topic_id){
-      var that = this;
-      return new Promise(function (resolve, reject) {
-        let obj = {
-          'email': email,
-          'topic_id': topic_id
+      );
+    })
+  }
+  getQuizForGrading(email, topic_id) {
+    var that = this;
+    return new Promise(function (resolve, reject) {
+      let obj = {
+        'email': email,
+        'topic_id': topic_id
+      }
+      that.http.post('/api/getQuizForGrading', obj).subscribe(
+        res => {
+          resolve(res)
+        },
+        err => {
+          reject(err)
         }
-        that.http.post('/api/getQuizForGrading', obj).subscribe(
-          res => {
-            resolve(res)
-          },
-          err => {
-            reject(err)
-          }
-        );
-      })
-    }
-    continueGradeQuiz(email, submit_id){
-      var that = this;
-      return new Promise(function (resolve, reject) {
-        let obj = {
-          'submit_id': submit_id,
-          'email': email
+      );
+    })
+  }
+  continueGradeQuiz(email, submit_id) {
+    var that = this;
+    return new Promise(function (resolve, reject) {
+      let obj = {
+        'submit_id': submit_id,
+        'email': email
+      }
+      that.http.post('/api/continue_grade', obj).subscribe(
+        res => {
+          resolve(res)
+        },
+        err => {
+          reject(err)
         }
-        that.http.post('/api/continue_grade', obj).subscribe(
-          res => {
-            resolve(res)
-          },
-          err => {
-            reject(err)
-          }
-        );
-      })
-    }
+      );
+    })
+  }
 
-    submitGrades(grades, email){
-      var that = this;
-      return new Promise(function (resolve, reject) {
-        let obj = {
-          'grades': grades,
-          'email': email
+  submitGrades(grades, email) {
+    var that = this;
+    return new Promise(function (resolve, reject) {
+      let obj = {
+        'grades': grades,
+        'email': email
+      }
+      that.http.post('/api/submitGrades', obj).subscribe(
+        res => {
+          resolve(res)
+        },
+        err => {
+          reject(err)
         }
-        that.http.post('/api/submitGrades', obj).subscribe(
-          res => {
-            resolve(res)
-          },
-          err => {
-            reject(err)
-          }
-        );
-      })
-    }
+      );
+    })
+  }
   // ==============================================================================
   // CREATE QUIZ FUNCTIONS ========================================================
-  
-  getCatsTopsEngs(email){
+
+  getCatsTopsEngs(email) {
     var that = this;
     return new Promise(function (resolve, reject) {
       let obj = {
@@ -278,30 +278,30 @@ export class ConnectorService {
         err => {
           reject(err)
         }
-        );
-      })
-    }
-    
-    createQuiz(quiz, email){
-      var that = this;
-      return new Promise(function (resolve, reject) {
-        let obj = {
-          'email': email,
-          'quiz': quiz
-        }
-        that.http.post('/api/createQuiz', obj).subscribe(
-          res => {
-            resolve(res)
-          },
-          err => {
-            reject(err)
-          }
-          );
-        })
+      );
+    })
+  }
+
+  createQuiz(quiz, email) {
+    var that = this;
+    return new Promise(function (resolve, reject) {
+      let obj = {
+        'email': email,
+        'quiz': quiz
       }
-      
+      that.http.post('/api/createQuiz', obj).subscribe(
+        res => {
+          resolve(res)
+        },
+        err => {
+          reject(err)
+        }
+      );
+    })
+  }
+
   // ==============================================================================
-  
+
   // EDIT QUIZ FUNCTIONS ========================================================
   getQuizzesForEdit(email, eng_id) {
     var that = this;
@@ -337,6 +337,40 @@ export class ConnectorService {
       );
     })
   }
+  saveEditedQuiz(quiz, email) {
+    var that = this;
+    return new Promise(function (resolve, reject) {
+      let obj = {
+        'email': email,
+        'quiz': quiz
+      }
+      that.http.post('/api/saveEditedQuiz', obj).subscribe(
+        res => {
+          resolve(res)
+        },
+        err => {
+          reject(err)
+        }
+      );
+    })
+  }
+  deleteQuiz(quiz_id, email) {
+    var that = this;
+    return new Promise(function (resolve, reject) {
+      let obj = {
+        'email': email,
+        'quiz_id': quiz_id
+      }
+      that.http.post('/api/deleteQuiz', obj).subscribe(
+        res => {
+          resolve(res)
+        },
+        err => {
+          reject(err)
+        }
+      );
+    })
+  }
 
   // ==============================================================================
   // MISC FUNCTIONS
@@ -358,10 +392,10 @@ export class ConnectorService {
     if (obj.engagements) {
       this.engs.next(obj.engagements);
     }
-    if(obj.quizzes){
+    if (obj.quizzes) {
       this.quizzes.next(obj.quizzes);
     }
-    if(obj.message){
+    if (obj.message) {
       this.message.next(obj.message);
     }
   }
@@ -396,11 +430,11 @@ export class ConnectorService {
   }
   imgToBase64(element) {
     return new Promise((resolve, reject) => {
-        var file = element[0];
-        var reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = () => resolve(reader.result);
-        reader.onerror = error => reject(error);
+      var file = element[0];
+      var reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = error => reject(error);
     });
-}
+  }
 }

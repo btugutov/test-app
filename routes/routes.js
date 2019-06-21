@@ -10,7 +10,7 @@ const { debugLog, getLineNumber, log_event, log_object_parser, dbQueryMethod } =
 // methods
 const { get_available_quiz_for_profile_id_MSSQL, get_completed_quiz_categorized_submissions, get_gradable_quiz_submit_id_by_profile_and_topic, get_gradable_quiz_session_by_id, get_table_complete, get_submit_id_from_graded_by, time_now_MSSQL, update_image_base64_MSSQL, get_testable_topics_by_profile_id, get_available_engagements_by_profile_id, get_all_categories_and_topics_by_engagement_id_and_profile_id } = require('../backend/methods.js');
 // edit_quiz.js
-const { get_topic_to_edit_MSSQL, get_topic_info_for_editQuizHome, update_topic_main } = require('../backend/edit_quiz.js');
+const { get_topic_to_edit_MSSQL, get_topic_info_for_editQuizHome, update_topic_main, delete_topic_by_id } = require('../backend/edit_quiz.js');
 // get_User
 const { get_User } = require('../backend/get_user.js');
 // get_Quiz
@@ -985,43 +985,7 @@ module.exports = function (app) {
     // ********************                         ***************************
     // ************************************************************************
     // ************************************************************************
-    /*  
-    app.get('/api/ADDRESS', (req, res, next) => {
-        let function_name = FUNCTION_NAME
-        let response_message = {
-            'status': 'failed',
-            'message': ''
-        }
-        try {
-            preload_block(res, req.body['email'], undefined, undefined)
-                .catch(function(error) {
-                    debugLog("ERROR HERE" + error);
-                    response_message.message = error;
-                    res.json(response_message)
-                })
-                .then(returnObj => {
-                    let currentUser = returnObj['currentUser']
-                    if (currentUser.admin_grader || currentUser.admin_owner) {
-                        DO ALL THE LOGIC HERE
-                        res.json(RETURN_RESULT)
-                    }else {
-                            response_message.message = 'You have no permission.';
-                            res.json(response_message)
-                        }
-                    }).catch(function(error) {
-                        log_event('ERROR', error, 'function_name');
-                        error_handler(error, res, getLineNumber());
-                        response_message.message = error;
-                        res.json(response_message)
-                    });
-            } catch (err) {
-                response_message.status = err;
-                res.json(err)
-            }
-    });
-
-
-    */
+    
     app.post('/api/getQuizzesForEdit', (req, res, next) => {
         let response_message = {
             'status': 'failed',
@@ -1097,52 +1061,63 @@ module.exports = function (app) {
                     response_message.quiz1 = format_quiz_table(result)[0]
                     response_message.quiz2 = result;
                     res.json(response_message)
-                    /*
-                    get_table_complete('KA_bucket').then(bl => {
-                        // render homepage and turn header ID token into usable variable (user email)
-                        if (currentUser.admin_editor || currentUser.admin_owner) {
-                            // var a = Object.assign({}, res.locals.quiz);
-                            // for (let x in a) {
-                            //     if (typeof (a[x]) === 'object') {
-                            //         a[x] = unescapingObj(Object.assign({}, a[x]))
-                            //     }
-                            // }
-                            res.render('edit', {
-                                quiz: unescapingObj(res.locals.quiz),
-                                quiz_test: unescapingObj(a),
-                                params: params,
-                                categories: categories,
-                                questions: res.locals.questions,
-                                hostname: hostname,
-                                quizEdit: true,
-                                params: params
-                            })
-                        }
-                        // if not admin with editing permissions, redirect to error page
-                        else {
-                            res.redirect(302, '/admin')
-                        }
-                        */
-                    }).catch(function (error) {
-                        log_event('ERROR', error, 'EditTopic');
-                        error_handler(error, res, getLineNumber())
-                        response_message['message'] = error;
-                        res.json(response_message)
-                    })
-
                 }).catch(function (error) {
                     log_event('ERROR', error, 'EditTopic');
                     error_handler(error, res, getLineNumber())
                     response_message['message'] = error;
                     res.json(response_message)
                 })
+
+            }).catch(function (error) {
+                log_event('ERROR', error, 'EditTopic');
+                error_handler(error, res, getLineNumber())
+                response_message['message'] = error;
+                res.json(response_message)
+            })
     })
 
     app.post('/api/saveEditedQuiz', (req, res, next) => {
+        let response_message = {
+            'status': 'failed',
+            'message': ''
+        }
+        try {
+            preload_block(res, req.body.email, undefined, req.params['eng'])
+                .catch(function(error) {
+                    debugLog("ERROR HERE" + error);
+                    response_message.message = error;
+                    res.json(response_message)
+                })
+                .then(returnObj => {
+                    let currentUser = returnObj['currentUser']
+                    let quiz = returnObj['quiz']
+                    let submitted_quiz = req.body.quiz; // comes escaped from the front-end
+                    // log_object_parser(submitted_quiz['logEvent']);
+                    update_topic_main(submitted_quiz, currentUser.profile_id)
+                        .catch(function(error) {
+                            debugLog("ERROR HERE" + error);
+                            response_message.message = error;
+                            res.json(response_message)
+                        })
+                        .then(result => {
+                            debugLog('update_topic_main COMPLETE');
+                            response_message.status = 'success';
+                            response_message.result = result;
+                            res.json(response_message)
+                        });
+                })
+        } catch (error) {
+            console.log(error)
+            debugLog("ERROR HERE" + error);
+            response_message.message = error;
+            res.json(response_message)
+        }
+    })
+    app.post('/api/deleteQuiz', (req, res, next) => {
 
-        console.log("saved!")
-        res.json(true)
-        return;
+        console.log("================================!================================");
+        console.log(Object.keys(req.body))
+        console.log("================================!================================");
         let response_message = {
             'status': 'failed',
             'message': ''
@@ -1157,7 +1132,7 @@ module.exports = function (app) {
                 let currentUser = returnObj['currentUser']
                 let quiz = returnObj['quiz']
                 // var submitted_quiz = JSON.parse(Object.keys(req.body)) // quiz comes escaped
-                update_topic_main(req.body.quiz, currentUser.profile_id).then(result => {
+                delete_topic_by_id(req.body.quiz_id, currentUser.profile_id).then(result => {
                     console.log("update_topic_main RETURNED =>", result)
                     debugLog('update_topic_main COMPLETE');
                     response_message.status = 'success'

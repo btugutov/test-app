@@ -623,7 +623,7 @@ function update_quizzes_table_MSSQL(topic_id, quiz_name) {
     let functionName = 'update_quizzes_table_MSSQL';
     return new Promise(function(resolve, reject) {
         let query = `UPDATE KA_quizzes 
-        SET quiz_name = '${quiz_name}
+        SET quiz_name = '${quiz_name}'
         WHERE topic_id = ${topic_id}`
         dbQueryMethod.queryRaw(query).then(result => {
             resolve(result)
@@ -652,6 +652,37 @@ function get_topic_info_for_editQuizHome(engagement_id) {
             ,[KA_test_topic].[category]
             ,[KA_test_topic].[soft_delete]
             ,KA_quiz_questions.quiz_id`
+        dbQueryMethod.query(query).then(result => {
+            resolve(result)
+            return result;
+        }).catch(function(error) { reject(error); throw (error); })
+    }).catch(function(error) {
+        log_event('WARNING', error, functionName);
+        reject(error);
+        throw (error);
+    })
+}
+
+function delete_topic_by_id(topic_id){
+    let functionName = 'delete_topic_by_id';
+    return new Promise(function(resolve, reject) {
+        let query = `UPDATE KA_test_topic 
+        SET hard_delete = 1
+        WHERE topic_id = ${topic_id}`
+        dbQueryMethod.queryRaw(query).then(result => {
+            resolve(result)
+            return result;
+        }).catch(function(error) { reject(error); throw (error); })
+    }).catch(function(error) {
+        log_event('WARNING', error, functionName);
+        throw (error);
+    })
+}
+function delete_answers_by_topic_id(topic_id){
+    // NOT READY
+    let functionName = 'delete_answers_by_topic_id';
+    return new Promise(function(resolve, reject) {
+        let query = ``
         dbQueryMethod.query(query).then(result => {
             resolve(result)
             return result;
@@ -1575,8 +1606,9 @@ function recusive_object_hanlder(this_topic_id, object, current_index, edit_by) 
         let objKeys = Object.keys(object)
         for(let i = 0; i < Object.keys(object).length; i++){
             let indexKey = objKeys[i];
-            if(typeof object[indexKey] === 'object' && indexKey != 'bucket_list' && indexKey != 'logEvent'){
+            if(typeof object[indexKey] === 'object' && indexKey != 'bucket_list' && indexKey != 'logEvent' && indexKey != "list_of_deleted_questions"){
                 console.log("LOOPING! >>>>>> indexKey:", indexKey)
+
                 update_topic_main_LOOP(object[indexKey], indexKey, edit_by, this_topic_id, object['bucket_list']).then(result =>{
                     console.log("RESULT =>", result)
                 })
@@ -1692,7 +1724,8 @@ EXPORTS
 module.exports = {
     get_topic_to_edit_MSSQL: get_topic_to_edit_MSSQL,
     get_topic_info_for_editQuizHome: get_topic_info_for_editQuizHome,
-    update_topic_main: update_topic_main
+    update_topic_main: update_topic_main,
+    delete_topic_by_id: delete_topic_by_id
 };
 
 /*

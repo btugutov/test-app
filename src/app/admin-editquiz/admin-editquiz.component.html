@@ -78,34 +78,48 @@
         </div>
     </div>
 
-    <div class="admin-create-quiz-title">
-        <h1>Edit a quiz</h1>
+    <div class="admin-create-quiz-title" role="group">
+        <h1>Edit a quiz #{{topic_id}}</h1>
+        <div class="btn-group-vertical" role="group" aria-label="Basic example">
+          <button class="btn btn-warning shadow btn-action-borderless" *ngIf='!topic_soft_delete' (click)="topic_soft_delete = true">Disable Quiz</button>
+          <button class="btn btn-success shadow btn-action-borderless" *ngIf='topic_soft_delete && !topic_delete_confirm' (click)="topic_soft_delete = false">Enable  Quiz</button>
+          <button class="btn btn-danger shadow btn-action-borderless" *ngIf='topic_soft_delete && !topic_delete_confirm' (click)="topic_delete_confirm = true">Delete  Quiz</button>
+        </div>
+        <div class="admin-create-quiz-title" *ngIf="topic_delete_confirm">
+          <p class='text-monospace'>Are you sure to delete this quiz?</p>
+          <div class="btn-group" role="group" aria-label="Basic example">
+              <button type="button"  (click)="deleteQuiz()" class="btn btn-danger text-monospace" >Yes</button>
+              <button type="button" (click)="topic_delete_confirm = false" class="btn btn-warning text-monospace" >Cancel</button>
+            </div>
+        </div>
     </div>
     <div class="admin-create-quiz-body">
         <div class="admin-create-quiz-body-topic-cat-eng-box">
             <div class="input-group">
                 <div class="admin-create-quiz-body-topic-cat-eng-box-select-box">
                     <span class="text-muted">Engagement</span>
-                    <select class="custom-select" (change)="valueChanger('engagement', $event.target.value)">
-                        <option *ngFor="let eng of engagements" [selected]="eng.engagement_id==currentEng_id"
+                    <select class="custom-select shadow" (change)="valueChanger('engagement', $event.target.value)">
+                        <option *ngFor="let eng of engagements" [selected]="eng.engagement_id==selected_eng"
                             [disabled]="eng.soft_delete" value={{eng.engagement_id}}>{{eng.engagement_name}}</option>
                     </select>
                 </div>
                 <div class="admin-create-quiz-body-topic-cat-eng-box-select-box">
                     <span class="text-muted">Category</span>
-                    <input [disabled]="!selected_eng" class="custom-select" type="text" id="category_selector" list="categories" (change)="valueChanger('category', $event.target.value)" />
+                    <input [disabled]="!selected_eng" class="custom-select shadow" type="text" id="category_selector" list="categories" value="{{selected_category}}" (change)="valueChanger('category', $event.target.value)" />
                     <datalist id="categories">
                         <select class="custom-select">
-                            <option *ngFor="let c of categories_list | keyvalue" [value]="c.key"></option>
+                            <option *ngFor="let c of categories_list | keyvalue" [selected]="c.key == selected_category" [value]="c.key"><span *ngIf="c.key == original_category">(Original)</span></option>
                         </select>
                     </datalist>
                 </div>
                 <div class="admin-create-quiz-body-topic-cat-eng-box-select-box">
                     <span class="text-muted">Topic</span>
-                    <input [disabled]="!selected_category" id="topic_selector" class="custom-select" type="text" list="topics" (change)="valueChanger('topic', $event.target.value)" />
+                    <input [disabled]="!selected_category" id="topic_selector" class="custom-select shadow" type="text" list="topics" value="{{selected_topic}}" (change)="valueChanger('topic', $event.target.value)" />
                     <datalist id="topics">
                         <select class="custom-select">
-                            <option *ngFor="let t of topic_list | keyvalue" [value]="t.value['topic']">(Already exists)
+                            <option *ngFor="let t of topic_list | keyvalue" [value]="t.value['topic']">
+                              <span *ngIf="t.value['topic'] != original_topic">(Already exists)</span>
+                              <span *ngIf="t.value['topic'] == original_topic">(Original)</span>
                             </option>
                         </select>
                     </datalist>
@@ -126,7 +140,7 @@
         <table class="table table-borderless ">
             <thead class="thead-light sticky-top">
                 <tr style="height: 50px">
-                    <th class="border-0 text-uppercase small font-weight-bold text-center" style="width: 5%">ID/Order
+                    <th class="border-0 text-uppercase small font-weight-bold text-center" style="width: 5%">ID/Priority
                     </th>
                     <th class="border-0 text-uppercase small font-weight-bold text-center">Question prompt</th>
                     <th class="border-0 text-uppercase small font-weight-bold text-center">Image</th>
@@ -139,48 +153,51 @@
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor='let q of list_of_questions | keyvalue' class="create_form_row">
+                <tr *ngFor='let q of list_of_questions | keyvalue' class="create_form_row" [ngClass]="{ 'border border-success': q.key == 'new_question' }">
                     <!-- QUESTIONS -->
                     <td *ngIf="!q.value['error_bool']" class='text-center table-row'>
-                        <p>{{q.key}}</p>
+                        <p class="text-monospace" [ngClass]="{ 'text-success': q.key == 'new_question' }">{{q.key}}</p>
                         <div>
-                            <input style="width: 100%; padding: 0px 0px !important" (change)="inputEditor('question_sort', q.key, 'question_sort', null, $event.target.value)" class="edit_sort_value form-control create_form_input_shadow" min=1 max=99 type="number" value=1 title="Set Question Priority"
+                            <input style="width: 100%; padding: 0px 0px !important" [disabled]="q.value.question_soft_delete" (change)="inputEditor('question_sort', q.key, 'question_sort', null, $event.target.value)" class="edit_sort_value form-control create_form_input_shadow" min=1 max=99 type="number" value=1 title="Set Question Priority"
                                 data-toggle="tooltip" data-placement="bottom" title="Tooltip on bottom" value="{{list_of_questions[q.key]['question_sort']}}">
                         </div>
                     </td>
                     <td *ngIf="!q.value['error_bool']" style="padding: 0px 3px !important;">
-                        <textarea class='textAreaPrompt form-control create_form_input_shadow' (change)="inputEditor('prompt', q.key, 'prompt', null, $event.target.value)" rows=4 name='questionPromts' id='questionPromt_{{q.key}}' value="{{q.value['prompt']}}"></textarea>
+                        <textarea class='textAreaPrompt form-control create_form_input_shadow' [disabled]="q.value.question_soft_delete" (change)="inputEditor('prompt', q.key, 'prompt', null, $event.target.value)" rows=4 name='questionPromts' id='questionPromt_{{q.key}}' value="{{q.value['prompt']}}"></textarea>
                     </td>
                     <td *ngIf="!q.value['error_bool']" class='create_form_img_box' align="center">
                         <div *ngIf="!q.value['image']">
-                            <label for="file-upload" style="width: 100%;" class="custom-file-upload btn btn-sm btn-outline-secondary btn-action-borderless">
+                            <label for="file-upload{{q.key}}" style="width: 100%;" class="custom-file-upload btn btn-sm btn-outline-secondary btn-action-borderless">
                                     &#8682; Upload Picture
                                 </label>
-                            <input id="file-upload" type="file" (change)="inputEditor('img', q.key, 'base64', null, $event.target.files)" accept="image/*" />
+                            <input id="file-upload{{q.key}}" type="file"  [disabled]="q.value.question_soft_delete" (change)="inputEditor('img', q.key, 'base64', null, $event.target.files)" accept="image/*" />
                         </div>
                         <div *ngIf="q.value['image']" style="position: relative">
                             <img src="{{q.value['base64']}}" class="img-fluid" alt="Responsive image">
-                            <button class="btn btn-sm btn-outline-danger btn-image-remove" (click)="removeImg(q.key)">x</button>
+                            <button class="btn btn-sm btn-outline-danger btn-image-remove" [disabled]="q.value.question_soft_delete" (click)="removeImg(q.key)">x</button>
                         </div>
                     </td>
                     <td *ngIf="!q.value['error_bool']">
-                        <div class="btn-group-vertical btn-group-toggle" data-toggle="buttons">
-                            <label class="btn btn-sm btn-action-borderless btn-outline-secondary" [ngClass]="{ 'active': q.value.display_type_description == 'Manual input' }" (click)="displayTypeChanger(q.key, 'textfield input')">
-                                    <input type="radio" name="displayTypeNew" id="manual_input" value="textfield input" checked="checked"/> Manual Input
+                        <div class="btn-group-vertical btn-group-toggle" data-toggle="buttons" [hidden]='q.value.question_soft_delete'>
+                            <label  class="btn btn-sm btn-action-borderless btn-outline-secondary" [ngClass]="{ 'active': q.value.display_type_description == 'Manual input' || q.value.display_type_id == 1 }" (click)="displayTypeChanger(q.key, 'textfield input')">
+                                    <input [disabled]="q.value.question_soft_delete" type="radio"  name="displayTypeNew" id="manual_input" value="textfield input" checked="checked"/> Manual Input
                                 </label>
-                            <label class="btn btn-sm btn-action-borderless btn-outline-secondary" [ngClass]="{ 'active': q.value.display_type_description == 'Radio' }"  (click)="displayTypeChanger(q.key, 'Radio')">
-                                    <input type="radio" name="displayTypeNew " id="radio " value="Radio" /> Radio
+                            <label class="btn btn-sm btn-action-borderless btn-outline-secondary" disabled="disabled" [ngClass]="{ 'active': q.value.display_type_description == 'Radio' && q.value.display_type_id != 1 }"  (click)="displayTypeChanger(q.key, 'Radio')">
+                                    <input [disabled]="q.value.question_soft_delete" type="radio"  name="displayTypeNew " id="radio " value="Radio" /> Radio
                                 </label>
-                            <label class="btn btn-sm btn-action-borderless btn-outline-secondary " [ngClass]="{ 'active': q.value.display_type_description == 'Dropdown' }"  (click)="displayTypeChanger( q.key, 'Dropdown')">
-                                    <input type="radio" name="displayTypeNew" id="dropdown" value="Dropdown"> Dropdown
+                            <label class="btn btn-sm btn-action-borderless btn-outline-secondary " [ngClass]="{ 'active': q.value.display_type_description == 'Dropdown' && q.value.display_type_id != 1 }"  (click)="displayTypeChanger( q.key, 'Dropdown')">
+                                    <input [disabled]="q.value.question_soft_delete" type="radio" name="displayTypeNew" id="dropdown" value="Dropdown"> Dropdown
                                 </label>
-                            <label class="btn btn-sm btn-action-borderless btn-outline-secondary" [ngClass]="{ 'active': q.value.display_type_description == 'Checkbox' }"  (click)="displayTypeChanger(q.key, 'Checkbox')">
-                                    <input type="radio" name="displayTypeNew " id="checkbox " value="Checkbox "> Checkbox
+                            <label class="btn btn-sm btn-action-borderless btn-outline-secondary" [ngClass]="{ 'active': q.value.display_type_description == 'Checkbox' && q.value.display_type_id != 1 }"  (click)="displayTypeChanger(q.key, 'Checkbox')">
+                                    <input [disabled]="q.value.question_soft_delete" type="radio" name="displayTypeNew " id="checkbox " value="Checkbox "> Checkbox
                                 </label>
-                            <label class="btn btn-sm btn-action-borderless btn-outline-secondary " [ngClass]="{ 'active': q.value.display_type_description == 'drag_and_drop' }"  (click)="displayTypeChanger( q.key, 'drag_and_drop')">
-                                    <input type="radio" name="displayTypeNew" id="drag_and_drop" value="drag_and_drop">
+                            <label class="btn btn-sm btn-action-borderless btn-outline-secondary " [ngClass]="{ 'active': q.value.display_type_description == 'drag_and_drop' && q.value.display_type_id != 1 }"  (click)="displayTypeChanger( q.key, 'drag_and_drop')">
+                                    <input [disabled]="q.value.question_soft_delete" type="radio" name="displayTypeNew" id="drag_and_drop" value="drag_and_drop">
                                     Drag'n'Drop
                                 </label>
+                        </div>
+                        <div class="btn-group-vertical btn-group-toggle bg-secondary text-white create_form_input_shadow" style="text-align: center;" [hidden]='!q.value.question_soft_delete' role="alert">
+                            Question is disabled
                         </div>
                     </td>
                     <td *ngIf="!q.value['error_bool']">
@@ -191,17 +208,17 @@
 
 
                         <!-- MANUAL INPUT -->
-                        <div style="padding: 0px 3px !important;" [hidden]="q.value['question_type_description'] != 'textfield input'">
-                            <textarea (change)="inputEditor('expected_response', q.key, 'expected_response', null, $event.target.value)" class='textAreaExpectedAnswer form-control create_form_input_shadow' rows=4 placeholder="Expected answer (optional)" value="{{q.value['expected_response']}}"></textarea>
+                        <div style="padding: 0px 3px !important;" [hidden]="q.value['question_type_description'] != 'textfield input' || q.value.display_type_id != 1">
+                            <textarea [disabled]="q.value.question_soft_delete" (change)="inputEditor('expected_response', q.key, 'expected_response', null, $event.target.value)" class='textAreaExpectedAnswer form-control create_form_input_shadow' rows=4 placeholder="Expected answer (optional)" value="{{q.value['expected_response']}}"></textarea>
                         </div>
 
 
                         <!-- DRAG AND DROP  -->
                         <div class="input-group mt-2" *ngIf="q.value['question_type_description'] == 'drag_and_drop'">
                             <div *ngFor="let ans of q.value['answer_prompt'] | keyvalue" class="input-group mt-1">
-                                <input type="text" (change)="inputEditor('drag_and_drop', q.key, 'answer_prompt', ans.key, $event.target.value)" class="form-control bucket_input_edit bucket_input_edit_question_{{q.key}}" id="bucket_input_edit_{{q.key}}" placeholder='Add a choice' style="padding: 0px;"
+                                <input type="text" [disabled]="q.value.question_soft_delete" (change)="inputEditor('drag_and_drop', q.key, 'answer_prompt', ans.key, $event.target.value)" class="form-control bucket_input_edit bucket_input_edit_question_{{q.key}}" id="bucket_input_edit_{{q.key}}" placeholder='Add a choice' style="padding: 0px;"
                                     value="{{ans.value}}">
-                                <select list="bucket_list" (change)="inputEditor('drag_and_drop', q.key, 'answer_bucket_id', ans.key, $event.target.value)" class="form-control bucket_list_pick" id="bucket_list_pick_{{q.key}}" placeholder='Bucket' style="padding: 0px;">
+                                <select list="bucket_list" [disabled]="q.value.question_soft_delete" (change)="inputEditor('drag_and_drop', q.key, 'answer_bucket_id', ans.key, $event.target.value)" class="form-control bucket_list_pick" id="bucket_list_pick_{{q.key}}" placeholder='Bucket' style="padding: 0px;">
                                         <option type='button' class="bucket_list_settings" value="add_edit">Add/Edit</option>
                                         <option disabled style="margin-top:8px; border-top:1px solid #666; padding:0;">
                                             ____________</option>
@@ -213,14 +230,14 @@
                                                 </ng-container>
                                     </select>
                                 <div class="input-group-append">
-                                    <button type="button" class='btn btn-danger' (click)="removeDragAndDropChoice(q.key, ans.key)">-</button>
+                                    <button type="button" [disabled]="q.value.question_soft_delete" class='btn btn-outline-danger' (click)="removeDragAndDropChoice(q.key, ans.key)">-</button>
                                 </div>
                             </div>
                             <div class="input-group-prepend">
-                                <button class="btn btn-outline-success bucket_input_add_button btn-action-borderless" (click)="dragAndDropAdder(q.key)" style="font-size: smaller; padding: 8px;" id='bucket_input_add_button_{{q.key}}' type="button">+</button>
+                                <button [disabled]="q.value.question_soft_delete" class="btn btn-outline-success bucket_input_add_button btn-action-borderless" (click)="dragAndDropAdder(q.key)" style="font-size: smaller; padding: 8px;" id='bucket_input_add_button_{{q.key}}' type="button">+</button>
                             </div>
-                            <input type="text" (change)="inputEditor('drag_and_drop', q.key, 'temp_bucket_storage', 'answer_input', $event.target.value)" class="form-control bucket_input_add" id="bucket_input_add_input_{{q.key}}" placeholder='Add a choice' style="padding: 0px;">
-                            <select *ngIf="bucketList_reloader[q.key]" list="bucket_list" type="text" (change)="inputEditor('drag_and_drop', q.key, 'temp_bucket_storage', 'bucket_id', $event.target.value)" class="form-control bucket_list_pick" id="bucket_list_pick_{{q.key}}" placeholder='Bucket' style="padding: 0px;">
+                            <input type="text" [disabled]="q.value.question_soft_delete" (change)="inputEditor('drag_and_drop', q.key, 'temp_bucket_storage', 'answer_input', $event.target.value)" class="form-control bucket_input_add" id="bucket_input_add_input_{{q.key}}" placeholder='Add a choice' style="padding: 0px;">
+                            <select [disabled]="q.value.question_soft_delete" *ngIf="bucketList_reloader[q.key]" list="bucket_list" type="text" (change)="inputEditor('drag_and_drop', q.key, 'temp_bucket_storage', 'bucket_id', $event.target.value)" class="form-control bucket_list_pick" id="bucket_list_pick_{{q.key}}" placeholder='Bucket' style="padding: 0px;">
                                     <option value="" selected disabled class="text-muted">Choose bucket</option>
                                     <option type='button' class="bucket_list_settings" value="add_edit">Add/Edit </option>
                                     <option disabled style="margin-top:8px; border-top:1px solid #666; padding:0;">____________</option>
@@ -232,15 +249,15 @@
 
 
                         <!-- CHECKBOX  -->
-                        <div *ngIf="q.value['display_type_description'] == 'Checkbox' && q.value['question_type_description'] = 'selected input'">
+                        <!-- {{q.value['display_type_description'] == 'Checkbox'}} {{q.value['question_type_description'] == 'selected input'}} {{ q.value.display_type_id == 1}} -->
+                        <div *ngIf="q.value['display_type_description'] == 'Checkbox' && q.value['question_type_description'] == 'selected input' && q.value.display_type_id == 2">
                             <div *ngFor="let ans of q.value['answer_prompt'] | keyvalue">
                                 <div>
-                                    <input class="answerChoice" style="margin: 5px" (change)="inputEditor('answer', q.key, 'answer_correct', ans.key, !q.value['answer_correct'][ans.key])" [checked]=q.value.answer_correct[ans.key] type="checkbox" id="checkbox_{{ans.key}}" title="Select the right answer. You can chose multiple."
-                                    />
+                                    <input [disabled]="q.value.question_soft_delete" class="answerChoice" style="margin: 5px" (change)="inputEditor('answer', q.key, 'answer_correct', ans.key, !q.value['answer_correct'][ans.key])" [checked]=q.value.answer_correct[ans.key] type="checkbox" id="checkbox_{{ans.key}}" title="Select the right answer. You can chose multiple."/>
                                     <label for="checkbox_{{ans.key}}" style="margin:0px 0px; width:92%">
                                             <div class="input-group mb-1">
                                                 <div class="input-group-prepend" style="width: 15%;">
-                                                    <input type="number"
+                                                    <input [disabled]="q.value.question_soft_delete" type="number"
                                                         (change)="inputEditor('answer', q.key, 'answer_sort', ans.key, $event.target.value)"
                                                         class="answer_order_edit form-control create_form_input_shadow"
                                                         min="1" id="answer_order_edit_{{ans.key}}" style="width: 90%;"
@@ -248,12 +265,12 @@
                                                         data-toggle="tooltip" data-placement="bottom"
                                                         title="Set priority of the answer.">
                                                 </div>
-                                                <input class="form-control create_form_input_shadow" type="text"
+                                                <input [disabled]="q.value.question_soft_delete" class="form-control create_form_input_shadow" type="text"
                                                     id="answerId${id}" value="" aria-describedby="basic-addon2"
                                                     value='{{ans.value}}'
                                                     (change)="inputEditor('answer', q.key, 'answer_prompt', ans.key, $event.target.value)" />
                                                 <div class="input-group-append">
-                                                    <button class="btn btn-outline-danger buttonRemoveAnswer"
+                                                    <button [disabled]="q.value.question_soft_delete" class="btn btn-outline-danger buttonRemoveAnswer"
                                                         (click)="inputEditor('answer', q.key, 'answer_soft_delete', ans.key, true)"
                                                         [hidden]="q.value['answer_soft_delete'][ans.key]"
                                                         id='buttonRemoveAnswer${i}' type="button">-</button>
@@ -266,15 +283,15 @@
 
 
                         <!-- DROPDOWN/SELECT -->
-                        <div *ngIf="q.value['display_type_description'] == 'Dropdown' && q.value['question_type_description'] = 'selected input'">
+                        <div *ngIf="q.value['display_type_description'] == 'Dropdown' && q.value['question_type_description'] == 'selected input' && q.value.display_type_id == 3">
                             <div *ngFor="let ans of q.value['answer_prompt'] | keyvalue" class="custom-radio">
                                 <div>
-                                    <input class="answerChoice" style="margin: 5px" (change)="inputEditor('answer',q.key, 'answer_correct', ans.key, !q.value['answer_correct'][ans.key])" [checked]=q.value.answer_correct[ans.key] type="radio" id="checkbox_{{ans.key}}" title="Select the right answer. You can chose only one answer."
+                                    <input [disabled]="q.value.question_soft_delete" class="answerChoice" style="margin: 5px" (change)="inputEditor('answer',q.key, 'answer_correct', ans.key, !q.value['answer_correct'][ans.key])" [checked]=q.value.answer_correct[ans.key] type="radio" id="checkbox_{{ans.key}}" title="Select the right answer. You can chose only one answer."
                                         name="radio_answer_for_question_{{q.key}}" />
                                     <label for="checkbox_{{ans.key}}" style="margin:0px 0px; width:92%">
                                             <div class="input-group mb-1">
                                                 <div class="input-group-prepend" style="width: 15%;">
-                                                    <input type="number"
+                                                    <input [disabled]="q.value.question_soft_delete" type="number"
                                                         (change)="inputEditor('answer',q.key, 'answer_sort', ans.key, $event.target.value)"
                                                         class="form-control answer_order_edit create_form_input_shadow"
                                                         min="1" id="answer_order_edit_{{ans.key}}" style="width: 90%;"
@@ -282,12 +299,12 @@
                                                         data-toggle="tooltip" data-placement="bottom"
                                                         title="Set priority of the answer.">
                                                 </div>
-                                                <input class="form-control create_form_input_shadow" type="text"
+                                                <input [disabled]="q.value.question_soft_delete" class="form-control create_form_input_shadow" type="text"
                                                     id="answerId${id}" value="" aria-describedby="basic-addon2"
                                                     value='{{ans.value}}'
                                                     (change)="inputEditor('answer',q.key, 'answer_prompt', ans.key, $event.target.value)" />
                                                 <div class="input-group-append">
-                                                    <button class="btn btn-outline-danger buttonRemoveAnswer"
+                                                    <button [disabled]="q.value.question_soft_delete" class="btn btn-outline-danger buttonRemoveAnswer"
                                                         (click)="inputEditor('answer',q.key, 'answer_soft_delete', ans.key, true)"
                                                         [hidden]="q.value['answer_soft_delete'][ans.key]"
                                                         id='buttonRemoveAnswer${i}' type="button">-</button>
@@ -300,15 +317,15 @@
 
 
                         <!-- RADIO -->
-                        <div *ngIf="q.value['display_type_description'] == 'Radio' && q.value['question_type_description'] = 'selected input'">
+                        <div *ngIf="q.value['display_type_description'] == 'Radio' && q.value['question_type_description'] == 'selected input' && q.value.display_type_id == 1">
                             <div *ngFor="let ans of q.value['answer_prompt'] | keyvalue" class="custom-radio">
                                 <div>
-                                    <input class="answerChoice" style="margin: 5px" (change)="inputEditor('answer',q.key, 'answer_correct', ans.key, !q.value['answer_correct'][ans.key])" [checked]=q.value.answer_correct[ans.key] type="radio" id="checkbox_{{ans.key}}" title="Select the right answer. You can chose only one answer."
+                                    <input [disabled]="q.value.question_soft_delete" class="answerChoice" style="margin: 5px" (change)="inputEditor('answer',q.key, 'answer_correct', ans.key, !q.value['answer_correct'][ans.key])" [checked]=q.value.answer_correct[ans.key] type="radio" id="checkbox_{{ans.key}}" title="Select the right answer. You can chose only one answer."
                                         name="radio_answer_for_question_{{q.key}}" />
                                     <label for="checkbox_{{ans.key}}" style="margin:0px 0px; width:92%">
                                             <div class="input-group mb-1">
                                                 <div class="input-group-prepend" style="width: 15%;">
-                                                    <input type="number"
+                                                    <input [disabled]="q.value.question_soft_delete" type="number"
                                                         (change)="inputEditor('answer',q.key, 'answer_sort', ans.key, $event.target.value)"
                                                         class="form-control answer_order_edit create_form_input_shadow"
                                                         min="1" id="answer_order_edit_{{ans.key}}" style="width: 90%;"
@@ -316,12 +333,12 @@
                                                         data-toggle="tooltip" data-placement="bottom"
                                                         title="Set priority of the answer.">
                                                 </div>
-                                                <input class="form-control create_form_input_shadow" type="text"
+                                                <input [disabled]="q.value.question_soft_delete" class="form-control create_form_input_shadow" type="text"
                                                     id="answerId${id}" value="" aria-describedby="basic-addon2"
                                                     value='{{ans.value}}'
                                                     (change)="inputEditor('answer',q.key, 'answer_prompt', ans.key, $event.target.value)" />
                                                 <div class="input-group-append">
-                                                    <button class="btn btn-outline-danger buttonRemoveAnswer"
+                                                    <button [disabled]="q.value.question_soft_delete" class="btn btn-outline-danger buttonRemoveAnswer"
                                                         (click)="inputEditor('answer',q.key, 'answer_soft_delete', ans.key, true)"
                                                         [hidden]="q.value['answer_soft_delete'][ans.key]"
                                                         id='buttonRemoveAnswer${i}' type="button">-</button>
@@ -336,9 +353,9 @@
                         <!-- ADD ANSWER FORM -->
                         <div style="padding-right: 3px !important;" class="input-group mb-3 create_form_input_shadow" [hidden]="!q.value['question_type_description'] || q.value['question_type_description'] == 'textfield input' || q.value['question_type_description'] == 'drag_and_drop'">
                             <div class="input-group-prepend" style="width: 25px">
-                                <button class="btn btn-success create_form_answer_add btn-action-borderless" id='buttonAddNewAnswer_{{q.key}}' type="button" (click)="addAnswer(q.key)">+</button>
+                                <button [disabled]="q.value.question_soft_delete" class="btn btn-success create_form_answer_add btn-action-borderless" id='buttonAddNewAnswer_{{q.key}}' type="button" (click)="addAnswer(q.key)">+</button>
                             </div>
-                            <input type="text" class="form-control create_form_input_shadowless  edit_quiz_input_text_add" id="newAnswerFor_{{q.key}}" placeholder='Add an answer' aria-describedby="basic-addon2">
+                            <input [disabled]="q.value.question_soft_delete" type="text" class="form-control create_form_input_shadowless  edit_quiz_input_text_add" id="newAnswerFor_{{q.key}}" placeholder='Add an answer' aria-describedby="basic-addon2">
                         </div>
 
                     </td>
@@ -346,19 +363,19 @@
                     <!-- ADMIN NOTES -->
                     <td *ngIf="!q.value['error_bool']">
                         <div class="input-group">
-                            <input class="create_form_input_shadow form-control " value="{{list_of_questions[q.key]['training_url']}}" type="text" placeholder="Confluence link (optional)" (change)="inputEditor(null, q.key, 'training_url', null, $event.target.value)">
+                            <input [disabled]="q.value.question_soft_delete" class="create_form_input_shadow form-control " value="{{list_of_questions[q.key]['training_url']}}" type="text" placeholder="Confluence link (optional)" (change)="inputEditor(null, q.key, 'training_url', null, $event.target.value)">
                             <div class="input-group-append">
-                                <button type='button' class='buttonConfluenceLink btn btn-xs  btn-outline-secondary' id='buttonConfluenceLinkForQuestion${id}' (click)="checkModuleLink(q.key)">Check</button>
+                                <button [disabled]="q.value.question_soft_delete" type='button' class='buttonConfluenceLink btn btn-xs  btn-outline-secondary' id='buttonConfluenceLinkForQuestion${id}' (click)="checkModuleLink(q.key)">Check</button>
                             </div>
                         </div>
                         <div id='module_field${id}'>
-                            <input class="create_form_input_shadow form-control" value="{{list_of_questions[q.key]['training_module']}}" (change)="inputEditor('training_module', q.key,'training_module', null, $event.target.value)" id='editModuleForQuestionId${id}' type="text" placeholder="Module note (optional)">
+                            <input [disabled]="q.value.question_soft_delete" class="create_form_input_shadow form-control" value="{{list_of_questions[q.key]['training_module']}}" (change)="inputEditor('training_module', q.key,'training_module', null, $event.target.value)" id='editModuleForQuestionId${id}' type="text" placeholder="Module note (optional)">
                         </div>
                         <div class="input-group  mb-3" style="width: 185px;">
                             <div class="input-group-prepend">
                                 <span class="input-group-text bg-secondary text-white" id="basic-addon3">Question value</span>
                             </div>
-                            <input class="form-control create_form_input_shadow"  value="{{list_of_questions[q.key]['point_value']}}"   (change)="inputEditor('point_value', q.key,'point_value', null, $event.target.value)" type="number" min="1" max="10" style="padding: 0px 5px;">
+                            <input [disabled]="q.value.question_soft_delete" class="form-control create_form_input_shadow"  value="{{list_of_questions[q.key]['point_value']}}"   (change)="inputEditor('point_value', q.key,'point_value', null, $event.target.value)" type="number" min="1" max="10" style="padding: 0px 5px;">
                         </div>
                     </td>
 
@@ -367,7 +384,9 @@
                         <div>
                             <button class='btn btn-outline-primary btn-action-borderless' disabled style="width: 100%">🔍 Preview</button>
                             <button *ngIf="q.key == 'new_question'" class='btn btn-outline-success btn-action-borderless' (click)="addQuestion()" style="width: 100%">+ Add</button>
-                            <button *ngIf="q.key != 'new_question'" class='btn btn-outline-danger btn-action-borderless' (click)="removeQuestion(q.key)" style="width: 100%">Remove</button>
+                            <button *ngIf="q.key != 'new_question' && q.value['question_soft_delete'] && !list_of_new_questions[q.key]" class='btn btn-outline-success btn-action-borderless' (click)="enableQuestion(q.key)" style="width: 100%">Enable</button>
+                            <button *ngIf="q.key != 'new_question' && q.value['question_soft_delete'] || list_of_new_questions[q.key]" class='btn btn-danger btn-action-borderless' (click)="removeQuestion(q.key)" style="width: 100%">Remove</button>
+                            <button *ngIf="q.key != 'new_question' && !q.value['question_soft_delete'] && !list_of_new_questions[q.key]" class='btn btn-outline-warning btn-action-borderless' (click)="disableQuestion(q.key)" style="width: 100%">Disable</button>
                         </div>
                     </td>
 
@@ -398,7 +417,7 @@
         <div [hidden]="!submit_ready" class="alert alert-success text-center shadow" style="width: 500px; margin: 0px auto;" role="alert">
             <strong>All questions are good!</strong>
         </div>
-        <div class="d-flex justify-content-center" *ngIf="!submit_status.display" style="margin-top: 50px">
+        <div class="d-flex justify-content-center" *ngIf="!submit_status.display" style="margin-top: 50px; margin-bottom: 100px;">
             <button [hidden]="submit_ready" class="btn btn-lg btn-info btn-action-borderless shadow" (click)="validateQuiz()">Validate</button>
             <div [hidden]="!submit_ready" class="shadow btn-group btn-group-lg text-monospace" role="group">
                 <button  class="btn btn-lg btn-success" (click)="submitQuiz()">Submit</button>
@@ -406,18 +425,18 @@
             </div>
         </div>
 
-        <div class="d-flex justify-content-center" *ngIf="submit_status.display && submit_status.status == 'success'" style="margin-top: 50px; ">
+        <div class="d-flex justify-content-center" *ngIf="submit_status.display && submit_status.status == 'success'" style="margin-top: 50px; margin-bottom: 100px;">
             <div class="alert alert-success shadow" role="alert" style="display: flex; align-items: center; flex-direction: column;">
                 <h4 class="alert-heading">Well done!</h4>
-                You successfully created a new quiz.
+                You successfully edited the quiz.
                 <br>
                 <a [hidden]="submit_ready" class="btn btn-outline-light btn-action-borderless text-monospace" (click)="goBack()">Click here to go back to the admin portal</a>
             </div>
         </div>
 
-        <div class="d-flex justify-content-center" *ngIf="submit_status.display && submit_status.status == 'fail'" style="margin-top: 50px;">
+        <div class="d-flex justify-content-center" *ngIf="submit_status.display && submit_status.status == 'fail'" style="margin-top: 50px; margin-bottom: 100px;">
             <div class="alert alert-error shadow" role="alert" style="display: flex; align-items: center; flex-direction: column;">
-                <h4 class="alert-heading">New quiz failed</h4>
+                <h4 class="alert-heading">Quiz updating failed</h4>
                 Something went wrong on the backend.
                 {{submit_status.message}}
                 <a [hidden]="submit_ready" class="btn btn-link btn-action-borderless text-monospace" (click)="goBack()">Click here to go back to the admin portal</a>

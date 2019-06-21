@@ -153,10 +153,10 @@
                     </td>
                     <td *ngIf="!q.value['error_bool']" class='create_form_img_box' align="center">
                         <div *ngIf="!q.value['image']">
-                            <label for="file-upload" style="width: 100%;" class="custom-file-upload btn btn-sm btn-outline-secondary btn-action-borderless">
+                            <label for="file-upload{{q.key}}" style="width: 100%;" class="custom-file-upload btn btn-sm btn-outline-secondary btn-action-borderless">
                                     &#8682; Upload Picture
                                 </label>
-                            <input id="file-upload" type="file" (change)="inputEditor('img', q.key, 'base64', null, $event.target.files)" accept="image/*" />
+                            <input id="file-upload{{q.key}}" type="file" (change)="inputEditor('img', q.key, 'base64', null, $event.target.files)" accept="image/*" />
                         </div>
                         <div *ngIf="q.value['image']" style="position: relative">
                             <img src="{{q.value['base64']}}" class="img-fluid" alt="Responsive image">
