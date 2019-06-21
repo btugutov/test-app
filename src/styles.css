@@ -1866,3 +1866,89 @@ a.disabled {
     background: #4f91cd;
     color: white;
 }
+
+/* warning button */
+.btn-outline-warning-hover-side-shadow{
+    transition: 0.3s;
+    box-shadow: 0px 0px 0px #ffc107;
+    border: none !important;
+}
+.btn-outline-warning-hover-side-shadow:hover {
+    -webkit-box-shadow: 2px 0px 10px 2px #ffc107;
+    -moz-box-shadow: 2px 0px 10px 2px #ffc107;
+    box-shadow: 2px 0px 10px 2px #ffc107;
+    border: none !important;
+}
+.btn-outline-warning-hover-side-shadow:focus{
+    box-shadow: none;
+}
+
+/* secondary button */
+.btn-outline-secondary-hover-side-shadow{
+    transition: 0.3s;
+    box-shadow: 0px 0px 0px #6c757d;
+}
+.btn-outline-secondary-hover-side-shadow:hover {
+    -webkit-box-shadow: 2px 0px 10px 2px #6c757d;
+    -moz-box-shadow: 2px 0px 10px 2px #6c757d;
+    box-shadow: 2px 0px 10px 2px #6c757d;
+}
+.btn-outline-secondary-hover-side-shadow:focus{
+    box-shadow: none;
+}
+
+/* danger button */
+.btn-outline-danger-hover-side-shadow{
+    transition: 0.3s;
+    box-shadow: 0px 0px 0px #dc3545;
+}
+.btn-outline-danger-hover-side-shadow:hover {
+    -webkit-box-shadow: 2px 0px 10px 2px #dc3545;
+    -moz-box-shadow: 2px 0px 10px 2px #dc3545;
+    box-shadow: 2px 0px 10px 2px #dc3545;
+}
+.btn-outline-danger-hover-side-shadow:focus{
+    box-shadow: none;
+}
+
+/* success button */
+.btn-outline-success-hover-side-shadow{
+    transition: 0.3s;
+    box-shadow: 0px 0px 0px #28a745;
+}
+.btn-outline-success-hover-side-shadow:hover {
+    -webkit-box-shadow: 2px 0px 10px 2px #28a745;
+    -moz-box-shadow: 2px 0px 10px 2px #28a745;
+    box-shadow: 2px 0px 10px 2px #28a745;
+}
+.btn-outline-success-hover-side-shadow:focus{
+    box-shadow: none;
+}
+
+/* primary button */
+.btn-outline-primary-hover-side-shadow{
+    transition: 0.3s;
+    box-shadow: 0px 0px 0px #007bff;
+}
+.btn-outline-primary-hover-side-shadow:hover {
+    -webkit-box-shadow: 2px 0px 10px 2px #007bff;
+    -moz-box-shadow: 2px 0px 10px 2px #007bff;
+    box-shadow: 2px 0px 10px 2px #007bff;
+}
+.btn-outline-primary-hover-side-shadow:focus{
+    box-shadow: none;
+}
+
+/* info button */
+.btn-outline-info-hover-side-shadow{
+    transition: 0.3s;
+    box-shadow: 0px 0px 0px #17a2b8;
+}
+.btn-outline-info-hover-side-shadow:hover {
+    -webkit-box-shadow: 2px 0px 10px 2px #17a2b8;
+    -moz-box-shadow: 2px 0px 10px 2px #17a2b8;
+    box-shadow: 2px 0px 10px 2px #17a2b8;
+}
+.btn-outline-info-hover-side-shadow:focus{
+    box-shadow: none;
+}

@@ -26,7 +26,7 @@
                                             <input type="text" class="form-control openBucketListSettings_inputs" (change)="bucketListEditor(i, 'bucket_name', $event.target.value)" value={{b.bucket_name}}>
                                         </td>
                                         <td *ngIf="!b.soft_delete">
-                                            <button *ngIf="!b.soft_delete" (click)="bucketListEditor(i, 'soft_delete', true)" class='btn btn-outline-danger btn-action-borderless'>Disable</button>
+                                            <button *ngIf="!b.soft_delete" (click)="bucketListEditor(i, 'soft_delete', true)" class='btn btn-outline-danger btn-action-borderless '>Disable</button>
                                         </td>
     
                                         <th *ngIf="b.soft_delete" class="table-secondary" scope="row">{{b.bucket_id}}</th>
@@ -81,7 +81,7 @@
     <div class="admin-create-quiz-title" role="group">
         <h1>Edit a quiz #{{topic_id}}</h1>
         <div class="btn-group-vertical" role="group" aria-label="Basic example">
-          <button class="btn btn-warning shadow btn-action-borderless" *ngIf='!topic_soft_delete' (click)="topic_soft_delete = true">Disable Quiz</button>
+          <button class="btn btn-warning shadow btn-action-borderless btn-outline-warning-hover-side-shadow" *ngIf='!topic_soft_delete' (click)="topic_soft_delete = true">Disable Quiz</button>
           <button class="btn btn-success shadow btn-action-borderless" *ngIf='topic_soft_delete && !topic_delete_confirm' (click)="topic_soft_delete = false">Enable  Quiz</button>
           <button class="btn btn-danger shadow btn-action-borderless" *ngIf='topic_soft_delete && !topic_delete_confirm' (click)="topic_delete_confirm = true">Delete  Quiz</button>
         </div>

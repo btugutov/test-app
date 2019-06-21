@@ -24,12 +24,12 @@
                 <div *ngIf="your_list[links[t.key][ 'topic_id']] " style="width:100%" align='center'>
                     <span> <span unselectable="on " class="font-weight-bolder "> {{t.key}}</span> <span class="text-black-10 text-monospace ">  #{{your_list[links[t.key]['topic_id']]['submit_id']}}</span></span>
                     <div class="home-category-element-inner-box ">
-                        <button class="btn btn-outline-info btn-sm text-monospace " style="border: none " [routerLink]="[your_list[links[t.key][ 'topic_id']][ 'continue_link']] ">Continue</button>
-                        <button class="btn btn-outline-warning btn-sm text-monospace " style="border: none " (click)="releaseQuiz(your_list[links[t.key][ 'topic_id']][ 'submit_id'], links[t.key][ 'topic_id']) ">Release</button>
+                        <button class="btn btn-outline-info btn-sm text-monospace btn-outline-info-hover-side-shadow" style="border: none " [routerLink]="[your_list[links[t.key][ 'topic_id']][ 'continue_link']] ">Continue</button>
+                        <button class="btn btn-outline-warning btn-sm text-monospace btn-outline-warning-hover-side-shadow" style="border: none " (click)="releaseQuiz(your_list[links[t.key][ 'topic_id']][ 'submit_id'], links[t.key][ 'topic_id']) ">Release</button>
                     </div>
                 </div>
                 <a *ngIf="your_list[links[t.key][ 'topic_id']]==n ull " [routerLink]="[links[t.key][ 'topic_link']] ">
-                    <button type="button " class="btn btn-outline-secondary ">{{t.key}}
+                    <button type="button " class="btn btn-outline-secondary btn-outline-secondary-hover-side-shadow">{{t.key}}
                         ({{  quizzes_counter[links[t.key]['topic_id']] }})
                         {{your_list[links[t.key]['topic_id']]}}</button>
                 </a>
