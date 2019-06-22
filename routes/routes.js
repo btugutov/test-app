@@ -985,7 +985,7 @@ module.exports = function (app) {
     // ********************                         ***************************
     // ************************************************************************
     // ************************************************************************
-    
+
     app.post('/api/getQuizzesForEdit', (req, res, next) => {
         let response_message = {
             'status': 'failed',
@@ -1083,7 +1083,7 @@ module.exports = function (app) {
         }
         try {
             preload_block(res, req.body.email, undefined, req.params['eng'])
-                .catch(function(error) {
+                .catch(function (error) {
                     debugLog("ERROR HERE" + error);
                     response_message.message = error;
                     res.json(response_message)
@@ -1094,7 +1094,7 @@ module.exports = function (app) {
                     let submitted_quiz = req.body.quiz; // comes escaped from the front-end
                     // log_object_parser(submitted_quiz['logEvent']);
                     update_topic_main(submitted_quiz, currentUser.profile_id)
-                        .catch(function(error) {
+                        .catch(function (error) {
                             debugLog("ERROR HERE" + error);
                             response_message.message = error;
                             res.json(response_message)
@@ -1153,7 +1153,6 @@ module.exports = function (app) {
     // ************************************************************************
 
 
-
     // ************************************************************************
     // ************************************************************************
     // ***********************                  *******************************
@@ -1163,7 +1162,7 @@ module.exports = function (app) {
     // ************************************************************************
 
 
-    // ========================ENGAGEMENT FUNCTIONS ===========================
+    // ======================== ENGAGEMENT FUNCTIONS ==========================
     app.get('/api/get_all_engagemets', (req, res, next) => {
         get_table_complete('KA_engagement').then(res_engs => {
             res.json(res_engs)
@@ -1178,7 +1177,97 @@ module.exports = function (app) {
             res.json(err);
         })
     });
-    // ====================== END OF ENGAGEMENT FUNCTIONS======================
+    // ====================== END OF ENGAGEMENT FUNCTIONS =====================
+
+    // ==================== Quiz Permissions FUNCTIONS ========================
+    app.post('/api/getQuizPermissions', (req, res, next) => {
+        let response_message = {
+            'status': 'failed',
+            'message': ''
+        }
+        preload_block(res, req.body.email, undefined, undefined)
+            .catch(function (error) {
+                debugLog("ERROR HERE" + error);
+                response_message.message = error;
+                res.json(response_message)
+            })
+            .then(returnObj => {
+                let currentUser = returnObj['currentUser']
+                let quiz = returnObj['quiz']
+                get_all_users_quiz_permission_edit(1).then(result => {
+                    let categories;
+                    get_topic_table_by_engagement(req.body.eng_id).then(function (catResult) { // Pulling out all categories
+                        categories = unescapingObj(catResult);
+                        res.locals.users = result;
+                        // render homepage and turn header ID token into usable variable (user email)
+                        if (currentUser.admin_permissions || currentUser.admin_owner) {
+                            try {
+                                response_message.status = 'success';
+                                response_message.response = {
+                                    'users': joinUsersByTopicId(res.locals.users),
+                                    'categories': categories
+                                }
+                                res.json(response_message)
+                                /*
+                                // console.log('we got list of users', Object.keys(result).length)
+                                let users = Object.assign({}, joinUsersByTopicId(res.locals.users));
+                                let by_teams = groupBy(Object.assign({}, joinUsersByTopicId(res.locals.users)), 'team');
+                                for (let user in users) {
+                                    users[user] = Object.assign({}, users[user])
+                                }
+                                for (let user in by_teams) {
+                                    by_teams[user] = Object.assign({}, by_teams[user])
+                                }
+                                let by_title = groupBy(Object.assign({}, joinUsersByTopicId(res.locals.users)), 'title');
+                                for (let user in by_title) {
+                                    by_title[user] = Object.assign({}, by_title[user])
+                                }
+                                let params = {
+                                    'users': users,
+
+                                };
+                                params['users'] = users;
+                                console.log('========>>>>> AMOUNT OF USERS', Object.keys(res.locals.users).length)
+                                //console.log(currentUser.developer)
+                                res.render('editQuizPermissions', {
+                                    categories: groupByKey(categories, 'category', 'topic_id'),
+                                    usersListLength: Object.keys(result).length,
+                                    userQuizPermissions: res.locals.users,
+                                    by_teams: by_teams,
+                                    by_title: by_title,
+                                    admin: currentUser,
+                                    hostname: hostname,
+                                    message: message,
+                                    params: params
+                                })
+                                */
+                            } catch (tryError) { log_event('ERROR', tryError, "EditQuizPermissions"); response_message.message = tryError; res,json(response_message)}
+                        }
+                        // if not admin with editing permissions, redirect to error page
+                        else {
+                            response_message.message = 'No permission.';
+                            res.json(response_message)
+                        }
+                    }).catch(function (error) {
+                        log_event('ERROR', error, 'EditQuizPermissions');
+                        error_handler(error, res, getLineNumber())
+                        response_message.message = error;
+                        res.json(response_message)
+                    })
+                }).catch(function (error) {
+                    log_event('ERROR', error, 'EditQuizPermissions');
+                    error_handler(error, res, getLineNumber())
+                    response_message.message = error;
+                    res.json(response_message)
+                })
+            }).catch(function (error) {
+                log_event('ERROR', error, 'EditQuizPermissions');
+                error_handler(error, res, getLineNumber())
+                response_message.message = error;
+                res.json(response_message)
+            })
+    })
+    // =================== END OF Quiz Permissions FUNCTIONS ==================
 
     // ************************************************************************
     // ************************* END OF MISC  FUNCTIONS ***********************

@@ -492,10 +492,14 @@ function groupBy(list, group) {
                 if (list[el]['topic']) {
                     list[el]['topic'] = removeSpacesFromStr(list[el]['topic'])
                 }
-                if (!map[list[el][group]]) {
-                    map[list[el][group]] = {}
+                let key = list[el][group]
+                if(!key){
+                    key = "Others"
                 }
-                map[list[el][group]][el] = list[el]
+                if (!map[key]) {
+                    map[key] = {}
+                }
+                map[key][el] = list[el]
             }
         }
         return map

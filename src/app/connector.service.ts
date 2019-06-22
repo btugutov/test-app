@@ -302,7 +302,7 @@ export class ConnectorService {
 
   // ==============================================================================
 
-  // EDIT QUIZ FUNCTIONS ========================================================
+  // EDIT QUIZ FUNCTIONS ==========================================================
   getQuizzesForEdit(email, eng_id) {
     var that = this;
     return new Promise(function (resolve, reject) {
@@ -372,7 +372,25 @@ export class ConnectorService {
     })
   }
 
+
   // ==============================================================================
+
+  // EDIT QUIZ FUNCTIONS ==========================================================
+  getQuizPermissions(obj){
+    var that = this;
+    return new Promise(function (resolve, reject) {
+      that.http.post('/api/getQuizPermissions', obj).subscribe(
+        res => {
+          resolve(res)
+        },
+        err => {
+          reject(err)
+        }
+      );
+    })
+  }
+  // ==============================================================================
+
   // MISC FUNCTIONS
   objToToArray(obj) { // object has to be a list
     let result = [];

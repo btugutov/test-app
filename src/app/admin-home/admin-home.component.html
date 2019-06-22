@@ -5,51 +5,51 @@
     <div class="home-main" id="homeCategories" *ngIf="currentEng">
         <div class="home-category">
             <div class="home-category-title bg-dark text-white" style="width: 100%; padding: 5px 0px;">
-                <h1>Grader</h1>
+                <h2>Grader</h2>
             </div>
             <div class="home-category-element">
-                <a class="admin_link" [routerLink]="['/', currentEng_id, 'adminhomegrade']">
-                    <button *ngIf="gradings_counter>0" class="btn btn-outline-success btn-lg dropbtn admin-button" [disabled]="!currentUser.admin_grader && !currentUser.admin_owner" type="button">Grade a Quiz ({{gradings_counter}})</button>
-                    <button *ngIf="!gradings_counter || gradings_counter<1" class="btn btn-outline-success btn-lg dropbtn admin-button" disabled type="button">No quizzes to grade</button>
+                <a class="" [routerLink]="['/', currentEng_id, 'adminhomegrade']">
+                    <button *ngIf="gradings_counter>0" class="btn btn-outline-success btn-lg " [disabled]="!currentUser.admin_grader && !currentUser.admin_owner" type="button">Grade a Quiz ({{gradings_counter}})</button>
+                    <button *ngIf="!gradings_counter || gradings_counter<1" class="btn btn-outline-success btn-lg " disabled type="button">No quizzes to grade</button>
                 </a>
             </div>
         </div>
         <div class="home-category">
             <div class="home-category-title bg-dark text-white" style="width: 100%; padding: 5px 0px;">
-                <h1>Editor</h1>
+                <h2>Editor</h2>
             </div>
             <div class="home-category-element">
-                <a class="admin_link" [routerLink]="['/',currentEng_id, 'admincreatequiz']">
-                    <button class="btn btn-outline-primary btn-lg dropbtn admin-button" type="button" [disabled]="!currentUser.admin_editor && !currentUser.admin_owner">Create a Quiz</button>
+                <a class="" [routerLink]="['/',currentEng_id, 'admincreatequiz']">
+                    <button class="btn btn-outline-primary btn-lg " type="button" [disabled]="!currentUser.admin_editor && !currentUser.admin_owner">Create a Quiz</button>
                 </a>
-                <a class="admin_link" [routerLink]="['/',currentEng_id, 'adminhomeedit']">
-                    <button class="btn btn-lg btn-outline-primary dropbtn admin-button" type="button" [disabled]="!currentUser.admin_editor && !currentUser.admin_owner">Edit a Quiz</button>
+                <a class="" [routerLink]="['/',currentEng_id, 'adminhomeedit']">
+                    <button class="btn btn-lg btn-outline-primary " type="button" [disabled]="!currentUser.admin_editor && !currentUser.admin_owner">Edit a Quiz</button>
                 </a>
             </div>
         </div>
         <div class="home-category">
             <div class="home-category-title bg-dark text-white" style="width: 100%; padding: 5px 0px;">
-                <h1>Quiz Controls</h1>
+                <h2>Quiz Controls</h2>
             </div>
             <div class="home-category-element">
-                <a class="admin_link" [routerLink]="['/',currentEng_id, 'AdminEditpermissions']">
-                    <button class="btn btn-outline-secondary btn-lg dropbtn admin-button" [disabled]="!currentUser.admin_permissions && !currentUser.admin_owner" type="button">Quiz Permissions</button>
+                <a class="" [routerLink]="['/',currentEng_id, 'AdminEditpermissions']">
+                    <button class="btn btn-outline-secondary btn-lg " [disabled]="!currentUser.admin_permissions && !currentUser.admin_owner" type="button">Quiz Permissions</button>
                 </a>
-                <a class="admin_link" [routerLink]="['/',currentEng_id, 'AdminEditsubmissions']">
-                    <button class="btn btn-outline-secondary btn-lg dropbtn admin-button" [disabled]="!currentUser.admin_permissions && !currentUser.admin_owner" type="button">Quiz Submissions</button>
+                <a class="" [routerLink]="['/',currentEng_id, 'AdminEditsubmissions']">
+                    <button class="btn btn-outline-secondary btn-lg " [disabled]="!currentUser.admin_permissions && !currentUser.admin_owner" type="button">Quiz Submissions</button>
                 </a>
             </div>
         </div>
         <div class="home-category">
             <div class="home-category-title bg-dark text-white" style="width: 100%; padding: 5px 0px;">
-                <h1>Super Admin</h1>
+                <h2>Super Admin</h2>
             </div>
             <div class="home-category-element">
-                <a class="admin_link" [routerLink]="['/',currentEng_id, 'AdminEditusersComponent']">
-                    <button class="btn btn-outline-info btn-lg dropbtn admin-button" [disabled]="!currentUser.admin_permissions && !currentUser.admin_owner" type="button">User Permissions</button>
+                <a class="" [routerLink]="['/',currentEng_id, 'AdminEditusersComponent']">
+                    <button class="btn btn-outline-info btn-lg " [disabled]="!currentUser.admin_permissions && !currentUser.admin_owner" type="button">User Permissions</button>
                 </a>
-                <a class="admin_link" [routerLink]="['/',currentEng_id, 'AdminEditengagements']">
-                    <button class="btn btn-outline-info btn-lg dropbtn admin-button" [disabled]="!currentUser.admin_permissions && !currentUser.admin_owner" type="button">Edit Engagements</button>
+                <a class="" [routerLink]="['/',currentEng_id, 'AdminEditengagements']">
+                    <button class="btn btn-outline-info btn-lg " [disabled]="!currentUser.admin_permissions && !currentUser.admin_owner" type="button">Edit Engagements</button>
                 </a>
             </div>
         </div>

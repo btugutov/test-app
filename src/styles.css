@@ -1870,7 +1870,7 @@ a.disabled {
 /* warning button */
 .btn-outline-warning-hover-side-shadow{
     transition: 0.3s;
-    box-shadow: 0px 0px 0px #ffc107;
+    box-shadow: 0px 0px 0px white;
     border: none !important;
 }
 .btn-outline-warning-hover-side-shadow:hover {
@@ -1886,7 +1886,7 @@ a.disabled {
 /* secondary button */
 .btn-outline-secondary-hover-side-shadow{
     transition: 0.3s;
-    box-shadow: 0px 0px 0px #6c757d;
+    box-shadow: 0px 0px 0px white;
 }
 .btn-outline-secondary-hover-side-shadow:hover {
     -webkit-box-shadow: 2px 0px 10px 2px #6c757d;
@@ -1896,11 +1896,26 @@ a.disabled {
 .btn-outline-secondary-hover-side-shadow:focus{
     box-shadow: none;
 }
+/* secondary-small shadow button */
+.btn-outline-secondary-hover-side-shadow-sm{
+    transition: 0.5s;
+    background: white;
+    box-shadow: 0px 0px 0px white
+}
+.btn-outline-secondary-hover-side-shadow-sm:hover {
+    -webkit-box-shadow: 1px 1px 2px 1px #6c757d;
+    -moz-box-shadow: 1px 1px 2px 1px #6c757d;
+    box-shadow: 1px 1px 2px 1px #6c757d;
+    background: #6c757d
+}
+.btn-outline-secondary-hover-side-shadow-sm:focus{
+    box-shadow: none;
+}
 
 /* danger button */
 .btn-outline-danger-hover-side-shadow{
     transition: 0.3s;
-    box-shadow: 0px 0px 0px #dc3545;
+    box-shadow: 0px 0px 0px white;
 }
 .btn-outline-danger-hover-side-shadow:hover {
     -webkit-box-shadow: 2px 0px 10px 2px #dc3545;
@@ -1914,7 +1929,7 @@ a.disabled {
 /* success button */
 .btn-outline-success-hover-side-shadow{
     transition: 0.3s;
-    box-shadow: 0px 0px 0px #28a745;
+    box-shadow: 0px 0px 0px white;
 }
 .btn-outline-success-hover-side-shadow:hover {
     -webkit-box-shadow: 2px 0px 10px 2px #28a745;
@@ -1928,7 +1943,7 @@ a.disabled {
 /* primary button */
 .btn-outline-primary-hover-side-shadow{
     transition: 0.3s;
-    box-shadow: 0px 0px 0px #007bff;
+    box-shadow: 0px 0px 0px white;
 }
 .btn-outline-primary-hover-side-shadow:hover {
     -webkit-box-shadow: 2px 0px 10px 2px #007bff;
@@ -1942,7 +1957,7 @@ a.disabled {
 /* info button */
 .btn-outline-info-hover-side-shadow{
     transition: 0.3s;
-    box-shadow: 0px 0px 0px #17a2b8;
+    box-shadow: 0px 0px 0px white;
 }
 .btn-outline-info-hover-side-shadow:hover {
     -webkit-box-shadow: 2px 0px 10px 2px #17a2b8;
@@ -1951,4 +1966,20 @@ a.disabled {
 }
 .btn-outline-info-hover-side-shadow:focus{
     box-shadow: none;
+}
+.display_column_align_center{
+    display: flex;
+	flex-direction: column;
+	flex-wrap: nowrap;
+	justify-content: center;
+	align-items: center;
+	align-content: center;
+}
+.display_column_align_baseline{
+    display: flex;
+	flex-direction: column;
+	flex-wrap: nowrap;
+	justify-content: center;
+	align-items: baseline;
+	align-content: center;
 }

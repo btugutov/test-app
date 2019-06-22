@@ -1,3 +1,52 @@
-<p>
-  admin-editpermissions works!
-</p>
+<div [hidden]="sorted_users" class=" loading_box ">
+    <img class="loading_box-ing " src='./../../assets/loading.gif'>
+</div>
+<div [hidden]="!sorted_users" class="admin-quiz-permission">
+    <div class="admin-quiz-permission-title">
+        <h1>Quiz Permission Table</h1>
+        <button class="btn btn-info btn-lg" (click)="checkState()">Check State</button>
+    </div>
+    <div class="admin-quiz-permission-by_teams">
+      <h3>Teams</h3>
+      <div class="admin-quiz-permission-list_buttons"  role="group">
+        <button class="btn btn-outline-secondary btn-action-borderless btn-outline-secondary-hover-side-shadow-sm" *ngFor="let team of by_teams" (click)="selectList('by_teams',team)">{{team}}</button>
+      </div>
+    </div>
+    <div class="admin-quiz-permission-by_teams">
+      <h3>Titles</h3>
+      <div class="admin-quiz-permission-list_buttons"  role="group">
+        <button class="btn btn-outline-secondary btn-action-borderless btn-outline-secondary-hover-side-shadow-sm" *ngFor="let title of by_title" (click)="selectList('by_title',title)">{{title}}</button>
+      </div>
+    </div>
+    <div class="admin-quiz-permission-table_box">
+        <table class="table table-borderless table-hover">
+            <thead class="thead-light shadow">
+              <tr>
+                <th style="font-size: 10px; text-align: center;  width: 5%">Profile Permission ID</th>
+                <th style='width: 15%'>Email</th>
+                <th style='width: 20%'>Name</th>
+                <th style='width: 10%'>Team</th>
+                <th style='width: 15%'>Title</th>
+                <th style='width: 15%'>Specialization</th>
+                <th style='text-align: center'>Quiz Permission</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let user of current_list | keyvalue">
+                <th scope="row">{{user.key}}</th>
+                <td>{{user.value.email}}</td>
+                <td>{{user.value.first_name}} {{user.value.last_name}}</td>
+                <td>{{user.value.team}}</td>
+                <td>{{user.value.title}}</td>
+                <td class="display_column_align_baseline">
+                  {{user.value.specialization}}
+                  {{user.value.specialization2}}
+                  {{user.value.specialization3}}
+                </td>
+                <td>Otto</td>
+              </tr>
+              
+            </tbody>
+          </table>
+    </div>
+</div>
