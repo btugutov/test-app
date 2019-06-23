@@ -2977,6 +2977,7 @@ var AppComponent = /** @class */ (function () {
             if (that.requiresInteraction(error.errorCode)) {
                 that.myMSALObj.acquireTokenPopup(that.requestObj).then(function (tokenResponse) {
                     that.callMSGraph(that.graphConfig.graphMeEndpoint, tokenResponse.accessToken, function (data) {
+                        console.log("THIS.USER_OBJECT =>", data);
                         that.user_obj = data;
                         that._c.storeUser(data);
                     });
@@ -3105,6 +3106,9 @@ var AppComponent = /** @class */ (function () {
                 }
             }
             else {
+                if (!this.user_obj || !this.user_obj.profile_id) {
+                    return;
+                }
                 this._c.getAvailableEngagements(this.user_obj.profile_id).then(function (res) {
                     for (var el in res) {
                         if (res[el]['engagement_id'] == loc[3]) {
