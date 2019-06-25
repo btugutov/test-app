@@ -1239,8 +1239,9 @@ module.exports = function (app) {
             'status': 'failed',
             'message': ''
         }
+        // console.log(req.body['users'])
         update_permission_quiz_main(req.body['users'], req.body['email'])
-            res.json(true)
+        res.json(true)
     });
 
     

@@ -53,9 +53,7 @@ function add_profile_permissions_table_MSSQL(profile_id, topic_id, edit_by) {
 function update_profile_permissions_table_MSSQL(profile_id, topic_id, edit_by) {
     let functionName = 'update_profile_permissions_table_MSSQL';
     return new Promise(function (resolve, reject) {
-        let update = `UPDATE KA_profile_permissions 
-        SET access = '1', fast_track = '0', soft_delete = '0', grant_method = 'Admin' 
-        WHERE profile_id = ${profile_id} AND topic_id = ${topic_id}`
+        let update = `DELETE FROM [dbo].[KA_profile_permissions] WHERE profile_id = ${profile_id} AND topic_id = ${topic_id}`
         // return dbQueryMethod.query(update).then(result => {
         //     resolve(result);
         //     return result;
@@ -139,85 +137,103 @@ function get_all_users_quiz_permission_MSSQL() {
 // monoliths // 
 function update_permission_quiz_LOOP(obj, edit_by) {
     let functionName = 'update_permission_quiz_LOOP';
-    return new Promise(function (resolve, reject) {
-        try {
-            get_permissions_table_by_profile_id(obj['profile_id']).then(thisTable => {
-                let db_topic_id = {};
-                let db_soft_delete = {};
-                try {
-                    for (let a in Object.keys(thisTable)) {
-                        db_topic_id[a] = a
-                        db_soft_delete[a] = a
-                        db_topic_id[a] = thisTable[a]['topic_id']
-                        db_soft_delete[a] = thisTable[a]['soft_delete']
-                    }
-                } catch (tryError) { log_event('ERROR', tryError, functionName); reject(tryError); throw tryError; }
-                try {
-                    for (let a in Object.keys(obj['topic_id'])) {
-                        let add = true;
-                        let update = false;
-                        var update_profile_id;
-                        var update_topic_id;
-                        try {
-                            for (let b in Object.keys(db_topic_id)) {
-                                if (parseInt(db_topic_id[b]) === obj['topic_id'][a]) { //check to see if this item exists int he database
-                                    add = false; // this item exists in the database, do not add
-                                    if (db_soft_delete[b] === true) { // check to see this item was marked as deleted in the database
-                                        update = true; // this item was marked as deleted in the database, update it to not deleted
-                                        update_profile_id = obj['profile_id']
-                                        update_topic_id = obj['topic_id'][a]
-                                    }
-                                }
-                            }
-                        } catch (tryError) { log_event('ERROR', tryError, functionName); reject(tryError); throw tryError; }
+    // return new Promise(function (resolve, reject) {
+    for(let topic_id in obj['added_list']){
+        add_profile_permissions_table_MSSQL(obj['profile_id'], obj['added_list'][topic_id], edit_by).then(placeholder => {
+            console.log(placeholder)
+            let event = `Adding quiz permissions for profile_id : '${obj['profile_id']}' for topic_id : '${ obj['added_list'][topic_id]}' authorized by profile_id : '${edit_by}'`
+            log_event('INFO', event, functionName);
+        }).catch(function (error) { reject(error); throw (error); })
+    }
+    for(let topic_id in obj['removed_list']){
+        update_profile_permissions_table_MSSQL(obj['profile_id'], obj['removed_list'][topic_id], edit_by).then(placeholder => {
+            console.log(placeholder)
+            let event = `Removing quiz permissions for profile_id : '${obj['profile_id']}' for topic_id : '${obj['removed_list'][topic_id]}' authorized by profile_id : '${edit_by}'`
+            log_event('INFO', event, functionName);
+        }).catch(function (error) { reject(error); throw (error); })
+    }
+        
+        // try {
+        //     get_permissions_table_by_profile_id(obj['profile_id']).then(thisTable => {
+        //         let db_topic_id = {};
+        //         let db_soft_delete = {};
+        //         try {
+        //             for (let a in Object.keys(thisTable)) {
+        //                 db_topic_id[a] = a
+        //                 db_soft_delete[a] = a
+        //                 db_topic_id[a] = thisTable[a]['topic_id']
+        //                 db_soft_delete[a] = thisTable[a]['soft_delete']
+        //             }
+        //         } catch (tryError) { log_event('ERROR', tryError, functionName); reject(tryError); throw tryError; }
+        //         try {
+        //             console.log("db_topic_id =>", db_topic_id)
+        //             for (let a in Object.keys(obj['topic_id'])) {
+        //                 let add = true;
+        //                 let update = false;
+        //                 var update_profile_id;
+        //                 var update_topic_id;
+        //                 try {
+        //                     for (let b in Object.keys(db_topic_id)) {
+        //                         if (parseInt(db_topic_id[b]) === obj['topic_id'][a]) { //check to see if this item exists int he database
+        //                             add = false; // this item exists in the database, do not add
+        //                             if (db_soft_delete[b] === true) { // check to see this item was marked as deleted in the database
+        //                                 update = true; // this item was marked as deleted in the database, update it to not deleted
+        //                                 update_profile_id = obj['profile_id']
+        //                                 update_topic_id = obj['topic_id'][a]
+        //                             }
+        //                         }
+        //                     }
+        //                 } catch (tryError) { log_event('ERROR', tryError, functionName); reject(tryError); throw tryError; }
+        //                 if(add){
+        //                     console.log("let's add")
+        //                 }
+        //                 if (add === true) {
+        //                     add_profile_permissions_table_MSSQL(obj['profile_id'], obj['topic_id'][a], edit_by).then(placeholder => {
+        //                         let event = `Adding quiz permissions for profile_id : '${obj['profile_id']}' for topic_id : '${obj['topic_id'][a]}' authorized by profile_id : '${edit_by}'`
+        //                         log_event('INFO', event, functionName);
+        //                     }).catch(function (error) { reject(error); throw (error); })
+        //                 }
+        //                 if (update === true) {
+        //                     update_profile_permissions_table_MSSQL(update_profile_id, update_topic_id, edit_by).then(placeholder => {
+        //                         let event = `Removing quiz permissions for profile_id : '${obj['profile_id']}' for topic_id : '${obj['topic_id'][a]}' authorized by profile_id : '${edit_by}'`
+        //                         log_event('INFO', event, functionName);
+        //                     }).catch(function (error) { reject(error); throw (error); })
+        //                 }
+        //             }
+        //         } catch (tryError) { log_event('ERROR', tryError, functionName); reject(tryError); throw tryError; }
 
-                        if (add === true) {
-                            add_profile_permissions_table_MSSQL(obj['profile_id'], obj['topic_id'][a], edit_by).then(placeholder => {
-                                let event = `Adding quiz permissions for profile_id : '${obj['profile_id']}' for topic_id : '${obj['topic_id'][a]}' authorized by profile_id : '${edit_by}'`
-                                log_event('INFO', event, functionName);
-                            }).catch(function (error) { reject(error); throw (error); })
-                        }
-                        if (update === true) {
-                            update_profile_permissions_table_MSSQL(update_profile_id, update_topic_id, edit_by).then(placeholder => {
-                                let event = `Updating quiz permissions for profile_id : '${obj['profile_id']}' for topic_id : '${obj['topic_id'][a]}' authorized by profile_id : '${edit_by}'`
-                                log_event('INFO', event, functionName);
-                            }).catch(function (error) { reject(error); throw (error); })
-                        }
-                    }
-                } catch (tryError) { log_event('ERROR', tryError, functionName); reject(tryError); throw tryError; }
+        //         try {
+        //             for (let a in Object.keys(db_topic_id)) {
+        //                 var soft_delete = true;
+        //                 try {
+        //                     for (let b in Object.keys(obj['topic_id'])) {
+        //                         if (db_topic_id[a] === parseInt(obj['topic_id'][b])) { //check to see if this item in database exists the list provided
+        //                             soft_delete = false // this item exists in the database AND the list provided, do not delete
 
-                try {
-                    for (let a in Object.keys(db_topic_id)) {
-                        var soft_delete = true;
-                        try {
-                            for (let b in Object.keys(obj['topic_id'])) {
-                                if (db_topic_id[a] === parseInt(obj['topic_id'][b])) { //check to see if this item in database exists the list provided
-                                    soft_delete = false // this item exists in the database AND the list provided, do not delete
+        //                         } else {
+        //                             if (db_soft_delete[a] === true) { // check to see this item was marked as deleted in the database
+        //                                 soft_delete = false // this item exists in the database AND the list provided, do not delete
+        //                             }
+        //                         }
+        //                     }
+        //                 } catch (tryError) { log_event('ERROR', tryError, functionName); reject(tryError); throw tryError; }
+        //                 if (soft_delete === true) {
+        //                     soft_delete_profile_permissions_table_MSSQL(obj['profile_id'], db_topic_id[a], edit_by).then(placeholder => {
+        //                         let event = `Deleting quiz permissions for profile_id : '${obj['profile_id']}' for topic_id : '${db_topic_id[a]}' authorized by profile_id : '${edit_by}'`
+        //                         log_event('INFO', event, functionName);
+        //                     }).catch(function (error) { reject(error); throw (error); })
+        //                 }
+        //             }
 
-                                } else {
-                                    if (db_soft_delete[a] === true) { // check to see this item was marked as deleted in the database
-                                        soft_delete = false // this item exists in the database AND the list provided, do not delete
-                                    }
-                                }
-                            }
-                        } catch (tryError) { log_event('ERROR', tryError, functionName); reject(tryError); throw tryError; }
-                        if (soft_delete === true) {
-                            soft_delete_profile_permissions_table_MSSQL(obj['profile_id'], db_topic_id[a], edit_by).then(placeholder => {
-                                let event = `Deleting quiz permissions for profile_id : '${obj['profile_id']}' for topic_id : '${db_topic_id[a]}' authorized by profile_id : '${edit_by}'`
-                                log_event('INFO', event, functionName);
-                            }).catch(function (error) { reject(error); throw (error); })
-                        }
-                    }
-
-                    resolve('complete')
-                    return 'complete';
-                } catch (tryError) { log_event('ERROR', tryError, functionName); reject(tryError); throw tryError; }
-            }).catch(function (error) { reject(error); throw (error); })
-        } catch (tryError) { log_event('ERROR', tryError, functionName); reject(tryError); throw tryError; }
-    }).catch(function (error) {
-        log_event('WARNING', error, functionName);
-        throw (error);
-    })
+        //             resolve('complete')
+        //             return 'complete';
+        //         } catch (tryError) { log_event('ERROR', tryError, functionName); reject(tryError); throw tryError; }
+        //     }).catch(function (error) { reject(error); throw (error); })
+        // } catch (tryError) { log_event('ERROR', tryError, functionName); reject(tryError); throw tryError; }
+    // }).catch(function (error) {
+    //     log_event('WARNING', error, functionName);
+    //     throw (error);
+    // })
 }
 
 function update_permission_admins_LOOP(obj, edit_by, ownerCheck) {
@@ -266,16 +282,8 @@ function update_permission_quiz_main(object, edit_by) {
         let result_arr = []
         for (let a in Object.keys(objKeys)) {
             let i = objKeys[a]
-            update_permission_quiz_LOOP(object[i], edit_by).then(result => {
-                result_arr.push(result);
-                //debugLog(result);
-            }).catch(function (error) {
-                log_event('WARNING', error, functionName);
-                reject(error);
-                throw (error);
-            })
+            update_permission_quiz_LOOP(object[i], edit_by)
         }
-        console.log("RESULT ARRAY =>", result_arr)
     } catch (tryError) { log_event('ERROR', tryError, functionName); throw tryError; }
 }
 

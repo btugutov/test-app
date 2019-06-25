@@ -245,12 +245,15 @@ export class AdminEditpermissionsComponent implements OnInit {
 
 
   submitChanges(){
-    console.log("lol")
+    console.log("this.list_changes =>", this.list_changes)
     let users = {};
     for(let user_id in this.list_changes){
       users[user_id] = this.sorted_users['all_users'][user_id];
+      users[user_id]['removed_list'] =  this.list_changes[user_id]['removed']
+      users[user_id]['added_list'] =  this.list_changes[user_id]['added']
     }
     this.list_changes = {};
+    console.log("USERS FOR SUBMIT! =>", users)
     this.closeModal();
     this._ConnectorService.saveQuizPermissions(users, this.currentUser.email).then(res =>{
       console.log("RES =>", res)
