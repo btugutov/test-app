@@ -156,7 +156,8 @@ input[type="file"] {
     z-index: 50;
     width: 100vw;
     height: 100vh;
-    background: rgba(179, 182, 185, 0.5)
+    background: rgba(179, 182, 185, 0.5);
+    margin-top: -120px;
 }
 
 .modal_message {

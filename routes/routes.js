@@ -1208,39 +1208,6 @@ module.exports = function (app) {
                                     'categories': categories
                                 }
                                 res.json(response_message)
-                                /*
-                                // console.log('we got list of users', Object.keys(result).length)
-                                let users = Object.assign({}, joinUsersByTopicId(res.locals.users));
-                                let by_teams = groupBy(Object.assign({}, joinUsersByTopicId(res.locals.users)), 'team');
-                                for (let user in users) {
-                                    users[user] = Object.assign({}, users[user])
-                                }
-                                for (let user in by_teams) {
-                                    by_teams[user] = Object.assign({}, by_teams[user])
-                                }
-                                let by_title = groupBy(Object.assign({}, joinUsersByTopicId(res.locals.users)), 'title');
-                                for (let user in by_title) {
-                                    by_title[user] = Object.assign({}, by_title[user])
-                                }
-                                let params = {
-                                    'users': users,
-
-                                };
-                                params['users'] = users;
-                                console.log('========>>>>> AMOUNT OF USERS', Object.keys(res.locals.users).length)
-                                //console.log(currentUser.developer)
-                                res.render('editQuizPermissions', {
-                                    categories: groupByKey(categories, 'category', 'topic_id'),
-                                    usersListLength: Object.keys(result).length,
-                                    userQuizPermissions: res.locals.users,
-                                    by_teams: by_teams,
-                                    by_title: by_title,
-                                    admin: currentUser,
-                                    hostname: hostname,
-                                    message: message,
-                                    params: params
-                                })
-                                */
                             } catch (tryError) { log_event('ERROR', tryError, "EditQuizPermissions"); response_message.message = tryError; res,json(response_message)}
                         }
                         // if not admin with editing permissions, redirect to error page
@@ -1266,7 +1233,17 @@ module.exports = function (app) {
                 response_message.message = error;
                 res.json(response_message)
             })
-    })
+    });
+    app.post('/api/saveQuizPermissions', (req, res, next) => {
+        let response_message = {
+            'status': 'failed',
+            'message': ''
+        }
+        update_permission_quiz_main(req.body['users'], req.body['email'])
+            res.json(true)
+    });
+
+    
     // =================== END OF Quiz Permissions FUNCTIONS ==================
 
     // ************************************************************************

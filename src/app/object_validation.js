@@ -801,6 +801,24 @@ function filterEngagementsByAvailableQuizzes(quizzes) {
     return quizzes;
 }
 
+function arr_diff (a1, a2) {
+    var a = [], diff = [];
+    for (var i = 0; i < a1.length; i++) {
+        a[a1[i]] = true;
+    }
+    for (var i = 0; i < a2.length; i++) {
+        if (a[a2[i]]) {
+            delete a[a2[i]];
+        } else {
+            a[a2[i]] = true;
+        }
+    }
+    for (var k in a) {
+        diff.push( Number(k));
+    }
+    return diff;
+}
+
 module.exports = {
     format_quiz_table: format_quiz_table,
     unescapingObj: unescapingObj,
@@ -819,7 +837,8 @@ module.exports = {
     topicListNameRemoveSpaces: topicListNameRemoveSpaces,
     questionRenderOderAnswers: questionRenderOderAnswers,
     reAssignSession: reAssignSession,
-    filterEngagementsByAvailableQuizzes: filterEngagementsByAvailableQuizzes
+    filterEngagementsByAvailableQuizzes: filterEngagementsByAvailableQuizzes,
+    arr_diff: arr_diff
 };
 
 

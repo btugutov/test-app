@@ -56,7 +56,11 @@ function update_profile_permissions_table_MSSQL(profile_id, topic_id, edit_by) {
         let update = `UPDATE KA_profile_permissions 
         SET access = '1', fast_track = '0', soft_delete = '0', grant_method = 'Admin' 
         WHERE profile_id = ${profile_id} AND topic_id = ${topic_id}`
-        dbQueryMethod.rawQuery(update).then(result => {
+        // return dbQueryMethod.query(update).then(result => {
+        //     resolve(result);
+        //     return result;
+        // }).catch(function (error) { reject(error); throw error; })
+        dbQueryMethod.queryRaw(update).then(result => {
             resolve(result)
             return result;
         }).catch(function (error) { reject(error); throw (error); })
@@ -72,7 +76,11 @@ function soft_delete_profile_permissions_table_MSSQL(profile_id, topic_id, edit_
         let update = `UPDATE KA_profile_permissions 
         SET access = '1', fast_track = '0', soft_delete = '1', grant_method = 'Admin' 
         WHERE profile_id = ${profile_id} AND topic_id = ${topic_id}`
-        dbQueryMethod.rawQuery(update).then(result => {
+        // return dbQueryMethod.query(update).then(result => {
+        //     resolve(result);
+        //     return result;
+        // }).catch(function (error) { reject(error); throw error; })
+        dbQueryMethod.queryRaw(update).then(result => {
             resolve(result)
             return result;
         }).catch(function (error) { reject(error); throw (error); })
@@ -255,9 +263,11 @@ function update_permission_quiz_main(object, edit_by) {
     //console.log(object)
     let objKeys = Object.keys(object)
     try {
+        let result_arr = []
         for (let a in Object.keys(objKeys)) {
             let i = objKeys[a]
             update_permission_quiz_LOOP(object[i], edit_by).then(result => {
+                result_arr.push(result);
                 //debugLog(result);
             }).catch(function (error) {
                 log_event('WARNING', error, functionName);
@@ -265,6 +275,7 @@ function update_permission_quiz_main(object, edit_by) {
                 throw (error);
             })
         }
+        console.log("RESULT ARRAY =>", result_arr)
     } catch (tryError) { log_event('ERROR', tryError, functionName); throw tryError; }
 }
 
