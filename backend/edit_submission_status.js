@@ -145,7 +145,7 @@ function update_KA_quiz_submission_by_submit_id(submit_id, invalidate_submission
         let update = `UPDATE KA_quiz_submission 
         SET [invalidate_submission] = '${invalidate_submission}', [retake_topic] = '${retake_topic}', [regrade_submission] = '${regrade_submission}'
         WHERE submit_id = '${submit_id}'`
-        dbQueryMethod.rawQuery(update).then(result => {
+        dbQueryMethod.queryRaw(update).then(result => {
             resolve(result)
             return result;
         }).catch(function (error) { reject(error); throw (error); })

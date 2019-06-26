@@ -83,7 +83,7 @@
                         <span aria-hidden="true">&times;</span>
                       </button>
                     <p>Your changes have been saved!</p>
-                    <button class="btn btn-primary btn-action-borderless text-monospace shadow" (click)="goBack()">Click here to go back to the admin portal</button>
+                    <button class="btn btn-primary btn-action-borderless text-monospace shadow" [routerLink]="['/',currentEng_id, 'admin']">Click here to go back to the admin portal</button>
                   </div>
                 <div class="alert alert-danger" style="margin-bottom: 0px" role="alert" *ngIf="modal_message.body == 'fail'">
                     <h4 class="alert-heading">Oops!</h4>
@@ -91,7 +91,7 @@
                         <span aria-hidden="true">&times;</span>
                       </button>
                     <p>Something went wrong. Please try again later or contact developers.</p>
-                    <button class="btn btn-primary btn-outline-primary-hover-side-shadow-sm btn-action-borderless text-monospace" (click)="goBack()">Click here to go back to the admin portal</button>
+                    <button class="btn btn-primary btn-outline-primary-hover-side-shadow-sm btn-action-borderless text-monospace" [routerLink]="['/',currentEng_id, 'admin']">Click here to go back to the admin portal</button>
                   </div>
             </div>
         </div>
@@ -99,7 +99,7 @@
 
     <div class="admin-quiz-permission-title">
         <h1>Quiz Permission Table</h1>
-        <button (click)="checkState()">state</button>
+        <!-- <button (click)="checkState()">state</button> -->
         <button class="btn btn-success btn-action-borderless btn-lg shadow" (click)="checkChanges()">Check Changes</button>
     </div>
     <div class="admin-quiz-permission-by_teams">

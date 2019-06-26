@@ -1208,7 +1208,7 @@ module.exports = function (app) {
                                     'categories': categories
                                 }
                                 res.json(response_message)
-                            } catch (tryError) { log_event('ERROR', tryError, "EditQuizPermissions"); response_message.message = tryError; res,json(response_message)}
+                            } catch (tryError) { log_event('ERROR', tryError, "EditQuizPermissions"); response_message.message = tryError; res, json(response_message) }
                         }
                         // if not admin with editing permissions, redirect to error page
                         else {
@@ -1243,9 +1243,126 @@ module.exports = function (app) {
         update_permission_quiz_main(req.body['users'], req.body['email'])
         res.json(true)
     });
-
-    
     // =================== END OF Quiz Permissions FUNCTIONS ==================
+
+
+
+    // ==================== Quiz Submissions FUNCTIONS ========================
+    app.post('/api/getQuizSubmissions', (req, res, next) => {
+        let response_message = {
+            'status': 'failed',
+            'message': ''
+        }
+        preload_block(res, req.body.email, undefined, undefined)
+            .catch(function (error) {
+                debugLog("ERROR HERE" + error);
+                response_message.message = error;
+                res.json(response_message)
+            })
+            .then(returnObj => {
+                let currentUser = returnObj['currentUser']
+                let quiz = returnObj['quiz']
+                get_table_complete('KA_test_topic').then(function (catResult) { // Pulling out all topics
+                    topics = categoriesFixer(catResult, 'topic_id');
+                    get_KA_quiz_submission_by_engagement_id(req.body['eng_id']).then(result => {
+                        // render homepage and turn header ID token into usable variable (user email)
+                        if (currentUser.admin_permissions || currentUser.admin_owner) { // currentUser.admin_permissions || currentUser.admin_owner
+                            let users = Object.assign({}, switchKey(unescapingObj(result), 'submit_id'));
+                            for (let user in users) {
+                                let completed_date = new Date(users[user]['stop_time']);
+                                let start_date = new Date(users[user]['start_time']);
+                                if (completed_date > start_date) {
+                                    let millis = Math.abs(completed_date.getTime() - start_date.getTime());
+                                    var minutes = Math.floor(millis / 60000);
+                                    users[user]['diffTime'] = minutes
+                                }
+                            }
+                            response_message.response = {
+                                users: users,
+                                topics: topics,
+                                default_result: result
+                            }
+                            response_message.status = 'success';
+                            res.json(response_message)
+                        }
+                        // if not admin with editing permissions, redirect to error page
+                        else {
+                            response_message.message = 'No permission.';
+                            res.json(response_message)
+                        }
+                    }).catch(function (error) {
+                        log_event('ERROR', error, 'editSubmissionStatus');
+                        error_handler(error, res, getLineNumber())
+                        response_message.message = error;
+                        res.json(response_message)
+                    })
+                }).catch(function (error) {
+                    log_event('ERROR', error, 'editSubmissionStatus');
+                    error_handler(error, res, getLineNumber())
+                    response_message.message = error;
+                    res.json(response_message)
+                })
+            }).catch(function (error) {
+                log_event('ERROR', error, 'EditQuizPermissions');
+                error_handler(error, res, getLineNumber())
+                response_message.message = error;
+                res.json(response_message)
+            })
+    });
+    app.post('/api/saveQuizSubmissions', (req, res, next) => {
+        let response_message = {
+            'status': 'failed',
+            'message': ''
+        }
+        console.log("saveQuizSubmissions: list length =>", Object.keys(req.body['users']).length);
+        console.log("saveQuizSubmissions: admin email  =>", req.body.email);
+        console.log("saveQuizSubmissions: engagement id =>", req.body.eng_id);
+        preload_block(res, req.body['email'], undefined, req.body['eng_id'])
+            .catch(function (error) {
+                debugLog("ERROR HERE" + error);
+                response_message.message = error;
+                res.json(response_message)
+            })
+            .then(returnObj => {
+                let currentUser = returnObj['currentUser']
+                if (currentUser.admin_permissions || currentUser.admin_owner) {
+                    edit_submissions_main(req.body['users'], currentUser['profile_id']);
+                    setTimeout(function(){
+                        get_KA_quiz_submission_by_engagement_id(req.body['eng_id']).then(result => {
+                            // render homepage and turn header ID token into usable variable (user email)
+                            // currentUser.admin_permissions || currentUser.admin_owner
+                            let users = Object.assign({}, switchKey(unescapingObj(result), 'submit_id'));
+                            for (let user in users) {
+                                let completed_date = new Date(users[user]['stop_time']);
+                                let start_date = new Date(users[user]['start_time']);
+                                if (completed_date > start_date) {
+                                    let millis = Math.abs(completed_date.getTime() - start_date.getTime());
+                                    var minutes = Math.floor(millis / 60000);
+                                    users[user]['diffTime'] = minutes
+                                }
+                            }
+                            response_message.response = {
+                                users: users,
+                            }
+                            response_message.status = 'success';
+                            res.json(response_message)
+    
+                        }).catch(function (error) {
+                            log_event('ERROR', error, 'editSubmissionStatus');
+                            error_handler(error, res, getLineNumber())
+                            response_message.message = error;
+                            res.json(response_message)
+                        })
+                    }, Object.keys(req.body['users']).length * 100)
+                }
+                // if not admin with editing permissions, redirect to error page
+                else {
+                    response_message.message = 'No permission.';
+                    res.json(response_message)
+                }
+            })
+    });
+    // =================== END OF Quiz Submissions FUNCTIONS ==================
 
     // ************************************************************************
     // ************************* END OF MISC  FUNCTIONS ***********************

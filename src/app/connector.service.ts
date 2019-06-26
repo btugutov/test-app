@@ -375,7 +375,7 @@ export class ConnectorService {
 
   // ==============================================================================
 
-  // EDIT QUIZ PERMISSIONS FUNCTIONS ==========================================================
+  // EDIT QUIZ PERMISSIONS FUNCTIONS ==============================================
   getQuizPermissions(obj){
     var that = this;
     return new Promise(function (resolve, reject) {
@@ -397,6 +397,35 @@ export class ConnectorService {
     var that = this;
     return new Promise(function (resolve, reject) {
       that.http.post('/api/saveQuizPermissions', obj).subscribe(
+        res => {
+          resolve(res)
+        },
+        err => {
+          reject(err)
+        }
+      );
+    })
+  }
+  // ==============================================================================
+
+  // EDIT QUIZ SUBMISSION FUNCTIONS ==============================================
+  getQuizSubmissions(obj){
+    var that = this;
+    return new Promise(function (resolve, reject) {
+      that.http.post('/api/getQuizSubmissions', obj).subscribe(
+        res => {
+          resolve(res)
+        },
+        err => {
+          reject(err)
+        }
+      );
+    })
+  }
+  saveQuizSubmissions(obj){
+    var that = this;
+    return new Promise(function (resolve, reject) {
+      that.http.post('/api/saveQuizSubmissions', obj).subscribe(
         res => {
           resolve(res)
         },

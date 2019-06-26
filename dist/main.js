@@ -955,7 +955,7 @@ module.exports = ".admin-quiz-permission {\n    margin-top: 50px;\n}\n\n.admin-q
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div [hidden]=\"sorted_users\" class=\" loading_box \">\n    <img class=\"loading_box-ing \" src='./../../assets/loading.gif'>\n</div>\n<div [hidden]=\"!sorted_users\" class=\"admin-quiz-permission\">\n    <div [hidden]=\"!modal_mesage_bool\" class=\"modal_message_box\">\n        <div class=\"modal-dialog modal-dialog-centered modal_message\" role=\"document\">\n            <!-- EDIT/REMOVE BUCKET LIST -->\n            <div class=\"modal-content \" *ngIf=\"modal_message.title == 'list_control'\">\n                <div class=\"modal-header\">\n                    <h3 class=\"modal-title text-monospace text-center\" id=\"exampleModalCenteredLabel\" style=\"margin: 0px auto;\">Grant multiple permissions for <span class=\"font-weight-bolder\">{{modal_message.body}}</span></h3>\n                    <button type=\"button\" class=\"close\" (click)=\"closeModal()\" data-dismiss=\"modal\" aria-label=\"Close\">\n                          <span aria-hidden=\"true\">&times;</span>\n                        </button>\n                </div>\n                <div class=\"team_control_panel\">\n                  <div class='team_control_panel_category' *ngFor=\"let cat of categories | keyvalue\">\n                      <h4  style='width: 100%' align='center'>{{cat.key}}</h4>\n                      <div class=\"shadow\" style=\"display: flex; flex-direction: column; flex-wrap: nowrap; justify-content: flex-start; align-items: center; align-content: flex-start;\">\n                          <div class=\"btn-group btn-group-sm control-list-btn-group\" *ngFor=\"let topic of cat.value | keyvalue\">\n                              <button type=\"button\" (click)=\"listControlChanger(topic.value.topic_id, 'all')\" class=\"btn btn-xs text-monospace btn-action-borderlesss btn-outline-success-hover-side-shadow\" [ngClass]=\"{'btn-success': list_control[topic.value.topic_id] === true , 'btn-secondary': list_control[topic.value.topic_id] !== true}\" style=\"border-radius: 0px\" > &ensp; &ensp;  All  &ensp; &ensp; </button>\n                              <input type=\"text\" class=\"control-list-btn-group-children\" placeholder=\"{{topic.value.topic}}\" readonly disabled>\n                              <button type=\"button\" (click)=\"listControlChanger(topic.value.topic_id, 'no_one')\"  class=\"btn btn-xs text-monospace btn-action-borderlesss btn-outline-danger-hover-side-shadow\" [ngClass]=\"{'btn-danger': !list_control[topic.value.topic_id] || list_control[topic.value.topic_id] == 0, 'btn-secondary': list_control[topic.value.topic_id] && list_control[topic.value.topic_id] > 0}\" style=\"border-radius: 0px\">No one</button>\n                          </div> \n                      </div>\n                  </div>\n                </div>\n                <div class=\"team_control_panel\">\n                    <div style=\"height: 50px; margin-top: 25px;\">\n                      <button type=\"button\" (click)=\"listControlSubmit()\" [disabled]=\"!list_control_changed_bool\" class=\"btn btn-success text-monospace btn-action-borderless shadow\" style=\"margin: 0px 20px\">Apply</button>\n                      <button type=\"button\" (click)=\"generateListControl()\" [hidden]=\"!list_control_changed_bool\" class=\"btn btn-danger text-monospace btn-action-borderless shadow\" style=\"margin: 0px 20px\">Cancel</button>\n                      <button type=\"button\" (click)=\"closeModal()\" [hidden]=\"list_control_changed_bool\" class=\"btn btn-warning text-monospace btn-action-borderless shadow\"  style=\"margin: 0px 20px\">Close</button>\n                    </div>\n                </div>\n            </div>\n            <div class=\"modal-content modal-dialog-scrollable\" *ngIf=\"modal_message.title == 'changes_list'\">\n                <div class=\"modal-header\">\n                    <h3 class=\"modal-title text-monospace text-center\" id=\"exampleModalCenteredLabel\" style=\"margin: 0px auto;\">List of changes</h3>\n                    <button type=\"button\" class=\"close\" (click)=\"closeModal()\" data-dismiss=\"modal\" aria-label=\"Close\">\n                          <span aria-hidden=\"true\">&times;</span>\n                        </button>\n                </div>\n                <div style=\"height: 50vh !important; overflow-y: scroll;\">\n                    <table class=\"table table-striped table-borderless\">\n                        <thead>\n                          <tr>\n                            <th>#</th>\n                            <th>Name</th>\n                            <th>Added</th>\n                            <th>Removed</th>\n                          </tr>\n                        </thead>\n                        <tbody>\n                          <tr *ngFor=\"let user of modal_message.body | keyvalue\">\n                            <th scope=\"row\" class=\"text-monospace\">{{user.key}}</th>\n                            <td>{{sorted_users.all_users[user.key]['first_name']}} {{sorted_users.all_users[user.key]['last_name']}}</td>\n                            <td [ngClass]=\"{'alert alert-success': user.value.added.length > 0}\">\n                                <p class=\"card-text\" *ngFor=\"let added_topic of user.value.added\">\n                                  {{categories_unsorted[added_topic]['topic']}} <button class=\"btn-sm btn-xs btn-danger shadow text-monospace\" (click)=\"undoChange(user.key, added_topic)\">Undo</button>\n                                </p>\n                            </td>\n                            <td [ngClass]=\"{'alert alert-danger': user.value.removed.length > 0}\">\n                                <p class=\"card-text\" *ngFor=\"let removed_topic of user.value.removed\">\n                                    {{categories_unsorted[removed_topic]['topic']}} <button class=\"btn-sm btn-xs btn-danger shadow text-monospace\" (click)=\"undoChange(user.key, removed_topic)\">Undo</button>\n                                  </p>\n                            </td>\n                          </tr>\n                          \n                        </tbody>\n                      </table>\n                  </div>\n                  <div class=\"team_control_panel\">\n                      <div style=\"height: 50px; margin-top: 25px;\">\n                        <button type=\"button\" (click)=\"submitChanges()\" class=\"btn btn-success text-monospace btn-action-borderless shadow\" style=\"margin: 0px 20px\">Submit changes</button>\n                        <button type=\"button\" (click)=\"undoChangeAll()\" class=\"btn btn-danger text-monospace btn-action-borderless shadow\" style=\"margin: 0px 20px\">Cancel</button>\n                        <button type=\"button\" (click)=\"closeModal()\"  class=\"btn btn-warning text-monospace btn-action-borderless shadow\"  style=\"margin: 0px 20px\">Close</button>\n                      </div>\n                  </div>\n            </div>\n            <div class=\"modal-content modal-dialog-scrollable shadow\"  *ngIf=\"modal_message.title == 'message'\">\n                <div class=\"alert alert-success text-center\" style=\"margin-bottom: 0px\" role=\"alert\" *ngIf=\"modal_message.body == 'success'\">\n                    <h4 class=\"alert-heading text-center\">Well done!</h4>\n                    <button type=\"button\" class=\"close\" (click)=\"closeModal()\" data-dismiss=\"modal\" aria-label=\"Close\">\n                        <span aria-hidden=\"true\">&times;</span>\n                      </button>\n                    <p>Your changes have been saved!</p>\n                    <button class=\"btn btn-primary btn-action-borderless text-monospace shadow\" (click)=\"goBack()\">Click here to go back to the admin portal</button>\n                  </div>\n                <div class=\"alert alert-danger\" style=\"margin-bottom: 0px\" role=\"alert\" *ngIf=\"modal_message.body == 'fail'\">\n                    <h4 class=\"alert-heading\">Oops!</h4>\n                    <button type=\"button\" class=\"close\" (click)=\"closeModal()\" data-dismiss=\"modal\" aria-label=\"Close\">\n                        <span aria-hidden=\"true\">&times;</span>\n                      </button>\n                    <p>Something went wrong. Please try again later or contact developers.</p>\n                    <button class=\"btn btn-primary btn-outline-primary-hover-side-shadow-sm btn-action-borderless text-monospace\" (click)=\"goBack()\">Click here to go back to the admin portal</button>\n                  </div>\n            </div>\n        </div>\n    </div>\n\n    <div class=\"admin-quiz-permission-title\">\n        <h1>Quiz Permission Table</h1>\n        <button (click)=\"checkState()\">state</button>\n        <button class=\"btn btn-success btn-action-borderless btn-lg shadow\" (click)=\"checkChanges()\">Check Changes</button>\n    </div>\n    <div class=\"admin-quiz-permission-by_teams\">\n      <h3 [ngClass]=\"{'bp-color': current_list_target == 'by_teams' }\">Teams</h3>\n      <div class=\"admin-quiz-permission-list_buttons\"  role=\"group\">\n          <button class=\"btn btn-outline-secondary btn-action-borderless btn-outline-secondary-hover-side-shadow-sm\" [ngClass]=\"{'active': current_list_target == 'by_teams' && current_list_key == team }\" *ngFor=\"let team of by_teams\" (click)=\"selectList('by_teams',team)\">{{team}}</button>\n      </div>\n    </div>\n    <div class=\"admin-quiz-permission-by_teams\">\n      <h3 [ngClass]=\"{'bp-color': current_list_target == 'by_title' }\">Titles</h3>\n      <div class=\"admin-quiz-permission-list_buttons\"  role=\"group\">\n        <button class=\"btn btn-outline-secondary btn-action-borderless btn-outline-secondary-hover-side-shadow-sm\" [ngClass]=\"{'active': current_list_target == 'by_title' && current_list_key == title }\" *ngFor=\"let title of by_title\" (click)=\"selectList('by_title',title)\">{{title}}</button>\n      </div>\n    </div>\n    <div class=\"admin-quiz-permission-by_teams\">\n        <div class=\"admin-quiz-permission-list_buttons\"  role=\"group\">\n            <button class=\"btn btn-outline-secondary btn-lg btn-action-borderless btn-outline-secondary-hover-side-shadow-sm\" [ngClass]=\"{'bp-button-important': current_list_target == 'all_users' }\" (click)=\"selectList('all_users', null)\">All employees</button>\n          </div>\n    </div>\n    <div class=\"admin-quiz-permission-by_teams\">\n      <div class=\"admin-quiz-permission-list_buttons\"  role=\"group\">\n        <label>\n          Search in \n          <span *ngIf=\"current_list_target == 'by_teams'\">team # {{current_list_key}}</span>\n          <span *ngIf=\"current_list_target == 'by_title'\">title {{current_list_key}}</span>\n          <span *ngIf=\"current_list_target == 'all_users'\">all users</span>:\n          <div class=\"input-group shadow\">\n            <input type=\"text\" class=\"form-control form-control-bp-shadow\" id=\"searchInput\" placeholder=\"\" aria-label=\"\" style=\"border-radius: 0px\" aria-describedby=\"basic-addon1\">\n            <div class=\"input-group-append\">\n              <button class=\"btn btn-info bp-button-important btn-outline-bp-hover-side-shadow\" type=\"button\" (click)=\"searchKey()\" style=\"border-color: #2675a3; border-radius: 0px\">Filter</button>\n            </div>\n          </div>\n        </label>\n      </div>\n    </div>\n  <div class=\"admin-quiz-permission-by_teams\">\n      <div class=\"admin-quiz-permission-list_buttons\"  role=\"group\" >\n          <button class=\"btn btn-secondary btn-lg btn-action-borderless shadow-lg\" (click)=\"openModal('list_control', '')\">List control</button>\n        </div>\n\n  </div>\n    <div class=\"admin-quiz-permission-table_box\">\n        <table class=\"table table-borderless table-striped\">\n            <thead class=\"thead-light shadow\">\n              <tr>\n                <th style=\"font-size: 10px; text-align: center;  width: 5%\" (click)=\"sortType('profile_id')\">Profile Permission ID</th>\n                <th style='width: 15%'>Email</th>\n                <th style='width: 20%'>Name</th>\n                <th style='width: 10%'>Team</th>\n                <th style='width: 10%'>Title</th>\n                <th style='width: 10%'>Specialization</th>\n                <th style='text-align: center'>Quiz Permission</th>\n              </tr>\n            </thead>\n            <tbody id=\"table_body_target\">\n              <tr *ngFor=\"let user of current_list | keyvalue \">\n                <th scope=\"row\" class=\"font-weight-bold  text-center text-monospace tr_string\">{{user.key}}</th>\n                <td class=\"tr_string\">{{user.value.email}}</td>\n                <td class=\"tr_string\">{{user.value.first_name}} {{user.value.last_name}}</td>\n                <td class=\"tr_string\">{{user.value.team}}</td>\n                <td class=\"font-weight-bold  text-monospace tr_string\">{{user.value.title}}</td>\n                <td class=\"display_column_align_baseline tr_string\">\n                  {{user.value.specialization}}\n                  {{user.value.specialization2}}\n                  {{user.value.specialization3}}\n                </td>\n                <td>\n                    <div class=\"card-columns\">\n                        <div class=\"card hover-shadow\" *ngFor=\"let cat of categories | keyvalue\">\n                          <div class=\"EditQuizPermissions_categoryBox \">\n                            <p class=\"font-weight-bold text-monospace\" align=\"center\">{{cat.key}}</p>\n                            <span *ngFor=\"let topic of cat.value | keyvalue\">\n                              <input type=\"checkbox\" class=\"font-weight-light checkTopic\" id='checkTopic{{cat.value}}' [checked]=\"user.value.topic_id.indexOf(topic.value.topic_id) >= 0\" (click)=\"checkTopic(user.key, topic.value.topic_id)\">  {{topic.value.topic}}  {{topic.value.topic_id}} \n                            </span>\n                          </div>\n                        </div>\n                    </div>\n                </td>\n              </tr>\n              \n            </tbody>\n          </table>\n    </div>\n</div>"
+module.exports = "<div [hidden]=\"sorted_users\" class=\" loading_box \">\n    <img class=\"loading_box-ing \" src='./../../assets/loading.gif'>\n</div>\n<div [hidden]=\"!sorted_users\" class=\"admin-quiz-permission\">\n    <div [hidden]=\"!modal_mesage_bool\" class=\"modal_message_box\">\n        <div class=\"modal-dialog modal-dialog-centered modal_message\" role=\"document\">\n            <!-- EDIT/REMOVE BUCKET LIST -->\n            <div class=\"modal-content \" *ngIf=\"modal_message.title == 'list_control'\">\n                <div class=\"modal-header\">\n                    <h3 class=\"modal-title text-monospace text-center\" id=\"exampleModalCenteredLabel\" style=\"margin: 0px auto;\">Grant multiple permissions for <span class=\"font-weight-bolder\">{{modal_message.body}}</span></h3>\n                    <button type=\"button\" class=\"close\" (click)=\"closeModal()\" data-dismiss=\"modal\" aria-label=\"Close\">\n                          <span aria-hidden=\"true\">&times;</span>\n                        </button>\n                </div>\n                <div class=\"team_control_panel\">\n                  <div class='team_control_panel_category' *ngFor=\"let cat of categories | keyvalue\">\n                      <h4  style='width: 100%' align='center'>{{cat.key}}</h4>\n                      <div class=\"shadow\" style=\"display: flex; flex-direction: column; flex-wrap: nowrap; justify-content: flex-start; align-items: center; align-content: flex-start;\">\n                          <div class=\"btn-group btn-group-sm control-list-btn-group\" *ngFor=\"let topic of cat.value | keyvalue\">\n                              <button type=\"button\" (click)=\"listControlChanger(topic.value.topic_id, 'all')\" class=\"btn btn-xs text-monospace btn-action-borderlesss btn-outline-success-hover-side-shadow\" [ngClass]=\"{'btn-success': list_control[topic.value.topic_id] === true , 'btn-secondary': list_control[topic.value.topic_id] !== true}\" style=\"border-radius: 0px\" > &ensp; &ensp;  All  &ensp; &ensp; </button>\n                              <input type=\"text\" class=\"control-list-btn-group-children\" placeholder=\"{{topic.value.topic}}\" readonly disabled>\n                              <button type=\"button\" (click)=\"listControlChanger(topic.value.topic_id, 'no_one')\"  class=\"btn btn-xs text-monospace btn-action-borderlesss btn-outline-danger-hover-side-shadow\" [ngClass]=\"{'btn-danger': !list_control[topic.value.topic_id] || list_control[topic.value.topic_id] == 0, 'btn-secondary': list_control[topic.value.topic_id] && list_control[topic.value.topic_id] > 0}\" style=\"border-radius: 0px\">No one</button>\n                          </div> \n                      </div>\n                  </div>\n                </div>\n                <div class=\"team_control_panel\">\n                    <div style=\"height: 50px; margin-top: 25px;\">\n                      <button type=\"button\" (click)=\"listControlSubmit()\" [disabled]=\"!list_control_changed_bool\" class=\"btn btn-success text-monospace btn-action-borderless shadow\" style=\"margin: 0px 20px\">Apply</button>\n                      <button type=\"button\" (click)=\"generateListControl()\" [hidden]=\"!list_control_changed_bool\" class=\"btn btn-danger text-monospace btn-action-borderless shadow\" style=\"margin: 0px 20px\">Cancel</button>\n                      <button type=\"button\" (click)=\"closeModal()\" [hidden]=\"list_control_changed_bool\" class=\"btn btn-warning text-monospace btn-action-borderless shadow\"  style=\"margin: 0px 20px\">Close</button>\n                    </div>\n                </div>\n            </div>\n            <div class=\"modal-content modal-dialog-scrollable\" *ngIf=\"modal_message.title == 'changes_list'\">\n                <div class=\"modal-header\">\n                    <h3 class=\"modal-title text-monospace text-center\" id=\"exampleModalCenteredLabel\" style=\"margin: 0px auto;\">List of changes</h3>\n                    <button type=\"button\" class=\"close\" (click)=\"closeModal()\" data-dismiss=\"modal\" aria-label=\"Close\">\n                          <span aria-hidden=\"true\">&times;</span>\n                        </button>\n                </div>\n                <div style=\"height: 50vh !important; overflow-y: scroll;\">\n                    <table class=\"table table-striped table-borderless\">\n                        <thead>\n                          <tr>\n                            <th>#</th>\n                            <th>Name</th>\n                            <th>Added</th>\n                            <th>Removed</th>\n                          </tr>\n                        </thead>\n                        <tbody>\n                          <tr *ngFor=\"let user of modal_message.body | keyvalue\">\n                            <th scope=\"row\" class=\"text-monospace\">{{user.key}}</th>\n                            <td>{{sorted_users.all_users[user.key]['first_name']}} {{sorted_users.all_users[user.key]['last_name']}}</td>\n                            <td [ngClass]=\"{'alert alert-success': user.value.added.length > 0}\">\n                                <p class=\"card-text\" *ngFor=\"let added_topic of user.value.added\">\n                                  {{categories_unsorted[added_topic]['topic']}} <button class=\"btn-sm btn-xs btn-danger shadow text-monospace\" (click)=\"undoChange(user.key, added_topic)\">Undo</button>\n                                </p>\n                            </td>\n                            <td [ngClass]=\"{'alert alert-danger': user.value.removed.length > 0}\">\n                                <p class=\"card-text\" *ngFor=\"let removed_topic of user.value.removed\">\n                                    {{categories_unsorted[removed_topic]['topic']}} <button class=\"btn-sm btn-xs btn-danger shadow text-monospace\" (click)=\"undoChange(user.key, removed_topic)\">Undo</button>\n                                  </p>\n                            </td>\n                          </tr>\n                          \n                        </tbody>\n                      </table>\n                  </div>\n                  <div class=\"team_control_panel\">\n                      <div style=\"height: 50px; margin-top: 25px;\">\n                        <button type=\"button\" (click)=\"submitChanges()\" class=\"btn btn-success text-monospace btn-action-borderless shadow\" style=\"margin: 0px 20px\">Submit changes</button>\n                        <button type=\"button\" (click)=\"undoChangeAll()\" class=\"btn btn-danger text-monospace btn-action-borderless shadow\" style=\"margin: 0px 20px\">Cancel</button>\n                        <button type=\"button\" (click)=\"closeModal()\"  class=\"btn btn-warning text-monospace btn-action-borderless shadow\"  style=\"margin: 0px 20px\">Close</button>\n                      </div>\n                  </div>\n            </div>\n            <div class=\"modal-content modal-dialog-scrollable shadow\"  *ngIf=\"modal_message.title == 'message'\">\n                <div class=\"alert alert-success text-center\" style=\"margin-bottom: 0px\" role=\"alert\" *ngIf=\"modal_message.body == 'success'\">\n                    <h4 class=\"alert-heading text-center\">Well done!</h4>\n                    <button type=\"button\" class=\"close\" (click)=\"closeModal()\" data-dismiss=\"modal\" aria-label=\"Close\">\n                        <span aria-hidden=\"true\">&times;</span>\n                      </button>\n                    <p>Your changes have been saved!</p>\n                    <button class=\"btn btn-primary btn-action-borderless text-monospace shadow\" [routerLink]=\"['/',currentEng_id, 'admin']\">Click here to go back to the admin portal</button>\n                  </div>\n                <div class=\"alert alert-danger\" style=\"margin-bottom: 0px\" role=\"alert\" *ngIf=\"modal_message.body == 'fail'\">\n                    <h4 class=\"alert-heading\">Oops!</h4>\n                    <button type=\"button\" class=\"close\" (click)=\"closeModal()\" data-dismiss=\"modal\" aria-label=\"Close\">\n                        <span aria-hidden=\"true\">&times;</span>\n                      </button>\n                    <p>Something went wrong. Please try again later or contact developers.</p>\n                    <button class=\"btn btn-primary btn-outline-primary-hover-side-shadow-sm btn-action-borderless text-monospace\" [routerLink]=\"['/',currentEng_id, 'admin']\">Click here to go back to the admin portal</button>\n                  </div>\n            </div>\n        </div>\n    </div>\n\n    <div class=\"admin-quiz-permission-title\">\n        <h1>Quiz Permission Table</h1>\n        <!-- <button (click)=\"checkState()\">state</button> -->\n        <button class=\"btn btn-success btn-action-borderless btn-lg shadow\" (click)=\"checkChanges()\">Check Changes</button>\n    </div>\n    <div class=\"admin-quiz-permission-by_teams\">\n      <h3 [ngClass]=\"{'bp-color': current_list_target == 'by_teams' }\">Teams</h3>\n      <div class=\"admin-quiz-permission-list_buttons\"  role=\"group\">\n          <button class=\"btn btn-outline-secondary btn-action-borderless btn-outline-secondary-hover-side-shadow-sm\" [ngClass]=\"{'active': current_list_target == 'by_teams' && current_list_key == team }\" *ngFor=\"let team of by_teams\" (click)=\"selectList('by_teams',team)\">{{team}}</button>\n      </div>\n    </div>\n    <div class=\"admin-quiz-permission-by_teams\">\n      <h3 [ngClass]=\"{'bp-color': current_list_target == 'by_title' }\">Titles</h3>\n      <div class=\"admin-quiz-permission-list_buttons\"  role=\"group\">\n        <button class=\"btn btn-outline-secondary btn-action-borderless btn-outline-secondary-hover-side-shadow-sm\" [ngClass]=\"{'active': current_list_target == 'by_title' && current_list_key == title }\" *ngFor=\"let title of by_title\" (click)=\"selectList('by_title',title)\">{{title}}</button>\n      </div>\n    </div>\n    <div class=\"admin-quiz-permission-by_teams\">\n        <div class=\"admin-quiz-permission-list_buttons\"  role=\"group\">\n            <button class=\"btn btn-outline-secondary btn-lg btn-action-borderless btn-outline-secondary-hover-side-shadow-sm\" [ngClass]=\"{'bp-button-important': current_list_target == 'all_users' }\" (click)=\"selectList('all_users', null)\">All employees</button>\n          </div>\n    </div>\n    <div class=\"admin-quiz-permission-by_teams\">\n      <div class=\"admin-quiz-permission-list_buttons\"  role=\"group\">\n        <label>\n          Search in \n          <span *ngIf=\"current_list_target == 'by_teams'\">team # {{current_list_key}}</span>\n          <span *ngIf=\"current_list_target == 'by_title'\">title {{current_list_key}}</span>\n          <span *ngIf=\"current_list_target == 'all_users'\">all users</span>:\n          <div class=\"input-group shadow\">\n            <input type=\"text\" class=\"form-control form-control-bp-shadow\" id=\"searchInput\" placeholder=\"\" aria-label=\"\" style=\"border-radius: 0px\" aria-describedby=\"basic-addon1\">\n            <div class=\"input-group-append\">\n              <button class=\"btn btn-info bp-button-important btn-outline-bp-hover-side-shadow\" type=\"button\" (click)=\"searchKey()\" style=\"border-color: #2675a3; border-radius: 0px\">Filter</button>\n            </div>\n          </div>\n        </label>\n      </div>\n    </div>\n  <div class=\"admin-quiz-permission-by_teams\">\n      <div class=\"admin-quiz-permission-list_buttons\"  role=\"group\" >\n          <button class=\"btn btn-secondary btn-lg btn-action-borderless shadow-lg\" (click)=\"openModal('list_control', '')\">List control</button>\n        </div>\n\n  </div>\n    <div class=\"admin-quiz-permission-table_box\">\n        <table class=\"table table-borderless table-striped\">\n            <thead class=\"thead-light shadow\">\n              <tr>\n                <th style=\"font-size: 10px; text-align: center;  width: 5%\" (click)=\"sortType('profile_id')\">Profile Permission ID</th>\n                <th style='width: 15%'>Email</th>\n                <th style='width: 20%'>Name</th>\n                <th style='width: 10%'>Team</th>\n                <th style='width: 10%'>Title</th>\n                <th style='width: 10%'>Specialization</th>\n                <th style='text-align: center'>Quiz Permission</th>\n              </tr>\n            </thead>\n            <tbody id=\"table_body_target\">\n              <tr *ngFor=\"let user of current_list | keyvalue \">\n                <th scope=\"row\" class=\"font-weight-bold  text-center text-monospace tr_string\">{{user.key}}</th>\n                <td class=\"tr_string\">{{user.value.email}}</td>\n                <td class=\"tr_string\">{{user.value.first_name}} {{user.value.last_name}}</td>\n                <td class=\"tr_string\">{{user.value.team}}</td>\n                <td class=\"font-weight-bold  text-monospace tr_string\">{{user.value.title}}</td>\n                <td class=\"display_column_align_baseline tr_string\">\n                  {{user.value.specialization}}\n                  {{user.value.specialization2}}\n                  {{user.value.specialization3}}\n                </td>\n                <td>\n                    <div class=\"card-columns\">\n                        <div class=\"card hover-shadow\" *ngFor=\"let cat of categories | keyvalue\">\n                          <div class=\"EditQuizPermissions_categoryBox \">\n                            <p class=\"font-weight-bold text-monospace\" align=\"center\">{{cat.key}}</p>\n                            <span *ngFor=\"let topic of cat.value | keyvalue\">\n                              <input type=\"checkbox\" class=\"font-weight-light checkTopic\" id='checkTopic{{cat.value}}' [checked]=\"user.value.topic_id.indexOf(topic.value.topic_id) >= 0\" (click)=\"checkTopic(user.key, topic.value.topic_id)\">  {{topic.value.topic}}  {{topic.value.topic_id}} \n                            </span>\n                          </div>\n                        </div>\n                    </div>\n                </td>\n              </tr>\n              \n            </tbody>\n          </table>\n    </div>\n</div>"
 
 /***/ }),
 
@@ -2363,7 +2363,7 @@ var AdminEditquizComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJzcmMvYXBwL2FkbWluLWVkaXRzdWJtaXNzaW9ucy9hZG1pbi1lZGl0c3VibWlzc2lvbnMuY29tcG9uZW50LmNzcyJ9 */"
+module.exports = ".admin-quiz-permission {\n    margin-top: 50px;\n}\n\n.admin-quiz-permission-title {\n    display: flex;\n    flex-direction: column;\n    flex-wrap: nowrap;\n    justify-content: flex-start;\n    align-items: center;\n    align-content: center;\n}\n\n.admin-quiz-permission-body {\n    display: flex;\n    flex-direction: column;\n    flex-wrap: nowrap;\n    justify-content: flex-start;\n    align-items: center;\n    align-content: center;\n}\n\n.admin-quiz-permission-list_buttons {\n    margin: 0px auto;\n    width: 80%;\n    display: flex;\n    flex-direction: row;\n    flex-wrap: wrap;\n    justify-content: center;\n    align-items: center;\n    align-content: center;\n}\n\n.admin-quiz-permission-by_teams{\n    margin: 50px 50px;\n    display: flex;\n\tflex-direction: column;\n\tflex-wrap: nowrap;\n\tjustify-content: center;\n\talign-items: center;\n\talign-content: center;\n}\n\n.admin-quiz-permission-table_box{\n    display: flex;\n    flex-direction: column;\n    flex-wrap: nowrap;\n    justify-content: flex-start;\n    align-items: center;\n}\n\n.EditQuizPermissions_categoryBox {\n    height: -webkit-fit-content;\n    height: -moz-fit-content;\n    height: fit-content;\n    display: flex;\n    flex-direction: column;\n    flex-wrap: wrap;\n    justify-content: flex-start;\n    align-content: flex-start;\n    /* z-index: 0;\n    transition: 0.5s;\n    box-shadow: none; */\n    margin: 5px 5px;\n    padding: 5px 5px;\n    -webkit-user-select: none;\n       -moz-user-select: none;\n        -ms-user-select: none;\n            user-select: none;\n    border-radius: 5px;\n}\n\n.EditQuizPermissions_categoryBox p {\n    transition: 0.5s;\n}\n\n.EditQuizPermissions_categoryBox:hover {\n    /* z-index: 1;\n    box-shadow: 5px 10px 18px #888888;\n    background: white */\n}\n\n.EditQuizPermissions_categoryBox:hover p {\n    color: #4f91cd;\n}\n\n.modal_message_box {\n    position: fixed;\n    z-index: 50;\n    width: 100vw;\n    height: 100vh;\n    background: rgba(179, 182, 185, 0.5);\n    margin-top: -120px;\n}\n\n.modal_message {\n    max-height: 52vh;\n}\n\n.modal-edit-remove-bucket{\n    height: 50vh !important;\n    overflow-y: auto;\n}\n\n.modal-edit-remove-bucket td{\n    /* padding: 0px 0px !important; */\n}\n\n.modal-dialog{\n    width: 1000px;\n    max-width: 1000px !important;\n    /* height: 100px; */\n}\n\n.toggle-red::before{\n    border-color: #a71212 !important;\n    background-color: #f56f6f !important;\n}\n\ninput[type=\"checkbox\"].switch_1{\n\tfont-size: 30px;\n\t-webkit-appearance: none;\n\t   -moz-appearance: none;\n\t        appearance: none;\n\twidth: 2.2em;\n\theight: 1em;\n\tbackground: #ddd;\n\tborder-radius: 3em;\n\tposition: relative;\n\tcursor: pointer;\n\toutline: none;\n\ttransition: all .2s ease-in-out;\n  }\n\ninput[type=\"checkbox\"].switch_1:checked{\n\tbackground: #0ebeff;\n  }\n\ninput[type=\"checkbox\"].switch_1:after{\n\tposition: absolute;\n\tcontent: \"\";\n\twidth: 1em;\n\theight: 1em;\n\tborder-radius: 50%;\n\tbackground: #fff;\n\tbox-shadow: 0 0 .25em rgba(0,0,0,.3);\n\t-webkit-transform: scale(.7);\n\t        transform: scale(.7);\n\tleft: 0;\n\ttransition: all .2s ease-in-out;\n  }\n\ninput[type=\"checkbox\"].switch_1:checked:after{\n\tleft: calc(100% - 1em);\n  }\n\ninput[type=\"checkbox\"].switch_1:disabled{\n    -webkit-filter: brightness(65%);\n            filter: brightness(65%);\n  }\n\n.outerDivFull { margin:50px; }\n\n.switchToggle input[type=checkbox]{height: 0; width: 0; visibility: hidden; position: absolute; }\n\n.switchToggle label {cursor: pointer; text-indent: -9999px; width: 70px; max-width: 70px; height: 30px; background: #d1d1d1; display: block; border-radius: 100px; position: relative; }\n\n.switchToggle label:after {content: ''; position: absolute; top: 2px; left: 2px; width: 26px; height: 26px; background: #fff; border-radius: 90px; transition: 0.3s; }\n\n.switchToggle input:checked + label, .switchToggle input:checked + input + label  {background: #3e98d3; }\n\n.switchToggle input + label:before, .switchToggle input + input + label:before {content: 'No'; position: absolute; top: 5px; left: 35px; width: 26px; height: 26px; border-radius: 90px; transition: 0.3s; text-indent: 0; color: #fff; }\n\n.switchToggle input:checked + label:before, .switchToggle input:checked + input + label:before {content: 'Yes'; position: absolute; top: 5px; left: 10px; width: 26px; height: 26px; border-radius: 90px; transition: 0.3s; text-indent: 0; color: #fff; }\n\n.switchToggle input:checked + label:after, .switchToggle input:checked + input + label:after {left: calc(100% - 2px); -webkit-transform: translateX(-100%); transform: translateX(-100%); }\n\n.switchToggle label:active:after {width: 60px; }\n\n.toggle-switchArea { margin: 10px 0 10px 0; }\n\nthead th\n{\n    position: -webkit-sticky;\n    position: sticky;\n    top: 0px;\n    z-index: 1;\n\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNyYy9hcHAvYWRtaW4tZWRpdHN1Ym1pc3Npb25zL2FkbWluLWVkaXRzdWJtaXNzaW9ucy5jb21wb25lbnQuY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBO0lBQ0ksZ0JBQWdCO0FBQ3BCOztBQUVBO0lBQ0ksYUFBYTtJQUNiLHNCQUFzQjtJQUN0QixpQkFBaUI7SUFDakIsMkJBQTJCO0lBQzNCLG1CQUFtQjtJQUNuQixxQkFBcUI7QUFDekI7O0FBRUE7SUFDSSxhQUFhO0lBQ2Isc0JBQXNCO0lBQ3RCLGlCQUFpQjtJQUNqQiwyQkFBMkI7SUFDM0IsbUJBQW1CO0lBQ25CLHFCQUFxQjtBQUN6Qjs7QUFDQTtJQUNJLGdCQUFnQjtJQUNoQixVQUFVO0lBQ1YsYUFBYTtJQUNiLG1CQUFtQjtJQUNuQixlQUFlO0lBQ2YsdUJBQXVCO0lBQ3ZCLG1CQUFtQjtJQUNuQixxQkFBcUI7QUFDekI7O0FBQ0E7SUFDSSxpQkFBaUI7SUFDakIsYUFBYTtDQUNoQixzQkFBc0I7Q0FDdEIsaUJBQWlCO0NBQ2pCLHVCQUF1QjtDQUN2QixtQkFBbUI7Q0FDbkIscUJBQXFCO0FBQ3RCOztBQUNBO0lBQ0ksYUFBYTtJQUNiLHNCQUFzQjtJQUN0QixpQkFBaUI7SUFDakIsMkJBQTJCO0lBQzNCLG1CQUFtQjtBQUN2Qjs7QUFDQTtJQUNJLDJCQUFtQjtJQUFuQix3QkFBbUI7SUFBbkIsbUJBQW1CO0lBQ25CLGFBQWE7SUFDYixzQkFBc0I7SUFDdEIsZUFBZTtJQUNmLDJCQUEyQjtJQUMzQix5QkFBeUI7SUFDekI7O3VCQUVtQjtJQUNuQixlQUFlO0lBQ2YsZ0JBQWdCO0lBQ2hCLHlCQUFpQjtPQUFqQixzQkFBaUI7UUFBakIscUJBQWlCO1lBQWpCLGlCQUFpQjtJQUNqQixrQkFBa0I7QUFDdEI7O0FBRUE7SUFDSSxnQkFBZ0I7QUFDcEI7O0FBRUE7SUFDSTs7dUJBRW1CO0FBQ3ZCOztBQUVBO0lBQ0ksY0FBYztBQUNsQjs7QUFDQTtJQUNJLGVBQWU7SUFDZixXQUFXO0lBQ1gsWUFBWTtJQUNaLGFBQWE7SUFDYixvQ0FBb0M7SUFDcEMsa0JBQWtCO0FBQ3RCOztBQUVBO0lBQ0ksZ0JBQWdCO0FBQ3BCOztBQUVBO0lBQ0ksdUJBQXVCO0lBQ3ZCLGdCQUFnQjtBQUNwQjs7QUFDQTtJQUNJLGlDQUFpQztBQUNyQzs7QUFDQTtJQUNJLGFBQWE7SUFDYiw0QkFBNEI7SUFDNUIsbUJBQW1CO0FBQ3ZCOztBQUVBO0lBQ0ksZ0NBQWdDO0lBQ2hDLG9DQUFvQztBQUN4Qzs7QUFFQTtDQUNDLGVBQWU7Q0FDZix3QkFBd0I7SUFDckIscUJBQXFCO1NBQ2hCLGdCQUFnQjtDQUN4QixZQUFZO0NBQ1osV0FBVztDQUNYLGdCQUFnQjtDQUNoQixrQkFBa0I7Q0FDbEIsa0JBQWtCO0NBQ2xCLGVBQWU7Q0FDZixhQUFhO0NBRWIsK0JBQStCO0VBQzlCOztBQUVBO0NBQ0QsbUJBQW1CO0VBQ2xCOztBQUVBO0NBQ0Qsa0JBQWtCO0NBQ2xCLFdBQVc7Q0FDWCxVQUFVO0NBQ1YsV0FBVztDQUNYLGtCQUFrQjtDQUNsQixnQkFBZ0I7Q0FFUixvQ0FBb0M7Q0FDNUMsNEJBQTRCO1NBQ3BCLG9CQUFvQjtDQUM1QixPQUFPO0NBRVAsK0JBQStCO0VBQzlCOztBQUVBO0NBQ0Qsc0JBQXNCO0VBQ3JCOztBQUNBO0lBQ0UsK0JBQXVCO1lBQXZCLHVCQUF1QjtFQUN6Qjs7QUFFQSxnQkFBZ0IsV0FBVyxFQUFFOztBQUUvQixtQ0FBbUMsU0FBUyxFQUFFLFFBQVEsRUFBRSxrQkFBa0IsRUFBRSxrQkFBa0IsRUFBRTs7QUFDaEcscUJBQXFCLGVBQWUsRUFBRSxvQkFBb0IsRUFBRSxXQUFXLEVBQUUsZUFBZSxFQUFFLFlBQVksRUFBRSxtQkFBbUIsRUFBRSxjQUFjLEVBQUUsb0JBQW9CLEVBQUUsa0JBQWtCLEVBQUU7O0FBQ3ZMLDJCQUEyQixXQUFXLEVBQUUsa0JBQWtCLEVBQUUsUUFBUSxFQUFFLFNBQVMsRUFBRSxXQUFXLEVBQUUsWUFBWSxFQUFFLGdCQUFnQixFQUFFLG1CQUFtQixFQUFFLGdCQUFnQixFQUFFOztBQUNySyxtRkFBbUYsbUJBQW1CLEVBQUU7O0FBQ3hHLGdGQUFnRixhQUFhLEVBQUUsa0JBQWtCLEVBQUUsUUFBUSxFQUFFLFVBQVUsRUFBRSxXQUFXLEVBQUUsWUFBWSxFQUFFLG1CQUFtQixFQUFFLGdCQUFnQixFQUFFLGNBQWMsRUFBRSxXQUFXLEVBQUU7O0FBQ3hPLGdHQUFnRyxjQUFjLEVBQUUsa0JBQWtCLEVBQUUsUUFBUSxFQUFFLFVBQVUsRUFBRSxXQUFXLEVBQUUsWUFBWSxFQUFFLG1CQUFtQixFQUFFLGdCQUFnQixFQUFFLGNBQWMsRUFBRSxXQUFXLEVBQUU7O0FBQ3pQLDhGQUE4RixzQkFBc0IsRUFBRSxvQ0FBNEIsRUFBNUIsNEJBQTRCLEVBQUU7O0FBQ3BKLGtDQUFrQyxXQUFXLEVBQUU7O0FBQy9DLHFCQUFxQixxQkFBcUIsRUFBRTs7QUFFNUM7O0lBRUksd0JBQWdCO0lBQWhCLGdCQUFnQjtJQUNoQixRQUFRO0lBQ1IsVUFBVTs7QUFFZCIsImZpbGUiOiJzcmMvYXBwL2FkbWluLWVkaXRzdWJtaXNzaW9ucy9hZG1pbi1lZGl0c3VibWlzc2lvbnMuY29tcG9uZW50LmNzcyIsInNvdXJjZXNDb250ZW50IjpbIi5hZG1pbi1xdWl6LXBlcm1pc3Npb24ge1xuICAgIG1hcmdpbi10b3A6IDUwcHg7XG59XG5cbi5hZG1pbi1xdWl6LXBlcm1pc3Npb24tdGl0bGUge1xuICAgIGRpc3BsYXk6IGZsZXg7XG4gICAgZmxleC1kaXJlY3Rpb246IGNvbHVtbjtcbiAgICBmbGV4LXdyYXA6IG5vd3JhcDtcbiAgICBqdXN0aWZ5LWNvbnRlbnQ6IGZsZXgtc3RhcnQ7XG4gICAgYWxpZ24taXRlbXM6IGNlbnRlcjtcbiAgICBhbGlnbi1jb250ZW50OiBjZW50ZXI7XG59XG5cbi5hZG1pbi1xdWl6LXBlcm1pc3Npb24tYm9keSB7XG4gICAgZGlzcGxheTogZmxleDtcbiAgICBmbGV4LWRpcmVjdGlvbjogY29sdW1uO1xuICAgIGZsZXgtd3JhcDogbm93cmFwO1xuICAgIGp1c3RpZnktY29udGVudDogZmxleC1zdGFydDtcbiAgICBhbGlnbi1pdGVtczogY2VudGVyO1xuICAgIGFsaWduLWNvbnRlbnQ6IGNlbnRlcjtcbn1cbi5hZG1pbi1xdWl6LXBlcm1pc3Npb24tbGlzdF9idXR0b25zIHtcbiAgICBtYXJnaW46IDBweCBhdXRvO1xuICAgIHdpZHRoOiA4MCU7XG4gICAgZGlzcGxheTogZmxleDtcbiAgICBmbGV4LWRpcmVjdGlvbjogcm93O1xuICAgIGZsZXgtd3JhcDogd3JhcDtcbiAgICBqdXN0aWZ5LWNvbnRlbnQ6IGNlbnRlcjtcbiAgICBhbGlnbi1pdGVtczogY2VudGVyO1xuICAgIGFsaWduLWNvbnRlbnQ6IGNlbnRlcjtcbn1cbi5hZG1pbi1xdWl6LXBlcm1pc3Npb24tYnlfdGVhbXN7XG4gICAgbWFyZ2luOiA1MHB4IDUwcHg7XG4gICAgZGlzcGxheTogZmxleDtcblx0ZmxleC1kaXJlY3Rpb246IGNvbHVtbjtcblx0ZmxleC13cmFwOiBub3dyYXA7XG5cdGp1c3RpZnktY29udGVudDogY2VudGVyO1xuXHRhbGlnbi1pdGVtczogY2VudGVyO1xuXHRhbGlnbi1jb250ZW50OiBjZW50ZXI7XG59XG4uYWRtaW4tcXVpei1wZXJtaXNzaW9uLXRhYmxlX2JveHtcbiAgICBkaXNwbGF5OiBmbGV4O1xuICAgIGZsZXgtZGlyZWN0aW9uOiBjb2x1bW47XG4gICAgZmxleC13cmFwOiBub3dyYXA7XG4gICAganVzdGlmeS1jb250ZW50OiBmbGV4LXN0YXJ0O1xuICAgIGFsaWduLWl0ZW1zOiBjZW50ZXI7XG59XG4uRWRpdFF1aXpQZXJtaXNzaW9uc19jYXRlZ29yeUJveCB7XG4gICAgaGVpZ2h0OiBmaXQtY29udGVudDtcbiAgICBkaXNwbGF5OiBmbGV4O1xuICAgIGZsZXgtZGlyZWN0aW9uOiBjb2x1bW47XG4gICAgZmxleC13cmFwOiB3cmFwO1xuICAgIGp1c3RpZnktY29udGVudDogZmxleC1zdGFydDtcbiAgICBhbGlnbi1jb250ZW50OiBmbGV4LXN0YXJ0O1xuICAgIC8qIHotaW5kZXg6IDA7XG4gICAgdHJhbnNpdGlvbjogMC41cztcbiAgICBib3gtc2hhZG93OiBub25lOyAqL1xuICAgIG1hcmdpbjogNXB4IDVweDtcbiAgICBwYWRkaW5nOiA1cHggNXB4O1xuICAgIHVzZXItc2VsZWN0OiBub25lO1xuICAgIGJvcmRlci1yYWRpdXM6IDVweDtcbn1cblxuLkVkaXRRdWl6UGVybWlzc2lvbnNfY2F0ZWdvcnlCb3ggcCB7XG4gICAgdHJhbnNpdGlvbjogMC41cztcbn1cblxuLkVkaXRRdWl6UGVybWlzc2lvbnNfY2F0ZWdvcnlCb3g6aG92ZXIge1xuICAgIC8qIHotaW5kZXg6IDE7XG4gICAgYm94LXNoYWRvdzogNXB4IDEwcHggMThweCAjODg4ODg4O1xuICAgIGJhY2tncm91bmQ6IHdoaXRlICovXG59XG5cbi5FZGl0UXVpelBlcm1pc3Npb25zX2NhdGVnb3J5Qm94OmhvdmVyIHAge1xuICAgIGNvbG9yOiAjNGY5MWNkO1xufVxuLm1vZGFsX21lc3NhZ2VfYm94IHtcbiAgICBwb3NpdGlvbjogZml4ZWQ7XG4gICAgei1pbmRleDogNTA7XG4gICAgd2lkdGg6IDEwMHZ3O1xuICAgIGhlaWdodDogMTAwdmg7XG4gICAgYmFja2dyb3VuZDogcmdiYSgxNzksIDE4MiwgMTg1LCAwLjUpO1xuICAgIG1hcmdpbi10b3A6IC0xMjBweDtcbn1cblxuLm1vZGFsX21lc3NhZ2Uge1xuICAgIG1heC1oZWlnaHQ6IDUydmg7XG59XG5cbi5tb2RhbC1lZGl0LXJlbW92ZS1idWNrZXR7XG4gICAgaGVpZ2h0OiA1MHZoICFpbXBvcnRhbnQ7XG4gICAgb3ZlcmZsb3cteTogYXV0bztcbn1cbi5tb2RhbC1lZGl0LXJlbW92ZS1idWNrZXQgdGR7XG4gICAgLyogcGFkZGluZzogMHB4IDBweCAhaW1wb3J0YW50OyAqL1xufVxuLm1vZGFsLWRpYWxvZ3tcbiAgICB3aWR0aDogMTAwMHB4O1xuICAgIG1heC13aWR0aDogMTAwMHB4ICFpbXBvcnRhbnQ7XG4gICAgLyogaGVpZ2h0OiAxMDBweDsgKi9cbn1cblxuLnRvZ2dsZS1yZWQ6OmJlZm9yZXtcbiAgICBib3JkZXItY29sb3I6ICNhNzEyMTIgIWltcG9ydGFudDtcbiAgICBiYWNrZ3JvdW5kLWNvbG9yOiAjZjU2ZjZmICFpbXBvcnRhbnQ7XG59XG5cbmlucHV0W3R5cGU9XCJjaGVja2JveFwiXS5zd2l0Y2hfMXtcblx0Zm9udC1zaXplOiAzMHB4O1xuXHQtd2Via2l0LWFwcGVhcmFuY2U6IG5vbmU7XG5cdCAgIC1tb3otYXBwZWFyYW5jZTogbm9uZTtcblx0ICAgICAgICBhcHBlYXJhbmNlOiBub25lO1xuXHR3aWR0aDogMi4yZW07XG5cdGhlaWdodDogMWVtO1xuXHRiYWNrZ3JvdW5kOiAjZGRkO1xuXHRib3JkZXItcmFkaXVzOiAzZW07XG5cdHBvc2l0aW9uOiByZWxhdGl2ZTtcblx0Y3Vyc29yOiBwb2ludGVyO1xuXHRvdXRsaW5lOiBub25lO1xuXHQtd2Via2l0LXRyYW5zaXRpb246IGFsbCAuMnMgZWFzZS1pbi1vdXQ7XG5cdHRyYW5zaXRpb246IGFsbCAuMnMgZWFzZS1pbi1vdXQ7XG4gIH1cbiAgXG4gIGlucHV0W3R5cGU9XCJjaGVja2JveFwiXS5zd2l0Y2hfMTpjaGVja2Vke1xuXHRiYWNrZ3JvdW5kOiAjMGViZWZmO1xuICB9XG4gIFxuICBpbnB1dFt0eXBlPVwiY2hlY2tib3hcIl0uc3dpdGNoXzE6YWZ0ZXJ7XG5cdHBvc2l0aW9uOiBhYnNvbHV0ZTtcblx0Y29udGVudDogXCJcIjtcblx0d2lkdGg6IDFlbTtcblx0aGVpZ2h0OiAxZW07XG5cdGJvcmRlci1yYWRpdXM6IDUwJTtcblx0YmFja2dyb3VuZDogI2ZmZjtcblx0LXdlYmtpdC1ib3gtc2hhZG93OiAwIDAgLjI1ZW0gcmdiYSgwLDAsMCwuMyk7XG5cdCAgICAgICAgYm94LXNoYWRvdzogMCAwIC4yNWVtIHJnYmEoMCwwLDAsLjMpO1xuXHQtd2Via2l0LXRyYW5zZm9ybTogc2NhbGUoLjcpO1xuXHQgICAgICAgIHRyYW5zZm9ybTogc2NhbGUoLjcpO1xuXHRsZWZ0OiAwO1xuXHQtd2Via2l0LXRyYW5zaXRpb246IGFsbCAuMnMgZWFzZS1pbi1vdXQ7XG5cdHRyYW5zaXRpb246IGFsbCAuMnMgZWFzZS1pbi1vdXQ7XG4gIH1cbiAgXG4gIGlucHV0W3R5cGU9XCJjaGVja2JveFwiXS5zd2l0Y2hfMTpjaGVja2VkOmFmdGVye1xuXHRsZWZ0OiBjYWxjKDEwMCUgLSAxZW0pO1xuICB9XG4gIGlucHV0W3R5cGU9XCJjaGVja2JveFwiXS5zd2l0Y2hfMTpkaXNhYmxlZHtcbiAgICBmaWx0ZXI6IGJyaWdodG5lc3MoNjUlKTtcbiAgfVxuXG4gIC5vdXRlckRpdkZ1bGwgeyBtYXJnaW46NTBweDsgfSBcblxuLnN3aXRjaFRvZ2dsZSBpbnB1dFt0eXBlPWNoZWNrYm94XXtoZWlnaHQ6IDA7IHdpZHRoOiAwOyB2aXNpYmlsaXR5OiBoaWRkZW47IHBvc2l0aW9uOiBhYnNvbHV0ZTsgfVxuLnN3aXRjaFRvZ2dsZSBsYWJlbCB7Y3Vyc29yOiBwb2ludGVyOyB0ZXh0LWluZGVudDogLTk5OTlweDsgd2lkdGg6IDcwcHg7IG1heC13aWR0aDogNzBweDsgaGVpZ2h0OiAzMHB4OyBiYWNrZ3JvdW5kOiAjZDFkMWQxOyBkaXNwbGF5OiBibG9jazsgYm9yZGVyLXJhZGl1czogMTAwcHg7IHBvc2l0aW9uOiByZWxhdGl2ZTsgfVxuLnN3aXRjaFRvZ2dsZSBsYWJlbDphZnRlciB7Y29udGVudDogJyc7IHBvc2l0aW9uOiBhYnNvbHV0ZTsgdG9wOiAycHg7IGxlZnQ6IDJweDsgd2lkdGg6IDI2cHg7IGhlaWdodDogMjZweDsgYmFja2dyb3VuZDogI2ZmZjsgYm9yZGVyLXJhZGl1czogOTBweDsgdHJhbnNpdGlvbjogMC4zczsgfVxuLnN3aXRjaFRvZ2dsZSBpbnB1dDpjaGVja2VkICsgbGFiZWwsIC5zd2l0Y2hUb2dnbGUgaW5wdXQ6Y2hlY2tlZCArIGlucHV0ICsgbGFiZWwgIHtiYWNrZ3JvdW5kOiAjM2U5OGQzOyB9XG4uc3dpdGNoVG9nZ2xlIGlucHV0ICsgbGFiZWw6YmVmb3JlLCAuc3dpdGNoVG9nZ2xlIGlucHV0ICsgaW5wdXQgKyBsYWJlbDpiZWZvcmUge2NvbnRlbnQ6ICdObyc7IHBvc2l0aW9uOiBhYnNvbHV0ZTsgdG9wOiA1cHg7IGxlZnQ6IDM1cHg7IHdpZHRoOiAyNnB4OyBoZWlnaHQ6IDI2cHg7IGJvcmRlci1yYWRpdXM6IDkwcHg7IHRyYW5zaXRpb246IDAuM3M7IHRleHQtaW5kZW50OiAwOyBjb2xvcjogI2ZmZjsgfVxuLnN3aXRjaFRvZ2dsZSBpbnB1dDpjaGVja2VkICsgbGFiZWw6YmVmb3JlLCAuc3dpdGNoVG9nZ2xlIGlucHV0OmNoZWNrZWQgKyBpbnB1dCArIGxhYmVsOmJlZm9yZSB7Y29udGVudDogJ1llcyc7IHBvc2l0aW9uOiBhYnNvbHV0ZTsgdG9wOiA1cHg7IGxlZnQ6IDEwcHg7IHdpZHRoOiAyNnB4OyBoZWlnaHQ6IDI2cHg7IGJvcmRlci1yYWRpdXM6IDkwcHg7IHRyYW5zaXRpb246IDAuM3M7IHRleHQtaW5kZW50OiAwOyBjb2xvcjogI2ZmZjsgfVxuLnN3aXRjaFRvZ2dsZSBpbnB1dDpjaGVja2VkICsgbGFiZWw6YWZ0ZXIsIC5zd2l0Y2hUb2dnbGUgaW5wdXQ6Y2hlY2tlZCArIGlucHV0ICsgbGFiZWw6YWZ0ZXIge2xlZnQ6IGNhbGMoMTAwJSAtIDJweCk7IHRyYW5zZm9ybTogdHJhbnNsYXRlWCgtMTAwJSk7IH1cbi5zd2l0Y2hUb2dnbGUgbGFiZWw6YWN0aXZlOmFmdGVyIHt3aWR0aDogNjBweDsgfSBcbi50b2dnbGUtc3dpdGNoQXJlYSB7IG1hcmdpbjogMTBweCAwIDEwcHggMDsgfVxuXG50aGVhZCB0aFxue1xuICAgIHBvc2l0aW9uOiBzdGlja3k7XG4gICAgdG9wOiAwcHg7XG4gICAgei1pbmRleDogMTtcblxufSJdfQ== */"
 
 /***/ }),
 
@@ -2374,7 +2374,7 @@ module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<p>\n  admin-editsubmissions works!\n</p>\n"
+module.exports = "<div [hidden]=\"sorted_users\" class=\" loading_box \">\n    <img class=\"loading_box-ing \" src='./../../assets/loading.gif'>\n</div>\n\n<div [hidden]=\"!sorted_users\" class=\"admin-quiz-permission\">\n    <div [hidden]=\"!modal_mesage_bool\" class=\"modal_message_box\">\n        <div class=\"modal-dialog modal-dialog-centered modal_message\" role=\"document\">\n            <!-- CHANGE LIST -->\n            <div class=\"modal-content modal-dialog-scrollable\" *ngIf=\"modal_message.title == 'changes_list'\">\n                <div class=\"modal-header\">\n                    <h3 class=\"modal-title text-monospace text-center\" id=\"exampleModalCenteredLabel\" style=\"margin: 0px auto;\">List of changes</h3>\n                    <button type=\"button\" class=\"close\" (click)=\"closeModal()\" data-dismiss=\"modal\" aria-label=\"Close\">\n                          <span aria-hidden=\"true\">&times;</span>\n                        </button>\n                </div>\n                <div style=\"height: 50vh !important; overflow-y: scroll;\">\n                    <table class=\"table table-striped table-borderless\">\n                        <thead class=\"thead-dark\">\n                          <tr>\n                            <th>Submit ID</th>\n                            <th>Name</th>\n                            <th>Category and Topic</th>\n                            <th>Changes</th>\n                          </tr>\n                        </thead>\n                        <tbody>\n                          <tr *ngFor=\"let user of list_changes | keyvalue\">\n                            <th scope=\"row\" class=\"text-monospace\">{{user.key}}</th>\n                            <td>{{user.value.first_name}} {{user.value.last_name}}</td>\n                            <td class=\"font-weight-bold  text-monospace tr_string\">{{ topics_unsorted[user.value.quiz_id][\"category\"] }}, {{user.value.topic}}</td>\n                            <td class=\"alert alert-warning\">\n                                <p *ngIf=\"user.value.retake_topic !== all_users_original[user.key]['retake_topic']\">\n                                  Retake <button class=\"btn-sm btn-xs btn-danger shadow text-monospace\" (click)=\"undoChange(user.key, 'retake_topic')\">Undo</button>\n                                </p>\n                                <p *ngIf=\"user.value.regrade_submission !== all_users_original[user.key]['regrade_submission']\">\n                                  Regrade <button class=\"btn-sm btn-xs btn-danger shadow text-monospace\" (click)=\"undoChange(user.key, 'regrade_submission')\">Undo</button>\n                                </p>\n                                <p *ngIf=\"user.value.invalidate_submission !== all_users_original[user.key]['invalidate_submission']\">\n                                  <span *ngIf=\"user.value.invalidate_submission\" >\n                                    Invalidate <button class=\"btn-sm btn-xs btn-danger shadow text-monospace\" (click)=\"undoChange(user.key, 'invalidate_submission')\">Undo</button>\n                                  </span>\n                                  <span *ngIf=\"!user.value.invalidate_submission\">\n                                    Do not invalidate <button class=\"btn-sm btn-xs btn-danger shadow text-monospace\" (click)=\"undoChange(user.key, 'invalidate_submission')\">Undo</button>\n                                  </span>\n                                </p>\n                            </td>\n                          </tr>\n                          \n                        </tbody>\n                      </table>\n                  </div>\n                  <div class=\"team_control_panel\">\n                      <div style=\"height: 50px; margin-top: 25px;\">\n                        <button type=\"button\" (click)=\"submitChanges()\" class=\"btn btn-success text-monospace btn-action-borderless shadow\" style=\"margin: 0px 20px\">Submit changes</button>\n                        <button type=\"button\" (click)=\"undoChangeAll()\" class=\"btn btn-danger text-monospace btn-action-borderless shadow\" style=\"margin: 0px 20px\">Cancel</button>\n                        <button type=\"button\" (click)=\"closeModal()\"  class=\"btn btn-warning text-monospace btn-action-borderless shadow\"  style=\"margin: 0px 20px\">Close</button>\n                      </div>\n                  </div>\n            </div>\n            <div class=\"modal-content modal-dialog-scrollable shadow\"  *ngIf=\"modal_message.title == 'message'\">\n                <div class=\"alert alert-success text-center\" style=\"margin-bottom: 0px\" role=\"alert\" *ngIf=\"modal_message.body == 'success'\">\n                    <h4 class=\"alert-heading text-center\">Well done!</h4>\n                    <button type=\"button\" class=\"close\" (click)=\"closeModal()\" data-dismiss=\"modal\" aria-label=\"Close\">\n                        <span aria-hidden=\"true\">&times;</span>\n                      </button>\n                    <p>Your changes have been saved!</p>\n                    <button class=\"btn btn-primary btn-action-borderless text-monospace shadow\" [routerLink]=\"['/',currentEng_id, 'admin']\">Click here to go back to the admin portal</button>\n                  </div>\n                <div class=\"alert alert-danger\" style=\"margin-bottom: 0px\" role=\"alert\" *ngIf=\"modal_message.body == 'fail'\">\n                    <h4 class=\"alert-heading\">Oops!</h4>\n                    <button type=\"button\" class=\"close\" (click)=\"closeModal()\" data-dismiss=\"modal\" aria-label=\"Close\">\n                        <span aria-hidden=\"true\">&times;</span>\n                      </button>\n                    <p>Something went wrong. Please try again later or contact developers.</p>\n                    <button class=\"btn btn-primary btn-outline-primary-hover-side-shadow-sm btn-action-borderless text-monospace\" [routerLink]=\"['/',currentEng_id, 'admin']\">Click here to go back to the admin portal</button>\n                  </div>\n            </div>\n            <div class=\"modal-content modal-dialog-scrollable shadow\"  *ngIf=\"modal_message.title == 'counter'\">\n                <div class=\"alert alert-success text-center\" style=\"margin-bottom: 0px\" role=\"alert\" >\n\n                    <p>Saving changes {{modal_message.counter_start }} of {{modal_message.counter_end }}</p>\n                    <div class=\"progress\">\n                        <div class=\"progress-bar progress-bar-striped progress-bar-animated\" role=\"progressbar\" [attr.aria-valuenow]=\"modal_message.counter_start\" [attr.aria-valuemin]=\"0\" [attr.aria-valuemax]=\"modal_message.counter_end\" [style.width.%]=\"( (modal_message.counter_start/modal_message.counter_end) * 100)\"></div>\n                      </div>\n                  </div>\n            </div>\n        </div>\n    </div>\n\n    <div class=\"admin-quiz-permission-title\">\n        <h1>Quiz Submission Log Table</h1>\n        <button class=\"btn btn-success btn-action-borderless btn-lg shadow\" (click)=\"checkChanges()\">Check Changes</button>\n    </div>\n    <div class=\"admin-quiz-permission-by_teams\">\n      <h3 [ngClass]=\"{'bp-color': current_list_target == 'by_teams' }\">Teams</h3>\n      <div class=\"admin-quiz-permission-list_buttons\"  role=\"group\">\n          <button class=\"btn btn-outline-secondary btn-action-borderless btn-outline-secondary-hover-side-shadow-sm\" [ngClass]=\"{'active': current_list_target == 'by_teams' && current_list_key == team }\" *ngFor=\"let team of by_teams\" (click)=\"selectList('by_teams',team)\">{{team}}</button>\n      </div>\n    </div>\n    <div class=\"admin-quiz-permission-by_teams\">\n      <h3 [ngClass]=\"{'bp-color': current_list_target == 'by_title' }\">Titles</h3>\n      <div class=\"admin-quiz-permission-list_buttons\"  role=\"group\">\n        <button class=\"btn btn-outline-secondary btn-action-borderless btn-outline-secondary-hover-side-shadow-sm\" [ngClass]=\"{'active': current_list_target == 'by_title' && current_list_key == title }\" *ngFor=\"let title of by_title\" (click)=\"selectList('by_title',title)\">{{title}}</button>\n      </div>\n    </div>\n    <div class=\"admin-quiz-permission-by_teams\">\n        <div class=\"admin-quiz-permission-list_buttons\"  role=\"group\">\n            <button class=\"btn btn-outline-secondary btn-lg btn-action-borderless btn-outline-secondary-hover-side-shadow-sm\" [ngClass]=\"{'bp-button-important': current_list_target == 'all_users' }\" (click)=\"selectList('all_users', null)\">All employees</button>\n          </div>\n    </div>\n    <div class=\"admin-quiz-permission-by_teams\">\n      <div class=\"admin-quiz-permission-list_buttons\"  role=\"group\">\n        <label>\n          Search in \n          <span *ngIf=\"current_list_target == 'by_teams'\">team # {{current_list_key}}</span>\n          <span *ngIf=\"current_list_target == 'by_title'\">title {{current_list_key}}</span>\n          <span *ngIf=\"current_list_target == 'all_users'\">all users</span>:\n          <div class=\"input-group shadow\">\n            <input type=\"text\" class=\"form-control form-control-bp-shadow\" id=\"searchInput\" placeholder=\"\" aria-label=\"\" style=\"border-radius: 0px\" aria-describedby=\"basic-addon1\">\n            <div class=\"input-group-append\">\n              <button class=\"btn btn-info bp-button-important btn-outline-bp-hover-side-shadow\" type=\"button\" (click)=\"searchKey()\" style=\"border-color: #2675a3; border-radius: 0px\">Filter</button>\n            </div>\n          </div>\n        </label>\n      </div>\n    </div>\n  <!-- <div class=\"admin-quiz-permission-by_teams\">\n      <div class=\"admin-quiz-permission-list_buttons\"  role=\"group\" >\n          <button class=\"btn btn-secondary btn-lg btn-action-borderless shadow-lg\" (click)=\"openModal('list_control', '')\">List control</button>\n        </div>\n\n  </div> -->\n    <div class=\"admin-quiz-permission-table_box\">\n        <table class=\"table table-borderless table-hover\">\n            <thead class=\"thead-dark shadow\">\n              <tr>\n                <th style=\"font-size: 10px; text-align: center;  width: 5%\" (click)=\"sortType('profile_id')\">Submit ID</th>\n                <th >Email</th>\n                <th >Name</th>\n                <th >Team</th>\n                <th >Title</th>\n                <th >Quiz category</th>\n                <th >Quiz topic</th>\n                <th style='text-align: center'>Time started</th>\n                <th style='text-align: center'>Time submitted</th>\n                <th style='text-align: center'> Total Minutes</th>\n                <th style='text-align: center'>Grade Score</th>\n                <th style='text-align: center'>Graded By</th>\n                <th style='text-align: center'>Grade Time</th>\n                <th>\n                  <div style= \"text-align: center;\n                              display: flex;\n                              flex-direction: column;\n                              flex-wrap: nowrap;\n                              justify-content: flex-start;\n                              align-items: center;\n                              align-content: stretch;\">\n                      {{current_list_properties.retake_topic}}/{{current_list_properties.retake_topic_total_length}}\n                      <button class='btn btn-sm btn-action-borderless'  \n                        [ngClass]=\"{\n                          'btn-warning': (current_list_properties.retake_topic > 0 && current_list_properties.retake_topic < current_list_properties.retake_topic_total_length),\n                          'btn-success': current_list_properties.retake_topic == current_list_properties.retake_topic_total_length,\n                          'btn-danger': current_list_properties.retake_topic == 0\n                          }\" \n                        (click)=\"listChanger('retake_topic')\"\n                        >Retake</button>\n                  </div>\n                </th>\n                <th>\n                  <div style= \"text-align: center;\n                              display: flex;\n                              flex-direction: column;\n                              flex-wrap: nowrap;\n                              justify-content: flex-start;\n                              align-items: center;\n                              align-content: stretch;\">\n                        {{current_list_properties.regrade_submission}}/{{current_list_properties.regrade_submission_total_length}}\n                      <button class='btn btn-sm btn-action-borderless'\n                        [ngClass]=\"{\n                          'btn-warning': (current_list_properties.regrade_submission > 0 && current_list_properties.regrade_submission < current_list_properties.regrade_submission_total_length),\n                          'btn-success': current_list_properties.regrade_submission == current_list_properties.regrade_submission_total_length,\n                          'btn-danger': current_list_properties.regrade_submission == 0\n                          }\"\n                        (click)=\"listChanger('regrade_submission')\">Regrade</button>\n                  </div>\n                </th>\n                <th>\n                  <div style= \"text-align: center;\n                            display: flex;\n                            flex-direction: column;\n                            flex-wrap: nowrap;\n                            justify-content: flex-start;\n                            align-items: center;\n                            align-content: stretch;\">\n                        {{current_list_properties.invalidate_submission}}/{{current_list_properties.invalidate_submission_total_length}}\n                      <button class='btn btn-sm btn-action-borderless'\n                        [ngClass]=\"{\n                          'btn-warning': (current_list_properties.invalidate_submission > 0 && current_list_properties.invalidate_submission < current_list_properties.invalidate_submission_total_length),\n                          'btn-success': current_list_properties.invalidate_submission == current_list_properties.invalidate_submission_total_length,\n                          'btn-danger': current_list_properties.invalidate_submission == 0\n                          }\"\n                        (click)=\"listChanger('invalidate_submission')\">Invalidate</button>\n                    </div>  \n                </th>\n\n              </tr>\n            </thead>\n            <tbody id=\"table_body_target\">\n              <tr *ngFor=\"let user of current_list | keyvalue\" [ngClass]=\"{'text-success': user.value.graded, 'text-secondary': !user.value.diffTime }\">\n                <th scope=\"row\" class=\"font-weight-bold  text-center text-monospace tr_string\">{{user.key}}</th>\n                <td class=\"tr_string\">{{user.value.email}}</td>\n                <td class=\"tr_string\">{{user.value.first_name}} {{user.value.last_name}}</td>\n                <td class=\"tr_string\">{{user.value.team}}</td>\n                <td class=\"tr_string\">{{user.value.title}}</td>\n                <td class=\"font-weight-bold  text-monospace tr_string\">{{ topics_unsorted[user.value.quiz_id][\"category\"] }}</td>\n                <td class=\"font-weight-bold  text-monospace tr_string\">{{user.value.topic}}</td>\n                <td class=\"text-muted tr_string\">{{user.value.start_time | date : \"short\" }}</td>\n                <td class=\"text-muted tr_string\">\n                  <span *ngIf=\"user.value.diffTime\">{{user.value.stop_time | date: \"short\" }}</span>\n                  <span *ngIf=\"!user.value.diffTime\">DateTime mismatch</span>\n                </td>\n                <td class=\"text-muted tr_string\">\n                  <span *ngIf=\"user.value.diffTime\">{{ user.value.diffTime }}</span>\n                  <span *ngIf=\"!user.value.diffTime\">DateTime mismatch</span>\n                </td>\n                <td class=\"text-muted tr_string\">{{user.value.calculated_score * 100 | number:0}}</td>\n                <td class=\"text-muted tr_string\">{{user.value.grader_full_name}}</td>\n                <td class=\"text-muted tr_string\">{{user.value.graded_time | date : \"short\"}}</td>\n                \n                <td class=\"text-muted tr_string\">\n                    <!-- all_users_original[user.key] and user.value -->\n                      <div class=\"switchToggle\">\n                          <input type=\"checkbox\"  id=\"retake_for_{{user.key}}\" (click)=\"actionButton(user.key, 'retake_topic', null)\" [checked]=\"(user.value.retake_topic)\" [disabled]=\"all_users_original[user.key]['retake_topic']\" >\n                          <label for=\"retake_for_{{user.key}}\" [ngClass]=\"{\n                            'switchToggle_checked_disabled': all_users_original[user.key]['retake_topic'] ,\n                            'switchToggle_checked_green': !all_users_original[user.key]['retake_topic'] && user.value.retake_topic\n                          }\"></label>\n                      </div>\n                </td>\n                <td class=\"text-muted tr_string\">\n                      <div class=\"switchToggle\">\n                          <input type=\"checkbox\"  id=\"regrade_for_{{user.key}}\" (click)=\"actionButton(user.key,'regrade_submission', null)\" [checked]='user.value.regrade_submission' [disabled]=\"all_users_original[user.key]['regrade_submission']\" >\n                          <label for=\"regrade_for_{{user.key}}\" [ngClass]=\"{\n                            'switchToggle_checked_disabled': all_users_original[user.key]['regrade_submission'],\n                            'switchToggle_checked_green': !all_users_original[user.key]['regrade_submission'] && user.value.regrade_submission\n                          }\"></label>\n                      </div>\n                </td>\n                <td class=\"text-muted tr_string\">\n                      <div class=\"switchToggle\">\n                          <input type=\"checkbox\"  id=\"invalidate_for_{{user.key}}\" (click)=\"actionButton(user.key, 'invalidate_submission', null)\" [checked]=\"(user.value.invalidate_submission)\" >\n                          <label for=\"invalidate_for_{{user.key}}\" \n                            [ngClass]=\"{\n                              'switchToggle_checked_green': !all_users_original[user.key]['invalidate_submission'] && user.value.invalidate_submission, \n                              'switchToggle_checked_red':  all_users_original[user.key]['invalidate_submission'] && !user.value.invalidate_submission\n                            }\"></label>\n                      </div>\n                </td>\n                \n              </tr>\n              \n            </tbody>\n          </table>\n    </div>\n</div>"
 
 /***/ }),
 
@@ -2390,12 +2390,454 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AdminEditsubmissionsComponent", function() { return AdminEditsubmissionsComponent; });
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
+/* harmony import */ var _connector_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../connector.service */ "./src/app/connector.service.ts");
+/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/common */ "./node_modules/@angular/common/fesm5/common.js");
+/* harmony import */ var lodash_cloneDeep__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! lodash/cloneDeep */ "./node_modules/lodash/cloneDeep.js");
+/* harmony import */ var lodash_cloneDeep__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(lodash_cloneDeep__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var _object_validation_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../object_validation.js */ "./src/app/object_validation.js");
+/* harmony import */ var _object_validation_js__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(_object_validation_js__WEBPACK_IMPORTED_MODULE_6__);
+
+
+
+
+
 
 
 var AdminEditsubmissionsComponent = /** @class */ (function () {
-    function AdminEditsubmissionsComponent() {
+    function AdminEditsubmissionsComponent(_ConnectorService, location, _route, _r) {
+        var _this = this;
+        this._ConnectorService = _ConnectorService;
+        this.location = location;
+        this._route = _route;
+        this._r = _r;
+        this.all_users_original = null;
+        this.all_users = null;
+        this.sorted_users = null;
+        this.categories = null;
+        this.topics_unsorted = null;
+        this.current_list_properties = {
+            'length': 0,
+            'retake_topic': 0,
+            'retake_topic_total_length': 0,
+            'regrade_submission': 0,
+            'regrade_submission_total_length': 0,
+            'invalidate_submission': 0,
+            'invalidate_submission_total_length': 0
+        };
+        this.default_list_properties = {
+            'retake_topic_total_length': 0,
+            'regrade_submission_total_length': 0,
+            'invalidate_submission_total_length': 0
+        };
+        this.users_changes_bool = false;
+        this.users_changes = {};
+        this.modal_mesage_bool = false;
+        this.modal_message = {
+            'title': '',
+            'body': '',
+            'counter_start': 0,
+            'counter_end': 0,
+        };
+        this.list_control = {};
+        this.list_control_copy = {};
+        this.list_control_changed_bool = false;
+        this.list_changes = {};
+        this._route.paramMap.subscribe(function (params) {
+            _this.currentEng_id = params.get('eng');
+        });
+        this._ConnectorService.user.subscribe(function (user) {
+            if (user) {
+                _this.currentUser = user;
+                var obj = {
+                    'email': user.email,
+                    'eng_id': _this.currentEng_id
+                };
+                _this._ConnectorService.getQuizSubmissions(obj).then(function (res) {
+                    console.log("RES =>", res);
+                    _this.sorted_users = {};
+                    _this.all_users_original = lodash_cloneDeep__WEBPACK_IMPORTED_MODULE_5__(res['response']['users']);
+                    _this.sorted_users['all_users'] = lodash_cloneDeep__WEBPACK_IMPORTED_MODULE_5__(res['response']['users']);
+                    _this.sorted_users['by_teams'] = Object(_object_validation_js__WEBPACK_IMPORTED_MODULE_6__["groupBy"])(_this.sorted_users['all_users'], 'team');
+                    _this.sorted_users['by_title'] = Object(_object_validation_js__WEBPACK_IMPORTED_MODULE_6__["groupBy"])(_this.sorted_users['all_users'], 'title');
+                    _this.topics_unsorted = res['response']['topics'];
+                    _this.by_teams = Object.keys(_this.sorted_users['by_teams']);
+                    _this.by_title = Object.keys(_this.sorted_users['by_title']);
+                    _this.current_list_target = "by_teams";
+                    _this.current_list_key = Object.keys(_this.sorted_users[_this.current_list_target])[0];
+                    _this.current_list = _this.sorted_users[_this.current_list_target][_this.current_list_key];
+                    _this.current_list_properties_setter(_this.current_list);
+                }).catch(function (err) {
+                    console.log("ERROR =>", err);
+                });
+            }
+            if (user && !user.admin) {
+                _this._r.navigate(["/" + _this.currentEng_id + "/home"]);
+            }
+        });
     }
     AdminEditsubmissionsComponent.prototype.ngOnInit = function () {
+    };
+    // LISTENERS ===========================
+    AdminEditsubmissionsComponent.prototype.selectList = function (target, key) {
+        this.current_list_target = target;
+        if (target == 'all_users') {
+            this.current_list = this.sorted_users[this.current_list_target];
+        }
+        else {
+            this.current_list_key = key;
+            this.current_list = this.sorted_users[this.current_list_target][this.current_list_key];
+        }
+        this.current_list_properties_setter(this.current_list);
+    };
+    AdminEditsubmissionsComponent.prototype.checkTopic = function (user_id, topic_id) {
+        var user = this.sorted_users.all_users[user_id];
+        if (user.topic_id.includes(topic_id)) {
+            // remove topic_id from user's list of allowed topics
+            var arr = user.topic_id;
+            for (var i = 0; i < arr.length; i++) {
+                if (arr[i] == topic_id) {
+                    for (var k = i; k < arr.length; k++) {
+                        arr[k] = arr[k + 1];
+                    }
+                    arr.pop();
+                    break;
+                }
+            }
+        }
+        else {
+            user.topic_id.push(topic_id);
+        }
+    };
+    AdminEditsubmissionsComponent.prototype.uncheckTopicForUser = function (user_id, topic_id) {
+    };
+    AdminEditsubmissionsComponent.prototype.actionButton = function (submit_id, target, value) {
+        if (target != "invalidate_submission" && this.all_users_original[submit_id][target]) {
+            return;
+        }
+        if (value === true) {
+            this.sorted_users.all_users[submit_id][target] = true;
+        }
+        else if (value === false) {
+            this.sorted_users.all_users[submit_id][target] = false;
+        }
+        else {
+            this.sorted_users.all_users[submit_id][target] = !this.sorted_users.all_users[submit_id][target];
+        }
+        if (this.sorted_users.all_users[submit_id][target]) {
+            this.current_list_properties[target]++;
+        }
+        else {
+            this.current_list_properties[target]--;
+        }
+    };
+    AdminEditsubmissionsComponent.prototype.checkTopicForUser = function (user_id, topic_id) {
+        if (!this.sorted_users.all_users[user_id].topic_id.includes(topic_id)) {
+            this.sorted_users.all_users[user_id].topic_id.push(topic_id);
+        }
+    };
+    AdminEditsubmissionsComponent.prototype.checkChanges = function () {
+        this.differencesFinder();
+        console.log("CHANGE LIST =>", this.list_changes);
+        if (Object.keys(this.list_changes).length > 0) {
+            this.openModal('changes_list', null);
+        }
+    };
+    AdminEditsubmissionsComponent.prototype.undoChangeAll = function () {
+        for (var user in this.list_changes) {
+            this.current_list[user]['retake_topic'] = lodash_cloneDeep__WEBPACK_IMPORTED_MODULE_5__(this.all_users_original[user]['retake_topic']);
+            this.current_list[user]['regrade_submission'] = lodash_cloneDeep__WEBPACK_IMPORTED_MODULE_5__(this.all_users_original[user]['regrade_submission']);
+            this.current_list[user]['invalidate_submission'] = lodash_cloneDeep__WEBPACK_IMPORTED_MODULE_5__(this.all_users_original[user]['invalidate_submission']);
+        }
+        this.list_changes = {};
+        this.current_list_properties_setter(this.current_list);
+        this.closeModal();
+    };
+    AdminEditsubmissionsComponent.prototype.undoChange = function (user_id, topic_id) {
+        this.actionButton(user_id, topic_id, null);
+        this.differencesFinder();
+        if (Object.keys(this.list_changes).length < 1) {
+            this.closeModal();
+        }
+    };
+    AdminEditsubmissionsComponent.prototype.listChanger = function (key) {
+        var value = true;
+        if (this.current_list_properties["" + key] >= this.current_list_properties[key + "_total_length"]) {
+            value = false;
+        }
+        for (var el in this.current_list) {
+            this.actionButton(el, key, value);
+        }
+        this.current_list_properties_setter(this.current_list);
+    };
+    AdminEditsubmissionsComponent.prototype.submitChanges = function () {
+        var _this = this;
+        console.log("this.list_changes =>", this.list_changes);
+        var users = {};
+        for (var user_id in this.list_changes) {
+            users[user_id] = this.sorted_users['all_users'][user_id];
+            users[user_id]['removed_list'] = this.list_changes[user_id]['removed'];
+            users[user_id]['added_list'] = this.list_changes[user_id]['added'];
+        }
+        console.log("USERS FOR SUBMIT! =>", users);
+        this.closeModal();
+        var obj = {
+            'users': users,
+            'email': this.currentUser.email,
+            'eng_id': this.currentEng_id
+        };
+        this.loadingMessage(Object.keys(users).length);
+        this._ConnectorService.saveQuizSubmissions(obj).then(function (res) {
+            _this.closeModal();
+            console.log(new Date());
+            console.log("RES =>", res);
+            if (res['status'] == 'success') {
+                if (res['response']['users']) {
+                    for (var el in _this.list_changes) {
+                        console.log(res['response']['users'][el]);
+                        _this.sorted_users.all_users[el] = lodash_cloneDeep__WEBPACK_IMPORTED_MODULE_5__(res['response']['users'][el]);
+                        _this.all_users_original[el] = lodash_cloneDeep__WEBPACK_IMPORTED_MODULE_5__(res['response']['users'][el]);
+                    }
+                }
+                _this.list_changes = {};
+                _this.openModal('message', 'success');
+            }
+            else {
+                _this.openModal('message', 'fail');
+            }
+        }).catch(function (err) {
+            console.log(err);
+            this.openModal('message', 'fail');
+        });
+    };
+    // MODAL FUNCTIONS =====================
+    AdminEditsubmissionsComponent.prototype.openModal = function (target, message) {
+        this.modal_mesage_bool = true;
+        this.modal_message.title = target;
+        if (target == 'list_control') {
+            if (this.current_list_target == "by_teams") {
+                this.modal_message.body = message + (" team " + this.current_list_key);
+            }
+            else if (this.current_list_target == "by_title") {
+                this.modal_message.body = message + (" title " + this.current_list_key);
+            }
+            else {
+                this.modal_message.body = message + " everyone";
+            }
+            this.generateListControl();
+            console.log(this.list_control);
+        }
+        else if (target == 'counter') {
+            this.modal_message.counter_end = message;
+        }
+        else {
+            this.modal_message.body = message;
+            console.log(this.modal_message);
+        }
+    };
+    AdminEditsubmissionsComponent.prototype.closeModal = function () {
+        this.modal_mesage_bool = false;
+        this.list_control_changed_bool = false;
+    };
+    // LIST CONTROL FUNCTOINS =============
+    AdminEditsubmissionsComponent.prototype.generateListControl = function () {
+        this.list_control_changed_bool = false;
+        var list = {};
+        for (var user in this.current_list) {
+            var cur_user = this.current_list[user];
+            // console.log("let's check this user =>", cur_user)
+            for (var topic in cur_user['topic_id']) {
+                if (!list[cur_user['topic_id'][topic]]) {
+                    list[cur_user['topic_id'][topic]] = 1;
+                }
+                else {
+                    list[cur_user['topic_id'][topic]]++;
+                }
+                // console.log('topic =>', topic)
+                if (list[cur_user['topic_id'][topic]] == Object.keys(this.current_list).length) {
+                    // console.log("all cur_users have ", cur_user['topic_id'][topic], " => ", list[cur_user['topic_id'][topic]], list[cur_user['topic_id'][topic]])
+                    list[cur_user['topic_id'][topic]] = true;
+                }
+            }
+        }
+        this.list_control = lodash_cloneDeep__WEBPACK_IMPORTED_MODULE_5__(list);
+        this.list_control_copy = lodash_cloneDeep__WEBPACK_IMPORTED_MODULE_5__(list);
+    };
+    AdminEditsubmissionsComponent.prototype.listControlChanger = function (topic_id, action) {
+        console.log("BEFORE CHANGE => " + this.list_control[topic_id] + "; LIST_COPY => " + this.list_control_copy[topic_id]);
+        if (action == 'all') {
+            this.list_control[topic_id] = true;
+        }
+        else {
+            this.list_control[topic_id] = 0;
+        }
+        console.log("AFTER CHANGE => " + this.list_control[topic_id] + " ; LIST_COPY => " + this.list_control_copy[topic_id]);
+        var changes_bool = false;
+        for (var el in this.list_control) {
+            // console.log("this.list_control[el] != this.list_control_copy[el]", JSON.stringify(this.list_control[el]), JSON.stringify(this.list_control_copy[el]), JSON.stringify(this.list_control[el]) !== JSON.stringify(this.list_control_copy[el]))
+            if (JSON.stringify(this.list_control[el]) !== JSON.stringify(this.list_control_copy[el])) {
+                if (!this.list_control_copy[el] && this.list_control[el] == 0) {
+                    continue;
+                }
+                console.log("found a difference!");
+                changes_bool = true;
+                break;
+            }
+        }
+        if (changes_bool) {
+            this.list_control_changed_bool = true;
+        }
+        else {
+            this.list_control_changed_bool = false;
+        }
+    };
+    AdminEditsubmissionsComponent.prototype.listControlCancel = function () {
+        this.list_control = {};
+        for (var user in this.current_list) {
+            for (var topic in this.current_list[user]['topic_id']) {
+                if (!this.list_control[this.current_list[user]['topic_id'][topic]]) {
+                    this.list_control[this.current_list[user]['topic_id'][topic]] = 1;
+                }
+                else {
+                    this.list_control[this.current_list[user]['topic_id'][topic]]++;
+                }
+                if (this.list_control[this.current_list[user]['topic_id'][topic]] == Object.keys(this.current_list).length) {
+                    this.list_control[this.current_list[user]['topic_id'][topic]] = true;
+                }
+            }
+        }
+    };
+    AdminEditsubmissionsComponent.prototype.listControlSubmit = function () {
+        console.log(this.list_control);
+        var topic_list = this.list_control;
+        var topic_list_original = this.list_control_copy;
+        var cur_users = this.current_list;
+        for (var el in topic_list) {
+            if (JSON.stringify(topic_list_original[el]) !== JSON.stringify(topic_list[el])) {
+                if (topic_list[el] === true) {
+                    for (var user in cur_users) {
+                        this.checkTopicForUser(cur_users[user]['profile_id'], Number(el));
+                    }
+                }
+                else if (topic_list[el] == 0) {
+                    for (var user in cur_users) {
+                        this.uncheckTopicForUser(cur_users[user]['profile_id'], Number(el));
+                    }
+                }
+            }
+        }
+        this.closeModal();
+    };
+    // MISC FUNCTIONS ======================
+    AdminEditsubmissionsComponent.prototype.checkState = function () {
+        console.log(this);
+    };
+    AdminEditsubmissionsComponent.prototype.sortType = function (key) {
+        console.log(key);
+    };
+    AdminEditsubmissionsComponent.prototype.searchKey = function () {
+        var key = document.getElementById('searchInput')['value'];
+        if (key.length < 0) {
+            return;
+        }
+        if (this.current_list_target == 'all_users') {
+            this.current_list = this.sorted_users[this.current_list_target];
+        }
+        else {
+            this.current_list = this.sorted_users[this.current_list_target][this.current_list_key];
+        }
+        var activeList = [];
+        var table_body_target = document.getElementById('table_body_target').querySelectorAll('tr');
+        console.log("table_body_target => ", table_body_target);
+        for (var el in table_body_target) {
+            if (table_body_target[el]) {
+                if (typeof (table_body_target[el]) == "object") {
+                    var row_values = table_body_target[el].getElementsByClassName('tr_string');
+                    var bool = false;
+                    for (var value in row_values) {
+                        if (typeof (row_values[value]) == "object" && row_values[value]['innerHTML'].toLowerCase().includes(key)) {
+                            bool = true;
+                            table_body_target[el].classList.remove('hidden');
+                            break;
+                        }
+                    }
+                    if (!bool) {
+                        table_body_target[el].classList.add('hidden');
+                    }
+                }
+            }
+        }
+    };
+    AdminEditsubmissionsComponent.prototype.goBack = function () {
+        this.location.back();
+    };
+    AdminEditsubmissionsComponent.prototype.differencesFinder = function () {
+        var res = {};
+        for (var u in this.sorted_users.all_users) {
+            if (this.sorted_users.all_users[u]['invalidate_submission'] !== this.all_users_original[u]['invalidate_submission']) {
+                res[u] = this.sorted_users.all_users[u];
+                continue;
+            }
+            else if (this.sorted_users.all_users[u]['regrade_submission'] !== this.all_users_original[u]['regrade_submission']) {
+                res[u] = this.sorted_users.all_users[u];
+                continue;
+            }
+            else if (this.sorted_users.all_users[u]['retake_topic'] !== this.all_users_original[u]['retake_topic']) {
+                res[u] = this.sorted_users.all_users[u];
+                continue;
+            }
+        }
+        this.list_changes = res;
+    };
+    AdminEditsubmissionsComponent.prototype.current_list_properties_setter = function (list) {
+        this.current_list_properties = {
+            'length': 0,
+            'retake_topic': 0,
+            'retake_topic_total_length': 0,
+            'regrade_submission': 0,
+            'regrade_submission_total_length': 0,
+            'invalidate_submission': 0,
+            'invalidate_submission_total_length': 0
+        };
+        for (var el in list) {
+            // console.log(el, list[el]['retake_topic'] )
+            if (list[el]['invalidate_submission']) {
+                this.current_list_properties.invalidate_submission++;
+            }
+            if (list[el]['regrade_submission'] && !this.all_users_original[el]['regrade_submission']) {
+                this.current_list_properties.regrade_submission++;
+            }
+            if (!this.all_users_original[el]['regrade_submission']) {
+                this.current_list_properties.regrade_submission_total_length++;
+            }
+            if (list[el]['retake_topic'] && !this.all_users_original[el]['retake_topic']) {
+                this.current_list_properties.retake_topic++;
+            }
+            if (!this.all_users_original[el]['retake_topic']) {
+                this.current_list_properties.retake_topic_total_length++;
+            }
+        }
+        this.current_list_properties.length = Object.keys(list).length;
+        this.current_list_properties.invalidate_submission_total_length = Object.keys(list).length;
+        console.log("NEW current_list_properties =>", this.current_list_properties);
+    };
+    AdminEditsubmissionsComponent.prototype.loadingMessage = function (count) {
+        this.openModal('counter', count);
+        this.loadingMessageLoop(0, count);
+    };
+    AdminEditsubmissionsComponent.prototype.loadingMessageLoop = function (start, end) {
+        if (start < end) {
+            this.modal_message.counter_start = start;
+            var new_start_1 = start + 1;
+            var that_1 = this;
+            setTimeout(function () {
+                return that_1.loadingMessageLoop(new_start_1, end);
+            }, 100);
+        }
+        else {
+            console.log("done!");
+            return;
+        }
     };
     AdminEditsubmissionsComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
@@ -2403,7 +2845,7 @@ var AdminEditsubmissionsComponent = /** @class */ (function () {
             template: __webpack_require__(/*! ./admin-editsubmissions.component.html */ "./src/app/admin-editsubmissions/admin-editsubmissions.component.html"),
             styles: [__webpack_require__(/*! ./admin-editsubmissions.component.css */ "./src/app/admin-editsubmissions/admin-editsubmissions.component.css")]
         }),
-        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [])
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_connector_service__WEBPACK_IMPORTED_MODULE_3__["ConnectorService"], _angular_common__WEBPACK_IMPORTED_MODULE_4__["Location"], _angular_router__WEBPACK_IMPORTED_MODULE_2__["ActivatedRoute"], _angular_router__WEBPACK_IMPORTED_MODULE_2__["Router"]])
     ], AdminEditsubmissionsComponent);
     return AdminEditsubmissionsComponent;
 }());
@@ -3988,7 +4430,7 @@ var ConnectorService = /** @class */ (function () {
         });
     };
     // ==============================================================================
-    // EDIT QUIZ PERMISSIONS FUNCTIONS ==========================================================
+    // EDIT QUIZ PERMISSIONS FUNCTIONS ==============================================
     ConnectorService.prototype.getQuizPermissions = function (obj) {
         var that = this;
         return new Promise(function (resolve, reject) {
@@ -4007,6 +4449,28 @@ var ConnectorService = /** @class */ (function () {
         var that = this;
         return new Promise(function (resolve, reject) {
             that.http.post('/api/saveQuizPermissions', obj).subscribe(function (res) {
+                resolve(res);
+            }, function (err) {
+                reject(err);
+            });
+        });
+    };
+    // ==============================================================================
+    // EDIT QUIZ SUBMISSION FUNCTIONS ==============================================
+    ConnectorService.prototype.getQuizSubmissions = function (obj) {
+        var that = this;
+        return new Promise(function (resolve, reject) {
+            that.http.post('/api/getQuizSubmissions', obj).subscribe(function (res) {
+                resolve(res);
+            }, function (err) {
+                reject(err);
+            });
+        });
+    };
+    ConnectorService.prototype.saveQuizSubmissions = function (obj) {
+        var that = this;
+        return new Promise(function (resolve, reject) {
+            that.http.post('/api/saveQuizSubmissions', obj).subscribe(function (res) {
                 resolve(res);
             }, function (err) {
                 reject(err);
