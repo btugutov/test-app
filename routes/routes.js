@@ -1327,7 +1327,7 @@ module.exports = function (app) {
                 let currentUser = returnObj['currentUser']
                 if (currentUser.admin_permissions || currentUser.admin_owner) {
                     edit_submissions_main(req.body['users'], currentUser['profile_id']);
-                    setTimeout(function(){
+                    setTimeout(function () {
                         get_KA_quiz_submission_by_engagement_id(req.body['eng_id']).then(result => {
                             // render homepage and turn header ID token into usable variable (user email)
                             // currentUser.admin_permissions || currentUser.admin_owner
@@ -1346,7 +1346,7 @@ module.exports = function (app) {
                             }
                             response_message.status = 'success';
                             res.json(response_message)
-    
+
                         }).catch(function (error) {
                             log_event('ERROR', error, 'editSubmissionStatus');
                             error_handler(error, res, getLineNumber())
@@ -1354,6 +1354,65 @@ module.exports = function (app) {
                             res.json(response_message)
                         })
                     }, Object.keys(req.body['users']).length * 100)
+                }
+                // if not admin with editing permissions, redirect to error page
+                else {
+                    response_message.message = 'No permission.';
+                    res.json(response_message)
+                }
+            })
+    });
+    // =================== END OF Quiz Submissions FUNCTIONS ==================
+
+    // ==================== Quiz Submissions FUNCTIONS ========================
+    app.post('/api/getUserPermissions', (req, res, next) => {
+        let response_message = {
+            'status': 'failed',
+            'message': ''
+        }
+        preload_block(res, req.body.email, undefined, undefined)
+            .catch(function (error) {
+                debugLog("ERROR HERE" + error);
+                response_message.message = error;
+                res.json(response_message)
+            })
+            .then(returnObj => {
+                let currentUser = returnObj['currentUser']
+                let quiz = returnObj['quiz']
+                if (currentUser.admin_permissions || currentUser.admin_owner) {
+                    get_all_users_admin_permission_edit(1).then(users => { // Pulling out all users
+                        response_message.response = {
+                            users: joinUsersByTopicId(users),
+                        }
+                        response_message.status = 'success';
+                        res.json(response_message)
+                    })
+                }else{
+                    response_message.message = 'No permission.';
+                    res.json(response_message)
+                }
+            })
+    });
+    app.post('/api/saveUserPermissions', (req, res, next) => {
+        let response_message = {
+            'status': 'fail',
+            'message': ''
+        }
+        console.log("saveQuizSubmissions: list length =>", Object.keys(req.body['users']).length);
+        console.log("saveQuizSubmissions: admin email  =>", req.body.email);
+        console.log("saveQuizSubmissions: engagement id =>", req.body.eng_id);
+        preload_block(res, req.body['email'], undefined, req.body['eng_id'])
+            .catch(function (error) {
+                debugLog("ERROR HERE" + error);
+                response_message.message = error;
+                res.json(response_message)
+            })
+            .then(returnObj => {
+                let currentUser = returnObj['currentUser']
+                if (currentUser.admin_permissions || currentUser.admin_owner) {
+                    update_permission_admins_main(req.body['users'], currentUser.profile_id);
+                    response_message.status = 'success';
+                    res.json(response_message)
                 }
                 // if not admin with editing permissions, redirect to error page
                 else {

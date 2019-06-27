@@ -24,7 +24,7 @@ function update_profile_table_MSSQL(profile_id, admin_grader, admin_owner, admin
         let update = `UPDATE KA_profile 
         SET admin_grader = '${admin_grader}', admin_owner = '${admin_owner}', admin_permissions = '${admin_permissions}', admin_editor = '${admin_editor}' 
         WHERE profile_id = ${profile_id}`
-        dbQueryMethod.rawQuery(update).then(result => {
+        dbQueryMethod.queryRaw(update).then(result => {
             resolve(result)
             return result;
         }).catch(function (error) { reject(error); throw (error); })

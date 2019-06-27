@@ -486,7 +486,7 @@ function joinUsersByTopicId(list) {
             if (typeof(list[u]) !== 'object' || list[u]['soft_delete']) {
                 continue;
             }
-            let user_id = list[u]['profile_id'];
+            let user_id = Number(list[u]['profile_id']);
             if (!res[user_id]) {
                 res[user_id] = list[u]
                 let temp = res[user_id]['topic_id'] // ex.: user['topic_id'] = [1,3,4,5,6] array of topic_id's

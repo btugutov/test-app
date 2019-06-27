@@ -423,9 +423,39 @@ export class ConnectorService {
     })
   }
   saveQuizSubmissions(obj){
+    
     var that = this;
     return new Promise(function (resolve, reject) {
       that.http.post('/api/saveQuizSubmissions', obj).subscribe(
+        res => {
+          resolve(res)
+        },
+        err => {
+          reject(err)
+        }
+      );
+    })
+  }
+  // ==============================================================================
+
+  // EDIT USER PERMISSION FUNCTIONS ==============================================
+  getUserPermissions(obj){
+    var that = this;
+    return new Promise(function (resolve, reject) {
+      that.http.post('/api/getUserPermissions', obj).subscribe(
+        res => {
+          resolve(res)
+        },
+        err => {
+          reject(err)
+        }
+      );
+    })
+  }
+  saveUserPermissions(obj){
+    var that = this;
+    return new Promise(function (resolve, reject) {
+      that.http.post('/api/saveUserPermissions', obj).subscribe(
         res => {
           resolve(res)
         },
