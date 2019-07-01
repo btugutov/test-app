@@ -466,6 +466,34 @@ export class ConnectorService {
     })
   }
   // ==============================================================================
+  // EDIT ENGAGEMENTS FUNCTIONS ==============================================
+  getAllEngagements(obj){
+    var that = this;
+    return new Promise(function (resolve, reject) {
+      that.http.post('/api/get_all_engagemets', obj).subscribe(
+        res => {
+          resolve(res)
+        },
+        err => {
+          reject(err)
+        }
+      );
+    })
+  }
+  saveEngagements(obj){
+    var that = this;
+    return new Promise(function (resolve, reject) {
+      that.http.post('/api/saveEngagements', obj).subscribe(
+        res => {
+          resolve(res)
+        },
+        err => {
+          reject(err)
+        }
+      );
+    })
+  }
+  // ==============================================================================
 
   // MISC FUNCTIONS
   objToToArray(obj) { // object has to be a list

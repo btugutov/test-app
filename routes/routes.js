@@ -28,7 +28,7 @@ const { get_KA_quiz_submission_by_profile_id, get_KA_quiz_submission_all, get_KA
 // object_validation
 const { format_quiz_table, unescapingObj, groupBy, groupByKey, categoriesFixer, switchKey, joinUsersByTopicId, removeSpacesFromStr, gradeValidate, findAnswerID, infoValidate, escapeObject, escapingQuiz, sortOnKeys, topicListNameRemoveSpaces, reAssignSession, questionRenderOderAnswers, filterEngagementsByAvailableQuizzes } = require('../backend/object_validation.js');
 // edit_engagement.js
-const { update_engagement_main } = require('../backend/edit_engagement.js');
+const { update_engagement_main, get_all_engagemets } = require('../backend/edit_engagement.js');
 let hostname = os.hostname();
 
 function preload_block(res, email, topic_id, engagement_id) {
@@ -1163,10 +1163,38 @@ module.exports = function (app) {
 
 
     // ======================== ENGAGEMENT FUNCTIONS ==========================
-    app.get('/api/get_all_engagemets', (req, res, next) => {
-        get_table_complete('KA_engagement').then(res_engs => {
-            res.json(res_engs)
-        })
+    app.post('/api/get_all_engagemets', (req, res, next) => {
+        let response_message = {
+            'status': 'fail',
+            'message': ''
+        }
+        console.log("get_all_engagemets: admin email  =>", req.body.email);
+        console.log("get_all_engagemets: engagement id =>", req.body.eng_id);
+        preload_block(res, req.body['email'], undefined, req.body['eng_id'])
+            .catch(function (error) {
+                debugLog("ERROR HERE" + error);
+                response_message.message = error;
+                res.json(response_message)
+            })
+            .then(returnObj => {
+                let currentUser = returnObj['currentUser']
+                if (currentUser.admin_permissions || currentUser.admin_owner) {
+                    get_all_engagemets().then(res_engs => {
+                        response_message.status = 'success';
+                        response_message.body = res_engs
+                        // response_message.body = Object.assign({}, switchKey(unescapingObj(res_engs), 'engagement_id'));
+                        res.json(response_message)
+                    }).catch(function (err) {
+                        response_message.message = error;
+                        res.json(response_message)
+                    })
+                }
+                // if not admin with editing permissions, redirect to error page
+                else {
+                    response_message.message = 'No permission.';
+                    res.json(response_message)
+                }
+            })
     });
 
     app.post('/api/get_availableEngagements', (req, res, next) => {
@@ -1177,6 +1205,35 @@ module.exports = function (app) {
             res.json(err);
         })
     });
+    
+    app.post('/api/saveEngagements', (req, res, next) => {
+        let response_message = {
+            'status': 'fail',
+            'message': ''
+        }
+        console.log("save_engagemets: admin email  =>", req.body.email);
+        console.log("save_engagemets: engagement id =>", req.body.eng_id);
+        preload_block(res, req.body['email'], undefined, req.body['eng_id'])
+            .catch(function (error) {
+                debugLog("ERROR HERE" + error);
+                response_message.message = error;
+                res.json(response_message)
+            })
+            .then(returnObj => {
+                let currentUser = returnObj['currentUser']
+                if (currentUser.admin_permissions || currentUser.admin_owner) {
+                    update_engagement_main(escapeObject(req.body.engs), req.body['email'])
+                    response_message.status = 'success';
+                    res.json(response_message)
+                }
+                // if not admin with editing permissions, redirect to error page
+                else {
+                    response_message.message = 'No permission.';
+                    res.json(response_message)
+                }
+            })
+    });
+
     // ====================== END OF ENGAGEMENT FUNCTIONS =====================
 
     // ==================== Quiz Permissions FUNCTIONS ========================

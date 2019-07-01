@@ -21,14 +21,67 @@ function add_engagement_table_MSSQL(engagement_name) {
     })
 }
 
-
-function edit_engagement_table_MSSQL(engagement_id, engagement_name, soft_delete) {
-    let functionName = 'edit_engagement_table_MSSQL';
+function create_new_engagement_row_MSSQL(engagement) {
+    let functionName = 'create_new_engagement_row_MSSQL';
     return new Promise(function(resolve, reject) {
-        let insert = `UPDATE KA_engagement SET engagement_name = '${engagement_name}', soft_delete = '${soft_delete}' WHERE engagement_id = '${engagement_id}'`
-        let select = `SELECT * FROM KA_engagement WHERE engagement_id = '${engagement_id}'`
-        let query = `${insert} ${select}`
-        dbQueryMethod.queryRaw(query).then(result => {
+        //let insert = `INSERT INTO KA_engagement (engagement_name) VALUES ('${engagement_name}')`
+        let insert = `INSERT INTO KA_engagement 
+        (engagement_name, soft_delete, background) 
+        VALUES ('${engagement['engagement_name']}', 0, '${engagement['background']}')`
+        dbQueryMethod.queryRaw(insert).then(result => {
+            //console.log(result.recordset)
+            resolve(result)
+            return result;
+        }).catch(function(error) { reject(error); throw (error); })
+    }).catch(function(error) {
+        log_event('WARNING', error, functionName);
+        throw (error);
+    })
+}
+
+function get_all_engagemets() {
+    let functionName = 'add_engagement_table_MSSQL';
+    return new Promise(function(resolve, reject) {
+        let query = `SELECT
+        eng.engagement_id,
+        eng.engagement_name,
+        eng.soft_delete,
+        eng.background,
+        topic.topic,
+        topic.topic_id,
+        topic.category,
+        topic.soft_delete as topic_soft_delete,
+        perm.profile_id,
+        profile.email,
+        employee.first_name,
+        employee.last_name
+      FROM [dbo].[KA_engagement] as eng 
+    LEFT JOIN [KA_test_topic] as topic ON eng.engagement_id = topic.engagement_id 
+    LEFT JOIN [KA_profile_permissions] as perm ON topic.topic_id = perm.topic_id
+    LEFT JOIN [KA_profile] as profile ON profile.profile_id = perm.profile_id
+    LEFT JOIN [KA_employee] as employee ON employee.email = profile.email`
+        dbQueryMethod.query(query).then(result => {
+            resolve(result)
+            return result;
+        }).catch(function(error) { reject(error); throw (error); })
+    }).catch(function(error) {
+        log_event('WARNING', error, functionName);
+        throw (error);
+    })
+}
+
+
+function edit_engagement_table_MSSQL(object) {
+    let functionName = 'edit_engagement_table_MSSQL';
+    if(object.soft_delete){
+        object.soft_delete = 1;
+    }else{
+        object.soft_delete = 0;
+    }
+    return new Promise(function(resolve, reject) {
+        let insert = `UPDATE KA_engagement SET engagement_name = '${object['engagement_name']}', soft_delete = '${object['soft_delete']}' , background = '${object['background']}' WHERE engagement_id = '${object['engagement_id']}'`
+        // let query = `${insert} ${select}`
+        dbQueryMethod.queryRaw(insert).then(result => {
             //console.log(result.recordset)
             resolve(result)
             return result;
@@ -65,46 +118,26 @@ function update_engagement_main_LOOP(object, indexKey, edit_by) {
     let functionName = 'update_topic_main_LOOP';
     return new Promise(function(resolve, reject) {
         try {
-            //console.log(indexKey)
-            // comment block this out when not testing... or delete... i'm not your dad
-            /*
-            console.log('-*-*--***--**-*-*--*-*-*-*-*-*-**-*-*-*--**-*-*-*-*-*-*-*-*--**-')
-            console.log(object)
-            try{
-                console.log('===== TRY =====')
-
-                console.log('===== engagement_id =====')
-                console.log(object.engagement_id)
-                console.log(object['engagement_id'])
-                console.log('===== engagement_name =====')
-                console.log(object.engagement_name)
-                console.log(object['engagement_name'])
-                console.log('===== soft_delete: =====')
-                console.log(object.soft_delete)
-                console.log(object['soft_delete:'])
-
-                console.log('===== TRY =====')
-            } catch(tryError){console.log(tryError)}
-            console.log('-*-*--***--**-*-*--*-*-*-*-*-*-**-*-*-*--**-*-*-*-*-*-*-*-*--**-')
-            */
+            console.log("ENGAGEMENT ID =>",object['engagement_id'])
             if(!object['engagement_id']) {
                 console.log('!object.engagement_id');
                 resolve('!object.engagement_id')
                 return '!object.engagement_id'
-            } else if ( object['engagement_id'].includes('New') ) {
+            } else if (typeof(object['engagement_id']) == 'string' && object['engagement_id'].includes('added') ) {
                 // commenting out for testing reasons
 
                 // front end might pass an empty object. Filter that out.
-                console.log(object['engagement_name'])
+                console.log("New engagement!")
                 if (object['engagement_name'] == '') {
                     console.log('object.engagement_name == undefined')
                     resolve('COMPLETE')
                     return 'COMPLETE'
                 }
                 else {
-                    console.log('!! object.engagement_name == undefined !!')
+                    console.log("NEW ENGAGEMENT")
+                    console.log(object)
                     try {
-                        add_engagement_table_MSSQL(object['engagement_name']).then(results => {
+                        create_new_engagement_row_MSSQL(object).then(results => {
                             resolve('COMPLETE')
                             return 'COMPLETE'
                         }).catch(function(error) {
@@ -119,53 +152,50 @@ function update_engagement_main_LOOP(object, indexKey, edit_by) {
                     }
                 }
             } else {
+                console.log("ENGAGEMENT EXISTS", object['engagement_id'])
                 try{
-                    get_engagement_table_MSSQL(object['engagement_id']).then(results => {
-                        // if record exists, check status and update as needed
-                        /*
-                        console.log('---------------===---------')
-                        console.log(results)
-                        console.log(results[0]['engagement_id'])
-                        */
-                        if (!results.length) {
-                            console.log('!results.length')
-                            resolve('COMPLETE')
-                            return 'COMPLETE'
-                        } else {
-                            /*
-                            
-                            // uncomment here to override the need update check
-
-                            edit_engagement_table_MSSQL(object['engagement_id'], object['engagement_name'], object['soft_delete']).then(resultEdit => {
-                                console.log(resultEdit)
-                                console.log('edit_engagement_table_MSSQL COMPLETE')
-                                resolve('Update COMPLETE')
-                                return 'Update COMPLETE'
-                            })
-                            */
-                            let delta = false;
-                            if (results[0]['soft_delete'] != object['soft_delete']){ delta = true; }
-                            if (results[0]['engagement_name'] != object['engagement_name']){ delta = true; }
-
-                            if (delta == true) {
-                                //console.log(object['engagement_id'], object['engagement_name'], object['soft_delete'])
-                                edit_engagement_table_MSSQL(object['engagement_id'], object['engagement_name'], object['soft_delete']).then(resultEdit => {
-                                    console.log('edit_engagement_table_MSSQL COMPLETE')
-                                    resolve('Update COMPLETE')
-                                    return 'Update COMPLETE'
-                                })
-                            } else {
-                                console.log('no update is needed')
-                                resolve('COMPLETE')
-                                return 'COMPLETE'
-                            }
-                            
-                        }
-                    }).catch(function(error) {
-                        //debugLog('error');
-                        reject(error);
-                        throw (error);
+                    edit_engagement_table_MSSQL(object).then(resultEdit => {
+                        console.log('edit_engagement_table_MSSQL COMPLETE')
+                        resolve('Update COMPLETE')
+                        return 'Update COMPLETE'
                     })
+                    
+                    // get_engagement_table_MSSQL(object['engagement_id']).then(results => {
+                    //     if (!results.length) {
+                    //         console.log('!results.length')
+                    //         resolve('COMPLETE')
+                    //         return 'COMPLETE'
+                    //     } else {
+                    //         /*
+                            
+                    //         // uncomment here to override the need update check
+
+                    //         edit_engagement_table_MSSQL(object['engagement_id'], object['engagement_name'], object['soft_delete']).then(resultEdit => {
+                    //             console.log(resultEdit)
+                    //             console.log('edit_engagement_table_MSSQL COMPLETE')
+                    //             resolve('Update COMPLETE')
+                    //             return 'Update COMPLETE'
+                    //         })
+                    //         */
+                    //         let delta = false;
+                    //         if (results[0]['soft_delete'] != object['soft_delete']){ delta = true; }
+                    //         if (results[0]['engagement_name'] != object['engagement_name']){ delta = true; }
+
+                    //         if (delta == true) {
+                    //             //console.log(object['engagement_id'], object['engagement_name'], object['soft_delete'])
+                                
+                    //         } else {
+                    //             console.log('no update is needed')
+                    //             resolve('COMPLETE')
+                    //             return 'COMPLETE'
+                    //         }
+                            
+                    //     }
+                    // }).catch(function(error) {
+                    //     //debugLog('error');
+                    //     reject(error);
+                    //     throw (error);
+                    // })
                 } catch (tryError) {
                     log_event('ERROR', tryError, functionName);
                     reject(tryError);
@@ -234,7 +264,7 @@ function recusive_object_hanlder(object, current_index, edit_by) {
 function update_engagement_main(object, edit_by) {
     let functionName = 'update_engagement_main';
     debugLog('======= - update_engagement_main - =======')
-    console.log(object)
+    // console.log(object)
     debugLog('======= - update_engagement_main - =======')
     return new Promise(function(resolve, reject) {
         try {
@@ -275,6 +305,7 @@ update_engagement_main(a, 'localhost').then(result => {
 
 module.exports = {
     update_engagement_main: update_engagement_main,
+    get_all_engagemets: get_all_engagemets
 };
 
 /*

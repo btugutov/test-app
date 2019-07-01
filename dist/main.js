@@ -832,7 +832,7 @@ var AdminCreatequizComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJzcmMvYXBwL2FkbWluLWVkaXRlbmdhZ2VtZW50cy9hZG1pbi1lZGl0ZW5nYWdlbWVudHMuY29tcG9uZW50LmNzcyJ9 */"
+module.exports = ".admin-quiz-permission {\n    margin-top: 50px;\n}\n\n.admin-quiz-permission-title {\n    display: flex;\n    flex-direction: column;\n    flex-wrap: nowrap;\n    justify-content: flex-start;\n    align-items: center;\n    align-content: center;\n}\n\n.admin-quiz-permission-body {\n    display: flex;\n    flex-direction: column;\n    flex-wrap: nowrap;\n    justify-content: flex-start;\n    align-items: center;\n    align-content: center;\n}\n\n.admin-quiz-permission-list_buttons {\n    margin: 0px auto;\n    width: 80%;\n    display: flex;\n    flex-direction: row;\n    flex-wrap: wrap;\n    justify-content: center;\n    align-items: center;\n    align-content: center;\n}\n\n.admin-quiz-permission-by_teams{\n    margin: 50px 50px;\n    display: flex;\n\tflex-direction: column;\n\tflex-wrap: nowrap;\n\tjustify-content: center;\n\talign-items: center;\n\talign-content: center;\n}\n\n.admin-quiz-permission-table_box{\n    display: flex;\n    flex-direction: column;\n    flex-wrap: nowrap;\n    justify-content: flex-start;\n    align-items: center;\n}\n\n.EditQuizPermissions_categoryBox {\n    height: -webkit-fit-content;\n    height: -moz-fit-content;\n    height: fit-content;\n    display: flex;\n    flex-direction: column;\n    flex-wrap: wrap;\n    justify-content: flex-start;\n    align-content: flex-start;\n    /* z-index: 0;\n    transition: 0.5s;\n    box-shadow: none; */\n    margin: 5px 5px;\n    padding: 5px 5px;\n    -webkit-user-select: none;\n       -moz-user-select: none;\n        -ms-user-select: none;\n            user-select: none;\n    border-radius: 5px;\n}\n\n.EditQuizPermissions_categoryBox p {\n    transition: 0.5s;\n}\n\n.EditQuizPermissions_categoryBox:hover {\n    /* z-index: 1;\n    box-shadow: 5px 10px 18px #888888;\n    background: white */\n}\n\n.EditQuizPermissions_categoryBox:hover p {\n    color: #4f91cd;\n}\n\n.modal_message_box {\n    position: fixed;\n    z-index: 50;\n    width: 100vw;\n    height: 100vh;\n    background: rgba(179, 182, 185, 0.5);\n    margin-top: -120px;\n}\n\n.modal_message {\n    max-height: 52vh;\n}\n\n.modal-edit-remove-bucket{\n    height: 50vh !important;\n    overflow-y: auto;\n}\n\n.modal-edit-remove-bucket td{\n    /* padding: 0px 0px !important; */\n}\n\n.modal-dialog{\n    width: 1000px;\n    max-width: 1000px !important;\n    /* height: 100px; */\n}\n\n.toggle-red::before{\n    border-color: #a71212 !important;\n    background-color: #f56f6f !important;\n}\n\ninput[type=\"checkbox\"].switch_1{\n\tfont-size: 30px;\n\t-webkit-appearance: none;\n\t   -moz-appearance: none;\n\t        appearance: none;\n\twidth: 2.2em;\n\theight: 1em;\n\tbackground: #ddd;\n\tborder-radius: 3em;\n\tposition: relative;\n\tcursor: pointer;\n\toutline: none;\n\ttransition: all .2s ease-in-out;\n  }\n\ninput[type=\"checkbox\"].switch_1:checked{\n\tbackground: #0ebeff;\n  }\n\ninput[type=\"checkbox\"].switch_1:after{\n\tposition: absolute;\n\tcontent: \"\";\n\twidth: 1em;\n\theight: 1em;\n\tborder-radius: 50%;\n\tbackground: #fff;\n\tbox-shadow: 0 0 .25em rgba(0,0,0,.3);\n\t-webkit-transform: scale(.7);\n\t        transform: scale(.7);\n\tleft: 0;\n\ttransition: all .2s ease-in-out;\n  }\n\ninput[type=\"checkbox\"].switch_1:checked:after{\n\tleft: calc(100% - 1em);\n  }\n\ninput[type=\"checkbox\"].switch_1:disabled{\n    -webkit-filter: brightness(65%);\n            filter: brightness(65%);\n  }\n\n.outerDivFull { margin:50px; }\n\n.switchToggle input[type=checkbox]{height: 0; width: 0; visibility: hidden; position: absolute; }\n\n.switchToggle label {cursor: pointer; text-indent: -9999px; width: 100px; max-width: 100px !important; height: 30px; background: #d1d1d1; display: block; border-radius: 100px; position: relative; }\n\n.switchToggle label:after {content: ''; position: absolute; top: 2px; left: 2px; width: 26px; height: 26px; background: #fff; border-radius: 90px; transition: 0.3s; }\n\n.switchToggle input:checked + label, .switchToggle input:checked + input + label  {background: #3e98d3; }\n\n.switchToggle input + label:before, .switchToggle input + input + label:before {content: 'Disabled'; position: absolute; top: 5px; left: 35px; width: 26px; height: 26px; border-radius: 90px; transition: 0.3s; text-indent: 0; color: #fff; }\n\n.switchToggle input:checked + label:before, .switchToggle input:checked + input + label:before {content: 'Enabled'; position: absolute; top: 5px; left: 10px; width: 26px; height: 26px; border-radius: 90px; transition: 0.3s; text-indent: 0; color: #fff; }\n\n.switchToggle input:checked + label:after, .switchToggle input:checked + input + label:after {left: calc(100% - 2px); -webkit-transform: translateX(-100%); transform: translateX(-100%); }\n\n.switchToggle label:active:after {width: 60px; }\n\n.toggle-switchArea { margin: 10px 0 10px 0; }\n\nthead th\n{\n    position: -webkit-sticky;\n    position: sticky;\n    top: 0px;\n    z-index: 1;\n\n}\n\ninput[type=\"file\"] {\n  display: none;\n}\n\n.btn-image-remove {\n  position: absolute;\n  top: 15px;\n  right: 0%;\n  height: 25px;\n  width: 25px;\n  -webkit-transform: translate(-50%, -50%);\n          transform: translate(-50%, -50%);\n  -ms-transform: translate(-50%, -50%);\n  cursor: pointer;\n  padding: 0px 0px;\n  text-align: center;\n}\n\n/* ============ COLLAPSE BOX ================== */\n\n.wrap-collabsible {\n    margin-bottom: 1.2rem 0;\n  }\n\ninput[type='checkbox'] {\n    display: none;\n  }\n\n.lbl-toggle {\n    display: block;\n  \n    font-family: monospace;\n    text-transform: uppercase;\n    cursor: pointer;\n  \n    border-radius: 0px;\n    transition: all 0.25s ease-out;\n  }\n\n.lbl-toggle:hover {\n    color: #7C5A0B;\n  }\n\n.lbl-toggle::before {\n    content: ' ';\n    display: inline-block;\n    border-top: 5px solid transparent;\n    border-bottom: 5px solid transparent;\n    border-left: 5px solid currentColor;\n    vertical-align: middle;\n    margin-right: .7rem;\n    -webkit-transform: translateY(-2px);\n            transform: translateY(-2px);\n  \n    transition: -webkit-transform .2s ease-out;\n  \n    transition: transform .2s ease-out;\n  \n    transition: transform .2s ease-out, -webkit-transform .2s ease-out;\n  }\n\n.toggle:checked + .lbl-toggle::before {\n    -webkit-transform: rotate(90deg) translateX(-3px);\n            transform: rotate(90deg) translateX(-3px);\n  }\n\n.collapsible-content {\n    height: 0px;\n    overflow: hidden;\n    transition: max-height .25s ease;\n  }\n\n.toggle:checked + .lbl-toggle + .collapsible-content {\n    height: 100%;\n  }\n\n.toggle:checked + .lbl-toggle {\n    border-bottom-right-radius: 0;\n    border-bottom-left-radius: 0;\n  }\n\n.content-inner {\n    background: rgba(250, 224, 66, .2);\n    border-bottom: 1px solid rgba(250, 224, 66, .45);\n    border-bottom-left-radius: 7px;\n    border-bottom-right-radius: 7px;\n    padding: .5rem 1rem;\n  }\n\n/* ============== END OF COLLAPSE BOX ============== */\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNyYy9hcHAvYWRtaW4tZWRpdGVuZ2FnZW1lbnRzL2FkbWluLWVkaXRlbmdhZ2VtZW50cy5jb21wb25lbnQuY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBO0lBQ0ksZ0JBQWdCO0FBQ3BCOztBQUVBO0lBQ0ksYUFBYTtJQUNiLHNCQUFzQjtJQUN0QixpQkFBaUI7SUFDakIsMkJBQTJCO0lBQzNCLG1CQUFtQjtJQUNuQixxQkFBcUI7QUFDekI7O0FBRUE7SUFDSSxhQUFhO0lBQ2Isc0JBQXNCO0lBQ3RCLGlCQUFpQjtJQUNqQiwyQkFBMkI7SUFDM0IsbUJBQW1CO0lBQ25CLHFCQUFxQjtBQUN6Qjs7QUFDQTtJQUNJLGdCQUFnQjtJQUNoQixVQUFVO0lBQ1YsYUFBYTtJQUNiLG1CQUFtQjtJQUNuQixlQUFlO0lBQ2YsdUJBQXVCO0lBQ3ZCLG1CQUFtQjtJQUNuQixxQkFBcUI7QUFDekI7O0FBQ0E7SUFDSSxpQkFBaUI7SUFDakIsYUFBYTtDQUNoQixzQkFBc0I7Q0FDdEIsaUJBQWlCO0NBQ2pCLHVCQUF1QjtDQUN2QixtQkFBbUI7Q0FDbkIscUJBQXFCO0FBQ3RCOztBQUNBO0lBQ0ksYUFBYTtJQUNiLHNCQUFzQjtJQUN0QixpQkFBaUI7SUFDakIsMkJBQTJCO0lBQzNCLG1CQUFtQjtBQUN2Qjs7QUFDQTtJQUNJLDJCQUFtQjtJQUFuQix3QkFBbUI7SUFBbkIsbUJBQW1CO0lBQ25CLGFBQWE7SUFDYixzQkFBc0I7SUFDdEIsZUFBZTtJQUNmLDJCQUEyQjtJQUMzQix5QkFBeUI7SUFDekI7O3VCQUVtQjtJQUNuQixlQUFlO0lBQ2YsZ0JBQWdCO0lBQ2hCLHlCQUFpQjtPQUFqQixzQkFBaUI7UUFBakIscUJBQWlCO1lBQWpCLGlCQUFpQjtJQUNqQixrQkFBa0I7QUFDdEI7O0FBRUE7SUFDSSxnQkFBZ0I7QUFDcEI7O0FBRUE7SUFDSTs7dUJBRW1CO0FBQ3ZCOztBQUVBO0lBQ0ksY0FBYztBQUNsQjs7QUFDQTtJQUNJLGVBQWU7SUFDZixXQUFXO0lBQ1gsWUFBWTtJQUNaLGFBQWE7SUFDYixvQ0FBb0M7SUFDcEMsa0JBQWtCO0FBQ3RCOztBQUVBO0lBQ0ksZ0JBQWdCO0FBQ3BCOztBQUVBO0lBQ0ksdUJBQXVCO0lBQ3ZCLGdCQUFnQjtBQUNwQjs7QUFDQTtJQUNJLGlDQUFpQztBQUNyQzs7QUFDQTtJQUNJLGFBQWE7SUFDYiw0QkFBNEI7SUFDNUIsbUJBQW1CO0FBQ3ZCOztBQUVBO0lBQ0ksZ0NBQWdDO0lBQ2hDLG9DQUFvQztBQUN4Qzs7QUFFQTtDQUNDLGVBQWU7Q0FDZix3QkFBd0I7SUFDckIscUJBQXFCO1NBQ2hCLGdCQUFnQjtDQUN4QixZQUFZO0NBQ1osV0FBVztDQUNYLGdCQUFnQjtDQUNoQixrQkFBa0I7Q0FDbEIsa0JBQWtCO0NBQ2xCLGVBQWU7Q0FDZixhQUFhO0NBRWIsK0JBQStCO0VBQzlCOztBQUVBO0NBQ0QsbUJBQW1CO0VBQ2xCOztBQUVBO0NBQ0Qsa0JBQWtCO0NBQ2xCLFdBQVc7Q0FDWCxVQUFVO0NBQ1YsV0FBVztDQUNYLGtCQUFrQjtDQUNsQixnQkFBZ0I7Q0FFUixvQ0FBb0M7Q0FDNUMsNEJBQTRCO1NBQ3BCLG9CQUFvQjtDQUM1QixPQUFPO0NBRVAsK0JBQStCO0VBQzlCOztBQUVBO0NBQ0Qsc0JBQXNCO0VBQ3JCOztBQUNBO0lBQ0UsK0JBQXVCO1lBQXZCLHVCQUF1QjtFQUN6Qjs7QUFFQSxnQkFBZ0IsV0FBVyxFQUFFOztBQUUvQixtQ0FBbUMsU0FBUyxFQUFFLFFBQVEsRUFBRSxrQkFBa0IsRUFBRSxrQkFBa0IsRUFBRTs7QUFDaEcscUJBQXFCLGVBQWUsRUFBRSxvQkFBb0IsRUFBRSxZQUFZLEVBQUUsMkJBQTJCLEVBQUUsWUFBWSxFQUFFLG1CQUFtQixFQUFFLGNBQWMsRUFBRSxvQkFBb0IsRUFBRSxrQkFBa0IsRUFBRTs7QUFDcE0sMkJBQTJCLFdBQVcsRUFBRSxrQkFBa0IsRUFBRSxRQUFRLEVBQUUsU0FBUyxFQUFFLFdBQVcsRUFBRSxZQUFZLEVBQUUsZ0JBQWdCLEVBQUUsbUJBQW1CLEVBQUUsZ0JBQWdCLEVBQUU7O0FBQ3JLLG1GQUFtRixtQkFBbUIsRUFBRTs7QUFDeEcsZ0ZBQWdGLG1CQUFtQixFQUFFLGtCQUFrQixFQUFFLFFBQVEsRUFBRSxVQUFVLEVBQUUsV0FBVyxFQUFFLFlBQVksRUFBRSxtQkFBbUIsRUFBRSxnQkFBZ0IsRUFBRSxjQUFjLEVBQUUsV0FBVyxFQUFFOztBQUM5TyxnR0FBZ0csa0JBQWtCLEVBQUUsa0JBQWtCLEVBQUUsUUFBUSxFQUFFLFVBQVUsRUFBRSxXQUFXLEVBQUUsWUFBWSxFQUFFLG1CQUFtQixFQUFFLGdCQUFnQixFQUFFLGNBQWMsRUFBRSxXQUFXLEVBQUU7O0FBQzdQLDhGQUE4RixzQkFBc0IsRUFBRSxvQ0FBNEIsRUFBNUIsNEJBQTRCLEVBQUU7O0FBQ3BKLGtDQUFrQyxXQUFXLEVBQUU7O0FBQy9DLHFCQUFxQixxQkFBcUIsRUFBRTs7QUFFNUM7O0lBRUksd0JBQWdCO0lBQWhCLGdCQUFnQjtJQUNoQixRQUFRO0lBQ1IsVUFBVTs7QUFFZDs7QUFDQTtFQUNFLGFBQWE7QUFDZjs7QUFFQTtFQUNFLGtCQUFrQjtFQUNsQixTQUFTO0VBQ1QsU0FBUztFQUNULFlBQVk7RUFDWixXQUFXO0VBQ1gsd0NBQWdDO1VBQWhDLGdDQUFnQztFQUNoQyxvQ0FBb0M7RUFDcEMsZUFBZTtFQUNmLGdCQUFnQjtFQUNoQixrQkFBa0I7QUFDcEI7O0FBQ0EsaURBQWlEOztBQUNqRDtJQUNJLHVCQUF1QjtFQUN6Qjs7QUFFQTtJQUNFLGFBQWE7RUFDZjs7QUFFQTtJQUNFLGNBQWM7O0lBRWQsc0JBQXNCO0lBQ3RCLHlCQUF5QjtJQUN6QixlQUFlOztJQUVmLGtCQUFrQjtJQUNsQiw4QkFBOEI7RUFDaEM7O0FBRUE7SUFDRSxjQUFjO0VBQ2hCOztBQUVBO0lBQ0UsWUFBWTtJQUNaLHFCQUFxQjtJQUNyQixpQ0FBaUM7SUFDakMsb0NBQW9DO0lBQ3BDLG1DQUFtQztJQUNuQyxzQkFBc0I7SUFDdEIsbUJBQW1CO0lBQ25CLG1DQUEyQjtZQUEzQiwyQkFBMkI7O0lBRTNCLDBDQUFrQzs7SUFBbEMsa0NBQWtDOztJQUFsQyxrRUFBa0M7RUFDcEM7O0FBRUE7SUFDRSxpREFBeUM7WUFBekMseUNBQXlDO0VBQzNDOztBQUVBO0lBQ0UsV0FBVztJQUNYLGdCQUFnQjtJQUNoQixnQ0FBZ0M7RUFDbEM7O0FBRUE7SUFDRSxZQUFZO0VBQ2Q7O0FBRUE7SUFDRSw2QkFBNkI7SUFDN0IsNEJBQTRCO0VBQzlCOztBQUVBO0lBQ0Usa0NBQWtDO0lBQ2xDLGdEQUFnRDtJQUNoRCw4QkFBOEI7SUFDOUIsK0JBQStCO0lBQy9CLG1CQUFtQjtFQUNyQjs7QUFFQSxzREFBc0QiLCJmaWxlIjoic3JjL2FwcC9hZG1pbi1lZGl0ZW5nYWdlbWVudHMvYWRtaW4tZWRpdGVuZ2FnZW1lbnRzLmNvbXBvbmVudC5jc3MiLCJzb3VyY2VzQ29udGVudCI6WyIuYWRtaW4tcXVpei1wZXJtaXNzaW9uIHtcbiAgICBtYXJnaW4tdG9wOiA1MHB4O1xufVxuXG4uYWRtaW4tcXVpei1wZXJtaXNzaW9uLXRpdGxlIHtcbiAgICBkaXNwbGF5OiBmbGV4O1xuICAgIGZsZXgtZGlyZWN0aW9uOiBjb2x1bW47XG4gICAgZmxleC13cmFwOiBub3dyYXA7XG4gICAganVzdGlmeS1jb250ZW50OiBmbGV4LXN0YXJ0O1xuICAgIGFsaWduLWl0ZW1zOiBjZW50ZXI7XG4gICAgYWxpZ24tY29udGVudDogY2VudGVyO1xufVxuXG4uYWRtaW4tcXVpei1wZXJtaXNzaW9uLWJvZHkge1xuICAgIGRpc3BsYXk6IGZsZXg7XG4gICAgZmxleC1kaXJlY3Rpb246IGNvbHVtbjtcbiAgICBmbGV4LXdyYXA6IG5vd3JhcDtcbiAgICBqdXN0aWZ5LWNvbnRlbnQ6IGZsZXgtc3RhcnQ7XG4gICAgYWxpZ24taXRlbXM6IGNlbnRlcjtcbiAgICBhbGlnbi1jb250ZW50OiBjZW50ZXI7XG59XG4uYWRtaW4tcXVpei1wZXJtaXNzaW9uLWxpc3RfYnV0dG9ucyB7XG4gICAgbWFyZ2luOiAwcHggYXV0bztcbiAgICB3aWR0aDogODAlO1xuICAgIGRpc3BsYXk6IGZsZXg7XG4gICAgZmxleC1kaXJlY3Rpb246IHJvdztcbiAgICBmbGV4LXdyYXA6IHdyYXA7XG4gICAganVzdGlmeS1jb250ZW50OiBjZW50ZXI7XG4gICAgYWxpZ24taXRlbXM6IGNlbnRlcjtcbiAgICBhbGlnbi1jb250ZW50OiBjZW50ZXI7XG59XG4uYWRtaW4tcXVpei1wZXJtaXNzaW9uLWJ5X3RlYW1ze1xuICAgIG1hcmdpbjogNTBweCA1MHB4O1xuICAgIGRpc3BsYXk6IGZsZXg7XG5cdGZsZXgtZGlyZWN0aW9uOiBjb2x1bW47XG5cdGZsZXgtd3JhcDogbm93cmFwO1xuXHRqdXN0aWZ5LWNvbnRlbnQ6IGNlbnRlcjtcblx0YWxpZ24taXRlbXM6IGNlbnRlcjtcblx0YWxpZ24tY29udGVudDogY2VudGVyO1xufVxuLmFkbWluLXF1aXotcGVybWlzc2lvbi10YWJsZV9ib3h7XG4gICAgZGlzcGxheTogZmxleDtcbiAgICBmbGV4LWRpcmVjdGlvbjogY29sdW1uO1xuICAgIGZsZXgtd3JhcDogbm93cmFwO1xuICAgIGp1c3RpZnktY29udGVudDogZmxleC1zdGFydDtcbiAgICBhbGlnbi1pdGVtczogY2VudGVyO1xufVxuLkVkaXRRdWl6UGVybWlzc2lvbnNfY2F0ZWdvcnlCb3gge1xuICAgIGhlaWdodDogZml0LWNvbnRlbnQ7XG4gICAgZGlzcGxheTogZmxleDtcbiAgICBmbGV4LWRpcmVjdGlvbjogY29sdW1uO1xuICAgIGZsZXgtd3JhcDogd3JhcDtcbiAgICBqdXN0aWZ5LWNvbnRlbnQ6IGZsZXgtc3RhcnQ7XG4gICAgYWxpZ24tY29udGVudDogZmxleC1zdGFydDtcbiAgICAvKiB6LWluZGV4OiAwO1xuICAgIHRyYW5zaXRpb246IDAuNXM7XG4gICAgYm94LXNoYWRvdzogbm9uZTsgKi9cbiAgICBtYXJnaW46IDVweCA1cHg7XG4gICAgcGFkZGluZzogNXB4IDVweDtcbiAgICB1c2VyLXNlbGVjdDogbm9uZTtcbiAgICBib3JkZXItcmFkaXVzOiA1cHg7XG59XG5cbi5FZGl0UXVpelBlcm1pc3Npb25zX2NhdGVnb3J5Qm94IHAge1xuICAgIHRyYW5zaXRpb246IDAuNXM7XG59XG5cbi5FZGl0UXVpelBlcm1pc3Npb25zX2NhdGVnb3J5Qm94OmhvdmVyIHtcbiAgICAvKiB6LWluZGV4OiAxO1xuICAgIGJveC1zaGFkb3c6IDVweCAxMHB4IDE4cHggIzg4ODg4ODtcbiAgICBiYWNrZ3JvdW5kOiB3aGl0ZSAqL1xufVxuXG4uRWRpdFF1aXpQZXJtaXNzaW9uc19jYXRlZ29yeUJveDpob3ZlciBwIHtcbiAgICBjb2xvcjogIzRmOTFjZDtcbn1cbi5tb2RhbF9tZXNzYWdlX2JveCB7XG4gICAgcG9zaXRpb246IGZpeGVkO1xuICAgIHotaW5kZXg6IDUwO1xuICAgIHdpZHRoOiAxMDB2dztcbiAgICBoZWlnaHQ6IDEwMHZoO1xuICAgIGJhY2tncm91bmQ6IHJnYmEoMTc5LCAxODIsIDE4NSwgMC41KTtcbiAgICBtYXJnaW4tdG9wOiAtMTIwcHg7XG59XG5cbi5tb2RhbF9tZXNzYWdlIHtcbiAgICBtYXgtaGVpZ2h0OiA1MnZoO1xufVxuXG4ubW9kYWwtZWRpdC1yZW1vdmUtYnVja2V0e1xuICAgIGhlaWdodDogNTB2aCAhaW1wb3J0YW50O1xuICAgIG92ZXJmbG93LXk6IGF1dG87XG59XG4ubW9kYWwtZWRpdC1yZW1vdmUtYnVja2V0IHRke1xuICAgIC8qIHBhZGRpbmc6IDBweCAwcHggIWltcG9ydGFudDsgKi9cbn1cbi5tb2RhbC1kaWFsb2d7XG4gICAgd2lkdGg6IDEwMDBweDtcbiAgICBtYXgtd2lkdGg6IDEwMDBweCAhaW1wb3J0YW50O1xuICAgIC8qIGhlaWdodDogMTAwcHg7ICovXG59XG5cbi50b2dnbGUtcmVkOjpiZWZvcmV7XG4gICAgYm9yZGVyLWNvbG9yOiAjYTcxMjEyICFpbXBvcnRhbnQ7XG4gICAgYmFja2dyb3VuZC1jb2xvcjogI2Y1NmY2ZiAhaW1wb3J0YW50O1xufVxuXG5pbnB1dFt0eXBlPVwiY2hlY2tib3hcIl0uc3dpdGNoXzF7XG5cdGZvbnQtc2l6ZTogMzBweDtcblx0LXdlYmtpdC1hcHBlYXJhbmNlOiBub25lO1xuXHQgICAtbW96LWFwcGVhcmFuY2U6IG5vbmU7XG5cdCAgICAgICAgYXBwZWFyYW5jZTogbm9uZTtcblx0d2lkdGg6IDIuMmVtO1xuXHRoZWlnaHQ6IDFlbTtcblx0YmFja2dyb3VuZDogI2RkZDtcblx0Ym9yZGVyLXJhZGl1czogM2VtO1xuXHRwb3NpdGlvbjogcmVsYXRpdmU7XG5cdGN1cnNvcjogcG9pbnRlcjtcblx0b3V0bGluZTogbm9uZTtcblx0LXdlYmtpdC10cmFuc2l0aW9uOiBhbGwgLjJzIGVhc2UtaW4tb3V0O1xuXHR0cmFuc2l0aW9uOiBhbGwgLjJzIGVhc2UtaW4tb3V0O1xuICB9XG4gIFxuICBpbnB1dFt0eXBlPVwiY2hlY2tib3hcIl0uc3dpdGNoXzE6Y2hlY2tlZHtcblx0YmFja2dyb3VuZDogIzBlYmVmZjtcbiAgfVxuICBcbiAgaW5wdXRbdHlwZT1cImNoZWNrYm94XCJdLnN3aXRjaF8xOmFmdGVye1xuXHRwb3NpdGlvbjogYWJzb2x1dGU7XG5cdGNvbnRlbnQ6IFwiXCI7XG5cdHdpZHRoOiAxZW07XG5cdGhlaWdodDogMWVtO1xuXHRib3JkZXItcmFkaXVzOiA1MCU7XG5cdGJhY2tncm91bmQ6ICNmZmY7XG5cdC13ZWJraXQtYm94LXNoYWRvdzogMCAwIC4yNWVtIHJnYmEoMCwwLDAsLjMpO1xuXHQgICAgICAgIGJveC1zaGFkb3c6IDAgMCAuMjVlbSByZ2JhKDAsMCwwLC4zKTtcblx0LXdlYmtpdC10cmFuc2Zvcm06IHNjYWxlKC43KTtcblx0ICAgICAgICB0cmFuc2Zvcm06IHNjYWxlKC43KTtcblx0bGVmdDogMDtcblx0LXdlYmtpdC10cmFuc2l0aW9uOiBhbGwgLjJzIGVhc2UtaW4tb3V0O1xuXHR0cmFuc2l0aW9uOiBhbGwgLjJzIGVhc2UtaW4tb3V0O1xuICB9XG4gIFxuICBpbnB1dFt0eXBlPVwiY2hlY2tib3hcIl0uc3dpdGNoXzE6Y2hlY2tlZDphZnRlcntcblx0bGVmdDogY2FsYygxMDAlIC0gMWVtKTtcbiAgfVxuICBpbnB1dFt0eXBlPVwiY2hlY2tib3hcIl0uc3dpdGNoXzE6ZGlzYWJsZWR7XG4gICAgZmlsdGVyOiBicmlnaHRuZXNzKDY1JSk7XG4gIH1cblxuICAub3V0ZXJEaXZGdWxsIHsgbWFyZ2luOjUwcHg7IH0gXG5cbi5zd2l0Y2hUb2dnbGUgaW5wdXRbdHlwZT1jaGVja2JveF17aGVpZ2h0OiAwOyB3aWR0aDogMDsgdmlzaWJpbGl0eTogaGlkZGVuOyBwb3NpdGlvbjogYWJzb2x1dGU7IH1cbi5zd2l0Y2hUb2dnbGUgbGFiZWwge2N1cnNvcjogcG9pbnRlcjsgdGV4dC1pbmRlbnQ6IC05OTk5cHg7IHdpZHRoOiAxMDBweDsgbWF4LXdpZHRoOiAxMDBweCAhaW1wb3J0YW50OyBoZWlnaHQ6IDMwcHg7IGJhY2tncm91bmQ6ICNkMWQxZDE7IGRpc3BsYXk6IGJsb2NrOyBib3JkZXItcmFkaXVzOiAxMDBweDsgcG9zaXRpb246IHJlbGF0aXZlOyB9XG4uc3dpdGNoVG9nZ2xlIGxhYmVsOmFmdGVyIHtjb250ZW50OiAnJzsgcG9zaXRpb246IGFic29sdXRlOyB0b3A6IDJweDsgbGVmdDogMnB4OyB3aWR0aDogMjZweDsgaGVpZ2h0OiAyNnB4OyBiYWNrZ3JvdW5kOiAjZmZmOyBib3JkZXItcmFkaXVzOiA5MHB4OyB0cmFuc2l0aW9uOiAwLjNzOyB9XG4uc3dpdGNoVG9nZ2xlIGlucHV0OmNoZWNrZWQgKyBsYWJlbCwgLnN3aXRjaFRvZ2dsZSBpbnB1dDpjaGVja2VkICsgaW5wdXQgKyBsYWJlbCAge2JhY2tncm91bmQ6ICMzZTk4ZDM7IH1cbi5zd2l0Y2hUb2dnbGUgaW5wdXQgKyBsYWJlbDpiZWZvcmUsIC5zd2l0Y2hUb2dnbGUgaW5wdXQgKyBpbnB1dCArIGxhYmVsOmJlZm9yZSB7Y29udGVudDogJ0Rpc2FibGVkJzsgcG9zaXRpb246IGFic29sdXRlOyB0b3A6IDVweDsgbGVmdDogMzVweDsgd2lkdGg6IDI2cHg7IGhlaWdodDogMjZweDsgYm9yZGVyLXJhZGl1czogOTBweDsgdHJhbnNpdGlvbjogMC4zczsgdGV4dC1pbmRlbnQ6IDA7IGNvbG9yOiAjZmZmOyB9XG4uc3dpdGNoVG9nZ2xlIGlucHV0OmNoZWNrZWQgKyBsYWJlbDpiZWZvcmUsIC5zd2l0Y2hUb2dnbGUgaW5wdXQ6Y2hlY2tlZCArIGlucHV0ICsgbGFiZWw6YmVmb3JlIHtjb250ZW50OiAnRW5hYmxlZCc7IHBvc2l0aW9uOiBhYnNvbHV0ZTsgdG9wOiA1cHg7IGxlZnQ6IDEwcHg7IHdpZHRoOiAyNnB4OyBoZWlnaHQ6IDI2cHg7IGJvcmRlci1yYWRpdXM6IDkwcHg7IHRyYW5zaXRpb246IDAuM3M7IHRleHQtaW5kZW50OiAwOyBjb2xvcjogI2ZmZjsgfVxuLnN3aXRjaFRvZ2dsZSBpbnB1dDpjaGVja2VkICsgbGFiZWw6YWZ0ZXIsIC5zd2l0Y2hUb2dnbGUgaW5wdXQ6Y2hlY2tlZCArIGlucHV0ICsgbGFiZWw6YWZ0ZXIge2xlZnQ6IGNhbGMoMTAwJSAtIDJweCk7IHRyYW5zZm9ybTogdHJhbnNsYXRlWCgtMTAwJSk7IH1cbi5zd2l0Y2hUb2dnbGUgbGFiZWw6YWN0aXZlOmFmdGVyIHt3aWR0aDogNjBweDsgfSBcbi50b2dnbGUtc3dpdGNoQXJlYSB7IG1hcmdpbjogMTBweCAwIDEwcHggMDsgfVxuXG50aGVhZCB0aFxue1xuICAgIHBvc2l0aW9uOiBzdGlja3k7XG4gICAgdG9wOiAwcHg7XG4gICAgei1pbmRleDogMTtcblxufVxuaW5wdXRbdHlwZT1cImZpbGVcIl0ge1xuICBkaXNwbGF5OiBub25lO1xufVxuXG4uYnRuLWltYWdlLXJlbW92ZSB7XG4gIHBvc2l0aW9uOiBhYnNvbHV0ZTtcbiAgdG9wOiAxNXB4O1xuICByaWdodDogMCU7XG4gIGhlaWdodDogMjVweDtcbiAgd2lkdGg6IDI1cHg7XG4gIHRyYW5zZm9ybTogdHJhbnNsYXRlKC01MCUsIC01MCUpO1xuICAtbXMtdHJhbnNmb3JtOiB0cmFuc2xhdGUoLTUwJSwgLTUwJSk7XG4gIGN1cnNvcjogcG9pbnRlcjtcbiAgcGFkZGluZzogMHB4IDBweDtcbiAgdGV4dC1hbGlnbjogY2VudGVyO1xufVxuLyogPT09PT09PT09PT09IENPTExBUFNFIEJPWCA9PT09PT09PT09PT09PT09PT0gKi9cbi53cmFwLWNvbGxhYnNpYmxlIHtcbiAgICBtYXJnaW4tYm90dG9tOiAxLjJyZW0gMDtcbiAgfVxuICBcbiAgaW5wdXRbdHlwZT0nY2hlY2tib3gnXSB7XG4gICAgZGlzcGxheTogbm9uZTtcbiAgfVxuICBcbiAgLmxibC10b2dnbGUge1xuICAgIGRpc3BsYXk6IGJsb2NrO1xuICBcbiAgICBmb250LWZhbWlseTogbW9ub3NwYWNlO1xuICAgIHRleHQtdHJhbnNmb3JtOiB1cHBlcmNhc2U7XG4gICAgY3Vyc29yOiBwb2ludGVyO1xuICBcbiAgICBib3JkZXItcmFkaXVzOiAwcHg7XG4gICAgdHJhbnNpdGlvbjogYWxsIDAuMjVzIGVhc2Utb3V0O1xuICB9XG4gIFxuICAubGJsLXRvZ2dsZTpob3ZlciB7XG4gICAgY29sb3I6ICM3QzVBMEI7XG4gIH1cbiAgXG4gIC5sYmwtdG9nZ2xlOjpiZWZvcmUge1xuICAgIGNvbnRlbnQ6ICcgJztcbiAgICBkaXNwbGF5OiBpbmxpbmUtYmxvY2s7XG4gICAgYm9yZGVyLXRvcDogNXB4IHNvbGlkIHRyYW5zcGFyZW50O1xuICAgIGJvcmRlci1ib3R0b206IDVweCBzb2xpZCB0cmFuc3BhcmVudDtcbiAgICBib3JkZXItbGVmdDogNXB4IHNvbGlkIGN1cnJlbnRDb2xvcjtcbiAgICB2ZXJ0aWNhbC1hbGlnbjogbWlkZGxlO1xuICAgIG1hcmdpbi1yaWdodDogLjdyZW07XG4gICAgdHJhbnNmb3JtOiB0cmFuc2xhdGVZKC0ycHgpO1xuICBcbiAgICB0cmFuc2l0aW9uOiB0cmFuc2Zvcm0gLjJzIGVhc2Utb3V0O1xuICB9XG4gIFxuICAudG9nZ2xlOmNoZWNrZWQgKyAubGJsLXRvZ2dsZTo6YmVmb3JlIHtcbiAgICB0cmFuc2Zvcm06IHJvdGF0ZSg5MGRlZykgdHJhbnNsYXRlWCgtM3B4KTtcbiAgfVxuICBcbiAgLmNvbGxhcHNpYmxlLWNvbnRlbnQge1xuICAgIGhlaWdodDogMHB4O1xuICAgIG92ZXJmbG93OiBoaWRkZW47XG4gICAgdHJhbnNpdGlvbjogbWF4LWhlaWdodCAuMjVzIGVhc2U7XG4gIH1cbiAgXG4gIC50b2dnbGU6Y2hlY2tlZCArIC5sYmwtdG9nZ2xlICsgLmNvbGxhcHNpYmxlLWNvbnRlbnQge1xuICAgIGhlaWdodDogMTAwJTtcbiAgfVxuICBcbiAgLnRvZ2dsZTpjaGVja2VkICsgLmxibC10b2dnbGUge1xuICAgIGJvcmRlci1ib3R0b20tcmlnaHQtcmFkaXVzOiAwO1xuICAgIGJvcmRlci1ib3R0b20tbGVmdC1yYWRpdXM6IDA7XG4gIH1cbiAgXG4gIC5jb250ZW50LWlubmVyIHtcbiAgICBiYWNrZ3JvdW5kOiByZ2JhKDI1MCwgMjI0LCA2NiwgLjIpO1xuICAgIGJvcmRlci1ib3R0b206IDFweCBzb2xpZCByZ2JhKDI1MCwgMjI0LCA2NiwgLjQ1KTtcbiAgICBib3JkZXItYm90dG9tLWxlZnQtcmFkaXVzOiA3cHg7XG4gICAgYm9yZGVyLWJvdHRvbS1yaWdodC1yYWRpdXM6IDdweDtcbiAgICBwYWRkaW5nOiAuNXJlbSAxcmVtO1xuICB9XG5cbiAgLyogPT09PT09PT09PT09PT0gRU5EIE9GIENPTExBUFNFIEJPWCA9PT09PT09PT09PT09PSAqLyJdfQ== */"
 
 /***/ }),
 
@@ -843,7 +843,7 @@ module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<p>\n  admin-editengagements works!\n</p>\n"
+module.exports = "<div [hidden]=\"engagements\" class=\" loading_box \">\n    <img class=\"loading_box-ing \" src='./../../assets/loading.gif'>\n</div>\n\n<div [hidden]=\"!engagements\" class=\"admin-quiz-permission\">\n    <div [hidden]=\"!modal_mesage_bool\" class=\"modal_message_box\">\n        <div class=\"modal-dialog modal-dialog-centered modal_message\" role=\"document\">\n            <!-- CHANGE LIST -->\n            <div class=\"modal-content modal-dialog-scrollable\" *ngIf=\"modal_message.title == 'list_changes'\">\n                <div class=\"modal-header\">\n                    <h3 class=\"modal-title text-monospace text-center\" id=\"exampleModalCenteredLabel\" style=\"margin: 0px auto;\">List of changes</h3>\n                    <button type=\"button\" class=\"close\" (click)=\"closeModal()\" data-dismiss=\"modal\" aria-label=\"Close\">\n                          <span aria-hidden=\"true\">&times;</span>\n                        </button>\n                </div>\n                <div style=\"height: 50vh !important; overflow-y: scroll;\">\n                    <table class=\"table table-borderless\">\n                        <thead class=\"thead-dark shadow\">\n                          <tr>\n                            <th>ID</th>\n                            <th>Name</th>\n                            <th>Background</th>\n                            <th>Status</th>\n                          </tr>\n                        </thead>\n                        <tbody>\n                          <tr *ngFor=\"let eng of list_changes | keyvalue\" [ngClass]=\"{\n                            'alert-success': eng.value.status=='new'\n                          }\">\n                            <th scope=\"row\" class=\"text-monospace\">\n                              <div style=\"display: flex;\n                              flex-direction: column;\n                              flex-wrap: nowrap;\n                              justify-content: flex-start;\n                              align-items: center;\n                              align-content: stretch;\">\n                                {{eng.key}}\n                                <button class=\"btn-sm btn-xs btn-danger shadow text-monospace\" (click)=\"undoChanges(eng.key, 'remove')\">Cancel</button>\n                              </div>\n                            </th>\n                            <!-- ENGAGEMENT NAME -->\n                            <td [ngClass]=\"{\n                              'alert alert-warning': (eng.value.status=='existed' && (engagements_original[eng.key].engagement_name != eng.value['engagement_name']))\n                            }\">\n                              <span *ngIf=\"eng.value.status=='existed' && eng.value.engagement_name != engagements_original[eng.key].engagement_name\">{{engagements_original[eng.key].engagement_name}} changed to </span>  <span class=\"text-monospace font-weight-bold\">{{eng.value.engagement_name}}</span> <button *ngIf=\"eng.value.status=='existed' && eng.value.engagement_name != engagements_original[eng.key].engagement_name\" class=\"btn-sm btn-xs btn-danger shadow text-monospace\" (click)=\"undoChanges(eng.key, 'soft_delete')\">Undo</button>\n                            </td>\n                            <!-- BACKGROUND -->\n                            <td [ngClass]=\"{\n                              'alert alert-warning': (eng.value.status=='existed' && (engagements_original[eng.key].background != eng.value['background']))\n                            }\">\n                                <div  *ngIf=\"eng.value.status=='existed' && eng.value['background'] && engagements_original[eng.key].background != eng.value['background']\" style=\"position: relative\">\n                                    <img src=\"{{eng.value['background']}}\" class=\"img-fluid\" alt=\"Responsive image\">\n                                    <button class=\"btn btn-sm btn-danger btn-image-remove\" [disabled]=\"eng.value.soft_delete\" (click)=\"undoChangess(eng.key, 'background')\">x</button>\n                                </div>\n                                <div  *ngIf=\"eng.value.status=='existed' && !eng.value['background'] && engagements_original[eng.key].background\" class=\"default-background\" style=\"position: relative\">\n                                    <!-- <img src=\"{{eng.value['background']}}\" class=\"img-fluid default-background\" alt=\"Responsive image\"> -->\n                                    <button class=\"btn btn-sm btn-danger btn-image-remove\" [disabled]=\"eng.value.soft_delete\" (click)=\"undoChangess(eng.key, 'background')\">x</button>\n                                </div>\n                                <div *ngIf=\"eng.value.status=='new' && eng.value['background']\" style=\"position: relative\">\n                                    <img src=\"{{eng.value['background']}}\" class=\"img-fluid\" alt=\"Responsive image\">\n                                </div>\n                                <div *ngIf=\"eng.value.status=='new' && !eng.value['background']\" class=\"default-background\" style=\"position: relative\">\n                                </div>\n                                \n                            </td>\n                            <td [ngClass]=\"{\n                              'alert alert-warning': (eng.value.status=='existed' && (engagements_original[eng.key].soft_delete != eng.value.soft_delete))\n                            }\">\n                                <p class=\"text-monospace font-weight-bold\">\n                                  <span *ngIf=\"eng.value.status=='existed' && !eng.value.soft_delete && engagements_original[eng.key].soft_delete\">Enabled  <button class=\"btn-sm btn-xs btn-danger shadow text-monospace\" (click)=\"undoChanges(eng.key, 'soft_delete')\">Undo</button></span>\n                                  <span *ngIf=\"eng.value.status=='existed' && eng.value.soft_delete && !engagements_original[eng.key].soft_delete\">Disabled  <button class=\"btn-sm btn-xs btn-danger shadow text-monospace\" (click)=\"undoChanges(eng.key, 'soft_delete')\">Undo</button></span>\n                                  <span *ngIf=\"eng.value.status=='new'\">New </span>\n                                </p>\n                            </td>\n                            \n                          </tr>\n                          \n                        </tbody>\n                      </table>\n                  </div>\n                  <div class=\"team_control_panel\">\n                      <div style=\"height: 50px; margin-top: 25px;\">\n                        <button type=\"button\" (click)=\"submitChanges()\" class=\"btn btn-success text-monospace btn-action-borderless shadow\" style=\"margin: 0px 20px\">Submit changes</button>\n                        <button type=\"button\" (click)=\"undoChangesAll()\" class=\"btn btn-danger text-monospace btn-action-borderless shadow\" style=\"margin: 0px 20px\">Cancel All</button>\n                        <button type=\"button\" (click)=\"closeModal()\"  class=\"btn btn-warning text-monospace btn-action-borderless shadow\"  style=\"margin: 0px 20px\">Close</button>\n                      </div>\n                  </div>\n            </div>\n\n            <div class=\"modal-content modal-dialog-scrollable shadow\"  *ngIf=\"modal_message.title == 'message'\">\n                <div class=\"alert alert-success text-center\" style=\"margin-bottom: 0px\" role=\"alert\" *ngIf=\"modal_message.body == 'success'\">\n                    <h4 class=\"alert-heading text-center\">Well done!</h4>\n                    <button type=\"button\" class=\"close\" (click)=\"closeModal()\" data-dismiss=\"modal\" aria-label=\"Close\">\n                        <span aria-hidden=\"true\">&times;</span>\n                      </button>\n                    <p>Your changes have been saved!</p>\n                    <button class=\"btn btn-primary btn-action-borderless text-monospace shadow\" [routerLink]=\"['/',currentEng_id, 'admin']\">Click here to go back to the admin portal</button>\n                  </div>\n                <div class=\"alert alert-danger text-center\" style=\"margin-bottom: 0px\" role=\"alert\" *ngIf=\"modal_message.body == 'fail'\">\n                    <h4 class=\"alert-heading text-center\">Oops!</h4>\n                    <button type=\"button\" class=\"close\" (click)=\"closeModal()\" data-dismiss=\"modal\" aria-label=\"Close\">\n                        <span aria-hidden=\"true\">&times;</span>\n                      </button>\n                      <p>Something went wrong. Please try again later or contact developers.</p>\n                    <button class=\"btn btn-primary btn-action-borderless text-monospace shadow\" [routerLink]=\"['/',currentEng_id, 'admin']\">Click here to go back to the admin portal</button>\n                  </div>\n            </div>\n            <div class=\"modal-content modal-dialog-scrollable shadow\"  *ngIf=\"modal_message.title == 'counter'\">\n                <div class=\"alert alert-success text-center\" style=\"margin-bottom: 0px\" role=\"alert\" >\n\n                    <p>Saving changes {{modal_message.counter_start }} of {{modal_message.counter_end }}</p>\n                    <div class=\"progress\">\n                        <div class=\"progress-bar progress-bar-striped progress-bar-animated\" role=\"progressbar\" [attr.aria-valuenow]=\"modal_message.counter_start\" [attr.aria-valuemin]=\"0\" [attr.aria-valuemax]=\"modal_message.counter_end\" [style.width.%]=\"( (modal_message.counter_start/modal_message.counter_end) * 100)\"></div>\n                      </div>\n                  </div>\n            </div>\n        </div>\n    </div>\n\n    <div class=\"admin-quiz-permission-title\">\n      <h1>Engagement Editor</h1>\n      <button [hidden]=\"errors_length > 0\" class=\"btn btn-success btn-action-borderless btn-lg shadow\" (click)=\"checkChanges()\">Check Changes</button>\n      <button [hidden]=\"errors_length == 0\" class=\"btn btn-danger btn-action-borderless btn-lg shadow\" disabled >Please fix errors bellow</button>\n\n\n\n\n\n    <div class=\"admin-quiz-permission-table_box\" style=\"padding-top: 25px\">\n        <table class=\"table table-borderless shadow-lg\" style=\"width: 1000px\">\n            <thead class=\"thead-dark shadow-lg\">\n              <tr>\n                <th>ID</th>\n                <th >Title</th>\n                <th >Categories and topics</th>\n                <th >Background</th>\n                <th >Status</th>\n              </tr>\n            </thead>\n            <tbody id=\"table_body_target\">\n              <tr style=\"border-top: none !important\" *ngFor=\"let eng of engagements | keyvalue\" [ngClass]=\"{\n                'alert-secondary': eng.value.soft_delete,\n                'element-animation-fadeIn': last_added == eng.key,\n                'alert-info': eng.key == 'new' && eng.value.status == 'new',\n                'alert-success': eng.key != 'new' && eng.value.status == 'new'\n              }\">\n                <th *ngIf=\"!eng.value['error_bool']\"  scope=\"row\" class=\"font-weight-bold  text-center text-monospace tr_string\">{{eng.key}}</th>\n                <td *ngIf=\"!eng.value['error_bool']\" class=\"tr_string\">\n                    <input class=\"form-control\" type=\"text\" [disabled]=\"eng.value.soft_delete\" placeholder=\"\" minlength=\"2\" (change)=\"inputChanger(eng.key, 'engagement_name', $event.target)\" value='{{eng.value.engagement_name}}'>\n                </td>\n                <td *ngIf=\"!eng.value['error_bool']\">\n                    <div class=\"wrap-collabsible\">\n                        <input id=\"collapsible_{{eng.value.engagement_name}}\" class=\"toggle\" type=\"checkbox\">\n                        <label for=\"collapsible_{{eng.value.engagement_name}}\" class=\"lbl-toggle\">{{eng.value.users_total_length}} users,{{eng.value.categories_length}} category(ies) and {{eng.value.topics_total_length}} topic(s)</label>\n                        <div class=\"collapsible-content shadow\">\n                          <div class=\"content-inner\">\n\n                              <div class=\"wrap-collabsible\" *ngFor=\"let cat of eng.value.categories | keyvalue\">\n                                  <input id=\"collapsible_{{eng.value.engagement_name}}_{{cat.key}}\" class=\"toggle\" type=\"checkbox\">\n                                  <label for=\"collapsible_{{eng.value.engagement_name}}_{{cat.key}}\" class=\"lbl-toggle\">{{cat.key}} ({{cat.value.topic_length}} topics)</label>\n                                  <div class=\"collapsible-content shadow\">\n                                    <div class=\"content-inner \">\n                                        <p class=\"text-monospace small\" [ngClass]=\"{\n                                          'alert-danger': topic.value.topic_soft_delete\n                                        }\" style=\"margin-bottom: 0px;\" *ngFor=\"let topic of cat.value.topics | keyvalue\"><a target=\"_blank\" [routerLink]=\"topic.value.link\"> #{{topic.key}} {{topic.value.topic}} ({{topic.value.users_length}} users have access)</a></p>\n                                    </div>\n                                  </div>\n                                </div>\n\n                          </div>\n                        </div>\n                      </div>\n                </td>\n                <td *ngIf=\"!eng.value['error_bool']\">\n                  <div *ngIf=\"eng.value['background'] && eng.value['background'] != 'null'\" style=\"position: relative\">\n                      <img src=\"{{eng.value['background']}}\" class=\"img-fluid\" alt=\"Responsive image\">\n                      <button class=\"btn btn-sm btn-outline-danger btn-image-remove shadow\" [disabled]=\"eng.value.soft_delete\" (click)=\"removeImg(eng.key)\">x</button>\n                  </div>\n                  <div *ngIf=\"!eng.value['background'] || eng.value['background'] == 'null'\" class=\"default-background\" style=\"position: relative\">\n                      <!-- <img src=\"{{eng.value['background']}}\" class=\"img-fluid default-background\" alt=\"Responsive image\"> -->\n                      <!-- <button class=\"btn btn-sm btn-outline-danger btn-image-remove\" [disabled]=\"eng.value.soft_delete\" (click)=\"removeImg(eng.key)\">x</button> -->\n                  </div>\n                    <div>\n                        <label for=\"file-upload{{eng.key}}\" style=\"width: 100%;\" class=\"custom-file-upload btn btn-sm btn-outline-secondary btn-action-borderless\">\n                                &#8682; Upload Picture\n                            </label>\n                        <input id=\"file-upload{{eng.key}}\" type=\"file\"  [disabled]=\"eng.value.soft_delete\" (change)=\"addBackground(eng.key, $event.target.files)\" accept=\"image/*\" />\n                    </div>\n                </td>\n                <td *ngIf=\"!eng.value['error_bool']\" align=\"center\" class=\"tr_string\">\n                    <div class=\"switchToggle\" *ngIf=\"eng.value.status == 'existed' && eng.key != 'new'\">\n                        <input type=\"checkbox\"  id=\"soft_delete_{{eng.key}}\" (click)=\"actionButton(eng.key,'soft_delete', null)\" [checked]='!eng.value.soft_delete' >\n                        <label for=\"soft_delete_{{eng.key}}\" [ngClass]=\"{\n                          'shadow': true,\n                          'switchToggle_checked_green': engagements_original[eng.key]['soft_delete'] && !eng.value.soft_delete,\n                          'switchToggle_checked_red': !engagements_original[eng.key]['soft_delete'] && eng.value.soft_delete\n                        }\"></label>\n                    </div>\n                    <div class=\"switchToggle\" *ngIf=\"eng.value.status == 'new' && eng.key == 'new'\">\n                        <button class='btn btn-success btn-action-borderless shadow'  (click)=\"addEng()\">Add</button>\n                    </div>\n                    <div class=\"switchToggle\" *ngIf=\"eng.value.status == 'new' && eng.key != 'new'\">\n                        <button class='btn btn-danger btn-action-borderless' (click)=\"deleteEng(eng.key)\">Delete</button>\n                    </div>\n                </td>\n                <td colspan=\"7\" *ngIf=\"eng.value['error_bool']\" style=\"padding: 10px 10px !important\">\n                    <div class=\"alert alert-warning shadow\" role=\"alert\" style=\"width: 500px; margin: 0px auto;\">\n                        <p class=\"text-center text-monospace\"><strong>#{{eng.value['target']}} has error(s):</strong></p>\n                       <p *ngFor=\"let error of eng.value['errors'] | keyvalue\" class=\"text-center\" style=\"margin-bottom: 0px !important\">{{error.value}}</p>\n                    </div>\n                </td>   \n              </tr>\n              \n            </tbody>\n          </table>\n    </div>\n</div>"
 
 /***/ }),
 
@@ -859,12 +859,403 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AdminEditengagementsComponent", function() { return AdminEditengagementsComponent; });
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
+/* harmony import */ var _connector_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../connector.service */ "./src/app/connector.service.ts");
+/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/common */ "./node_modules/@angular/common/fesm5/common.js");
+/* harmony import */ var lodash_cloneDeep__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! lodash/cloneDeep */ "./node_modules/lodash/cloneDeep.js");
+/* harmony import */ var lodash_cloneDeep__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(lodash_cloneDeep__WEBPACK_IMPORTED_MODULE_5__);
+
+
+
+
 
 
 var AdminEditengagementsComponent = /** @class */ (function () {
-    function AdminEditengagementsComponent() {
+    function AdminEditengagementsComponent(_ConnectorService, location, _route, _r) {
+        var _this = this;
+        this._ConnectorService = _ConnectorService;
+        this.location = location;
+        this._route = _route;
+        this._r = _r;
+        this.list_changes = {};
+        this.errors_length = 0;
+        this.modal_mesage_bool = false;
+        this.last_added = null;
+        this.last_removed = null;
+        this.modal_message = {
+            'title': '',
+            'body': '',
+            'counter_start': 0,
+            'counter_end': 0,
+        };
+        this.new_eng_form = {
+            'background': null,
+            'categories': {},
+            'categories_length': 0,
+            'engagement_name': '',
+            'soft_delete': false,
+            'topics_total_length': 0,
+            'users_total_length': 0,
+            'users_list': {},
+            'status': 'new',
+            'engagement_id': null
+        };
+        this._route.paramMap.subscribe(function (params) {
+            _this.currentEng_id = params.get('eng');
+        });
+        this._ConnectorService.user.subscribe(function (user) {
+            if (user) {
+                if (user.admin_owner || user.admin_permissions) {
+                    console.log("we are fine here!");
+                }
+                else {
+                    _this.goBack();
+                }
+                _this.currentUser = user;
+                var obj = {
+                    'email': user.email,
+                    'eng_id': _this.currentEng_id
+                };
+                _this._ConnectorService.getAllEngagements(obj).then(function (res) {
+                    console.log("RES =>", res);
+                    _this.engagements = _this.engagementFormat(lodash_cloneDeep__WEBPACK_IMPORTED_MODULE_5__(res['body']));
+                    _this.engagements_original = _this.engagementFormat(lodash_cloneDeep__WEBPACK_IMPORTED_MODULE_5__(res['body']));
+                    _this.engagements['new'] = lodash_cloneDeep__WEBPACK_IMPORTED_MODULE_5__(_this.new_eng_form);
+                    _this.engagements_original['new'] = lodash_cloneDeep__WEBPACK_IMPORTED_MODULE_5__(_this.new_eng_form);
+                    console.log(_this.engagements);
+                }).catch(function (err) {
+                    console.log("ERROR =>", err);
+                });
+            }
+            if (user && !user.admin) {
+                _this._r.navigate(["/" + _this.currentEng_id + "/home"]);
+            }
+        });
     }
     AdminEditengagementsComponent.prototype.ngOnInit = function () {
+    };
+    // MODAL FUNCTIONS =====================
+    AdminEditengagementsComponent.prototype.openModal = function (target, message) {
+        this.modal_mesage_bool = true;
+        this.modal_message.title = target;
+        if (target == 'list_changes') {
+        }
+        else if (target == 'counter') {
+            this.modal_message.counter_end = message;
+        }
+        else {
+            this.modal_message.body = message;
+            console.log(this.modal_message);
+        }
+    };
+    AdminEditengagementsComponent.prototype.closeModal = function () {
+        this.modal_mesage_bool = false;
+        // this.list_control_changed_bool = false;
+    };
+    // LISTENERSFUNCTOINS =============
+    AdminEditengagementsComponent.prototype.actionButton = function (eng_id, key) {
+        console.log(key == 'soft_delete', !this.engagements[eng_id][key]);
+        if (key == 'soft_delete' && !this.engagements[eng_id][key]) {
+            this.errorHandlerRemover(eng_id);
+        }
+        else if (key == 'soft_delete' && this.engagements[eng_id][key]) {
+            if (this.engagements[eng_id]['engagement_name'].length == 0) {
+                this.errorHandler(eng_id, 'engagement_name', 'Please enter a title');
+            }
+            else if (this.engagements[eng_id]['engagement_name'].length == 1) {
+                this.errorHandler(eng_id, 'engagement_name', 'Title is too short');
+            }
+        }
+        this.engagements[eng_id][key] = !this.engagements[eng_id][key];
+    };
+    AdminEditengagementsComponent.prototype.inputChanger = function (eng_id, key, input) {
+        var error_bool = false;
+        if (input.value.length == 0) {
+            error_bool = true;
+            this.errorHandler(eng_id, 'engagement_name', 'Please enter a title');
+        }
+        else if (input.value.length == 1) {
+            error_bool = true;
+            this.errorHandler(eng_id, 'engagement_name', 'Title is too short');
+        }
+        else if (input.value.length > 1) {
+            for (var el in this.engagements) {
+                if (this.engagements[el]['engagement_name'] == input.value) {
+                    error_bool = true;
+                    this.errorHandler(eng_id, 'engagement_name', 'Such title is already in use.');
+                    break;
+                }
+            }
+        }
+        if (!error_bool) {
+            this.errorHandlerRemover(eng_id);
+        }
+        this.engagements[eng_id][key] = input.value;
+        console.log(this.engagements[eng_id][key]);
+    };
+    AdminEditengagementsComponent.prototype.checkChanges = function () {
+        this.list_changes = {};
+        var cur_list = this.engagements;
+        var old_list = this.engagements_original;
+        for (var el in cur_list) {
+            if (el == 'new') {
+                continue;
+            }
+            if (old_list[el]) {
+                if (cur_list[el]['background'] != old_list[el]['background']) {
+                    this.list_changes[el] = cur_list[el];
+                    continue;
+                }
+                console.log(cur_list[el]['engagement_name'], old_list[el]['engagement_name']);
+                if (cur_list[el]['engagement_name'] != old_list[el]['engagement_name']) {
+                    this.list_changes[el] = cur_list[el];
+                    continue;
+                }
+                if (cur_list[el]['soft_delete'] != old_list[el]['soft_delete']) {
+                    this.list_changes[el] = cur_list[el];
+                    continue;
+                }
+            }
+            else {
+                this.list_changes[el] = cur_list[el];
+            }
+        }
+        if (Object.keys(this.list_changes).length > 0) {
+            this.openModal('list_changes', null);
+        }
+        console.log(this.list_changes);
+    };
+    AdminEditengagementsComponent.prototype.undoChanges = function (id, key) {
+        if (key == 'remove') {
+            if (this.engagements[id]['status'] == "new") {
+                delete this.engagements[id];
+            }
+            else {
+                this.engagements[id] = lodash_cloneDeep__WEBPACK_IMPORTED_MODULE_5__(this.engagements_original[id]);
+            }
+            delete this.list_changes[id];
+        }
+        else {
+            this.engagements[id][key] = lodash_cloneDeep__WEBPACK_IMPORTED_MODULE_5__(this.engagements_original[id][key]);
+            var diff_finder_bool = false;
+            if (this.engagements_original[id]['background'] != this.engagements_original[id]['background']) {
+                diff_finder_bool = true;
+            }
+            else if (this.engagements_original[id]['engagement_name'] != this.engagements_original[id]['engagement_name']) {
+                diff_finder_bool = true;
+            }
+            else if (this.engagements_original[id]['soft_delete'] != this.engagements_original[id]['soft_delete']) {
+                diff_finder_bool = true;
+            }
+            if (!diff_finder_bool) {
+                console.log("removing from the change list");
+                delete this.list_changes[id];
+            }
+        }
+        if (Object.keys(this.list_changes).length < 1) {
+            this.closeModal();
+        }
+    };
+    AdminEditengagementsComponent.prototype.undoChangesAll = function () {
+        for (var el in this.list_changes) {
+            this.undoChanges(el, 'remove');
+        }
+    };
+    AdminEditengagementsComponent.prototype.addBackground = function (eng_id, value) {
+        var _this = this;
+        this._ConnectorService.imgToBase64(value).then(function (data) {
+            console.log("ADDING IMAGE FOR =>", eng_id);
+            _this.engagements[eng_id]['background'] = String(data);
+        }).catch(function (err) {
+            console.log("ERROR =>", err);
+            // this.errorHandler(q_id, "image_uploader", JSON.stringify(err))
+        });
+    };
+    AdminEditengagementsComponent.prototype.removeImg = function (eng_id) {
+        this.engagements[eng_id]['background'] = '';
+    };
+    AdminEditengagementsComponent.prototype.addEng = function () {
+        if (this.engagements['new'].engagement_name.length == 0) {
+            this.errorHandler('new', 'engagement_name', 'Please enter a title');
+            return;
+        }
+        if (this.engagements['new'].engagement_name.length == 1) {
+            this.errorHandler('new', 'engagement_name', 'Title is too short');
+            return;
+        }
+        var id = 'added1';
+        for (var el in this.engagements) {
+            console.log("EL =>", el, el.slice(0, 5));
+            if (el.slice(0, 5) == 'added') {
+                console.log("awesome!");
+                id = 'added' + (Number(el.slice(5)) + 1);
+                console.log("SETTING THIS ID =>", id);
+            }
+        }
+        this.errorHandlerRemover('new');
+        console.log("new id! =>", id);
+        this.last_added = id;
+        if (this.engagements[id]) {
+            console.log("FAILED!");
+            return;
+        }
+        this.engagements[id] = lodash_cloneDeep__WEBPACK_IMPORTED_MODULE_5__(this.engagements['new']);
+        this.engagements[id]['engagement_id'] = id;
+        this.engagements['new'] = lodash_cloneDeep__WEBPACK_IMPORTED_MODULE_5__(this.new_eng_form);
+    };
+    AdminEditengagementsComponent.prototype.deleteEng = function (eng_id) {
+        // this.last_removed = eng_id
+        delete this.engagements[eng_id];
+        this.errorHandlerRemover(eng_id);
+        this.last_added = null;
+    };
+    AdminEditengagementsComponent.prototype.submitChanges = function () {
+        var _this = this;
+        var obj = {
+            'engs': this.list_changes,
+            'email': this.currentUser.email,
+        };
+        this._ConnectorService.saveEngagements(obj).then(function (res) {
+            console.log('RESULT =>', res);
+            _this.engagements_original = lodash_cloneDeep__WEBPACK_IMPORTED_MODULE_5__(_this.engagements);
+            _this.closeModal();
+            _this.list_changes = {};
+            _this.openModal('message', 'success');
+        });
+    };
+    // MISC FUNCTIONS ======================
+    AdminEditengagementsComponent.prototype.checkState = function () {
+        this.engagements['new'] = this.new_eng_form;
+        console.log(this);
+    };
+    AdminEditengagementsComponent.prototype.sortType = function (key) {
+        console.log(key);
+    };
+    AdminEditengagementsComponent.prototype.goBack = function () {
+        this.location.back();
+    };
+    AdminEditengagementsComponent.prototype.differencesFinder = function () {
+    };
+    AdminEditengagementsComponent.prototype.loadingMessage = function (count) {
+        this.openModal('counter', count);
+        this.loadingMessageLoop(0, count);
+    };
+    AdminEditengagementsComponent.prototype.loadingMessageLoop = function (start, end) {
+        if (start < end) {
+            this.modal_message.counter_start = start;
+            var new_start_1 = start + 1;
+            var that_1 = this;
+            setTimeout(function () {
+                return that_1.loadingMessageLoop(new_start_1, end);
+            }, 100);
+        }
+        else {
+            console.log("done!");
+            return;
+        }
+    };
+    AdminEditengagementsComponent.prototype.getClassForUserStatus = function () {
+    };
+    AdminEditengagementsComponent.prototype.engagementFormat = function (list) {
+        var res = {};
+        var users = {};
+        for (var el in list) {
+            var eng_id = list[el]['engagement_id'];
+            var category = unescape(list[el]['category']);
+            var topic_id = list[el]['topic_id'];
+            // console.log("==========START==========")
+            // console.log(`topic_id => ${topic_id}; category => ${category}; eng_id => ${eng_id}; `)
+            if (!res[eng_id]) {
+                // console.log('new engagement!')
+                res[eng_id] = {};
+                res[eng_id]['soft_delete'] = list[el]['soft_delete'];
+                res[eng_id]['engagement_name'] = unescape(list[el]['engagement_name']);
+                res[eng_id]['categories'] = {};
+                res[eng_id]['categories_length'] = 0;
+                res[eng_id]['topics_total_length'] = 0;
+                res[eng_id]['users_total_length'] = 0;
+                res[eng_id]['users_list'] = {};
+                res[eng_id]['background'] = unescape(list[el]['background']);
+                res[eng_id]['status'] = 'existed';
+                res[eng_id]['engagement_id'] = eng_id;
+            }
+            if (!list[el]['topic_id']) {
+                continue;
+            }
+            if (!res[eng_id]['categories'][category]) {
+                res[eng_id]['categories'][category] = {};
+                res[eng_id]['categories'][category]['topics'] = {};
+                res[eng_id]['categories'][category]['topic_length'] = 0;
+                res[eng_id]['categories_length']++;
+            }
+            if (!res[eng_id]['categories'][category]['topics'][topic_id]) {
+                res[eng_id]['categories'][category]['topics'][topic_id] = list[el];
+                res[eng_id]['categories'][category]['topics'][topic_id]['topic'] = unescape(list[el]['topic']);
+                res[eng_id]['categories'][category]['topics'][topic_id]['link'] = "/" + eng_id + "/AdminEditquiz/" + list[el]['topic_id'];
+                res[eng_id]['categories'][category]['topic_length']++;
+                res[eng_id]['topics_total_length']++;
+                res[eng_id]['categories'][category]['topics'][topic_id]['users_length'] = 0;
+                res[eng_id]['categories'][category]['topics'][topic_id]['users'] = {};
+            }
+            if (!list[el]['profile_id']) {
+                continue;
+            }
+            res[eng_id]['categories'][category]['topics'][topic_id]['users_length']++;
+            res[eng_id]['categories'][category]['topics'][topic_id]['users'][list[el]['email']] = list[el]['first_name'] + " " + list[el]['last_name'];
+            if (!users[eng_id]) {
+                users[eng_id] = {};
+            }
+            if (!users[eng_id][list[el]['email']]) {
+                users[eng_id][list[el]['email']] = true;
+                res[eng_id]['users_total_length']++;
+                res[eng_id]['users_list'][list[el]['email']] = true;
+            }
+            // console.log("==========END==========")
+        }
+        return res;
+    };
+    AdminEditengagementsComponent.prototype.errorHandler = function (id, source, message) {
+        console.log("WE GOT ERROR HERE! ID => " + id + ", source => " + source + ", message => " + message);
+        if (!this.engagements[id + "_error"]) {
+            this.errors_length++;
+            this.engagements[id + "_error"] = {
+                'error_bool': true,
+                'errors': {},
+                'target': id
+            };
+            if (id == 'new') {
+                this.engagements[id + "_error"]['target'] = "New question form";
+            }
+            // this.clearErrorMessageTimer(id, 5000)
+        }
+        this.last_added = id + "_error";
+        this.engagements[id + "_error"]['errors'][source] = message;
+    };
+    AdminEditengagementsComponent.prototype.errorHandlerRemover = function (id) {
+        this.last_added = null;
+        try {
+            if (this.engagements[id + '_error']) {
+                this.errors_length--;
+                delete this.engagements[id + '_error'];
+            }
+        }
+        catch (error) {
+            console.log(error);
+        }
+        return true;
+    };
+    AdminEditengagementsComponent.prototype.errorRemoveById = function (id) {
+        this.last_added = null;
+        try {
+            if (this.engagements[id]) {
+                delete this.engagements[id];
+                this.errors_length--;
+            }
+        }
+        catch (error) {
+            console.log(error);
+        }
+        return true;
     };
     AdminEditengagementsComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
@@ -872,7 +1263,7 @@ var AdminEditengagementsComponent = /** @class */ (function () {
             template: __webpack_require__(/*! ./admin-editengagements.component.html */ "./src/app/admin-editengagements/admin-editengagements.component.html"),
             styles: [__webpack_require__(/*! ./admin-editengagements.component.css */ "./src/app/admin-editengagements/admin-editengagements.component.css")]
         }),
-        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [])
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_connector_service__WEBPACK_IMPORTED_MODULE_3__["ConnectorService"], _angular_common__WEBPACK_IMPORTED_MODULE_4__["Location"], _angular_router__WEBPACK_IMPORTED_MODULE_2__["ActivatedRoute"], _angular_router__WEBPACK_IMPORTED_MODULE_2__["Router"]])
     ], AdminEditengagementsComponent);
     return AdminEditengagementsComponent;
 }());
@@ -3907,7 +4298,7 @@ module.exports = ".grade-home-main {\n    width: 80%;\n    margin: 0px auto;\n  
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div *ngIf='currentUser && currentUser.admin' class=\"quiz-selection element-animation-fadeIn\" align=\"center\" id=\"body_fadeOut\">\n    <div style=\"height: 10%; justify-content: center; display: flex; flex-direction: column;flex-wrap: wrap;\">\n        <h1 class=\"text-center\">Welcome, {{currentUser.first_name}} {{currentUser.last_name}}</h1>\n    </div>\n    <div class=\"home-main\" id=\"homeCategories\" *ngIf=\"currentEng\">\n        <div class=\"home-category\">\n            <div class=\"home-category-title bg-dark text-white\" style=\"width: 100%; padding: 5px 0px;\">\n                <h2>Grader</h2>\n            </div>\n            <div class=\"home-category-element\">\n                <a class=\"\" [routerLink]=\"['/', currentEng_id, 'adminhomegrade']\">\n                    <button *ngIf=\"gradings_counter>0\" class=\"btn btn-outline-success btn-outline-success-hover-side-shadow btn-lg \" [disabled]=\"!currentUser.admin_grader && !currentUser.admin_owner\" type=\"button\">Grade a Quiz ({{gradings_counter}})</button>\n                    <button *ngIf=\"!gradings_counter || gradings_counter<1\" class=\"btn btn-outline-success btn-lg \" disabled type=\"button\">No quizzes to grade</button>\n                </a>\n            </div>\n        </div>\n        <div class=\"home-category\">\n            <div class=\"home-category-title bg-dark text-white\" style=\"width: 100%; padding: 5px 0px;\">\n                <h2>Editor</h2>\n            </div>\n            <div class=\"home-category-element\">\n                <a class=\"\" [routerLink]=\"['/',currentEng_id, 'admincreatequiz']\">\n                    <button class=\"btn btn-outline-info btn-lg btn-outline-info-hover-side-shadow\" type=\"button\" [disabled]=\"!currentUser.admin_editor && !currentUser.admin_owner\">Create a Quiz</button>\n                </a>\n                <a class=\"\" [routerLink]=\"['/',currentEng_id, 'adminhomeedit']\">\n                    <button class=\"btn btn-lg btn-outline-info btn-outline-info-hover-side-shadow\" type=\"button\" [disabled]=\"!currentUser.admin_editor && !currentUser.admin_owner\">Edit a Quiz</button>\n                </a>\n            </div>\n        </div>\n        <div class=\"home-category\">\n            <div class=\"home-category-title bg-dark text-white\" style=\"width: 100%; padding: 5px 0px;\">\n                <h2>Quiz Controls</h2>\n            </div>\n            <div class=\"home-category-element\">\n                <a class=\"\" [routerLink]=\"['/',currentEng_id, 'AdminEditpermissions']\">\n                    <button class=\"btn btn-outline-secondary btn-lg btn-outline-secondary-hover-side-shadow\" [disabled]=\"!currentUser.admin_permissions && !currentUser.admin_owner\" type=\"button\">Quiz Permissions</button>\n                </a>\n                <a class=\"\" [routerLink]=\"['/',currentEng_id, 'AdminEditsubmissions']\">\n                    <button class=\"btn btn-outline-secondary btn-lg btn-outline-secondary-hover-side-shadow\" [disabled]=\"!currentUser.admin_permissions && !currentUser.admin_owner\" type=\"button\">Quiz Submissions</button>\n                </a>\n            </div>\n        </div>\n        <div class=\"home-category\">\n            <div class=\"home-category-title bg-dark text-white\" style=\"width: 100%; padding: 5px 0px;\">\n                <h2>Super Admin</h2>\n            </div>\n            <div class=\"home-category-element\">\n                <a class=\"\" [routerLink]=\"['/',currentEng_id, 'AdminEditusersComponent']\">\n                    <button class=\"btn btn-outline-warning btn-lg btn-outline-warning-hover-side-shadow\" [disabled]=\"!currentUser.admin_permissions && !currentUser.admin_owner\" type=\"button\">User Permissions</button>\n                </a>\n                <a class=\"\" [routerLink]=\"['/',currentEng_id, 'AdminEditengagements']\">\n                    <button class=\"btn btn-outline-warning btn-lg btn-outline-warning-hover-side-shadow\" [disabled]=\"!currentUser.admin_permissions && !currentUser.admin_owner\" type=\"button\">Edit Engagements</button>\n                </a>\n            </div>\n        </div>\n    </div>\n</div>"
+module.exports = "<div *ngIf='currentUser && currentUser.admin' class=\"quiz-selection element-animation-fadeIn\" align=\"center\" id=\"body_fadeOut\">\n    <div style=\"height: 10%; justify-content: center; display: flex; flex-direction: column;flex-wrap: wrap;\">\n        <h1 class=\"text-center\">Welcome, {{currentUser.first_name}} {{currentUser.last_name}}</h1>\n    </div>\n    <div class=\"home-main\" id=\"homeCategories\" *ngIf=\"currentEng\">\n        <div class=\"home-category\">\n            <div class=\"home-category-title bg-dark text-white\" style=\"width: 100%; padding: 5px 0px;\">\n                <h2>Grader</h2>\n            </div>\n            <div class=\"home-category-element\">\n                <a class=\"\" [routerLink]=\"['/', currentEng_id, 'adminhomegrade']\">\n                    <button *ngIf=\"gradings_counter>0\" class=\"btn btn-outline-success btn-outline-success-hover-side-shadow btn-lg \" [disabled]=\"!currentUser.admin_grader && !currentUser.admin_owner\" type=\"button\">Grade a Quiz ({{gradings_counter}})</button>\n                    <button *ngIf=\"!gradings_counter || gradings_counter<1\" class=\"btn btn-outline-success btn-lg \" disabled type=\"button\">No quizzes to grade</button>\n                </a>\n            </div>\n        </div>\n        <div class=\"home-category\">\n            <div class=\"home-category-title bg-dark text-white\" style=\"width: 100%; padding: 5px 0px;\">\n                <h2>Editor</h2>\n            </div>\n            <div class=\"home-category-element\">\n                <a class=\"\" [routerLink]=\"['/',currentEng_id, 'admincreatequiz']\">\n                    <button class=\"btn btn-outline-info btn-lg btn-outline-info-hover-side-shadow\" type=\"button\" [disabled]=\"!currentUser.admin_editor && !currentUser.admin_owner\">Create a Quiz</button>\n                </a>\n                <a class=\"\" [routerLink]=\"['/',currentEng_id, 'adminhomeedit']\">\n                    <button class=\"btn btn-lg btn-outline-info btn-outline-info-hover-side-shadow\" type=\"button\" [disabled]=\"!currentUser.admin_editor && !currentUser.admin_owner\">Edit a Quiz</button>\n                </a>\n            </div>\n        </div>\n        <div class=\"home-category\">\n            <div class=\"home-category-title bg-dark text-white\" style=\"width: 100%; padding: 5px 0px;\">\n                <h2>Quiz Controls</h2>\n            </div>\n            <div class=\"home-category-element\">\n                <a class=\"\" [routerLink]=\"['/',currentEng_id, 'AdminEditpermissions']\">\n                    <button class=\"btn btn-outline-secondary btn-lg btn-outline-secondary-hover-side-shadow\" [disabled]=\"!currentUser.admin_permissions && !currentUser.admin_owner\" type=\"button\">Quiz Permissions</button>\n                </a>\n                <a class=\"\" [routerLink]=\"['/',currentEng_id, 'AdminEditsubmissions']\">\n                    <button class=\"btn btn-outline-secondary btn-lg btn-outline-secondary-hover-side-shadow\" [disabled]=\"!currentUser.admin_permissions && !currentUser.admin_owner\" type=\"button\">Quiz Submissions</button>\n                </a>\n            </div>\n        </div>\n        <div class=\"home-category\">\n            <div class=\"home-category-title bg-dark text-white\" style=\"width: 100%; padding: 5px 0px;\">\n                <h2>Admin Controls</h2>\n            </div>\n            <div class=\"home-category-element\">\n                <a class=\"\" [routerLink]=\"['/',currentEng_id, 'AdminEditusersComponent']\">\n                    <button class=\"btn btn-outline-warning btn-lg btn-outline-warning-hover-side-shadow\" [disabled]=\"!currentUser.admin_permissions && !currentUser.admin_owner\" type=\"button\">User Permissions</button>\n                </a>\n                <a class=\"\" [routerLink]=\"['/',currentEng_id, 'AdminEditengagements']\">\n                    <button class=\"btn btn-outline-warning btn-lg btn-outline-warning-hover-side-shadow\" [disabled]=\"!currentUser.admin_permissions && !currentUser.admin_owner\" type=\"button\">Edit Engagements</button>\n                </a>\n            </div>\n        </div>\n    </div>\n</div>"
 
 /***/ }),
 
@@ -4955,6 +5346,28 @@ var ConnectorService = /** @class */ (function () {
         var that = this;
         return new Promise(function (resolve, reject) {
             that.http.post('/api/saveUserPermissions', obj).subscribe(function (res) {
+                resolve(res);
+            }, function (err) {
+                reject(err);
+            });
+        });
+    };
+    // ==============================================================================
+    // EDIT ENGAGEMENTS FUNCTIONS ==============================================
+    ConnectorService.prototype.getAllEngagements = function (obj) {
+        var that = this;
+        return new Promise(function (resolve, reject) {
+            that.http.post('/api/get_all_engagemets', obj).subscribe(function (res) {
+                resolve(res);
+            }, function (err) {
+                reject(err);
+            });
+        });
+    };
+    ConnectorService.prototype.saveEngagements = function (obj) {
+        var that = this;
+        return new Promise(function (resolve, reject) {
+            that.http.post('/api/saveEngagements', obj).subscribe(function (res) {
                 resolve(res);
             }, function (err) {
                 reject(err);
