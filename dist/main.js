@@ -2872,8 +2872,14 @@ var AdminEditquizComponent = /** @class */ (function () {
     AdminEditquizComponent.prototype.deleteQuiz = function () {
         var _this = this;
         console.log("DELETING QUIZ!!");
-        this._ConnectorService.deleteQuiz(this.topic_id, this.currentUser.email).then(function (res) {
+        var obj = {
+            'questions': lodash_cloneDeep__WEBPACK_IMPORTED_MODULE_6__(this.list_of_questions),
+            'topic_id': this.topic_id
+        };
+        delete obj.questions['new_question'];
+        this._ConnectorService.deleteQuiz(obj, this.currentUser.email).then(function (res) {
             console.log("res =>", res);
+            _this.list_of_questions = {};
             _this.submit_ready = false;
             if (res['status'] == 'success') {
                 _this.submit_status.display = true;
@@ -5445,14 +5451,56 @@ var ConnectorService = /** @class */ (function () {
             });
         });
     };
-    ConnectorService.prototype.deleteQuiz = function (quiz_id, email) {
+    ConnectorService.prototype.deleteQuiz = function (quiz, email) {
+        var that = this;
+        return new Promise(function (resolve, reject) {
+            var obj = {
+                'email': email,
+                'quiz': quiz
+            };
+            that.http.post('/api/deleteQuiz', obj).subscribe(function (res) {
+                resolve(res);
+            }, function (err) {
+                reject(err);
+            });
+        });
+    };
+    ConnectorService.prototype.deleteAnswer = function (quiz_id, email) {
         var that = this;
         return new Promise(function (resolve, reject) {
             var obj = {
                 'email': email,
                 'quiz_id': quiz_id
             };
-            that.http.post('/api/deleteQuiz', obj).subscribe(function (res) {
+            that.http.post('/api/deleteAnswer', obj).subscribe(function (res) {
+                resolve(res);
+            }, function (err) {
+                reject(err);
+            });
+        });
+    };
+    ConnectorService.prototype.deleteQuestion = function (question_id, email) {
+        var that = this;
+        return new Promise(function (resolve, reject) {
+            var obj = {
+                'email': email,
+                'question_id': question_id
+            };
+            that.http.post('/api/deleteQuestion', obj).subscribe(function (res) {
+                resolve(res);
+            }, function (err) {
+                reject(err);
+            });
+        });
+    };
+    ConnectorService.prototype.deleteAnswersByQuestionId = function (question_id, email) {
+        var that = this;
+        return new Promise(function (resolve, reject) {
+            var obj = {
+                'email': email,
+                'question_id': question_id
+            };
+            that.http.post('/api/deleteAnswersByQuestionId', obj).subscribe(function (res) {
                 resolve(res);
             }, function (err) {
                 reject(err);

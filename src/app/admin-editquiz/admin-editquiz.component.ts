@@ -1005,8 +1005,14 @@ export class AdminEditquizComponent implements OnInit {
 
   deleteQuiz() {
     console.log("DELETING QUIZ!!")
-    this._ConnectorService.deleteQuiz(this.topic_id, this.currentUser.email).then(res => {
+    let obj = {
+      'questions': cloneDeep(this.list_of_questions),
+      'topic_id': this.topic_id
+    }
+    delete obj.questions['new_question']
+    this._ConnectorService.deleteQuiz(obj, this.currentUser.email).then(res => {
       console.log("res =>", res)
+      this.list_of_questions = {};
       this.submit_ready = false;
       if (res['status'] == 'success') {
         this.submit_status.display = true;

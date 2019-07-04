@@ -355,12 +355,12 @@ export class ConnectorService {
       );
     })
   }
-  deleteQuiz(quiz_id, email) {
+  deleteQuiz(quiz, email) {
     var that = this;
     return new Promise(function (resolve, reject) {
       let obj = {
         'email': email,
-        'quiz_id': quiz_id
+        'quiz': quiz
       }
       that.http.post('/api/deleteQuiz', obj).subscribe(
         res => {
@@ -372,6 +372,58 @@ export class ConnectorService {
       );
     })
   }
+  deleteAnswer(quiz_id, email) {
+    var that = this;
+    return new Promise(function (resolve, reject) {
+      let obj = {
+        'email': email,
+        'quiz_id': quiz_id
+      }
+      that.http.post('/api/deleteAnswer', obj).subscribe(
+        res => {
+          resolve(res)
+        },
+        err => {
+          reject(err)
+        }
+      );
+    })
+  }
+  deleteQuestion(question_id, email) {
+    var that = this;
+    return new Promise(function (resolve, reject) {
+      let obj = {
+        'email': email,
+        'question_id': question_id
+      }
+      that.http.post('/api/deleteQuestion', obj).subscribe(
+        res => {
+          resolve(res)
+        },
+        err => {
+          reject(err)
+        }
+      );
+    })
+  }
+  deleteAnswersByQuestionId(question_id, email) {
+    var that = this;
+    return new Promise(function (resolve, reject) {
+      let obj = {
+        'email': email,
+        'question_id': question_id
+      }
+      that.http.post('/api/deleteAnswersByQuestionId', obj).subscribe(
+        res => {
+          resolve(res)
+        },
+        err => {
+          reject(err)
+        }
+      );
+    })
+  }
+
 
 
   // ==============================================================================

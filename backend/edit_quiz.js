@@ -691,36 +691,7 @@ function get_topic_info_for_editQuizHome(engagement_id) {
     })
 }
 
-function delete_topic_by_id(topic_id){
-    let functionName = 'delete_topic_by_id';
-    return new Promise(function(resolve, reject) {
-        let query = `UPDATE KA_test_topic 
-        SET hard_delete = 1
-        WHERE topic_id = ${topic_id}`
-        dbQueryMethod.queryRaw(query).then(result => {
-            resolve(result)
-            return result;
-        }).catch(function(error) { reject(error); throw (error); })
-    }).catch(function(error) {
-        log_event('WARNING', error, functionName);
-        throw (error);
-    })
-}
-function delete_answers_by_topic_id(topic_id){
-    // NOT READY
-    let functionName = 'delete_answers_by_topic_id';
-    return new Promise(function(resolve, reject) {
-        let query = ``
-        dbQueryMethod.query(query).then(result => {
-            resolve(result)
-            return result;
-        }).catch(function(error) { reject(error); throw (error); })
-    }).catch(function(error) {
-        log_event('WARNING', error, functionName);
-        reject(error);
-        throw (error);
-    })
-}
+
 
 // interact with KA_bucket table of the database
 
@@ -1867,6 +1838,88 @@ function create_topic_main(object, edit_by, engagement_id) {
     })
 }
 
+//==================================== DELETE FUNCTIONS ================================================
+
+function deleteQuiz(quiz){
+    for(let el in quiz.questions){
+        delete_answers_by_question_id(el)
+        delete_question(el)
+    }
+    delete_topic_by_id(quiz.topic_id)
+    delete_buckets_by_topic_id(quiz.topic_id)
+}
+function delete_topic_by_id(topic_id){
+    let functionName = 'delete_topic_by_id';
+    return new Promise(function(resolve, reject) {
+        let delete_topic_by_id = `DELETE FROM KA_test_topic 
+        WHERE topic_id = ${topic_id}`;
+        let delete_topic_question_connection = `DELETE FROM KA_quiz_questions
+        WHERE quiz_id = ${topic_id}`;
+        
+
+        dbQueryMethod.queryRaw(delete_topic_question_connection).then(result => {
+            dbQueryMethod.queryRaw(delete_topic_by_id).then(result2 =>{
+                resolve(result2)
+                return result2;
+            }).catch(function(error) { reject(error); throw (error); })
+        }).catch(function(error) { reject(error); throw (error); })
+    }).catch(function(error) {
+        log_event('WARNING', error, functionName);
+        throw (error);
+    })
+}
+function delete_answers_by_question_id(question_id){
+    // NOT READY
+    let functionName = 'delete_answers_by_topic_id';
+    return new Promise(function(resolve, reject) {
+        let query = `DELETE FROM KA_answers 
+        WHERE question_id = ${question_id}`;
+        dbQueryMethod.query(query).then(result => {
+            resolve(result)
+            return result;
+        }).catch(function(error) { reject(error); throw (error); })
+    }).catch(function(error) {
+        log_event('WARNING', error, functionName);
+        reject(error);
+        throw (error);
+    })
+}
+function delete_question(question_id){
+    // NOT READY
+    let functionName = 'delete_question';
+    return new Promise(function(resolve, reject) {
+        let query = `DELETE FROM KA_questions 
+        WHERE question_id = ${question_id}`;
+        dbQueryMethod.query(query).then(result => {
+            console.log(`question ${el} is deleted`)
+            resolve(result)
+            return result;
+        }).catch(function(error) { reject(error); throw (error); })
+    }).catch(function(error) {
+        log_event('WARNING', error, functionName);
+        reject(error);
+        throw (error);
+    })
+}
+function delete_buckets_by_topic_id(topic_id){
+    let functionName = 'delete_buckets_by_topic_id';
+    return new Promise(function(resolve, reject) {
+        let query = `DELETE FROM KA_bucket 
+        WHERE quiz_id = ${topic_id}`;
+        dbQueryMethod.query(query).then(result => {
+            console.log(`bucket ${el} is deleted`)
+            resolve(result)
+            return result;
+        }).catch(function(error) { reject(error); throw (error); })
+    }).catch(function(error) {
+        log_event('WARNING', error, functionName);
+        reject(error);
+        throw (error);
+    })
+}
+
+// =====================================================================================================
+
 /*
 update_topic_main(test, 'localtest').then(result => {
   //console.log(result)
@@ -1888,7 +1941,8 @@ module.exports = {
     delete_topic_by_id: delete_topic_by_id,
     get_buckets_by_topic_id: get_buckets_by_topic_id,
     saveOneBucket: saveOneBucket,
-    create_topic_main:create_topic_main
+    create_topic_main:create_topic_main,
+    deleteQuiz: deleteQuiz
 };
 
 /*
