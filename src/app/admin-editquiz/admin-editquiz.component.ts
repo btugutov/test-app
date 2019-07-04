@@ -565,12 +565,24 @@ export class AdminEditquizComponent implements OnInit {
   removeQuestion(id) {
     this.cancelSubmitQuiz()
     console.log("ID =>", id)
-    delete this.list_of_questions[id]
-    if (this.list_of_new_questions[id]) {
-      delete this.list_of_new_questions[id]
-    } else {
-      this.list_of_deleted_questions[id] = true;
-    }
+    this.list_of_questions[id]['question_hard_delete'] = true
+    // delete this.list_of_questions[id]
+    // if (this.list_of_new_questions[id]) {
+    //   delete this.list_of_new_questions[id]
+    // } else {
+    //   this.list_of_deleted_questions[id] = true;
+    // }
+  }
+  restoreQuestion(id){
+    this.cancelSubmitQuiz()
+    console.log("ID =>", id)
+    this.list_of_questions[id]['question_hard_delete'] = false
+    // delete this.list_of_questions[id]
+    // if (this.list_of_new_questions[id]) {
+    //   delete this.list_of_new_questions[id]
+    // } else {
+    //   this.list_of_deleted_questions[id] = true;
+    // }
   }
   removeDragAndDropChoice(id, c_id) { // id = question_id, c_id = choice id
     this.cancelSubmitQuiz()
@@ -700,6 +712,9 @@ export class AdminEditquizComponent implements OnInit {
     let res = {
       'status': "success",
       'body': {}
+    }
+    if(this.list_of_questions[id]['question_soft_delete'] || this.list_of_questions[id]['question_hard_delete']){
+      return res;
     }
     let target = this.list_of_questions[id];
 
@@ -1024,6 +1039,7 @@ export class AdminEditquizComponent implements OnInit {
       }
     })
   }
+
 
 
   checkState() {

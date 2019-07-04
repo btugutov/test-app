@@ -541,7 +541,7 @@ function get_question_by_question_id_for_edit_MSSQL(question_id) {
 function update_question_table_MSSQL(question_id, prompt, question_type_id, display_type_id, question_sort, image, training_module, training_url, soft_delete, point_value, expected_response) {
     let functionName = 'update_question_table_MSSQL';
     if(soft_delete){
-        console.log("REMOVE THIS QUESTION =>",question_id)
+        console.log("DISABLE THIS QUESTION =>",question_id)
     }
     return new Promise(function(resolve, reject) {
         let training_Module_Statement;
@@ -791,7 +791,7 @@ Below are the larger blocks of work that process complex steps that must act in 
 
 function update_KA_answers_from_admin_edit_quiz(answer_id, question_id, correct, answer_sort, answer_prompt, soft_delete, edit_by, bucket_id, bucket_list, bucket_ids) {
     let functionName = 'update_KA_answers_from_admin_edit_quiz';
-    console.log("BEGINNING OF update_KA_answers_from_admin_edit_quiz: bucket_ids =>", bucket_ids)
+    // console.log("BEGINNING OF update_KA_answers_from_admin_edit_quiz: bucket_ids =>", bucket_ids)
     if(soft_delete == true){
         console.log("delete this answer id =>", answer_id)
         return new Promise(function(resolve, reject) {
@@ -1224,6 +1224,8 @@ function update_topic_main_LOOP(obj, i, edit_by, obj_topic_id, bucket_list, buck
             let base64;
             try {
                 //check for add status
+                
+
                 if (typeof obj['new'] !== 'undefined') { // being depricated soon
                     newQuestion = true;
                 } else {
@@ -1288,130 +1290,142 @@ function update_topic_main_LOOP(obj, i, edit_by, obj_topic_id, bucket_list, buck
                 //console.log(tryError)
             }
             try {
-                update_KA_questions_from_admin_edit_quiz(i, obj['prompt'], question_type_id, display_type_id, obj['question_sort'], image, obj['training_module'], obj['training_url'], obj['question_soft_delete'], obj['point_value'], obj['expected_response'], edit_by).then(this_question_id => {
-                    update_KA_images_from_admin_edit_quiz(obj['image'], this_question_id, obj['image_description'], obj['base64'], obj['image'], edit_by).catch(function(error) {
-                        log_event('WARNING', error, functionName);
-                    })
-                    update_KA_quiz_questions_from_admin_edit_quiz(this_question_id, obj_topic_id).catch(function(error) {
-                        log_event('WARNING', error, functionName);
-                    })
-                    try {
-                        //console.log(`Object.keys(obj['answer_prompt']`);
-                        //console.log(`_`);
-                        if (Object.keys(obj['answer_prompt']).length === 0) { // what is this edge case for?
-                            // this happens if the question being added is a user input question.
-                            // it will not have an answer prompt.
-                            //console.log(`(Object.keys(obj['answer_prompt']).length === 0)`)
-                            try {
-                                // end and return complete
-                                // this should be obseleted by removing the need for the query to have an answer promt called "USER INPUT" in it. ADJUST QUERIES 
-                                let this_answer_id = undefined;
-                                let this_correct = 0;
-                                let this_answer_sort = 1;
-                                let this_answer_prompt = 'PLACEHOLDER';
-                                let this_soft_delete = 0;
-                                let this_answer_bucket_id = undefined;
-                                update_KA_answers_from_admin_edit_quiz(this_answer_id, this_question_id, this_correct, this_answer_sort, this_answer_prompt, this_soft_delete, edit_by, this_answer_bucket_id, bucket_list, bucket_ids).then(r3 => {
-                                    resolve('done');
-                                    return 'done;'
-                                }).catch(function(error) {
-                                    reject(error);
-                                    throw (error);
-                                })
-                            } catch (tryError) {
-                                log_event('ERROR', tryError, functionName);
-                                reject(tryError);
-                            }
-                        } else {
-                            // console.log(` >> !(Object.keys(obj['answer_prompt']).length === 0)`)
-                            try {
-                                for (let index in Object.keys(obj['answer_prompt'])) {
-                                    let current_index = Object.keys(obj['answer_prompt'])[index]
-
-                                    let answer_bucket_id;
-                                    let answer_correct;
-                                    let answer_sort;
-                                    let answer_prompt;
-                                    let answer_soft_delete;
-                                    try {
-                                        // make sure this varable is set to SOMETHING
-                                        // likekly not needed once we have the drag and drop working
-                                        if (undefined == obj['answer_bucket_id']) { // not always defined
-                                            answer_bucket_id = null;
-                                        } else {
-                                            if (undefined == obj['answer_bucket_id'][current_index]) {
-                                                answer_bucket_id = null;
-                                            } else {
-                                                console.log("obj['answer_bucket_id'][current_index] =>", obj['answer_bucket_id'][current_index])
-                                                answer_bucket_id = bucket_ids[obj['answer_bucket_id'][current_index]]
-                                                console.log("thereby, answer_bucket_id is => ", answer_bucket_id)
-                                                // let test = String(obj['answer_bucket_id'][current_index]);
-                                                // if (test.includes('new')) {
-                                                //     let bucket_name = bucket_list[obj['answer_bucket_id'][current_index]]
-                                                //     var waitForThisPromise = get_bucket_id_by_name(bucket_name).then(bucket_id_result => {
-                                                //         answer_bucket_id = bucket_id_result[0]['bucket_id'];
-                                                //     })
-                                                // } else {
-                                                //     //console.log('there')
-                                                //     answer_bucket_id = obj['answer_bucket_id'][current_index]
-                                                //     var waitForThisPromise = Promise.resolve('no wait needed');
-                                                // }
-                                            }
-                                        }
-                                        var waitForThisPromise = Promise.resolve('no wait needed');
-                                    } catch (error) { console.log(error) }
-
-                                    // because of callback / Promise hell, i need to put this here to make sure the above promise is complete.
-                                    Promise.all([waitForThisPromise]).then(bucketWait => {
-                                        try {
-                                            // verify that all objects are set, and if not set, set them with something
-
-                                            if (undefined == obj['answer_correct'][current_index]) {
-                                                answer_correct = 0;
-                                            } else {
-                                                answer_correct = obj['answer_correct'][current_index]
-                                            }
-                                            if (undefined == obj['answer_sort'][current_index]) {
-                                                answer_sort = 1;
-                                            } else {
-                                                answer_sort = obj['answer_sort'][current_index]
-                                            }
-                                            if (undefined == obj['answer_prompt'][current_index]) {
-                                                answer_prompt = 'PLACEHOLDER';
-                                            } else {
-                                                answer_prompt = obj['answer_prompt'][current_index]
-                                            }
-                                            if (undefined == obj['answer_soft_delete'][current_index]) {
-                                                answer_soft_delete = 0;
-                                            } else {
-                                                answer_soft_delete = obj['answer_soft_delete'][current_index]
-                                            }
-                                        } catch (error) { console.log(error) }
-                                        update_KA_answers_from_admin_edit_quiz(current_index, this_question_id, answer_correct, answer_sort, answer_prompt, answer_soft_delete, edit_by, answer_bucket_id, bucket_list, bucket_ids).then(r3 => {
-                                            resolve('done');
-                                            return 'done;'
-                                        }).catch(function(error) {
-                                            reject(error);
-                                            throw (error);
-                                        })
+                if(obj['question_hard_delete']){
+                    console.log("====================================THIS QUESTION MUST BE DELETED! =>", i, "====================================")
+                    delete_answers_by_question_id(i);
+                    delete_quiz_question_connection(i);
+                    delete_question(i);
+                    resolve('done');
+                    return 'done';
+                }else{
+                    update_KA_questions_from_admin_edit_quiz(i, obj['prompt'], question_type_id, display_type_id, obj['question_sort'], image, obj['training_module'], obj['training_url'], obj['question_soft_delete'], obj['point_value'], obj['expected_response'], edit_by)
+                    .then(this_question_id => {
+                        update_KA_images_from_admin_edit_quiz(obj['image'], this_question_id, obj['image_description'], obj['base64'], obj['image'], edit_by).catch(function(error) {
+                            log_event('WARNING', error, functionName);
+                        })
+                        update_KA_quiz_questions_from_admin_edit_quiz(this_question_id, obj_topic_id).catch(function(error) {
+                            log_event('WARNING', error, functionName);
+                        })
+                        try {
+                            //console.log(`Object.keys(obj['answer_prompt']`);
+                            //console.log(`_`);
+                            if (Object.keys(obj['answer_prompt']).length === 0) { // what is this edge case for?
+                                // this happens if the question being added is a user input question.
+                                // it will not have an answer prompt.
+                                //console.log(`(Object.keys(obj['answer_prompt']).length === 0)`)
+                                try {
+                                    // end and return complete
+                                    // this should be obseleted by removing the need for the query to have an answer promt called "USER INPUT" in it. ADJUST QUERIES 
+                                    let this_answer_id = undefined;
+                                    let this_correct = 0;
+                                    let this_answer_sort = 1;
+                                    let this_answer_prompt = 'PLACEHOLDER';
+                                    let this_soft_delete = 0;
+                                    let this_answer_bucket_id = undefined;
+                                    update_KA_answers_from_admin_edit_quiz(this_answer_id, this_question_id, this_correct, this_answer_sort, this_answer_prompt, this_soft_delete, edit_by, this_answer_bucket_id, bucket_list, bucket_ids).then(r3 => {
+                                        resolve('done');
+                                        return 'done;'
                                     }).catch(function(error) {
                                         reject(error);
                                         throw (error);
                                     })
+                                } catch (tryError) {
+                                    log_event('ERROR', tryError, functionName);
+                                    reject(tryError);
                                 }
-                            } catch (tryError) {
-                                log_event('ERROR', tryError, functionName);
-                                reject(tryError);
+                            } else {
+                                // console.log(` >> !(Object.keys(obj['answer_prompt']).length === 0)`)
+                                try {
+                                    for (let index in Object.keys(obj['answer_prompt'])) {
+                                        let current_index = Object.keys(obj['answer_prompt'])[index]
+    
+                                        let answer_bucket_id;
+                                        let answer_correct;
+                                        let answer_sort;
+                                        let answer_prompt;
+                                        let answer_soft_delete;
+                                        try {
+                                            // make sure this varable is set to SOMETHING
+                                            // likekly not needed once we have the drag and drop working
+                                            if (undefined == obj['answer_bucket_id']) { // not always defined
+                                                answer_bucket_id = null;
+                                            } else {
+                                                if (undefined == obj['answer_bucket_id'][current_index]) {
+                                                    answer_bucket_id = null;
+                                                } else {
+                                                    console.log("obj['answer_bucket_id'][current_index] =>", obj['answer_bucket_id'][current_index])
+                                                    if(bucket_ids && bucket_ids[obj['answer_bucket_id'][current_index]]){
+                                                        answer_bucket_id = bucket_ids[obj['answer_bucket_id'][current_index]]
+                                                        console.log("thereby, answer_bucket_id is => ", answer_bucket_id)
+                                                    }
+                                                    // let test = String(obj['answer_bucket_id'][current_index]);
+                                                    // if (test.includes('new')) {
+                                                    //     let bucket_name = bucket_list[obj['answer_bucket_id'][current_index]]
+                                                    //     var waitForThisPromise = get_bucket_id_by_name(bucket_name).then(bucket_id_result => {
+                                                    //         answer_bucket_id = bucket_id_result[0]['bucket_id'];
+                                                    //     })
+                                                    // } else {
+                                                    //     //console.log('there')
+                                                    //     answer_bucket_id = obj['answer_bucket_id'][current_index]
+                                                    //     var waitForThisPromise = Promise.resolve('no wait needed');
+                                                    // }
+                                                }
+                                            }
+                                            var waitForThisPromise = Promise.resolve('no wait needed');
+                                        } catch (error) { console.log(error) }
+    
+                                        // because of callback / Promise hell, i need to put this here to make sure the above promise is complete.
+                                        Promise.all([waitForThisPromise]).then(bucketWait => {
+                                            try {
+                                                // verify that all objects are set, and if not set, set them with something
+    
+                                                if (undefined == obj['answer_correct'][current_index]) {
+                                                    answer_correct = 0;
+                                                } else {
+                                                    answer_correct = obj['answer_correct'][current_index]
+                                                }
+                                                if (undefined == obj['answer_sort'][current_index]) {
+                                                    answer_sort = 1;
+                                                } else {
+                                                    answer_sort = obj['answer_sort'][current_index]
+                                                }
+                                                if (undefined == obj['answer_prompt'][current_index]) {
+                                                    answer_prompt = 'PLACEHOLDER';
+                                                } else {
+                                                    answer_prompt = obj['answer_prompt'][current_index]
+                                                }
+                                                if (undefined == obj['answer_soft_delete'][current_index]) {
+                                                    answer_soft_delete = 0;
+                                                } else {
+                                                    answer_soft_delete = obj['answer_soft_delete'][current_index]
+                                                }
+                                            } catch (error) { console.log(error) }
+                                            update_KA_answers_from_admin_edit_quiz(current_index, this_question_id, answer_correct, answer_sort, answer_prompt, answer_soft_delete, edit_by, answer_bucket_id, bucket_list, bucket_ids).then(r3 => {
+                                                resolve('done');
+                                                return 'done;'
+                                            }).catch(function(error) {
+                                                reject(error);
+                                                throw (error);
+                                            })
+                                        }).catch(function(error) {
+                                            reject(error);
+                                            throw (error);
+                                        })
+                                    }
+                                } catch (tryError) {
+                                    log_event('ERROR', tryError, functionName);
+                                    reject(tryError);
+                                }
                             }
+                        } catch (tryError) {
+                            log_event('ERROR', tryError, functionName);
+                            reject(tryError);
                         }
-                    } catch (tryError) {
-                        log_event('ERROR', tryError, functionName);
-                        reject(tryError);
-                    }
-                }).catch(function(error) {
-                    reject(error);
-                    throw (error);
-                })
+                    }).catch(function(error) {
+                        reject(error);
+                        throw (error);
+                    })
+                }
             } catch (tryError) {
                 log_event('ERROR', tryError, functionName);
                 reject(tryError);
@@ -1684,7 +1698,7 @@ function recusive_object_hanlder(this_topic_id, object, current_index, edit_by, 
         for(let question in object.questions){
             // let indexKey = objKeys[i];
             update_topic_main_LOOP(object.questions[question], question, edit_by, this_topic_id, object['bucket_list'], bucket_ids).then(result =>{
-                console.log("RESULT =>", result)
+                // console.log("RESULT =>", result)
             })
             // if(typeof object[indexKey] === 'object' && indexKey != 'bucket_list' && indexKey != 'logEvent' && indexKey != "list_of_deleted_questions"){
             //     console.log("LOOPING! >>>>>> indexKey:", indexKey)
@@ -1875,6 +1889,23 @@ function delete_answers_by_question_id(question_id){
         let query = `DELETE FROM KA_answers 
         WHERE question_id = ${question_id}`;
         dbQueryMethod.query(query).then(result => {
+            resolve(result)
+            return result;
+        }).catch(function(error) { reject(error); throw (error); })
+    }).catch(function(error) {
+        log_event('WARNING', error, functionName);
+        reject(error);
+        throw (error);
+    })
+}
+function delete_quiz_question_connection(question_id){
+    // NOT READY
+    let functionName = 'delete_quiz_question_connection';
+    return new Promise(function(resolve, reject) {
+        let query = `DELETE FROM KA_quiz_questions 
+        WHERE question_id = ${question_id}`;
+        dbQueryMethod.query(query).then(result => {
+            console.log(`question ${el} is deleted`)
             resolve(result)
             return result;
         }).catch(function(error) { reject(error); throw (error); })

@@ -177,7 +177,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor='let q of list_of_questions | keyvalue' class="create_form_row" [ngClass]="{ 'border border-success': q.key == 'new_question' }">
+                <tr *ngFor='let q of list_of_questions | keyvalue' class="create_form_row" [ngClass]="{ 'border border-success': q.key == 'new_question', 'alert-dark': q.value['question_hard_delete'], 'alert-secondary': q.value['question_soft_delete'] }">
                     <!-- QUESTIONS -->
                     <td *ngIf="!q.value['error_bool']" class='text-center table-row'>
                         <p class="text-monospace" [ngClass]="{ 'text-success': q.key == 'new_question' }">{{q.key}}</p>
@@ -233,8 +233,11 @@
                                 [disabled]="q.value.question_soft_delete" type="radio" name="displayTypeNew" 
                                 id="drag_and_drop" value="drag_and_drop">Drag'n'Drop</button>
                         </div>
-                        <div class="btn-group-vertical btn-group-toggle bg-secondary text-white create_form_input_shadow" style="text-align: center;" [hidden]='!q.value.question_soft_delete' role="alert">
+                        <div class="btn-group-vertical btn-group-toggle bg-secondary text-white create_form_input_shadow" style="text-align: center;" [hidden]='!q.value.question_soft_delete || q.value.question_hard_delete' role="alert">
                             Question is disabled
+                        </div>
+                        <div class="btn-group-vertical btn-group-toggle bg-danger text-white create_form_input_shadow" style="text-align: center;" [hidden]='!q.value.question_hard_delete' role="alert">
+                            Question will be deleted
                         </div>
                     </td>
                     <td *ngIf="!q.value['error_bool']">
@@ -460,11 +463,14 @@
                     <!-- ACTION BUTTONS -->
                     <td style='text-align: center' *ngIf="!q.value['error_bool']">
                         <div>
-                            <button class='btn btn-outline-primary btn-action-borderless' disabled style="width: 100%">🔍 Preview</button>
+                            <!-- <button class='btn btn-outline-primary btn-action-borderless' disabled style="width: 100%">🔍 Preview</button> -->
                             <button *ngIf="q.key == 'new_question'" class='btn btn-outline-success btn-action-borderless' (click)="addQuestion()" style="width: 100%">+ Add</button>
-                            <button *ngIf="q.key != 'new_question' && q.value['question_soft_delete'] && !list_of_new_questions[q.key]" class='btn btn-outline-success btn-action-borderless' (click)="enableQuestion(q.key)" style="width: 100%">Enable</button>
-                            <button *ngIf="q.key != 'new_question' && q.value['question_soft_delete'] || list_of_new_questions[q.key]" class='btn btn-danger btn-action-borderless' (click)="removeQuestion(q.key)" style="width: 100%">Remove</button>
+                            <button *ngIf="q.key != 'new_question' && q.value['question_soft_delete'] && !list_of_new_questions[q.key] &&  !q.value['question_hard_delete']" class='btn btn-outline-success btn-action-borderless' (click)="enableQuestion(q.key)" style="width: 100%">Enable</button>
+                            <button *ngIf="q.key != 'new_question' &&  !q.value['question_hard_delete'] && q.value['question_soft_delete'] || list_of_new_questions[q.key]" class='btn btn-danger btn-action-borderless' (click)="removeQuestion(q.key)" style="width: 100%">Remove</button>
                             <button *ngIf="q.key != 'new_question' && !q.value['question_soft_delete'] && !list_of_new_questions[q.key]" class='btn btn-outline-warning btn-action-borderless' (click)="disableQuestion(q.key)" style="width: 100%">Disable</button>
+                           
+                            <button *ngIf="q.key != 'new_question' && q.value['question_hard_delete']" class='btn btn-warning btn-action-borderless' (click)="restoreQuestion(q.key)" style="width: 100%">Restore</button>
+
                         </div>
                     </td>
 
