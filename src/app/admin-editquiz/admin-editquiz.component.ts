@@ -67,7 +67,7 @@ export class AdminEditquizComponent implements OnInit {
     message: '',
     display: false
   }
-
+  answer_delete_confirm_list = {};
   bucket_new = {
     bucket_name: ''
   }
@@ -108,6 +108,7 @@ export class AdminEditquizComponent implements OnInit {
                     }
                     this.list_of_questions[el] = quiz['quiz1'][el];
                   } else if (el == "topic") {
+                    console.log("TOPIC =>", quiz['quiz1'][el])
                     this.selected_topic = quiz['quiz1'][el];
                     this.original_topic = quiz['quiz1'][el];
                   } else if (el == "category") {
@@ -130,6 +131,10 @@ export class AdminEditquizComponent implements OnInit {
                 // this.bucket_list_original =  cloneDeep(switchKey(cloneDeep(res['bucket_list']), 'bucket_id'));
                 this.list_of_questions_bool = true;
                 this.bucket_list_counter_updater();
+                this.selected_topic = cloneDeep(quiz['quiz1']['quiz_name']);
+                this.original_topic = cloneDeep(quiz['quiz1']['quiz_name']);
+                console.log("this.selected_topic =>", this.selected_topic)
+                console.log("this.original_topic =>", this.original_topic)
               } else {
 
               }
@@ -199,6 +204,7 @@ export class AdminEditquizComponent implements OnInit {
     object_to_send['topic_id'] = this.topic_id;
     object_to_send['topic_soft_delete'] = this.topic_soft_delete;
     object_to_send['list_of_deleted_questions'] = this.list_of_deleted_questions;
+    object_to_send['answer_delete_confirm_list'] = this.answer_delete_confirm_list;
     console.log("=======================FETCHING CHANGES=======================")
     console.log(quiz)
     console.log("==============================================================")
@@ -383,26 +389,37 @@ export class AdminEditquizComponent implements OnInit {
     }
     if (target == 'answer') {
       if (q_key == 'answer_soft_delete') {
-        // delete this.list_of_questions[q_id]['answer_prompt'][a_id];
-        // delete this.list_of_questions[q_id]['answer_correct'][a_id];
-        // delete this.list_of_questions[q_id]['answer_soft_delete'][a_id];
-        // delete this.list_of_questions[q_id]['answer_sort'][a_id];
-        console.log("hey")
-        this.list_of_questions[q_id]['answer_soft_delete'][a_id] = value
-        return;
-      }
-      let question_type = this.list_of_questions[q_id]['display_type_description'];
-      if ((question_type == 'Dropdown' || question_type == 'Radio') && q_key == 'answer_correct') {
-        for (let el in this.list_of_questions[q_id]['answer_correct']) {
-          if (el == a_id) {
-            this.list_of_questions[q_id]['answer_correct'][el] = true;
-          } else {
-            this.list_of_questions[q_id]['answer_correct'][el] = false;
-          }
+        if(a_id.includes('new')){
+          delete this.list_of_questions[q_id]['answer_soft_delete'][a_id]
+          delete this.list_of_questions[q_id]['answer_bucket_id'][a_id]
+          delete this.list_of_questions[q_id]['answer_correct'][a_id]
+          delete this.list_of_questions[q_id]['answer_prompt'][a_id]
+          delete this.list_of_questions[q_id]['answer_sort'][a_id]
+
+        }else{
+          this.list_of_questions[q_id]['answer_soft_delete'][a_id] = value
         }
-        return;
+      }else if(q_key == 'answer_hard_delete'){
+        if(!this.list_of_questions[q_id]['answer_hard_delete']){
+          this.list_of_questions[q_id]['answer_hard_delete'] = {};
+        }
+        this.list_of_questions[q_id]['answer_hard_delete'][a_id] = value;
+        this.answer_delete_confirm_list[a_id] = value;
+
+      }else{
+        let question_type = this.list_of_questions[q_id]['display_type_description'];
+        if ((question_type == 'Dropdown' || question_type == 'Radio') && q_key == 'answer_correct') {
+          for (let el in this.list_of_questions[q_id]['answer_correct']) {
+            if (el == a_id) {
+              this.list_of_questions[q_id]['answer_correct'][el] = true;
+            } else {
+              this.list_of_questions[q_id]['answer_correct'][el] = false;
+            }
+          }
+          return;
+        }
+        this.list_of_questions[q_id][q_key][a_id] = value;
       }
-      this.list_of_questions[q_id][q_key][a_id] = value;
     } else if (target == 'img') { // image uploader
       if (value[0].size > 5242880) {
         this.errorHandler(q_id, "image_uploader", "The image is too heavy. Upload limit is 5mb per image.")

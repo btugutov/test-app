@@ -26,7 +26,7 @@ const { stay_awake } = require('../backend/stay_awake.js');
 // edit_submission_status
 const { get_KA_quiz_submission_by_profile_id, get_KA_quiz_submission_all, get_KA_quiz_submission_by_engagement_id, edit_submissions_main } = require('../backend/edit_submission_status.js');
 // object_validation
-const { format_quiz_table, unescapingObj, groupBy, groupByKey, categoriesFixer, switchKey, joinUsersByTopicId, removeSpacesFromStr, gradeValidate, findAnswerID, infoValidate, escapeObject, escapingQuiz, sortOnKeys, topicListNameRemoveSpaces, reAssignSession, questionRenderOderAnswers, filterEngagementsByAvailableQuizzes } = require('../backend/object_validation.js');
+const { format_quiz_table, unescapingObj, groupBy, groupByKey, categoriesFixer, switchKey, joinUsersByTopicId, removeSpacesFromStr, gradeValidate, findAnswerID, infoValidate, escapeObject, escapingQuiz, sortOnKeys, topicListNameRemoveSpaces, reAssignSession, questionRenderOderAnswers, filterEngagementsByAvailableQuizzes, format_quiz_table2 } = require('../backend/object_validation.js');
 // edit_engagement.js
 const { update_engagement_main, get_all_engagemets } = require('../backend/edit_engagement.js');
 let hostname = os.hostname();
@@ -1058,8 +1058,9 @@ module.exports = function (app) {
                     res.locals.quiz = format_quiz_table(result)[0];
                     res.locals.questions = Object.keys(res.locals.quiz);
                     response_message.status = 'success';
-                    response_message.quiz1 = format_quiz_table(result)[0]
-                    response_message.quiz2 = result;
+                    response_message.quiz1 = format_quiz_table2(result);
+                    // response_message.quiz2 = result;
+                    // response_message.quiz3 = format_quiz_table2(result);
                     get_buckets_by_topic_id(req.body['topic_id']).then(buckets =>{
                         response_message.buckets = unescapingObj(buckets) ;
                         res.json(response_message)

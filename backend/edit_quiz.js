@@ -1232,13 +1232,16 @@ function update_topic_main_LOOP(obj, i, edit_by, obj_topic_id, bucket_list, buck
                     newQuestion = false;
                 }
                 //check for delete status
-                if (typeof obj['removeQuestion'] !== 'undefined') { // being depricated soon
-                    removeQuestion = true;
-                    soft_delete = true;
-                } else {
-                    removeQuestion = false;
-                    soft_delete = false
-                }
+                // console.log(`id => ${i}; obj['removeQuestion'] => ${obj['removeQuestion']}; obj['question_soft_delete'] => ${obj['question_soft_delete']}`)
+                // if (typeof obj['removeQuestion'] !== 'undefined') { // being depricated soon
+                //     removeQuestion = true;
+                //     soft_delete = true;
+                // } else {
+                //     removeQuestion = false;
+                //     soft_delete = false
+                // }
+                // if()
+                soft_delete = obj['question_soft_delete'];
                 // manual changes for now. might need to look into how to be smart about getting data
                 // get guestion_type and display_type
 
@@ -1762,6 +1765,7 @@ function update_topic_main(object, edit_by, engagement_id) {
                                 if(wait2){
                                     console.log("WAIT2 => ", wait2)
                                 }
+                                console.log("object['answer_delete_confirm_list'] =>>>>>>>>>>>",object['answer_delete_confirm_list'])
                                 console.log("update_topic_main IS COMPLETED!")
                                 resolve(`${functionName} is complete`);
                                 return 'success'

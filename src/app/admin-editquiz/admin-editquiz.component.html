@@ -177,7 +177,10 @@
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor='let q of list_of_questions | keyvalue' class="create_form_row" [ngClass]="{ 'border border-success': q.key == 'new_question', 'alert-dark': q.value['question_hard_delete'], 'alert-secondary': q.value['question_soft_delete'] }">
+                <tr *ngFor='let q of list_of_questions | keyvalue' class="create_form_row" [ngClass]="{ 
+                    'border border-success': q.key == 'new_question',
+                    'element_hard_deleted': q.value['question_hard_delete'], 
+                    'alert-secondary': q.value['question_soft_delete'] }">
                     <!-- QUESTIONS -->
                     <td *ngIf="!q.value['error_bool']" class='text-center table-row'>
                         <p class="text-monospace" [ngClass]="{ 'text-success': q.key == 'new_question' }">{{q.key}}</p>
@@ -236,7 +239,7 @@
                         <div class="btn-group-vertical btn-group-toggle bg-secondary text-white create_form_input_shadow" style="text-align: center;" [hidden]='!q.value.question_soft_delete || q.value.question_hard_delete' role="alert">
                             Question is disabled
                         </div>
-                        <div class="btn-group-vertical btn-group-toggle bg-danger text-white create_form_input_shadow" style="text-align: center;" [hidden]='!q.value.question_hard_delete' role="alert">
+                        <div class="btn-group-vertical btn-group-toggle bg-danger text-white create_form_input_shadow shadow" style="text-align: center;" [hidden]='!q.value.question_hard_delete' role="alert">
                             Question will be deleted
                         </div>
                     </td>
@@ -258,7 +261,10 @@
 
                         <!-- DRAG AND DROP  -->
                         <div class="input-group mt-2" [hidden]="q.value['question_type_id'] != 3">
-                            <div *ngFor="let ans of q.value['answer_prompt'] | keyvalue" class="input-group mt-1">
+                            <div *ngFor="let ans of q.value['answer_prompt'] | keyvalue" class="input-group mt-1" [ngClass]="{
+                                'alert-secondary': q.value['answer_soft_delete'][ans.key] && !answer_delete_confirm_list[ans.key],
+                                'element_hard_deleted': answer_delete_confirm_list[ans.key]
+                                }">
                                 <input type="text" [disabled]="q.value.question_soft_delete || q.value.answer_soft_delete[ans.key]" (change)="inputEditor('drag_and_drop', q.key, 'answer_prompt', ans.key, $event.target.value)" class="form-control bucket_input_edit bucket_input_edit_question_{{q.key}}" id="bucket_input_edit_{{q.key}}" placeholder='Add a choice' style="padding: 0px;"
                                     value="{{ans.value}}">
                                 <select list="bucket_list" [disabled]="q.value.question_soft_delete || q.value.answer_soft_delete[ans.key]" (change)="inputEditor('drag_and_drop', q.key, 'answer_bucket_id', ans.key, $event.target.value)" class="form-control bucket_list_pick" id="bucket_list_pick_{{q.key}}" placeholder='Bucket' style="padding: 0px;">
@@ -273,8 +279,22 @@
                                                 </ng-container>
                                     </select>
                                 <div class="input-group-append">
-                                    <button type="button" [hidden] = "q.value.answer_soft_delete[ans.key]" [disabled]="q.value.question_soft_delete" class='btn btn-outline-danger' (click)="inputEditor('answer', q.key, 'answer_soft_delete', ans.key, true)">-</button>
-                                    <button type="button" [hidden] = "!q.value.answer_soft_delete[ans.key]" [disabled]="q.value.question_soft_delete" class='btn btn-outline-success' (click)="inputEditor('answer', q.key, 'answer_soft_delete', ans.key, false)">+</button>
+                                        <button [disabled]="q.value.question_soft_delete" class="btn btn-warning"
+                                        (click)="inputEditor('answer', q.key, 'answer_hard_delete', ans.key, false)"
+                                        *ngIf="answer_delete_confirm_list[ans.key] "
+                                        id='buttonRemoveAnswer${i}' type="button">Restore</button>
+                                    <button [disabled]="q.value.question_soft_delete" class="btn btn-danger"
+                                        (click)="inputEditor('answer', q.key, 'answer_hard_delete', ans.key, true)"
+                                        *ngIf="q.value['answer_soft_delete'][ans.key] && !answer_delete_confirm_list[ans.key]"
+                                        id='buttonRemoveAnswer${i}' type="button">Delete</button>
+                                    <button [disabled]="q.value.question_soft_delete" class="btn btn-outline-success buttonRemoveAnswer"
+                                        (click)="inputEditor('answer', q.key, 'answer_soft_delete', ans.key, false)"
+                                        *ngIf="q.value['answer_soft_delete'][ans.key] && !answer_delete_confirm_list[ans.key]"
+                                        id='buttonRemoveAnswer${i}' type="button">+</button>
+                                    <button [disabled]="q.value.question_soft_delete" class="btn btn-outline-warning buttonRemoveAnswer"
+                                        (click)="inputEditor('answer', q.key, 'answer_soft_delete', ans.key, true)"
+                                        *ngIf="!q.value['answer_soft_delete'][ans.key]"
+                                        id='buttonRemoveAnswer${i}' type="button">-</button>
                                 </div>
                             </div>
                             <div class="input-group-prepend">
@@ -309,10 +329,13 @@
                         <!-- {{q.value['display_type_description'] == 'Checkbox'}} {{q.value['question_type_description'] == 'selected input'}} {{ q.value.display_type_id == 1}} -->
                         
                         <div [hidden]="q.value['question_type_id'] != 1 || q.value['display_type_id'] != 2">
-                            <div *ngFor="let ans of q.value['answer_prompt'] | keyvalue">
+                            <div *ngFor="let ans of q.value['answer_prompt'] | keyvalue" [ngClass]="{
+                                'alert-secondary': q.value['answer_soft_delete'][ans.key] && !answer_delete_confirm_list[ans.key],
+                                'element_hard_deleted': answer_delete_confirm_list[ans.key]
+                                }">
                                 <div>
                                     <input [disabled]="q.value.question_soft_delete || q.value.answer_soft_delete[ans.key]" class="answerChoice" style="margin: 5px" (change)="inputEditor('answer', q.key, 'answer_correct', ans.key, !q.value['answer_correct'][ans.key])" [checked]=q.value.answer_correct[ans.key] type="checkbox" id="checkbox_{{ans.key}}" title="Select the right answer. You can chose multiple."/>
-                                    <label for="checkbox_{{ans.key}}" style="margin:0px 0px; width:92%">
+                                    <label for="checkbox_{{ans.key}}" onclick="return false;" style="margin:0px 0px; width:92%">
                                             <div class="input-group mb-1">
                                                 <div class="input-group-prepend" style="width: 15%;">
                                                     <input [disabled]="q.value.question_soft_delete || q.value.answer_soft_delete[ans.key]" type="number"
@@ -328,14 +351,22 @@
                                                     value='{{ans.value}}'
                                                     (change)="inputEditor('answer', q.key, 'answer_prompt', ans.key, $event.target.value)" />
                                                 <div class="input-group-append">
-                                                    <button [disabled]="q.value.question_soft_delete" class="btn btn-outline-danger buttonRemoveAnswer"
-                                                        (click)="inputEditor('answer', q.key, 'answer_soft_delete', ans.key, true)"
-                                                        [hidden]="q.value['answer_soft_delete'][ans.key]"
-                                                        id='buttonRemoveAnswer${i}' type="button">-</button>
+                                                    <button [disabled]="q.value.question_soft_delete" class="btn btn-warning"
+                                                        (click)="inputEditor('answer', q.key, 'answer_hard_delete', ans.key, false)"
+                                                        *ngIf="answer_delete_confirm_list[ans.key] "
+                                                        id='buttonRemoveAnswer${i}' type="button">Restore</button>
+                                                    <button [disabled]="q.value.question_soft_delete" class="btn btn-danger"
+                                                        (click)="inputEditor('answer', q.key, 'answer_hard_delete', ans.key, true)"
+                                                        *ngIf="q.value['answer_soft_delete'][ans.key] && !answer_delete_confirm_list[ans.key]"
+                                                        id='buttonRemoveAnswer${i}' type="button">Delete</button>
                                                     <button [disabled]="q.value.question_soft_delete" class="btn btn-outline-success buttonRemoveAnswer"
                                                         (click)="inputEditor('answer', q.key, 'answer_soft_delete', ans.key, false)"
-                                                        [hidden]="!q.value['answer_soft_delete'][ans.key]"
+                                                        *ngIf="q.value['answer_soft_delete'][ans.key] && !answer_delete_confirm_list[ans.key]"
                                                         id='buttonRemoveAnswer${i}' type="button">+</button>
+                                                    <button [disabled]="q.value.question_soft_delete" class="btn btn-outline-warning buttonRemoveAnswer"
+                                                        (click)="inputEditor('answer', q.key, 'answer_soft_delete', ans.key, true)"
+                                                        *ngIf="!q.value['answer_soft_delete'][ans.key]"
+                                                        id='buttonRemoveAnswer${i}' type="button">-</button>
                                                 </div>
                                             </div>
                                         </label>
@@ -346,7 +377,10 @@
 
                         <!-- DROPDOWN/SELECT -->
                         <div [hidden]="q.value['question_type_id'] != 1 || q.value['display_type_id'] != 3">
-                            <div *ngFor="let ans of q.value['answer_prompt'] | keyvalue" class="custom-radio">
+                            <div *ngFor="let ans of q.value['answer_prompt'] | keyvalue" class="custom-radio" [ngClass]="{
+                                'alert-secondary': q.value['answer_soft_delete'][ans.key] && !answer_delete_confirm_list[ans.key],
+                                'element_hard_deleted': answer_delete_confirm_list[ans.key]
+                                }">
                                 <div>
                                     <input [disabled]="q.value.question_soft_delete || q.value.answer_soft_delete[ans.key]" 
                                             class="answerChoice" 
@@ -357,7 +391,7 @@
                                             id="checkbox_{{ans.key}}" 
                                             title="Select the right answer. You can chose only one answer."
                                             name="radio_answer_for_question_{{q.key}}" />
-                                    <label for="checkbox_{{ans.key}}" style="margin:0px 0px; width:92%">
+                                    <label for="checkbox_{{ans.key}}" onclick="return false;" style="margin:0px 0px; width:92%">
                                             <div class="input-group mb-1">
                                                 <div class="input-group-prepend" style="width: 15%;">
                                                     <input [disabled]="q.value.question_soft_delete || q.value.answer_soft_delete[ans.key]" 
@@ -374,14 +408,22 @@
                                                     value='{{ans.value}}'
                                                     (change)="inputEditor('answer',q.key, 'answer_prompt', ans.key, $event.target.value)" />
                                                 <div class="input-group-append">
-                                                    <button [disabled]="q.value.question_soft_delete" class="btn btn-outline-danger buttonRemoveAnswer"
-                                                        (click)="inputEditor('answer',q.key, 'answer_soft_delete', ans.key, true)"
-                                                        [hidden]="q.value['answer_soft_delete'][ans.key]"
-                                                        id='buttonRemoveAnswer${i}' type="button">-</button>
+                                                        <button [disabled]="q.value.question_soft_delete" class="btn btn-warning"
+                                                        (click)="inputEditor('answer', q.key, 'answer_hard_delete', ans.key, false)"
+                                                        *ngIf="answer_delete_confirm_list[ans.key] "
+                                                        id='buttonRemoveAnswer${i}' type="button">Restore</button>
+                                                    <button [disabled]="q.value.question_soft_delete" class="btn btn-danger"
+                                                        (click)="inputEditor('answer', q.key, 'answer_hard_delete', ans.key, true)"
+                                                        *ngIf="q.value['answer_soft_delete'][ans.key] && !answer_delete_confirm_list[ans.key]"
+                                                        id='buttonRemoveAnswer${i}' type="button">Delete</button>
                                                     <button [disabled]="q.value.question_soft_delete" class="btn btn-outline-success buttonRemoveAnswer"
-                                                        (click)="inputEditor('answer',q.key, 'answer_soft_delete', ans.key, false)"
-                                                        [hidden]="!q.value['answer_soft_delete'][ans.key]"
+                                                        (click)="inputEditor('answer', q.key, 'answer_soft_delete', ans.key, false)"
+                                                        *ngIf="q.value['answer_soft_delete'][ans.key] && !answer_delete_confirm_list[ans.key]"
                                                         id='buttonRemoveAnswer${i}' type="button">+</button>
+                                                    <button [disabled]="q.value.question_soft_delete" class="btn btn-outline-warning buttonRemoveAnswer"
+                                                        (click)="inputEditor('answer', q.key, 'answer_soft_delete', ans.key, true)"
+                                                        *ngIf="!q.value['answer_soft_delete'][ans.key]"
+                                                        id='buttonRemoveAnswer${i}' type="button">-</button>
                                                 </div>
                                             </div>
                                         </label>
@@ -392,11 +434,14 @@
 
                         <!-- RADIO -->
                         <div [hidden]="q.value['question_type_id'] != 1 || q.value['display_type_id'] != 1">
-                            <div *ngFor="let ans of q.value['answer_prompt'] | keyvalue" class="custom-radio">
+                            <div *ngFor="let ans of q.value['answer_prompt'] | keyvalue" class="custom-radio" [ngClass]="{
+                                'alert-secondary': q.value['answer_soft_delete'][ans.key] && !answer_delete_confirm_list[ans.key],
+                                'element_hard_deleted': answer_delete_confirm_list[ans.key]
+                                }">
                                 <div>
                                     <input [disabled]="q.value.question_soft_delete || q.value.answer_soft_delete[ans.key]" class="answerChoice" style="margin: 5px" (change)="inputEditor('answer',q.key, 'answer_correct', ans.key, !q.value['answer_correct'][ans.key])" [checked]=q.value.answer_correct[ans.key] type="radio" id="checkbox_{{ans.key}}" title="Select the right answer. You can chose only one answer."
                                         name="radio_answer_for_question_{{q.key}}" />
-                                    <label for="checkbox_{{ans.key}}" style="margin:0px 0px; width:92%">
+                                    <label for="checkbox_{{ans.key}}" onclick="return false;" style="margin:0px 0px; width:92%">
                                             <div class="input-group mb-1">
                                                 <div class="input-group-prepend" style="width: 15%;">
                                                     <input [disabled]="q.value.question_soft_delete || q.value.answer_soft_delete[ans.key]" type="number"
@@ -412,14 +457,22 @@
                                                     value='{{ans.value}}'
                                                     (change)="inputEditor('answer',q.key, 'answer_prompt', ans.key, $event.target.value)" />
                                                 <div class="input-group-append">
-                                                    <button [disabled]="q.value.question_soft_delete" class="btn btn-outline-danger buttonRemoveAnswer"
-                                                        (click)="inputEditor('answer',q.key, 'answer_soft_delete', ans.key, true)"
-                                                        [hidden]="q.value['answer_soft_delete'][ans.key]"
-                                                        id='buttonRemoveAnswer${i}' type="button">-</button>
+                                                        <button [disabled]="q.value.question_soft_delete" class="btn btn-warning"
+                                                        (click)="inputEditor('answer', q.key, 'answer_hard_delete', ans.key, false)"
+                                                        *ngIf="answer_delete_confirm_list[ans.key] "
+                                                        id='buttonRemoveAnswer${i}' type="button">Restore</button>
+                                                    <button [disabled]="q.value.question_soft_delete" class="btn btn-danger"
+                                                        (click)="inputEditor('answer', q.key, 'answer_hard_delete', ans.key, true)"
+                                                        *ngIf="q.value['answer_soft_delete'][ans.key] && !answer_delete_confirm_list[ans.key]"
+                                                        id='buttonRemoveAnswer${i}' type="button">Delete</button>
                                                     <button [disabled]="q.value.question_soft_delete" class="btn btn-outline-success buttonRemoveAnswer"
-                                                        (click)="inputEditor('answer',q.key, 'answer_soft_delete', ans.key, false)"
-                                                        [hidden]="!q.value['answer_soft_delete'][ans.key]"
+                                                        (click)="inputEditor('answer', q.key, 'answer_soft_delete', ans.key, false)"
+                                                        *ngIf="q.value['answer_soft_delete'][ans.key] && !answer_delete_confirm_list[ans.key]"
                                                         id='buttonRemoveAnswer${i}' type="button">+</button>
+                                                    <button [disabled]="q.value.question_soft_delete" class="btn btn-outline-warning buttonRemoveAnswer"
+                                                        (click)="inputEditor('answer', q.key, 'answer_soft_delete', ans.key, true)"
+                                                        *ngIf="!q.value['answer_soft_delete'][ans.key]"
+                                                        id='buttonRemoveAnswer${i}' type="button">-</button>
                                                 </div>
                                             </div>
                                         </label>

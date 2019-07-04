@@ -76,6 +76,11 @@ function format_quiz_table(object) {
                     if (!questions.hasOwnProperty(currentQuestion)) {
                         try {
                             //debugLog('here');
+
+                            // console.log(" currentAns =>", currentAns)
+                            if(currentAns == null){
+                                continue
+                            }
                             dupes[currentAns] = currentPrompt;
                             //debugLog("here")
                             //console.log(currentCorrect)
@@ -113,6 +118,8 @@ function format_quiz_table(object) {
                         // this array of objects will be the first index following the question_id key
                         try {
                             answers.push(dupes);
+                            // console.log(" currentAns =>", currentAns)
+                            
                             // console.log('======================DUPES!!!============================', currentQuestion)
                             // console.log(dupes, 'compare to', )
                             // console.log(answersMap[currentQuestion])
@@ -175,6 +182,75 @@ function format_quiz_table(object) {
         log_event('ERROR', tryError, functionName);
         throw tryError;
     }
+}
+function format_quiz_table2(object){
+    let functionName = 'format_quiz_table2'; 
+    let res = {
+    };
+    for(let el in object){
+        let target = object[el];
+        if(!res['quiz_id']){
+            res['quiz_id'] = object[el]['quiz_id']
+        }
+        if(!res['topic_id']){
+            res['topic_id'] = object[el]['topic_id']
+        }
+        if(!res['quiz_name']){
+            res['quiz_name'] = unescape(object[el]['quiz_name'])
+        }
+        if(!res['topic_soft_delete']){
+            res['topic_soft_delete'] = object[el]['topic_soft_delete']
+        }
+        if(!res['category']){
+            res['category'] = unescape(object[el]['category'])
+        }
+        if(!res['engagement_id']){
+            res['engagement_id'] = object[el]['engagement_id']
+        }
+        if(!res['engagement_name']){
+            res['engagement_name'] = unescape(object[el]['engagement_name'])
+        }
+        if(!res['question_sort']){
+            res['question_sort'] = object[el]['question_sort']
+        }
+
+        if(!res[target.question_id]){
+            res[target.question_id] = {
+                answer_bucket_id: {},
+                answer_correct: {},
+                answer_prompt: {},
+                answer_soft_delete: {},
+                answer_sort: {},
+                base64: unescape(target.base64),
+                category: unescape(target.category),
+                display_type_description: unescape(target.display_type_description),
+                display_type_id: target.display_type_id,
+                expected_response: unescape(target.expected_response),
+                image: target.image,
+                point_value: target.point_value,
+                prompt: unescape(target.prompt),
+                question_soft_delete: target.question_soft_delete,
+                question_sort: target.question_sort,
+                question_type_description: unescape(target.question_type_description),
+                question_type_id: target.question_type_id,
+                quiz_id: target.quiz_id,
+                quiz_name: unescape(target.quiz_name),
+                topic:  unescape(target.topic),
+                topic_id: target.topic_id,
+                training_module: unescape(target.training_module),
+                training_url: unescape(target.training_url),
+            }
+        }
+        if( target.answer_id){
+            res[target.question_id]['answer_bucket_id'][target.answer_id] = target.bucket_id;
+            res[target.question_id]['answer_correct'][target.answer_id] = target.correct;
+            res[target.question_id]['answer_prompt'][target.answer_id] = unescape(target.answer_prompt);
+            res[target.question_id]['answer_soft_delete'][target.answer_id] = target.answer_soft_delete;
+            res[target.question_id]['answer_sort'][target.answer_id] = target.answer_sort;
+        }
+
+    }
+    return res
 }
 
 function building_dont_use(object) {
@@ -752,7 +828,8 @@ module.exports = {
     topicListNameRemoveSpaces: topicListNameRemoveSpaces,
     questionRenderOderAnswers: questionRenderOderAnswers,
     reAssignSession: reAssignSession,
-    filterEngagementsByAvailableQuizzes: filterEngagementsByAvailableQuizzes
+    filterEngagementsByAvailableQuizzes: filterEngagementsByAvailableQuizzes,
+    format_quiz_table2: format_quiz_table2
 };
 
 

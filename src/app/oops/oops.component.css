@@ -1,0 +1,73 @@
+
+.footer__btn {
+    color: #343945;
+    float: left;
+    font-size: 15px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: antialiased;
+    line-height: 35px;
+    margin-top: 20px;
+    position: relative;
+    text-align: center;
+}
+.footer__btn>span {
+    color: #fff;
+    cursor: pointer;
+    pointer-events: none;
+    position: relative;
+    transition: color .6s ease;
+    z-index: 5;
+}
+.footer__btn-line {
+    bottom: -5px;
+    cursor: pointer;
+    height: 1px;
+    left: 0;
+    pointer-events: none;
+    position: absolute;
+    transition: -webkit-transform .5s cubic-bezier(.215,.61,.355,1);
+    transition: transform .5s cubic-bezier(.215,.61,.355,1);
+    transition: transform .5s cubic-bezier(.215,.61,.355,1),-webkit-transform .5s cubic-bezier(.215,.61,.355,1);
+    width: 100%;
+}
+.footer__btn-line-inner {
+    background-color: #fff;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    -webkit-transform-origin: bottom center;
+    transform-origin: bottom center;
+    transition: -webkit-transform .7s cubic-bezier(.86,0,.07,1);
+    transition: transform .7s cubic-bezier(.86,0,.07,1);
+    transition: transform .7s cubic-bezier(.86,0,.07,1),-webkit-transform .7s cubic-bezier(.86,0,.07,1);
+    width: 100%;
+}
+.footer__btn:after {
+    background-color: #000;
+    bottom: -5px;
+    content: "";
+    height: 160%;
+    left: 0;
+    position: absolute;
+    -webkit-transform: scaleX(1.25) scaleY(0);
+    transform: scaleX(1.25) scaleY(0);
+    -webkit-transform-origin: center bottom;
+    transform-origin: center bottom;
+    transition: -webkit-transform .7s cubic-bezier(.86,0,.07,1);
+    transition: transform .7s cubic-bezier(.86,0,.07,1);
+    transition: transform .7s cubic-bezier(.86,0,.07,1),-webkit-transform .7s cubic-bezier(.86,0,.07,1);
+    width: 100%;
+}
+.footer__btn:hover .footer__btn-line-inner, .footer__btn[data-trigger-animation=true] .footer__btn-line-inner {
+    -webkit-transform: scaleY(48);
+    transform: scaleY(48);
+    color:#000;
+}
+.footer__btn:hover .footer__btn-line, .footer__btn[data-trigger-animation=true] .footer__btn-line {
+    -webkit-transform: scaleX(1.4);
+    transform: scaleX(1.4);
+}
+.footer__btn:hover>span, .footer__btn[data-trigger-animation=true]>span {
+    color: #000;
+}
