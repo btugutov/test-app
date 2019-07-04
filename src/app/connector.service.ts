@@ -327,6 +327,7 @@ export class ConnectorService {
         'email': email,
         'topic_id': topic_id
       }
+      // console.log("getQuizByTopicIdForEdit")
       that.http.post('/api/getQuizByTopicIdForEdit', obj).subscribe(
         res => {
           resolve(res)
@@ -466,7 +467,7 @@ export class ConnectorService {
     })
   }
   // ==============================================================================
-  // EDIT ENGAGEMENTS FUNCTIONS ==============================================
+  // EDIT ENGAGEMENTS FUNCTIONS ===================================================
   getAllEngagements(obj){
     var that = this;
     return new Promise(function (resolve, reject) {
@@ -477,9 +478,9 @@ export class ConnectorService {
         err => {
           reject(err)
         }
-      );
-    })
-  }
+        );
+      })
+    }
   saveEngagements(obj){
     var that = this;
     return new Promise(function (resolve, reject) {
@@ -490,12 +491,44 @@ export class ConnectorService {
         err => {
           reject(err)
         }
-      );
-    })
+        );
+      })
   }
+  // ==============================================================================
+      
+  // EDIT ENGAGEMENTS FUNCTIONS ===================================================
+  saveBuckets(obj){
+    var that = this;
+    return new Promise(function (resolve, reject) {
+      that.http.post('/api/saveBuckets', obj).subscribe(
+        res => {
+          resolve(res)
+        },
+        err => {
+          reject(err)
+        }
+        );
+      })
+  }
+  saveOneBucket(obj){
+    var that = this;
+    return new Promise(function (resolve, reject) {
+      that.http.post('/api/saveOneBucket', obj).subscribe(
+        res => {
+          resolve(res)
+        },
+        err => {
+          reject(err)
+        }
+        );
+      })
+  }
+
   // ==============================================================================
 
   // MISC FUNCTIONS
+
+
   objToToArray(obj) { // object has to be a list
     let result = [];
     for (let el in obj) {

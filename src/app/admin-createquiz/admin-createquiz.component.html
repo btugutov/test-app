@@ -2,79 +2,96 @@
     <div [hidden]="!modal_mesage_bool" class="modal_message_box">
         <div class="modal-dialog modal-dialog-centered modal_message" role="document">
             <!-- EDIT/REMOVE BUCKET LIST -->
-            <div class="modal-content " *ngIf="modal_message.title == 'Edit/Remove Buckets'">
-                <div>
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalCenteredLabel">{{modal_message.title}}</h5>
-                        <button type="button" class="close" (click)="bucketListEditorClose()" data-dismiss="modal" aria-label="Close">
-                              <span aria-hidden="true">&times;</span>
-                            </button>
-                    </div>
-                    <div class="modal-body modal-edit-remove-bucket">
-                        <table [hidden]="bucket_list_confirm_bool" class="table table-borderless table-sm">
+            <div class="modal-content shadow-lg" *ngIf="modal_message.title == 'Bucket editor'">
+                    <div>
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalCenteredLabel">{{modal_message.title}}</h5>
+                            <button type="button" class="close" (click)="bucketListEditorClose()" data-dismiss="modal" aria-label="Close">
+                                  <span aria-hidden="true">&times;</span>
+                                </button>
+                        </div>
+                        <div class="modal-body modal-edit-remove-bucket" style="padding: 0px 1rem">
+                            <table [hidden]="bucket_list_confirm_bool" class="table table-borderless table-sm">
                                 <thead class="thead-light">
-                                    <tr>
-                                        <th>ID</th>
+                                    <tr >
+                                        <th class="text-center">ID</th>
                                         <th>Bucket Title</th>
-                                        <th>Action</th>
+                                        <th class="text-center">Delete</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr *ngFor="let b of bucket_list; index as i">
-                                        <th *ngIf="!b.soft_delete" scope="row">{{b.bucket_id}}</th>
-                                        <td *ngIf="!b.soft_delete">
-                                            <input type="text" class="form-control openBucketListSettings_inputs" (change)="bucketListEditor(i, 'bucket_name', $event.target.value)" value={{b.bucket_name}}>
+                                    <tr *ngFor="let b of bucket_list | keyvalue" [ngClass]="{
+                                        'alert-danger': b.value.soft_delete
+                                    }">
+                                        <th class="text-monospace" scope="row">{{b.value.bucket_id}}</th>
+                                        <td>
+                                            <input type="text"  [disabled]="b.value.soft_delete" class="form-control openBucketListSettings_inputs create_form_input_shadow"
+                                                (change)="bucketListEditor( b.key,  'bucket_name',$event.target.value)" value={{b.value.bucket_name}}>
                                         </td>
-                                        <td *ngIf="!b.soft_delete">
-                                            <button *ngIf="!b.soft_delete" (click)="bucketListEditor(i, 'soft_delete', true)" class='btn btn-outline-danger btn-action-borderless'>Disable</button>
+                                        <td class="text-center" [hidden]="bucket_list_counter[b.key]">
+                                            <button (click)="bucketListEditor(b.key, 'soft_delete', true)"
+                                                class='btn btn-outline-danger btn-action-borderless' *ngIf="!b.value.soft_delete" style="width: 100%">Delete</button>
                                         </td>
+                                        <td class="text-center alert-warning" [hidden]="!bucket_list_counter[b.key]">
+                                            <p *ngIf="bucket_list_counter[b.key]"  style="font-size: 12px; margin-bottom: 0px">{{bucket_list_counter[b.key]}} answer(s) </p>
+                                            <p *ngIf="bucket_list_counter[b.key]" style="font-size: 12px;margin-bottom: 0px">are using this bucket</p>
+                                        </td>
+                                        <!-- <td *ngIf="b.value.soft_delete" class="table-secondary">
+                                            <input type="text" disabled class="form-control openBucketListSettings_inputs"
+                                                (change)="bucketListEditor(i, 'bucket_name', $event.target.value)" value={{b.value.bucket_name}}>
+                                        </td>
+                                        <td *ngIf="b.value.soft_delete" class="table-secondary">
+                                            <button *ngIf="b.value.soft_delete" (click)="bucketListEditor(i, 'soft_delete', false)"
+                                                class='btn btn-outline-success btn-action-borderless'>Enable</button>
+                                        </td> -->
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div style="width: 100%" [hidden]="bucket_list_confirm_bool">
+                                <div class="input-group shadow">
+                                    <input type="text" class="form-control create_form_input_shadow openBucketListSettings_inputs" id="updatable_bucket_list_newBucket"
+                                        placeholder="Add a new bucket" value={{bucket_new.bucket_name}} (change)="bucket_new.bucket_name = $event.target.value">
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-success btn-action-borderless" id="updatable_bucket_list_add" (click)="addNewBucket()">Add</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <table [hidden]="!bucket_list_confirm_bool" class="table table-borderless table-sm ">
+                                    <thead class="thead-light">
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Bucket Name</th>
+                                            <th>Bucket change</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let b of bucket_list_confirm_list | keyvalue">
+                                            <th  scope="row">{{b.key}}</th>
+                                            <td>{{b.value['bucket_name']}}</td>
+                                            <td>
+                                                <p *ngIf="b.value['New Bucket name']">New name: <span class="text-success" >{{b.value['New Bucket name']}}</span></p>
+                                                <p *ngIf="b.value['status']">Now is 
+                                                    <span *ngIf="!b.value['soft_delete']" class="text-success">{{b.value['status']}}</span>
+                                                    <span *ngIf="b.value['soft_delete']" class="text-danger">{{b.value['status']}}</span>
+                                                </p>
+                                            </td>
+                                            <td>
+                                                <button  (click)="bucketUndoOne(b.key, b.value['index'])" class='btn btn-outline-warning btn-action-borderless'>Undo</button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                            </table>
     
-                                        <th *ngIf="b.soft_delete" class="table-secondary" scope="row">{{b.bucket_id}}</th>
-                                        <td *ngIf="b.soft_delete" class="table-secondary">
-                                            <input type="text" disabled class="form-control openBucketListSettings_inputs" (change)="bucketListEditor(i, 'bucket_name', $event.target.value)" value={{b.bucket_name}}>
-                                        </td>
-                                        <td *ngIf="b.soft_delete" class="table-secondary">
-                                            <button *ngIf="b.soft_delete" (click)="bucketListEditor(i, 'soft_delete', false)" class='btn btn-outline-success btn-action-borderless'>Enable</button>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                        </table>
-                        <table [hidden]="!bucket_list_confirm_bool" class="table table-borderless table-sm ">
-                                <thead class="thead-light">
-                                    <tr>
-                                        <th>ID</th>
-                                        <th>Bucket Name</th>
-                                        <th>Bucket change</th>
-                                        <th>Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr *ngFor="let b of bucket_list_confirm_list | keyvalue">
-                                        <th  scope="row">{{b.key}}</th>
-                                        <td>{{b.value['bucket_name']}}</td>
-                                        <td>
-                                            <p *ngIf="b.value['New Bucket name']">New name: <span class="text-success" >{{b.value['New Bucket name']}}</span></p>
-                                            <p *ngIf="b.value['status']">Now is 
-                                                <span *ngIf="!b.value['soft_delete']" class="text-success">{{b.value['status']}}</span>
-                                                <span *ngIf="b.value['soft_delete']" class="text-danger">{{b.value['status']}}</span>
-                                            </p>
-                                        </td>
-                                        <td>
-                                            <button  (click)="bucketUndoOne(b.key, b.value['index'])" class='btn btn-outline-warning btn-action-borderless'>Undo</button>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                        </table>
-
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" *ngIf="bucket_list_changes_bool" class="btn btn-action-borderless btn-outline-danger" (click)="bucketListEditorCancel()" data-dismiss="modal">Cancel changes</button>
-                        <button type="button" *ngIf="!bucket_list_changes_bool" class="btn btn-action-borderless btn-outline-info" (click)="bucketListEditorClose()" data-dismiss="modal">Close</button>
-                        <button type="button" [hidden]="bucket_list_confirm_bool" class="btn btn-action-borderless btn-outline-warning" (click)="bucketListEditorConfirm()">Confirm</button>
-                        <button type="button" [hidden]="!bucket_list_confirm_bool" class="btn btn-action-borderless btn-outline-success" (click)="bucketListEditorSave()">Save</button>
+                        </div>
+                        <div class="modal-footer">
+                            <!-- <button type="button" *ngIf="bucket_list_changes_bool" class="btn btn-action-borderless btn-outline-danger" (click)="bucketListEditorCancel()" data-dismiss="modal">Cancel changes</button> -->
+                            <button type="button" class="btn btn-action-borderless btn-outline-info" (click)="bucketListEditorClose()" data-dismiss="modal">Close</button>
+                            <!-- <button type="button" [hidden]="bucket_list_confirm_bool" class="btn btn-action-borderless btn-outline-warning" (click)="bucketListEditorConfirm()">Confirm</button> -->
+                            <!-- <button type="button" [disabled]="!bucket_list_changes_bool" class="btn btn-action-borderless btn-outline-success" (click)="bucketListEditorSave()">Save</button> -->
+                        </div>
                     </div>
                 </div>
-            </div>
         </div>
     </div>
 
@@ -112,6 +129,7 @@
                 </div>
             </div>
         </div>
+        
         <div *ngIf="topic_cat_eng_message.display" style="margin-top: 15px">
             <div *ngIf="topic_cat_eng_message.status == 'fail'" class="alert alert-warning shadow" role="alert">
                 <strong>Warning!</strong> {{topic_cat_eng_message.message}}
@@ -120,6 +138,10 @@
                 <strong>Nice!</strong> {{topic_cat_eng_message.message}}
             </div>
         </div>
+        <div style="margin-top: 15px">
+                <button class="btn btn-lg shadow" (click)="checkState()">Check State</button>
+                <button class="btn btn-lg btn-action-borderless btn-info bp-secondary shadow" (click)="openBucketEditor()">Add/Edit Buckets</button>
+             </div>
     </div>
 
     <div class='admin-create-quiz-form' style="margin-top: 25px;">
@@ -164,24 +186,37 @@
                         </div>
                     </td>
                     <td *ngIf="!q.value['error_bool']">
-                        <div class="btn-group-vertical btn-group-toggle" data-toggle="buttons">
-                            <label class="btn btn-sm btn-action-borderless btn-outline-secondary" [ngClass]="{ 'active': q.value.display_type_description == 'Manual input' }" (click)="displayTypeChanger(q.key, 'textfield input')">
-                                    <input type="radio" name="displayTypeNew" id="manual_input" value="textfield input" checked="checked"/> Manual Input
-                                </label>
-                            <label class="btn btn-sm btn-action-borderless btn-outline-secondary" [ngClass]="{ 'active': q.value.display_type_description == 'Radio' }"  (click)="displayTypeChanger(q.key, 'Radio')">
-                                    <input type="radio" name="displayTypeNew " id="radio " value="Radio" /> Radio
-                                </label>
-                            <label class="btn btn-sm btn-action-borderless btn-outline-secondary " [ngClass]="{ 'active': q.value.display_type_description == 'Dropdown' }"  (click)="displayTypeChanger( q.key, 'Dropdown')">
-                                    <input type="radio" name="displayTypeNew" id="dropdown" value="Dropdown"> Dropdown
-                                </label>
-                            <label class="btn btn-sm btn-action-borderless btn-outline-secondary" [ngClass]="{ 'active': q.value.display_type_description == 'Checkbox' }"  (click)="displayTypeChanger(q.key, 'Checkbox')">
-                                    <input type="radio" name="displayTypeNew " id="checkbox " value="Checkbox "> Checkbox
-                                </label>
-                            <label class="btn btn-sm btn-action-borderless btn-outline-secondary " [ngClass]="{ 'active': q.value.display_type_description == 'drag_and_drop' }"  (click)="displayTypeChanger( q.key, 'drag_and_drop')">
-                                    <input type="radio" name="displayTypeNew" id="drag_and_drop" value="drag_and_drop">
-                                    Drag'n'Drop
-                                </label>
-                        </div>
+                            <div class="btn-group-vertical btn-group-toggle" data-toggle="buttons">
+                                    <button class="btn btn-sm btn-action-borderless btn-outline-secondary" 
+                                        [ngClass]="{ 'active': q.value.question_type_id == 2 }"
+                                        (click)="displayTypeChanger(q.key, 'textfield input')" 
+                                        [disabled]="q.value.question_soft_delete" type="radio"  name="displayTypeNew" 
+                                        id="manual_input" value="textfield input" checked="checked"> Manual Input</button>
+        
+                                    <button class="btn btn-sm btn-action-borderless btn-outline-secondary" 
+                                        [ngClass]="{ 'active': q.value.display_type_id == 1 && q.value.question_type_id == 1 }" 
+                                        (click)="displayTypeChanger(q.key, 'Radio')" 
+                                        [disabled]="q.value.question_soft_delete"
+                                        type="radio"  name="displayTypeNew"
+                                        id="radio " value="Radio"> Radio</button>
+                                        
+                                    <button class="btn btn-sm btn-action-borderless btn-outline-secondary "
+                                        [disabled]="q.value.question_soft_delete"
+                                        [ngClass]="{ 'active': q.value.display_type_id == 3 && q.value.question_type_id == 1 }" 
+                                        (click)="displayTypeChanger( q.key, 'Dropdown')" type="radio" name="displayTypeNew" 
+                                        id="dropdown" value="Dropdown"> Dropdown</button>
+        
+                                    <button  class="btn btn-sm btn-action-borderless btn-outline-secondary"
+                                        [ngClass]="{ 'active': q.value.display_type_id == 2 && q.value.question_type_id == 1 }"
+                                        (click)="displayTypeChanger(q.key, 'Checkbox')"
+                                        [disabled]="q.value.question_soft_delete" type="radio" name="displayTypeNew " 
+                                        id="checkbox " value="Checkbox "> Checkbox</button>
+                                    <button class="btn btn-sm btn-action-borderless btn-outline-secondary "
+                                        [ngClass]="{ 'active': q.value.question_type_id == 3  }"
+                                        (click)="displayTypeChanger( q.key, 'drag_and_drop')"
+                                        [disabled]="q.value.question_soft_delete" type="radio" name="displayTypeNew" 
+                                        id="drag_and_drop" value="drag_and_drop">Drag'n'Drop</button>
+                                </div>
                     </td>
                     <td *ngIf="!q.value['error_bool']">
                         <!-- NOT SELECTED -->
@@ -191,25 +226,25 @@
 
 
                         <!-- MANUAL INPUT -->
-                        <div style="padding: 0px 3px !important;" [hidden]="q.value['question_type_description'] != 'textfield input'">
+                        <div style="padding: 0px 3px !important;" [hidden]="q.value['question_type_id'] != 2">
                             <textarea (change)="inputEditor('expected_response', q.key, 'expected_response', null, $event.target.value)" class='textAreaExpectedAnswer form-control create_form_input_shadow' rows=4 placeholder="Expected answer (optional)" value="{{q.value['expected_response']}}"></textarea>
                         </div>
 
 
                         <!-- DRAG AND DROP  -->
-                        <div class="input-group mt-2" *ngIf="q.value['question_type_description'] == 'drag_and_drop'">
+                        <div class="input-group mt-2" [hidden]="q.value['question_type_id'] != 3">
                             <div *ngFor="let ans of q.value['answer_prompt'] | keyvalue" class="input-group mt-1">
                                 <input type="text" (change)="inputEditor('drag_and_drop', q.key, 'answer_prompt', ans.key, $event.target.value)" class="form-control bucket_input_edit bucket_input_edit_question_{{q.key}}" id="bucket_input_edit_{{q.key}}" placeholder='Add a choice' style="padding: 0px;"
                                     value="{{ans.value}}">
                                 <select list="bucket_list" (change)="inputEditor('drag_and_drop', q.key, 'answer_bucket_id', ans.key, $event.target.value)" class="form-control bucket_list_pick" id="bucket_list_pick_{{q.key}}" placeholder='Bucket' style="padding: 0px;">
-                                        <option type='button' class="bucket_list_settings" value="add_edit">Add/Edit</option>
+                                        <!-- <option type='button' class="bucket_list_settings" value="add_edit">Add/Edit</option> -->
                                         <option disabled style="margin-top:8px; border-top:1px solid #666; padding:0;">
                                             ____________</option>
                                         <!-- <option *ngFor="let b of bucket_list" value="{{b.bucket_id}}"
                                             [selected]="q['answer_bucket_id'][ans.key] == b.bucket_id">
                                             {{b.bucket_name}}</option> -->
-                                            <ng-container *ngFor="let b of bucket_list">
-                                                    <option *ngIf="!b.soft_delete" [selected]="q.value['answer_bucket_id'][ans.key] == b.bucket_id" value="{{b.bucket_id}}">{{b.bucket_name}}</option>
+                                            <ng-container *ngFor="let b of bucket_list | keyvalue">
+                                                    <option [selected]="q.value['answer_bucket_id'][ans.key] == b.value.bucket_id" value="{{b.value.bucket_id}}">{{b.value.bucket_name}}</option>
                                                 </ng-container>
                                     </select>
                                 <div class="input-group-append">
@@ -222,17 +257,17 @@
                             <input type="text" (change)="inputEditor('drag_and_drop', q.key, 'temp_bucket_storage', 'answer_input', $event.target.value)" class="form-control bucket_input_add" id="bucket_input_add_input_{{q.key}}" placeholder='Add a choice' style="padding: 0px;">
                             <select *ngIf="bucketList_reloader[q.key]" list="bucket_list" type="text" (change)="inputEditor('drag_and_drop', q.key, 'temp_bucket_storage', 'bucket_id', $event.target.value)" class="form-control bucket_list_pick" id="bucket_list_pick_{{q.key}}" placeholder='Bucket' style="padding: 0px;">
                                     <option value="" selected disabled class="text-muted">Choose bucket</option>
-                                    <option type='button' class="bucket_list_settings" value="add_edit">Add/Edit </option>
+                                    <!-- <option type='button' class="bucket_list_settings" value="add_edit">Add/Edit </option> -->
                                     <option disabled style="margin-top:8px; border-top:1px solid #666; padding:0;">____________</option>
-                                    <ng-container *ngFor="let b of bucket_list">
-                                        <option *ngIf="!b.soft_delete" value="{{b.bucket_id}}">{{b.bucket_name}}</option>
+                                    <ng-container *ngFor="let b of bucket_list | keyvalue">
+                                        <option *ngIf="!b.value.soft_delete" value="{{b.value.bucket_id}}">{{b.value.bucket_name}}</option>
                                     </ng-container>
                                 </select>
                         </div>
 
 
                         <!-- CHECKBOX  -->
-                        <div *ngIf="q.value['display_type_description'] == 'Checkbox' && q.value['question_type_description'] = 'selected input'">
+                        <div [hidden]="q.value['question_type_id'] != 1 || q.value['display_type_id'] != 2">
                             <div *ngFor="let ans of q.value['answer_prompt'] | keyvalue">
                                 <div>
                                     <input class="answerChoice" style="margin: 5px" (change)="inputEditor('answer', q.key, 'answer_correct', ans.key, !q.value['answer_correct'][ans.key])" [checked]=q.value.answer_correct[ans.key] type="checkbox" id="checkbox_{{ans.key}}" title="Select the right answer. You can chose multiple."
@@ -266,7 +301,7 @@
 
 
                         <!-- DROPDOWN/SELECT -->
-                        <div *ngIf="q.value['display_type_description'] == 'Dropdown' && q.value['question_type_description'] = 'selected input'">
+                        <div [hidden]="q.value['question_type_id'] != 1 || q.value['display_type_id'] != 3">
                             <div *ngFor="let ans of q.value['answer_prompt'] | keyvalue" class="custom-radio">
                                 <div>
                                     <input class="answerChoice" style="margin: 5px" (change)="inputEditor('answer',q.key, 'answer_correct', ans.key, !q.value['answer_correct'][ans.key])" [checked]=q.value.answer_correct[ans.key] type="radio" id="checkbox_{{ans.key}}" title="Select the right answer. You can chose only one answer."
@@ -300,7 +335,7 @@
 
 
                         <!-- RADIO -->
-                        <div *ngIf="q.value['display_type_description'] == 'Radio' && q.value['question_type_description'] = 'selected input'">
+                        <div [hidden]="q.value['question_type_id'] != 1 || q.value['display_type_id'] != 1">
                             <div *ngFor="let ans of q.value['answer_prompt'] | keyvalue" class="custom-radio">
                                 <div>
                                     <input class="answerChoice" style="margin: 5px" (change)="inputEditor('answer',q.key, 'answer_correct', ans.key, !q.value['answer_correct'][ans.key])" [checked]=q.value.answer_correct[ans.key] type="radio" id="checkbox_{{ans.key}}" title="Select the right answer. You can chose only one answer."
@@ -334,7 +369,7 @@
 
 
                         <!-- ADD ANSWER FORM -->
-                        <div style="padding-right: 3px !important;" class="input-group mb-3 create_form_input_shadow" [hidden]="!q.value['question_type_description'] || q.value['question_type_description'] == 'textfield input' || q.value['question_type_description'] == 'drag_and_drop'">
+                        <div style="padding-right: 3px !important;" class="input-group mb-3 create_form_input_shadow" [hidden]="q.value['question_type_id'] != 1">
                             <div class="input-group-prepend" style="width: 25px">
                                 <button class="btn btn-success create_form_answer_add btn-action-borderless" id='buttonAddNewAnswer_{{q.key}}' type="button" (click)="addAnswer(q.key)">+</button>
                             </div>
@@ -423,7 +458,7 @@
                 <a [hidden]="submit_ready" class="btn btn-link btn-action-borderless text-monospace" (click)="goBack()">Click here to go back to the admin portal</a>
             </div>
         </div>
-        <!-- <button class="btn btn-lg shadow" (click)="checkState()">Check State</button> -->
+        
         
         
     </div>

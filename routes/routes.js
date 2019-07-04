@@ -10,7 +10,7 @@ const { debugLog, getLineNumber, log_event, log_object_parser, dbQueryMethod } =
 // methods
 const { get_available_quiz_for_profile_id_MSSQL, get_completed_quiz_categorized_submissions, get_gradable_quiz_submit_id_by_profile_and_topic, get_gradable_quiz_session_by_id, get_table_complete, get_submit_id_from_graded_by, time_now_MSSQL, update_image_base64_MSSQL, get_testable_topics_by_profile_id, get_available_engagements_by_profile_id, get_all_categories_and_topics_by_engagement_id_and_profile_id } = require('../backend/methods.js');
 // edit_quiz.js
-const { get_topic_to_edit_MSSQL, get_topic_info_for_editQuizHome, update_topic_main, delete_topic_by_id } = require('../backend/edit_quiz.js');
+const { get_topic_to_edit_MSSQL, get_topic_info_for_editQuizHome, update_topic_main, delete_topic_by_id, get_buckets_by_topic_id, saveOneBucket, create_topic_main } = require('../backend/edit_quiz.js');
 // get_User
 const { get_User } = require('../backend/get_user.js');
 // get_Quiz
@@ -957,9 +957,9 @@ module.exports = function (app) {
                 let currentUser = returnObj['currentUser']
                 let quiz = returnObj['quiz']
                 // var submitted_quiz = JSON.parse(Object.keys(req.body)) // quiz comes escaped
-                update_topic_main(req.body.quiz, currentUser.profile_id).then(result => {
-                    console.log("update_topic_main RETURNED =>", result)
-                    debugLog('update_topic_main COMPLETE');
+                create_topic_main(req.body.quiz, currentUser.profile_id).then(result => {
+                    console.log("create_topic_main RETURNED =>", result)
+                    debugLog('create_topic_main COMPLETE');
                     response_message.status = 'success'
                     response_message.message = result;
                     res.json(response_message)
@@ -1060,7 +1060,15 @@ module.exports = function (app) {
                     response_message.status = 'success';
                     response_message.quiz1 = format_quiz_table(result)[0]
                     response_message.quiz2 = result;
-                    res.json(response_message)
+                    get_buckets_by_topic_id(req.body['topic_id']).then(buckets =>{
+                        response_message.buckets = unescapingObj(buckets) ;
+                        res.json(response_message)
+                    }).catch(function (error) {
+                        log_event('ERROR', error, 'get_buckets_by_topic_id');
+                        error_handler(error, res, getLineNumber())
+                        response_message['message'] = error;
+                        res.json(response_message)
+                    })
                 }).catch(function (error) {
                     log_event('ERROR', error, 'EditTopic');
                     error_handler(error, res, getLineNumber())
@@ -1091,7 +1099,12 @@ module.exports = function (app) {
                 .then(returnObj => {
                     let currentUser = returnObj['currentUser']
                     let quiz = returnObj['quiz']
-                    let submitted_quiz = req.body.quiz; // comes escaped from the front-end
+                    let submitted_quiz = escapeObject(req.body.quiz)  // comes escaped from the front-end
+                    // for(let el in req.body.quiz){
+                    //     if(el != "questions"){
+                    //         console.log("EL =>", el," ==", req.body.quiz[el])
+                    //     }
+                    // }
                     // log_object_parser(submitted_quiz['logEvent']);
                     update_topic_main(submitted_quiz, currentUser.profile_id)
                         .catch(function (error) {
@@ -1480,6 +1493,25 @@ module.exports = function (app) {
     });
     // =================== END OF Quiz Submissions FUNCTIONS ==================
 
+     // ==================== Quiz Submissions FUNCTIONS ========================
+     app.post('/api/saveOneBucket', (req, res, next) => {
+        let response_message = {
+            'status': 'failed',
+            'message': ''
+        }
+        saveOneBucket(req.body).catch(function (error) {
+            debugLog("ERROR HERE" + error);
+            response_message.message = error;
+            res.json(response_message)
+        })
+        .then(returnObj => {
+            response_message.status = 'success';
+            response_message.body = returnObj;
+            res.json(response_message)
+        })
+
+    });
+    // =================== END OF Quiz Submissions FUNCTIONS ==================
     // ************************************************************************
     // ************************* END OF MISC  FUNCTIONS ***********************
     // ************************************************************************

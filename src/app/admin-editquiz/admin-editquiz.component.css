@@ -189,5 +189,9 @@ input[type="file"] {
     border-color: #ff001b;
   }
   
+thead th{
+    position: sticky;
+    top: 0px;
+    z-index: 1;
 
-  
+}

@@ -18,7 +18,7 @@ export class AdminCreatequizComponent implements OnInit {
   engagements_obj;
   categories_list = null;
   topic_list = null;
-  bucket_list;
+  bucket_list = {};
   bucket_list_original;
   selected_category = null;
   selected_topic = null;
@@ -53,7 +53,10 @@ export class AdminCreatequizComponent implements OnInit {
     message: '',
     display: false
   }
-
+  bucket_list_counter = {};
+  bucket_new = {
+    bucket_name: ''
+  }
 
   constructor(private _ConnectorService: ConnectorService, private location: Location, private _route: ActivatedRoute, private _r: Router) {
     this._route.paramMap.subscribe(params => {
@@ -70,10 +73,10 @@ export class AdminCreatequizComponent implements OnInit {
             this.main_content['engs'] = this.sortCategoriesByEngs(this.orderByEngID(res['engs']), res['categories'])
             this.engagements_obj = this.sortCategoriesByEngs(this.orderByEngID(res['engs']), res['categories']);
             this.categories_list = this.engagements_obj[this.currentEng_id]['categories'];
-            this.bucket_list = this.bucketListSoftdeleteChecker(cloneDeep(res['bucket_list']));
-            this.main_content['bucket_list'] = this.bucketListSoftdeleteChecker(cloneDeep(res['bucket_list']));
-            this.bucket_list_original = this.bucketListSoftdeleteChecker(cloneDeep(res['bucket_list']));
-            console.log(this.bucket_list)
+            // this.bucket_list = this.bucketListSoftdeleteChecker(cloneDeep(res['bucket_list']));
+            // this.main_content['bucket_list'] = this.bucketListSoftdeleteChecker(cloneDeep(res['bucket_list']));
+            // this.bucket_list_original = this.bucketListSoftdeleteChecker(cloneDeep(res['bucket_list']));
+            // console.log(this.bucket_list)
             this.selected_eng = this.currentEng_id;
           }
         }).catch(function (err) {
@@ -121,12 +124,14 @@ export class AdminCreatequizComponent implements OnInit {
   }
   submitQuiz(){
     console.log("SUBMITTED1");
-    let quiz = cloneDeep(this.list_of_questions);
-    delete quiz['new_question'];
-    quiz['engagement_id'] = this.selected_eng;
-    quiz['bucket_list'] = this.differenceFinderBuckets(this.bucket_list, this.main_content.bucket_list);
-    quiz['topic'] = this.selected_topic;
-    quiz['category'] = this.selected_category; 
+    let quiz ={
+      questions: cloneDeep(this.list_of_questions),
+      engagement_id: this.selected_eng,
+      bucket_list: this.bucket_list,
+      topic: this.selected_topic,
+      category: this.selected_category, 
+    } 
+    delete quiz.questions['new_question'];
     this._ConnectorService.createQuiz( this.escapingQuiz(quiz),  this.currentUser.email).then(res => {
       console.log("res =>", res)
       this.submit_ready = false;
@@ -192,15 +197,19 @@ export class AdminCreatequizComponent implements OnInit {
   displayTypeChanger(target, value) {
     this.cancelSubmitQuiz()
     if (value === 'textfield input') {
+      console.log('text!')
       this.list_of_questions[target]['display_type_description'] = "Manual input";
       this.list_of_questions[target]['question_type_description'] = 'textfield input';
-      this.list_of_questions[target]['display_type_id'] = 1;
+      this.list_of_questions[target]['question_type_id'] = 2;
     } else if (value === 'drag_and_drop') {
       this.list_of_questions[target]['display_type_description'] = value;
       this.list_of_questions[target]['question_type_description'] = value;
-      this.list_of_questions[target]['display_type_id'] = 1;
+      this.list_of_questions[target]['question_type_id'] = 3;
+      this.list_of_questions[target]['display_type_id'] = 4;
     } else {
+      console.log("selected input")
       this.list_of_questions[target]['question_type_description'] = "selected input";
+      this.list_of_questions[target]['question_type_id'] = 1;
       if (value === "Checkbox") {
         this.list_of_questions[target]['display_type_description'] = "Checkbox";
         this.list_of_questions[target]['display_type_id'] = 2;
@@ -446,9 +455,19 @@ export class AdminCreatequizComponent implements OnInit {
   closeModal(){
     this.modal_mesage_bool = false;
   }
+  openBucketEditor(){
+    this.bucket_list_counter_updater();
+    this.modal_message.title = "Bucket editor";
+    this.modal_mesage_bool = true;
+    console.log("OPEN MODAL")
+  }
   bucketListEditor(index, key, value){
+    if(key == 'soft_delete'){
+      delete this.bucket_list[index];
+      return;
+    }
     this.bucket_list[index][key] = value;
-    this.bucket_list_changes_bool = ( Object.keys(this.differenceFinderBuckets(this.bucket_list, this.bucket_list_original)).length > 0);
+    // this.bucket_list_changes_bool = ( Object.keys(this.differenceFinderBuckets(this.bucket_list, this.bucket_list_original)).length > 0);
     console.log("counter =>", this.bucket_list_changes_bool)
   }
   bucketListEditorConfirm(){
@@ -468,7 +487,6 @@ export class AdminCreatequizComponent implements OnInit {
     this.bucket_list = cloneDeep(this.bucket_list_original);
   }
   bucketListEditorClose(){
-    this.bucketListEditorCancel();
     this.bucket_list_changes_bool = false;
     this.modal_mesage_bool = false;
   }
@@ -479,6 +497,29 @@ export class AdminCreatequizComponent implements OnInit {
       this.bucket_list_confirm_bool = false;
       this.bucket_list_confirm_list = null;
     }
+  }
+
+  addNewBucket(){
+    let new_id = "new";
+    let counter = 1;
+    for(let el in this.bucket_list){
+      if(this.bucket_list[el]['bucket_name'] == this.bucket_new.bucket_name){
+        return;
+      }else if( el.includes("new")){
+        counter = Number(el.slice(3)) + 1;
+      }
+    }
+    this.bucket_list_changes_bool = true;
+    new_id+=counter;
+    this.bucket_list[new_id] = {
+      bucket_id: new_id,
+      bucket_name: this.bucket_new.bucket_name,
+      question_id: null,
+      quiz_id: null,
+      soft_delete: false,
+      confirmed: false
+    }
+    this.bucket_new.bucket_name = "";
   }
 
   // VALIDATORS ========================================================================================================================================================================================
@@ -766,5 +807,21 @@ export class AdminCreatequizComponent implements OnInit {
   }
   checkState(){
     console.log(this)
+  }
+  bucket_list_counter_updater(){
+    console.log("bucket_list_counter_updater")
+    this.bucket_list_counter = {};
+    for(let q in this.list_of_questions){
+      let question = this.list_of_questions[q];
+      for(let ans in question['answer_prompt']){
+        if(question['answer_bucket_id'][ans]){
+          let bucket_id = question['answer_bucket_id'][ans];
+          if(!this.bucket_list_counter[bucket_id]){
+            this.bucket_list_counter[bucket_id] = 0
+          }
+          this.bucket_list_counter[bucket_id]++;
+        }
+      }
+    }
   }
 }

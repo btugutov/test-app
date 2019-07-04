@@ -31,6 +31,20 @@ function get_topic_to_edit_MSSQL(topic_id) {
         throw (error);
     })
 };
+function get_buckets_by_topic_id(topic_id) {
+    let functionName = 'get_buckets_by_topic_id';
+    return new Promise(function(resolve, reject) {
+        let query = `SELECT * FROM [dbo].[KA_bucket]
+        WHERE quiz_id = ${topic_id}`;
+        return dbQueryMethod.query(query).then(result => {
+            resolve(result)
+            return result;
+        }).catch(function(error) { reject(error); throw (error); })
+    }).catch(function(error) {
+        log_event('WARNING', error, functionName);
+        throw (error);
+    })
+};
 
 
 function restore_bucketlist_hardcopy() {
@@ -189,10 +203,20 @@ function update_test_topic_table_MSSQL(topic, topic_id, requires0, requires1, ca
 
 function add_answers_history_table_MSSQL(answer_id, question_id, correct, answer_sort, answer_prompt, soft_delete, edit_by, bucket_id) {
     let functionName = 'add_answers_history_table_MSSQL';
+    if(correct == true){
+        correct = 0
+    }else{
+        correct = 1
+    }
+    if(soft_delete == true){
+        soft_delete = 1
+    }else{
+        soft_delete = 0
+    }
     return new Promise(function(resolve, reject) {
         let query = `INSERT INTO dbo.[KA_answers_history] 
         (answer_id, question_id, correct, sort, answer_prompt, soft_delete, edit_by, bucket_id) 
-        VALUES ('${answer_id}, '${question_id}', '${correct}', '${answer_sort}', '${answer_prompt}', '${soft_delete}', '${edit_by}', ${bucket_id}')`
+        VALUES (${answer_id}, '${question_id}', '${correct}', '${answer_sort}', '${answer_prompt}', '${soft_delete}', '${edit_by}', ${bucket_id})`
         dbQueryMethod.queryRaw(query).then(result => {
             resolve(result)
             return result;
@@ -501,6 +525,7 @@ function get_question_by_information_MSSQL(prompt, question_type_id, display_typ
 // used by the edit funtion to write current data to question_history table
 function get_question_by_question_id_for_edit_MSSQL(question_id) {
     let functionName = 'get_question_table_MSSQL';
+    console.log("get_question_by_question_id_for_edit_MSSQL: question_id =>", question_id)
     return new Promise(function(resolve, reject) {
         let query = `SELECT * FROM KA_questions WHERE question_id = ${question_id}`;
         dbQueryMethod.query(query).then(result => {
@@ -515,6 +540,9 @@ function get_question_by_question_id_for_edit_MSSQL(question_id) {
 
 function update_question_table_MSSQL(question_id, prompt, question_type_id, display_type_id, question_sort, image, training_module, training_url, soft_delete, point_value, expected_response) {
     let functionName = 'update_question_table_MSSQL';
+    if(soft_delete){
+        console.log("REMOVE THIS QUESTION =>",question_id)
+    }
     return new Promise(function(resolve, reject) {
         let training_Module_Statement;
         if (training_module === null) {
@@ -696,12 +724,12 @@ function delete_answers_by_topic_id(topic_id){
 
 // interact with KA_bucket table of the database
 
-function add_bucket_table_MSSQL(bucket_name) {
+function add_bucket_table_MSSQL(bucket) {
     let functionName = 'add_bucket_table_MSSQL';
     return new Promise(function(resolve, reject) {
         let insert = `INSERT INTO KA_bucket 
-        ([bucket_name]) 
-        VALUES ('${bucket_name}')`
+        ([bucket_name], [quiz_id]) 
+        VALUES ('${bucket.bucket_name}', '${bucket.quiz_id}') SELECT SCOPE_IDENTITY()`
         dbQueryMethod.queryRaw(insert).then(result => {
             resolve(result)
             return result;
@@ -740,17 +768,33 @@ function get_bucket_id_by_name(bucket_name) {
     })
 }
 
-function update_bucket_table_MSSQL(bucket_id, bucket_name, soft_delete) {
-    if(soft_delete == false){
-        soft_delete = 1;
+function update_bucket_table_MSSQL(bucket) {
+    if(bucket['soft_delete'] == false){
+        bucket['soft_delete'] = 0;
     }else{
-        soft_delete = 0;
+        bucket['soft_delete'] = 1;
     }
-    console.log(`STARTING update_bucket_table_MSSQL: bucket_id => ${bucket_id}, bucket_name => ${bucket_name}, soft_delete => ${soft_delete}`)
+
+    //bucket_id, bucket_name, soft_delete
+    console.log(`STARTING update_bucket_table_MSSQL: bucket_id => ${bucket['bucket_id']}, bucket_name => ${bucket['bucket_name']}, soft_delete => ${bucket.soft_delete} `)
     let functionName = 'update_bucket_table_MSSQL';
     return new Promise(function(resolve, reject) {
-        let query = `UPDATE KA_bucket SET bucket_name = '${bucket_name}', soft_delete = ${soft_delete}  WHERE bucket_id = ${bucket_id}`
+        let query = `UPDATE KA_bucket SET bucket_name = '${bucket.bucket_name}', soft_delete = ${bucket.soft_delete}, quiz_id = ${bucket.quiz_id}  WHERE bucket_id = ${bucket.bucket_id} SELECT SCOPE_IDENTITY()`
         dbQueryMethod.queryRaw(query).then(result => {
+            resolve(result)
+            return result;
+        }).catch(function(error) { reject(error); throw (error); })
+    }).catch(function(error) {
+        log_event('WARNING', error, functionName);
+        throw (error);
+    })
+}
+function delete_bucket_table_MSSQL(bucket) {
+    let functionName = 'get_bucket_table_MSSQL';
+    return new Promise(function(resolve, reject) {
+        let query = `DELETE FROM [dbo].[KA_bucket] WHERE bucket_id = '${bucket.bucket_id}' SELECT SCOPE_IDENTITY()`
+        dbQueryMethod.query(query).then(result => {
+            console.log("delete_bucket_table_MSSQL result =>", result)
             resolve(result)
             return result;
         }).catch(function(error) { reject(error); throw (error); })
@@ -774,116 +818,134 @@ Below are the larger blocks of work that process complex steps that must act in 
 */
 
 
-function update_KA_answers_from_admin_edit_quiz(answer_id, question_id, correct, answer_sort, answer_prompt, soft_delete, edit_by, bucket_id, bucket_list) {
+function update_KA_answers_from_admin_edit_quiz(answer_id, question_id, correct, answer_sort, answer_prompt, soft_delete, edit_by, bucket_id, bucket_list, bucket_ids) {
     let functionName = 'update_KA_answers_from_admin_edit_quiz';
-    return new Promise(function(resolve, reject) {
-        try {
-            if (answer_id == undefined) { answer_id = 'new' }
-            if (correct === undefined) { correct = 1 }
-            if (soft_delete === undefined) { soft_delete = 0 }
-            if (answer_sort == undefined) { answer_sort = '1' }
-            if (bucket_id == undefined) { bucket_id = null }
-
-            //if (answer_id === undefined || answer_id === null || answer_id.includes('added') || answer_id.includes('new') || answer_id.includes('null')) {
-            if (answer_id.includes('added') || answer_id.includes('new')) { // removing the need to add new answer based on null or undefined. We are changing that need
-                add_get_answer_table_MSSQL(question_id, correct, answer_sort, answer_prompt, soft_delete, bucket_id).then(result => {
-                    add_answers_history_table_MSSQL(result[1]['answer_id'], question_id, correct, answer_sort, answer_prompt, soft_delete, edit_by, bucket_id)
-                    //console.log('add needed')
-                    //console.log(result)
-                    resolve(result[1]['answer_id']);
-                    return result[1]['answer_id'];
-                }).catch(function(error) { reject(error); throw (error); })
-                resolve('answer_id === undefined');
-                return 'answer_id === undefined';
-            } else if (answer_id === undefined || answer_id === null || answer_id.includes('null')) { // if null or undefined, do nothing, this is a user input question, should probably be filtered before hitting this function
-                // clean exit and call next item
-                //console.log('update else if')
-                resolve('answer_id === null or undefined');
-                return 'answer_id === null or undefined';
-            } else {
-                //console.log('update else')
-                get_answers_by_answer_id_for_edit_MSSQL(answer_id).then(currentAnswerState => {
-                    let int_answer_id = parseInt(answer_id)
-                    let int_question_id = parseInt(question_id)
-                    let CQS = currentAnswerState; // really long name
-                    let delta = false; // bool to see if a change has happened
-                    let grade_procedure = false; // bool to see if a regrade needs to be triggered
-                    if (bucket_id == undefined) { // double check to see if the variable was missed, and set it to type null
-                        bucket_id = null;
-                    }
-                    try {
-                        function check_change(a, b, note) { // internal function to check if an element of the quiz object has been changed by the user or program
-                            if (a != b) {
-                                //console.log(a, ' : ', b)
-                                delta = true;
-                                //console.log(note);
-                                return true
-                            } else {
-                                return false
-                            }
+    console.log("BEGINNING OF update_KA_answers_from_admin_edit_quiz: bucket_ids =>", bucket_ids)
+    if(soft_delete == true){
+        console.log("delete this answer id =>", answer_id)
+        return new Promise(function(resolve, reject) {
+            let query = `DELETE FROM [dbo].[KA_answers] WHERE answer_id = ${answer_id}`
+            dbQueryMethod.query(query).then(result => {
+                console.log('result after answer was deleted')
+                resolve('update complete')
+                return result;
+            }).catch(function(error) { reject(error); throw (error); })
+        }).catch(function(error) {
+            log_event('WARNING', error, functionName);
+            reject(error);
+            throw (error);
+        })
+    }else{
+        return new Promise(function(resolve, reject) {
+            try {
+                if (answer_id == undefined) { answer_id = 'new' }
+                if (correct === undefined) { correct = 1 }
+                if (soft_delete === undefined) { soft_delete = 0 }
+                if (answer_sort == undefined) { answer_sort = '1' }
+                if (bucket_id == undefined) { bucket_id = null }
+                // if(bucket_ids[bucket_id]){bucket_id = bucket_ids[bucket_id]}
+                //if (answer_id === undefined || answer_id === null || answer_id.includes('added') || answer_id.includes('new') || answer_id.includes('null')) {
+                if (answer_id.includes('added') || answer_id.includes('new')) { // removing the need to add new answer based on null or undefined. We are changing that need
+                    add_get_answer_table_MSSQL(question_id, correct, answer_sort, answer_prompt, soft_delete, bucket_id).then(result => {
+                        console.log("AFTER add_get_answer_table_MSSQL BEFORE add_answers_history_table_MSSQL: answer_id and bucket_id =>", answer_id, bucket_id)
+                        add_answers_history_table_MSSQL(result[1]['answer_id'], question_id, correct, answer_sort, answer_prompt, soft_delete, edit_by, bucket_id)
+                        //console.log('add needed')
+                        //console.log(result)
+                        resolve(result[1]['answer_id']);
+                        return result[1]['answer_id'];
+                    }).catch(function(error) { reject(error); throw (error); })
+                    resolve('answer_id === undefined');
+                    return 'answer_id === undefined';
+                } else if (answer_id === undefined || answer_id === null || answer_id.includes('null')) { // if null or undefined, do nothing, this is a user input question, should probably be filtered before hitting this function
+                    // clean exit and call next item
+                    //console.log('update else if')
+                    resolve('answer_id === null or undefined');
+                    return 'answer_id === null or undefined';
+                } else {
+                    //console.log('update else')
+                    get_answers_by_answer_id_for_edit_MSSQL(answer_id).then(currentAnswerState => {
+                        let int_answer_id = parseInt(answer_id)
+                        let int_question_id = parseInt(question_id)
+                        let CQS = currentAnswerState; // really long name
+                        let delta = false; // bool to see if a change has happened
+                        let grade_procedure = false; // bool to see if a regrade needs to be triggered
+                        if (bucket_id == undefined) { // double check to see if the variable was missed, and set it to type null
+                            bucket_id = null;
                         }
-
-                        // check correct boolean 
-                        grade_procedure = check_change(CQS[0]['correct'], correct, 'correct')
-
-                        // check sort order
-                        check_change(CQS[0]['sort'], answer_sort, 'answer_sort')
-
-                        // check answer prompt
-                        check_change(CQS[0]['answer_prompt'], answer_prompt, 'answer_prompt')
-
-                        // check soft_delete boolean
-                        check_change(CQS[0]['soft_delete'], soft_delete, 'soft_delete')
-
-                        // check bucket_id 
-                        check_change(CQS[0]['bucket_id'], bucket_id, 'bucket_id') // not ready to use
-
-                    } catch (tryError) {
-                        log_event('ERROR', tryError, functionName);
-                        reject(tryError);
-                    }
-                    //server side ensuring escape
-                    //answer_prompt = escape(unescape(unescape(answer_prompt)));
-                    //console.log(answer_prompt)
-                    if (delta === true) {
-                        //console.log('update needed')
-                        add_answers_history_table_MSSQL(answer_id, question_id, correct, answer_sort, answer_prompt, soft_delete, edit_by, bucket_id)
-                        .catch(function(error) {
-                            //console.log('error');
-                            //console.log(error);
-                        })
-                        update_answers_table_MSSQL(answer_id, question_id, correct, answer_sort, answer_prompt, soft_delete, bucket_id).then(trash => {
-                            if (grade_procedure == true) {
-                                call_stored_proc_grading().then(result => {
-                                    //console.log(result);
-                                }).catch(function(error) {
-                                    //console.log('error');
-                                    //console.log(error);
-                                })
+                        try {
+                            function check_change(a, b, note) { // internal function to check if an element of the quiz object has been changed by the user or program
+                                if (a != b) {
+                                    //console.log(a, ' : ', b)
+                                    delta = true;
+                                    //console.log(note);
+                                    return true
+                                } else {
+                                    return false
+                                }
                             }
-                        }).catch(function(error) {
-                            //console.log('error');
-                            //console.log(error);
-                        })
-                        //console.log('update complete');
-                        resolve('update complete');
-                        return 'update complete';
-                    } else {
-                        // console.log('no updates needed');
-                        resolve('no updates needed');
-                        return 'no updates needed';
-                    }
-                }).catch(function(error) { reject(error); throw (error); })
+    
+                            // check correct boolean 
+                            grade_procedure = check_change(CQS[0]['correct'], correct, 'correct')
+    
+                            // check sort order
+                            check_change(CQS[0]['sort'], answer_sort, 'answer_sort')
+    
+                            // check answer prompt
+                            check_change(CQS[0]['answer_prompt'], answer_prompt, 'answer_prompt')
+    
+                            // check soft_delete boolean
+                            check_change(CQS[0]['soft_delete'], soft_delete, 'soft_delete')
+    
+                            // check bucket_id 
+                            check_change(CQS[0]['bucket_id'], bucket_id, 'bucket_id') // not ready to use
+    
+                        } catch (tryError) {
+                            log_event('ERROR', tryError, functionName);
+                            reject(tryError);
+                        }
+                        //server side ensuring escape
+                        //answer_prompt = escape(unescape(unescape(answer_prompt)));
+                        //console.log(answer_prompt)
+                        if (delta === true) {
+                            //console.log('update needed')
+                            add_answers_history_table_MSSQL(answer_id, question_id, correct, answer_sort, answer_prompt, soft_delete, edit_by, bucket_id)
+                            .catch(function(error) {
+                                //console.log('error');
+                                //console.log(error);
+                            })
+                            update_answers_table_MSSQL(answer_id, question_id, correct, answer_sort, answer_prompt, soft_delete, bucket_id).then(trash => {
+                                if (grade_procedure == true) {
+                                    call_stored_proc_grading().then(result => {
+                                        //console.log(result);
+                                    }).catch(function(error) {
+                                        //console.log('error');
+                                        //console.log(error);
+                                    })
+                                }
+                            }).catch(function(error) {
+                                //console.log('error');
+                                //console.log(error);
+                            })
+                            //console.log('update complete');
+                            resolve('update complete');
+                            return 'update complete';
+                        } else {
+                            // console.log('no updates needed');
+                            resolve('no updates needed');
+                            return 'no updates needed';
+                        }
+                    }).catch(function(error) { reject(error); throw (error); })
+                }
+            } catch (tryError) {
+                log_event('ERROR', tryError, functionName);
+                reject(tryError);
+                //console.log(tryError)
             }
-        } catch (tryError) {
-            log_event('ERROR', tryError, functionName);
-            reject(tryError);
-            //console.log(tryError)
-        }
-    }).catch(function(error) {
-        log_event('WARNING', error, functionName);
-        throw (error);
-    })
+        }).catch(function(error) {
+            log_event('WARNING', error, functionName);
+            throw (error);
+        })
+    }
 }
 
 
@@ -1180,13 +1242,13 @@ function update_KA_quiz_questions_from_admin_edit_quiz(question_id, quiz_id) {
 // andwer key : new1 new2 new3 as the key
 // property removed will exist if removed
 
-function update_topic_main_LOOP(obj, i, edit_by, obj_topic_id, bucket_list) {
+function update_topic_main_LOOP(obj, i, edit_by, obj_topic_id, bucket_list, bucket_ids) {
     let functionName = 'update_topic_main_LOOP';
     console.log("STARTING update_topic_main_LOOP")
     return new Promise(function(resolve, reject) {
         try {
-            let question_type_id;
-            let display_type_id;
+            let question_type_id = obj['question_type_id'];
+            let display_type_id = obj['display_type_id'];
             let image;
             let base64;
             try {
@@ -1213,30 +1275,30 @@ function update_topic_main_LOOP(obj, i, edit_by, obj_topic_id, bucket_list) {
               //console.log(' ')
                 */
 
-                if (obj['question_type_description'] == 'textfield input') {
-                    question_type_id = 2;
-                    display_type_id = 1; // we might want to make this to default to 0 to be 'input' or add an input display
-                } else if (obj['question_type_description'] == 'drag_and_drop') {
-                    display_type_id = 4;
-                    question_type_id = 3;
-                } else if (obj['question_type_description'] == 'selected input') {
-                    question_type_id = 1;
-                    if (obj['display_type_description'] === 'Radio' || obj['display_type_description'] === 'Radial') { // misspelled in some places
-                        display_type_id = 1;
-                    } else if (obj['display_type_description'] === 'Checkbox') {
-                        display_type_id = 2;
-                    } else if (obj['display_type_description'] === 'Dropdown') {
-                        display_type_id = 3;
-                    } else if (obj['display_type_description'] === 'drag_and_drop') {
-                        display_type_id = 4;
-                    } else {
-                        reject(`unhandled display_type_description type : ${functionName}`);
-                        throw (`unhandled display_type_description type : ${functionName}`);
-                    }
-                } else {
-                    reject(`unhandled question_type_description type : ${functionName}`);
-                    throw (`unhandled question_type_description type : ${functionName}`);
-                }
+                // if (obj['question_type_description'] == 'textfield input') {
+                //     question_type_id = 2;
+                //     display_type_id = 1; // we might want to make this to default to 0 to be 'input' or add an input display
+                // } else if (obj['question_type_description'] == 'drag_and_drop') {
+                //     display_type_id = 4;
+                //     question_type_id = 3;
+                // } else if (obj['question_type_description'] == 'selected input') {
+                //     question_type_id = 1;
+                //     if (obj['display_type_description'] === 'Radio' || obj['display_type_description'] === 'Radial') { // misspelled in some places
+                //         display_type_id = 1;
+                //     } else if (obj['display_type_description'] === 'Checkbox') {
+                //         display_type_id = 2;
+                //     } else if (obj['display_type_description'] === 'Dropdown') {
+                //         display_type_id = 3;
+                //     } else if (obj['display_type_description'] === 'drag_and_drop') {
+                //         display_type_id = 4;
+                //     } else {
+                //         reject(`unhandled display_type_description type : ${functionName}`);
+                //         throw (`unhandled display_type_description type : ${functionName}`);
+                //     }
+                // } else {
+                //     reject(`unhandled question_type_description type : ${functionName}`);
+                //     throw (`unhandled question_type_description type : ${functionName}`);
+                // }
 
                 // get image from base64
                 if (obj['base64'] === null || (obj['base64']) === undefined || (obj['base64']) === 'undefined') {
@@ -1278,7 +1340,7 @@ function update_topic_main_LOOP(obj, i, edit_by, obj_topic_id, bucket_list) {
                                 let this_answer_prompt = 'PLACEHOLDER';
                                 let this_soft_delete = 0;
                                 let this_answer_bucket_id = undefined;
-                                update_KA_answers_from_admin_edit_quiz(this_answer_id, this_question_id, this_correct, this_answer_sort, this_answer_prompt, this_soft_delete, edit_by, this_answer_bucket_id, bucket_list).then(r3 => {
+                                update_KA_answers_from_admin_edit_quiz(this_answer_id, this_question_id, this_correct, this_answer_sort, this_answer_prompt, this_soft_delete, edit_by, this_answer_bucket_id, bucket_list, bucket_ids).then(r3 => {
                                     resolve('done');
                                     return 'done;'
                                 }).catch(function(error) {
@@ -1309,19 +1371,23 @@ function update_topic_main_LOOP(obj, i, edit_by, obj_topic_id, bucket_list) {
                                             if (undefined == obj['answer_bucket_id'][current_index]) {
                                                 answer_bucket_id = null;
                                             } else {
-                                                let test = String(obj['answer_bucket_id'][current_index]);
-                                                if (test.includes('new')) {
-                                                    let bucket_name = bucket_list[obj['answer_bucket_id'][current_index]]
-                                                    var waitForThisPromise = get_bucket_id_by_name(bucket_name).then(bucket_id_result => {
-                                                        answer_bucket_id = bucket_id_result[0]['bucket_id'];
-                                                    })
-                                                } else {
-                                                    //console.log('there')
-                                                    answer_bucket_id = obj['answer_bucket_id'][current_index]
-                                                    var waitForThisPromise = Promise.resolve('no wait needed');
-                                                }
+                                                console.log("obj['answer_bucket_id'][current_index] =>", obj['answer_bucket_id'][current_index])
+                                                answer_bucket_id = bucket_ids[obj['answer_bucket_id'][current_index]]
+                                                console.log("thereby, answer_bucket_id is => ", answer_bucket_id)
+                                                // let test = String(obj['answer_bucket_id'][current_index]);
+                                                // if (test.includes('new')) {
+                                                //     let bucket_name = bucket_list[obj['answer_bucket_id'][current_index]]
+                                                //     var waitForThisPromise = get_bucket_id_by_name(bucket_name).then(bucket_id_result => {
+                                                //         answer_bucket_id = bucket_id_result[0]['bucket_id'];
+                                                //     })
+                                                // } else {
+                                                //     //console.log('there')
+                                                //     answer_bucket_id = obj['answer_bucket_id'][current_index]
+                                                //     var waitForThisPromise = Promise.resolve('no wait needed');
+                                                // }
                                             }
                                         }
+                                        var waitForThisPromise = Promise.resolve('no wait needed');
                                     } catch (error) { console.log(error) }
 
                                     // because of callback / Promise hell, i need to put this here to make sure the above promise is complete.
@@ -1350,7 +1416,7 @@ function update_topic_main_LOOP(obj, i, edit_by, obj_topic_id, bucket_list) {
                                                 answer_soft_delete = obj['answer_soft_delete'][current_index]
                                             }
                                         } catch (error) { console.log(error) }
-                                        update_KA_answers_from_admin_edit_quiz(current_index, this_question_id, answer_correct, answer_sort, answer_prompt, answer_soft_delete, edit_by, answer_bucket_id, bucket_list).then(r3 => {
+                                        update_KA_answers_from_admin_edit_quiz(current_index, this_question_id, answer_correct, answer_sort, answer_prompt, answer_soft_delete, edit_by, answer_bucket_id, bucket_list, bucket_ids).then(r3 => {
                                             resolve('done');
                                             return 'done;'
                                         }).catch(function(error) {
@@ -1537,18 +1603,18 @@ function update_quizzes_table_loop(topic_id, topic) {
     })
 }
 
-function update_bucket_list_LOOP(bucket_list, edit_by) {
+function update_bucket_list_LOOP(bucket_list, edit_by, this_topic_id) {
     let functionName = 'update_bucket_list_LOOP';
+    console.log("==========update_bucket_list_LOOP=========")
+    console.log(bucket_list)
     return new Promise(function(resolve, reject) {
+        let return_obj = {};
         get_bucket_table_MSSQL().then(bucket_table => {
-            // testing loop override
-            // resolve('complete')
-            // return "complete"
-            // tresting loop override
-
+            let ids = {};
+            let counter = 0;
+            let length = Object.keys(bucket_list).length;
             if (Object.keys(bucket_list).length == 0) {
                 resolve('nothing to do')
-                // return true;
             } else {
                 for (let index in bucket_list) {
                     if(!bucket_list[index]['bucket_id'] || !bucket_list[index]['bucket_name'] ){
@@ -1561,16 +1627,28 @@ function update_bucket_list_LOOP(bucket_list, edit_by) {
                             break;
                         }
                     }
+                    if(!bucket_list[index]['quiz_id']){
+                        bucket_list[index]['quiz_id'] = this_topic_id;
+                    }
                     console.log(`update_bucket_list_LOOP ================================= bucket_id => ${bucket_list[index]['bucket_id'] }; bucket_name => ${bucket_list[index]['bucket_name']};`)
                     if (found == true) {
                         console.log('BUCKET FOUND!')
-                        update_bucket_table_MSSQL(bucket_list[index]['bucket_id'] , bucket_list[index]['bucket_name'], bucket_list[index]['soft_delete'])
-                            .then(resolve('complete'))
+                        update_bucket_table_MSSQL(bucket_list[index])
+                            .then(resolve('complete '))
                             .catch(function(error) { log_event('WARNING', error, functionName); })
                     } else if (found == false) {
                         console.log('else CREATING A NEW BUCKET!')
-                        add_bucket_table_MSSQL(bucket_list[index]['bucket_name'])
-                            .then(resolve('complete'))
+                        add_bucket_table_MSSQL(bucket_list[index]).then(bucket =>{
+                            if(bucket){
+                                ids[index] = bucket.recordset[0]['']
+                                counter++;
+                            }
+                            if(counter == length){
+                                resolve(ids)
+                            }
+                            // return_obj[bucket_list[index]['bucket_id']] = bucket.recordset[0]['']
+                            console.log("return after new bucket =>", bucket)
+                        })
                             .catch(function(error) { log_event('WARNING', error, functionName); })
                     } else {
                         log_event('ERROR', 'Strange error that bool was not true or false', functionName);
@@ -1587,8 +1665,37 @@ function update_bucket_list_LOOP(bucket_list, edit_by) {
         throw (error);
     })
 }
+function saveOneBucket(bucket) {
+    let functionName = 'saveOneBucket';
+    console.log("==========saveOneBucket=========")
+    console.log(bucket)
+    return new Promise(function(resolve, reject) {
+        if (typeof(bucket.bucket_id)=="string" && bucket.bucket_id.slice(0,3) == "new") {
+            console.log('else CREATING A NEW BUCKET!')
+            add_bucket_table_MSSQL(bucket).then(bucket_response =>{
+                console.log("return after new bucket =>", bucket_response)
+                resolve(bucket_response)
+            }).catch(function(error) { log_event('WARNING', error, functionName); })
+        }else if(bucket.soft_delete){
+            console.log('else DELETEING A BUCKET!')
+            delete_bucket_table_MSSQL(bucket).then(bucket_response =>{
+                console.log("return after new bucket =>", bucket_response)
+                resolve(bucket_response)
+            }).catch(function(error) { log_event('WARNING', error, functionName); })
+        } else {
+            console.log('UPDATING FOUND!')
+            update_bucket_table_MSSQL(bucket).then(bucket_response =>{
+                console.log("return after updating bucket =>", bucket_response)
+                resolve(bucket_response)
+            }).catch(function(error) { log_event('WARNING', error, functionName); })
+        } 
+    }).catch(function(error) {
+        log_event('WARNING', error, functionName);
+        throw (error);
+    })
+}
 
-function recusive_object_hanlder(this_topic_id, object, current_index, edit_by) {
+function recusive_object_hanlder(this_topic_id, object, current_index, edit_by, bucket_ids) {
     let functionName = 'recusive_object_hanlder';
     if (current_index == undefined) { current_index = 0 }
     // console.log('======recusive_object_hanlder=========')
@@ -1601,18 +1708,17 @@ function recusive_object_hanlder(this_topic_id, object, current_index, edit_by) 
 
     return new Promise(function(resolve, reject) {
         let max = Object.keys(object).length;
-
         // =====
         let objKeys = Object.keys(object)
-        for(let i = 0; i < Object.keys(object).length; i++){
-            let indexKey = objKeys[i];
-            if(typeof object[indexKey] === 'object' && indexKey != 'bucket_list' && indexKey != 'logEvent' && indexKey != "list_of_deleted_questions"){
-                console.log("LOOPING! >>>>>> indexKey:", indexKey)
+        for(let question in object.questions){
+            // let indexKey = objKeys[i];
+            update_topic_main_LOOP(object.questions[question], question, edit_by, this_topic_id, object['bucket_list'], bucket_ids).then(result =>{
+                console.log("RESULT =>", result)
+            })
+            // if(typeof object[indexKey] === 'object' && indexKey != 'bucket_list' && indexKey != 'logEvent' && indexKey != "list_of_deleted_questions"){
+            //     console.log("LOOPING! >>>>>> indexKey:", indexKey)
 
-                update_topic_main_LOOP(object[indexKey], indexKey, edit_by, this_topic_id, object['bucket_list']).then(result =>{
-                    console.log("RESULT =>", result)
-                })
-            }
+            // }
         }
         console.log("recusive_object_hanlder is done!!!!!")
         resolve(true)
@@ -1664,10 +1770,64 @@ function update_topic_main(object, edit_by, engagement_id) {
                 console.log('=============================update_topic_table_loop: this_topic_id=========================================', this_topic_id)
                 update_quizzes_table_loop(this_topic_id, object['topic']).then(wait => {
                     console.log('============================update_quizzes_table_loop: wait==========================================', wait)
-                    update_bucket_list_LOOP(object['bucket_list'], edit_by).then(bucket_id => {
+                    update_bucket_list_LOOP(object['bucket_list'], edit_by, this_topic_id).then(bucket_id => {
+                        console.log('============================update_bucket_list_LOOP: bucket_ids==========================================', bucket_id)
+                        try {
+                            recusive_object_hanlder(this_topic_id, object, 0, edit_by, null).then(wait2 => {
+                                if(wait2){
+                                    console.log("WAIT2 => ", wait2)
+                                }
+                                console.log("update_topic_main IS COMPLETED!")
+                                resolve(`${functionName} is complete`);
+                                return 'success'
+                            }).catch(function(error) {
+                                log_event('ERROR', error, functionName);
+                                reject(error);
+                                console.log("ERROR =>", error)
+                                throw (error);
+                            })
+                        } catch (tryError) {
+                            log_event('ERROR', tryError, functionName);
+                            console.log(tryError)
+                        }
+                    }).catch(function(error) {
+                        log_event('WARNING', error, functionName);
+                        throw (error);
+                    })
+                }).catch(function(error) {
+                    log_event('WARNING', error, functionName);
+                    reject(error);
+                    throw (error);
+                })
+            }).catch(function(error) {
+                log_event('WARNING', error, functionName);
+                reject(error);
+                throw (error);
+            })
+        } catch (tryError) {
+            log_event('ERROR', tryError, functionName);
+        }
+    }).catch(function(error) {
+        log_event('WARNING', error, functionName);
+        throw (error);
+    })
+}
+function create_topic_main(object, edit_by, engagement_id) {
+    let functionName = 'update_topic_main';
+    console.log('===============')
+    console.log("starting create_topic_main")
+    console.log('===============')
+    return new Promise(function(resolve, reject) {
+        try {
+            let obj_response = {};
+            update_topic_table_loop(object['topic_id'], object['topic'], object['topic_soft_delete'], object['category'], object['engagement_id']).then(this_topic_id => {
+                console.log('=============================update_topic_table_loop: this_topic_id=========================================', this_topic_id)
+                update_quizzes_table_loop(this_topic_id, object['topic']).then(wait => {
+                    console.log('============================update_quizzes_table_loop: wait==========================================', wait)
+                    update_bucket_list_LOOP(object['bucket_list'], edit_by, this_topic_id).then(bucket_id => {
                         console.log('============================update_bucket_list_LOOP: bucket_id==========================================', bucket_id)
                         try {
-                            recusive_object_hanlder(this_topic_id, object, 0, edit_by).then(wait2 => {
+                            recusive_object_hanlder(this_topic_id, object, 0, edit_by, bucket_id).then(wait2 => {
                                 if(wait2){
                                     console.log("WAIT2 => ", wait2)
                                 }
@@ -1725,7 +1885,10 @@ module.exports = {
     get_topic_to_edit_MSSQL: get_topic_to_edit_MSSQL,
     get_topic_info_for_editQuizHome: get_topic_info_for_editQuizHome,
     update_topic_main: update_topic_main,
-    delete_topic_by_id: delete_topic_by_id
+    delete_topic_by_id: delete_topic_by_id,
+    get_buckets_by_topic_id: get_buckets_by_topic_id,
+    saveOneBucket: saveOneBucket,
+    create_topic_main:create_topic_main
 };
 
 /*

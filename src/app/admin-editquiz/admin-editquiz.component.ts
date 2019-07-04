@@ -4,6 +4,8 @@ import { ConnectorService } from '../connector.service';
 import { Location } from '@angular/common';
 import { Question } from './../question';
 import * as cloneDeep from 'lodash/cloneDeep';
+import { format_quiz_table, unescapingObj, groupBy, groupByKey, categoriesFixer, switchKey, joinUsersByTopicId, removeSpacesFromStr, gradeValidate, findAnswerID, infoValidate, escapeObject, escapingQuiz, sortOnKeys, topicListNameRemoveSpaces, reAssignSession, questionRenderOderAnswers, filterEngagementsByAvailableQuizzes, arr_diff } from '../object_validation.js';
+
 
 @Component({
   selector: 'app-admin-editquiz',
@@ -44,6 +46,7 @@ export class AdminEditquizComponent implements OnInit {
   }
 
   list_of_questions = {};
+  list_of_questions_bool = false;
   list_of_new_questions = {};
   list_of_deleted_questions = {};
 
@@ -64,6 +67,13 @@ export class AdminEditquizComponent implements OnInit {
     message: '',
     display: false
   }
+
+  bucket_new = {
+    bucket_name: ''
+  }
+
+  bucket_list_counter = {}
+
   constructor(private _ConnectorService: ConnectorService, private location: Location, private _route: ActivatedRoute, private _r: Router) {
     this.list_of_questions = {};
     this._route.paramMap.subscribe(params => {
@@ -81,40 +91,45 @@ export class AdminEditquizComponent implements OnInit {
             this.main_content['engs'] = this.sortCategoriesByEngs(this.orderByEngID(res['engs']), res['categories'])
             this.engagements_obj = this.sortCategoriesByEngs(this.orderByEngID(res['engs']), res['categories']);
             this.categories_list = this.engagements_obj[this.currentEng_id]['categories'];
-            this.bucket_list = this.bucketListSoftdeleteChecker(cloneDeep(res['bucket_list']));
-            this.main_content['bucket_list'] = this.bucketListSoftdeleteChecker(cloneDeep(res['bucket_list']));
-            this.bucket_list_original = this.bucketListSoftdeleteChecker(cloneDeep(res['bucket_list']));
             console.log(this.bucket_list)
             this.selected_eng = this.currentEng_id;
-            this._ConnectorService.getQuizByTopicIdForEdit(user.email, this.topic_id).then(res => {
-              console.log("RES =>", res)
-              this.topic_soft_delete = res['quiz1']['topic_soft_delete'];
-              if (res) {
+            this._ConnectorService.getQuizByTopicIdForEdit(user.email, this.topic_id).then(quiz => {
+              console.log("quiz =>", quiz)
+              this.topic_soft_delete = quiz['quiz1']['topic_soft_delete'];
+              if (quiz) {
                 console.log("got it!")
               }
-              if (res['status'] == 'success') {
-                console.log(res)
-                for (let el in res['quiz1']) {
-                  if (res['quiz1'][el]['prompt']) {
-                    if (res['quiz1'][el]['base64'] && res['quiz1'][el]['base64'].slice(0, 5) != 'data:') {
-                      res['quiz1'][el]['base64'] = "data:image/png;base64," + res['quiz1'][el]['base64'];
+              if (quiz['status'] == 'success') {
+                console.log(quiz)
+                for (let el in quiz['quiz1']) {
+                  if (quiz['quiz1'][el]['prompt']) {
+                    if (quiz['quiz1'][el]['base64'] && quiz['quiz1'][el]['base64'].slice(0, 5) != 'data:') {
+                      quiz['quiz1'][el]['base64'] = "data:image/png;base64," + quiz['quiz1'][el]['base64'];
                     }
-                    this.list_of_questions[el] = res['quiz1'][el];
+                    this.list_of_questions[el] = quiz['quiz1'][el];
                   } else if (el == "topic") {
-                    this.selected_topic = res['quiz1'][el];
-                    this.original_topic = res['quiz1'][el];
+                    this.selected_topic = quiz['quiz1'][el];
+                    this.original_topic = quiz['quiz1'][el];
                   } else if (el == "category") {
-                    this.selected_category = res['quiz1'][el];
-                    this.original_category = res['quiz1'][el];
+                    this.selected_category = quiz['quiz1'][el];
+                    this.original_category = quiz['quiz1'][el];
                     this.topic_list = this.engagements_obj[this.selected_eng]['categories'][this.selected_category]
                   } else if (el == 'engagement_id') {
-                    this.selected_eng = res['quiz1'][el];
-                    this.original_eng = res['quiz1'][el];
+                    this.selected_eng = quiz['quiz1'][el];
+                    this.original_eng = quiz['quiz1'][el];
                   }
                 }
                 this.topic_cat_eng_message.status = 'success'
                 this.list_of_questions['new_question'] = new Question();
                 console.log("this.list_of_questions =>", this.list_of_questions)
+                this.bucket_list = cloneDeep(switchKey(cloneDeep(quiz['buckets']), 'bucket_id'));
+                this.main_content['bucket_list'] = switchKey(cloneDeep(quiz['buckets']), 'bucket_id');
+                this.bucket_list_original =  cloneDeep(switchKey(cloneDeep(quiz['buckets']), 'bucket_id'));
+                // this.bucket_list = cloneDeep(switchKey(cloneDeep(res['bucket_list']), 'bucket_id'));
+                // this.main_content['bucket_list'] = switchKey(cloneDeep(res['bucket_list']), 'bucket_id');
+                // this.bucket_list_original =  cloneDeep(switchKey(cloneDeep(res['bucket_list']), 'bucket_id'));
+                this.list_of_questions_bool = true;
+                this.bucket_list_counter_updater();
               } else {
 
               }
@@ -173,17 +188,21 @@ export class AdminEditquizComponent implements OnInit {
     console.log("SUBMITTED1");
     let quiz = this.removeUnusedANswers(cloneDeep(this.list_of_questions));
     delete quiz['new_question'];
-    quiz['engagement_id'] = this.selected_eng;
-    quiz['bucket_list'] = this.differenceFinderBuckets(this.bucket_list, this.main_content.bucket_list);
-    quiz['topic'] = this.selected_topic;
-    quiz['category'] = this.selected_category;
-    quiz['topic_id'] = this.topic_id;
-    quiz['topic_soft_delete'] = this.topic_soft_delete;
-    quiz['list_of_deleted_questions'] = this.list_of_deleted_questions;
+
+    let object_to_send = {
+      'questions': quiz,
+    }
+    object_to_send['engagement_id'] = this.selected_eng;
+    object_to_send['bucket_list'] = this.bucket_list;
+    object_to_send['topic'] = this.selected_topic;
+    object_to_send['category'] = this.selected_category;
+    object_to_send['topic_id'] = this.topic_id;
+    object_to_send['topic_soft_delete'] = this.topic_soft_delete;
+    object_to_send['list_of_deleted_questions'] = this.list_of_deleted_questions;
     console.log("=======================FETCHING CHANGES=======================")
     console.log(quiz)
     console.log("==============================================================")
-    this._ConnectorService.saveEditedQuiz(this.escapingQuiz(quiz), this.currentUser.email).then(res => {
+    this._ConnectorService.saveEditedQuiz(object_to_send, this.currentUser.email).then(res => {
       console.log("res =>", res)
       this.submit_ready = false;
       if (res['status'] == 'success') {
@@ -269,15 +288,19 @@ export class AdminEditquizComponent implements OnInit {
     }
     this.cancelSubmitQuiz()
     if (value === 'textfield input') {
+      console.log('text!')
       this.list_of_questions[target]['display_type_description'] = "Manual input";
       this.list_of_questions[target]['question_type_description'] = 'textfield input';
-      this.list_of_questions[target]['display_type_id'] = 1;
+      this.list_of_questions[target]['question_type_id'] = 2;
     } else if (value === 'drag_and_drop') {
       this.list_of_questions[target]['display_type_description'] = value;
       this.list_of_questions[target]['question_type_description'] = value;
-      this.list_of_questions[target]['display_type_id'] = 1;
+      this.list_of_questions[target]['question_type_id'] = 3;
+      this.list_of_questions[target]['display_type_id'] = 4;
     } else {
+      console.log("selected input")
       this.list_of_questions[target]['question_type_description'] = "selected input";
+      this.list_of_questions[target]['question_type_id'] = 1;
       if (value === "Checkbox") {
         this.list_of_questions[target]['display_type_description'] = "Checkbox";
         this.list_of_questions[target]['display_type_id'] = 2;
@@ -315,6 +338,7 @@ export class AdminEditquizComponent implements OnInit {
         }
       }
     }
+    console.log(this.list_of_questions[target])
   }
 
   addAnswer(target) {
@@ -359,10 +383,12 @@ export class AdminEditquizComponent implements OnInit {
     }
     if (target == 'answer') {
       if (q_key == 'answer_soft_delete') {
-        delete this.list_of_questions[q_id]['answer_prompt'][a_id];
-        delete this.list_of_questions[q_id]['answer_correct'][a_id];
-        delete this.list_of_questions[q_id]['answer_soft_delete'][a_id];
-        delete this.list_of_questions[q_id]['answer_sort'][a_id];
+        // delete this.list_of_questions[q_id]['answer_prompt'][a_id];
+        // delete this.list_of_questions[q_id]['answer_correct'][a_id];
+        // delete this.list_of_questions[q_id]['answer_soft_delete'][a_id];
+        // delete this.list_of_questions[q_id]['answer_sort'][a_id];
+        console.log("hey")
+        this.list_of_questions[q_id]['answer_soft_delete'][a_id] = value
         return;
       }
       let question_type = this.list_of_questions[q_id]['display_type_description'];
@@ -392,14 +418,25 @@ export class AdminEditquizComponent implements OnInit {
         this.errorHandler(q_id, "image_uploader", JSON.stringify(err))
       })
     } else if (target == 'drag_and_drop') { // drag and drop logic
-      if (value == 'add_edit') {
-        document.getElementById(`bucket_list_pick_${q_id}`)['value'] = '';
-        this.modal_message.title = "Edit/Remove Buckets";
-
-        this.modal_mesage_bool = true;
-      } else {
+      // console.log("CHOSEN BUCKET =>", value)
+      // console.log(target, q_id, q_key, a_id, value)
+      // if(q_key == "answer_bucket_id" || a_id == "bucket_id"){
+      //   value = Number(value);
+      // }
+      if(q_key == "temp_bucket_storage"){
+        if(!this.list_of_questions[q_id]['temp_bucket_storage']){
+          this.list_of_questions[q_id]['temp_bucket_storage'] = {
+            answer_input: null,
+            bucket_id: null,
+          }
+        }
+        this.list_of_questions[q_id]['temp_bucket_storage'][a_id] = value;
+      }
+      else{
         this.list_of_questions[q_id][q_key][a_id] = value;
       }
+      // console.log(this.list_of_questions[q_id])
+
     } else {
       this.list_of_questions[q_id][q_key] = value;
     }
@@ -426,39 +463,48 @@ export class AdminEditquizComponent implements OnInit {
         this.errorHandler(id, "bucket_list", "Please choose one of the buckets.")
       }
       return;
-    }
-    let counter = 0;
-    let temp_id = 'new0'
-    for (let el in this.list_of_questions[id]['answer_prompt']) {
-      if (el.includes('new')) {
-        temp_id = el
+    }else{
+      let counter = 0;
+      let temp_id = 'new0'
+      for (let el in this.list_of_questions[id]['answer_prompt']) {
+        if (el.includes('new')) {
+          temp_id = el
+        }
       }
-    }
-    temp_id = temp_id.slice(0, 3) + (Number(temp_id.slice(3, 4)) + 1)
-    let new_id = temp_id; // new answer ID
-    try {
-      console.log("this.list_of_questions[id]['answer_prompt'] =>", this.list_of_questions[id]['answer_prompt'])
-      this.list_of_questions[id]['answer_prompt'][new_id] = input_val
-      this.list_of_questions[id]['answer_bucket_id'][new_id] = bucket_val;
-      this.list_of_questions[id]['answer_soft_delete'][new_id] = false;
-      this.list_of_questions[id]['answer_correct'][new_id] = false;
-      this.list_of_questions[id]['answer_sort'][new_id] = 1;
-      this.list_of_questions[id]['temp_bucket_storage']['answer_input'] = null;
-      this.list_of_questions[id]['temp_bucket_storage']['bucket_id'] = null;
-      this.bucketList_reloader[id] = false;
-      document.getElementById(`bucket_input_add_input_${id}`)['value'] = '';
-      console.log(this.list_of_questions[id])
-      console.log("document.getElementById(`bucket_list_pick_${id}`)['value']  =>", document.getElementById(`bucket_list_pick_${id}`))
-      // there was a weird bug with the choose bucket dropdown. It just didn't reset the old value after adding a new bucket choice
-      // so, by calling "  this.bucketList_reloader[id] = false " we delete the choose bucket dropdown ...
-      let that = this;
-      setTimeout(function () {
-        // ... and put it back after 50 miliseconds
-        that.bucketList_reloader[id] = true;
-      }, 50)
-    }
-    catch (error) {
-      console.log("ERROR =>", error)
+      temp_id = temp_id.slice(0, 3) + (Number(temp_id.slice(3, 4)) + 1)
+      let new_id = temp_id; // new answer ID
+      console.log("new answerId =>", new_id)
+      try {
+        console.log("this.list_of_questions[id]['answer_prompt'] =>", this.list_of_questions[id]['answer_prompt'])
+        this.list_of_questions[id]['answer_prompt'][new_id] = input_val
+        this.list_of_questions[id]['answer_bucket_id'][new_id] = bucket_val;
+        this.list_of_questions[id]['answer_soft_delete'][new_id] = false;
+        this.list_of_questions[id]['answer_correct'][new_id] = false;
+        this.list_of_questions[id]['answer_sort'][new_id] = 1;
+        this.list_of_questions[id]['temp_bucket_storage']['answer_input'] = null;
+        this.list_of_questions[id]['temp_bucket_storage']['bucket_id'] = null;
+        this.bucketList_reloader[id] = false;
+        document.getElementById(`bucket_input_add_input_${id}`)['value'] = '';
+  
+        // document.getElementById(`bucket_list_pick_${id}`)['selectedIndex'] = -1;
+        var options = document.querySelectorAll(`#bucket_list_pick_${id} option`);
+        for (var i = 0, l = options.length; i < l; i++) {
+            options[i]['selected'] = options[i]['defaultSelected'];
+        }
+  
+        console.log(this.list_of_questions[id])
+  
+        // there was a weird bug with the choose bucket dropdown. It just didn't reset the old value after adding a new bucket choice
+        // so, by calling "  this.bucketList_reloader[id] = false " we delete the choose bucket dropdown ...
+        // let that = this;
+        // setTimeout(function () {
+        //   // ... and put it back after 50 miliseconds
+        //   that.bucketList_reloader[id] = true;
+        // }, 50)
+      }
+      catch (error) {
+        console.log("ERROR =>", error)
+      }
     }
 
   }
@@ -530,10 +576,11 @@ export class AdminEditquizComponent implements OnInit {
     this.cancelSubmitQuiz()
     console.log(id, c_id)
     try {
-      delete this.list_of_questions[id]['answer_prompt'][c_id]
-      delete this.list_of_questions[id]['answer_correct'][c_id]
-      delete this.list_of_questions[id]['answer_soft_delete'][c_id]
-      delete this.list_of_questions[id]['answer_bucket_id'][c_id]
+      // delete this.list_of_questions[id]['answer_prompt'][c_id]
+      // delete this.list_of_questions[id]['answer_correct'][c_id]
+      // delete this.list_of_questions[id]['answer_soft_delete'][c_id]
+      // delete this.list_of_questions[id]['answer_bucket_id'][c_id]
+      this.list_of_questions[id]['answer_soft_delete'][c_id] = true;
     }
     catch (err) {
 
@@ -545,35 +592,73 @@ export class AdminEditquizComponent implements OnInit {
     console.log("=============================")
   }
 
-
+  
+  
   // MODAL FUNCTIONS ==================================================================================================================================================================================
-
+  
   closeModal() {
     this.modal_mesage_bool = false;
   }
+  
+  openBucketEditor(){
+    this.bucket_list_counter_updater();
+    this.modal_message.title = "Bucket editor";
+    this.modal_mesage_bool = true;
+  }
   bucketListEditor(index, key, value) {
+    if(typeof(index) == 'string' && index.slice(0,3) == 'new'){
+      delete this.bucket_list[index]
+      return;
+    }
     this.bucket_list[index][key] = value;
     this.bucket_list_changes_bool = (Object.keys(this.differenceFinderBuckets(this.bucket_list, this.bucket_list_original)).length > 0);
     console.log("counter =>", this.bucket_list_changes_bool)
   }
+                    
   bucketListEditorConfirm() {
     this.bucket_list_confirm_bool = true;
     this.bucket_list_confirm_list = this.differenceFinderBuckets(this.bucket_list, this.bucket_list_original)
   }
   bucketListEditorSave() {
-    this.cancelSubmitQuiz()
-    this.bucket_list_confirm_bool = false;
-    this.bucket_list_original = cloneDeep(this.bucket_list);
-    this.closeModal();
+    this.cancelSubmitQuiz();
+    let obj = this.bucket_list;
+    
     this.bucket_list_changes_bool = false;
+    for(let el in this.bucket_list){
+      if(this.bucket_list[el].confirmed == false || this.bucket_list[el]['bucket_name'] !=  this.bucket_list_original[el]['bucket_name'] || this.bucket_list[el]['soft_delete'] !=  this.bucket_list_original[el]['soft_delete']){
+        let obj = this.bucket_list[el];
+        if(obj.soft_delete){
+          console.log('deleting element!')
+        }
+        this._ConnectorService.saveOneBucket(obj).then(res =>{
+          console.log("saveOneBucket response =>", res)
+          if(res['status'] == 'success' && el.slice(0,3)=="new"){
+            this.bucket_list[el].confirmed = true;
+            this.bucket_list[el].bucket_id = res['body']['recordsets'][0][0][''];
+            this.bucket_list[res['body']] = cloneDeep(this.bucket_list[el]);
+            this.bucket_list_original[res['body']] = cloneDeep(this.bucket_list[el]);
+            delete this.bucket_list[el];
+          }else if(res['status'] == 'success' && el.slice(0,3)!="new"){
+            if(this.bucket_list[el]['soft_delete']){
+              delete this.bucket_list_original[el]
+              delete this.bucket_list[el]
+            }
+            this.bucket_list_original[el] = this.bucket_list[el];
+          }
+        }).catch(function(err){
+          console.log("ERROR =>", err)
+        })
+      }
+    }
+    console.log(this.bucket_list)
   }
   bucketListEditorCancel() {
-    this.bucket_list_confirm_bool = false;
     this.bucket_list_changes_bool = false;
-    this.bucket_list = cloneDeep(this.bucket_list_original);
+    this.bucket_list = cloneDeep(this.bucket_list_original)
+    console.log(this.bucket_list)
   }
   bucketListEditorClose() {
-    this.bucketListEditorCancel();
+    // this.bucketListEditorCancel();
     this.bucket_list_changes_bool = false;
     this.modal_mesage_bool = false;
   }
@@ -584,6 +669,28 @@ export class AdminEditquizComponent implements OnInit {
       this.bucket_list_confirm_bool = false;
       this.bucket_list_confirm_list = null;
     }
+  }
+  addNewBucket(){
+    let new_id = "new";
+    let counter = 1;
+    for(let el in this.bucket_list){
+      if(this.bucket_list[el]['bucket_name'] == this.bucket_new.bucket_name){
+        return;
+      }else if( el.includes("new")){
+        counter = Number(el.slice(3)) + 1;
+      }
+    }
+    this.bucket_list_changes_bool = true;
+    new_id+=counter;
+    this.bucket_list[new_id] = {
+      bucket_id: new_id,
+      bucket_name: this.bucket_new.bucket_name,
+      question_id: null,
+      quiz_id: this.topic_id,
+      soft_delete: false,
+      confirmed: false
+    }
+    this.bucket_new.bucket_name = "";
   }
 
   // VALIDATORS ========================================================================================================================================================================================
@@ -615,10 +722,12 @@ export class AdminEditquizComponent implements OnInit {
 
     // Answers' validation
     if (!res.body['type']) {
-      if (target.display_type_description != "Manual input" && target.display_type_id != 1) {
+      if (target.question_type_id == 1) {
+        console.log("question_type_id =>", target.question_type_id, "; target id =>", id)
         if (Object.keys(target.answer_prompt).length < 1) {
           res.body['answers'] = "Please add answers.";
         } else if (Object.keys(target.answer_prompt).length < 2) {
+          console.log("āaaaaaaaaaa")
           res.body['answers'] = "Please add more answers.";
         } else {
           for (let el in target.answer_prompt) {
@@ -644,7 +753,20 @@ export class AdminEditquizComponent implements OnInit {
             }
           }
         }
+      }else if(target.question_type_id == 3){
+        let counter = 0;
+        for(let el in target.answer_prompt){
+          if(!target.answer_bucket_id[el]){
+            res.body['answers_length'] = 'Some answers have no inputs at all.'
+            break;
+          }else if( !this.bucket_list[ target.answer_bucket_id[el]]){
+            res.body['answers_length'] = `Bucket is missing for answer "${target.answer_prompt[el]}".`
+            break;
+          }
+        }
+
       }
+
     }
 
     // Confluence link
@@ -662,6 +784,15 @@ export class AdminEditquizComponent implements OnInit {
     if (Object.keys(res.body).length > 0) {
       res.status = "fail";
     }
+    // if(target.question_type_id == 3){
+    //   for(let el in target.answer_bucket_id){
+    //     if(target.answer_prompt[el]){
+    //       console.log(` ${this.bucket_list[ target.answer_bucket_id[el] ]['bucket_name']} is for questionId ${id}`)
+    //       this.bucket_list[ target.answer_bucket_id[el]]['question_id'] = id;
+    //       this.bucket_list[ target.answer_bucket_id[el]]['quiz_id'] = this.topic_id;
+    //     }
+    //   }
+    // }
     return res;
   }
   validateAllQuestions() {
@@ -769,14 +900,9 @@ export class AdminEditquizComponent implements OnInit {
     return engs;
   }
 
-  validURL(str) {
-    var pattern = new RegExp('^(https?:\\/\\/)?' + // protocol
-      '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' + // domain name
-      '((\\d{1,3}\\.){3}\\d{1,3}))' + // OR ip (v4) address
-      '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // port and path
-      '(\\?[;&a-z\\d%_.~+=-]*)?' + // query string
-      '(\\#[-a-z\\d_]*)?$', 'i'); // fragment locator
-    return !!pattern.test(str);
+  validURL(string) {
+    var res = string.match(/(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g);
+    return (res !== null)
   }
   arrayToList(list, key, type) {
     let res = {};
@@ -797,37 +923,16 @@ export class AdminEditquizComponent implements OnInit {
     // array1 and array2 should by copies of each other
     let res = {};
     for (let bucket in arr1) {
-      if (arr1[bucket]['bucket_name'] != arr2[bucket]['bucket_name']) {
-        if (!res[arr1[bucket]['bucket_id']]) {
-          res[arr1[bucket]['bucket_id']] = {
-            'index': bucket,
-            'bucket_name': arr2[bucket]['bucket_name']
-          };
-        }
-        res[arr1[bucket]['bucket_id']]['New Bucket name'] = arr1[bucket]['bucket_name']
-        res[arr1[bucket]['bucket_id']]['Old Bucket name'] = arr2[bucket]['bucket_name']
+      let el1 = JSON.stringify(arr1[bucket])
+      let el2 = JSON.stringify(arr2[bucket])
+      console.log
+      if(el1 != el2){
+        res[arr1[bucket]['bucket_id']] = arr1[bucket];
       }
-      if (arr1[bucket]['soft_delete'] != arr2[bucket]['soft_delete']) {
-        if (!arr1[bucket]['soft_delete'] && !arr2[bucket]['soft_delete']) {
-          continue;
-        }
-        if (!res[arr1[bucket]['bucket_id']]) {
-          res[arr1[bucket]['bucket_id']] = {
-            'index': bucket,
-            'bucket_name': arr2[bucket]['bucket_name']
-          };
-        }
-        if (arr1[bucket]['soft_delete']) {
-          res[arr1[bucket]['bucket_id']]['status'] = "Disabled"
-        } else if (!arr1[bucket]['soft_delete']) {
-          res[arr1[bucket]['bucket_id']]['status'] = "Enabled"
-        }
-        res[arr1[bucket]['bucket_id']]['soft_delete'] = arr1[bucket]['soft_delete']
-      }
-
     }
     return res;
   }
+
   escapingList(list) { // escaping a map/dictionary
     for (let el in list) {
       list[el] = escape(list[el]);
@@ -921,4 +1026,26 @@ export class AdminEditquizComponent implements OnInit {
     console.log(this.list_of_questions)
     console.log("====================================================================================================================")
   }
+
+  bucket_list_counter_updater(){
+    console.log("bucket_list_counter_updater")
+    this.bucket_list_counter = {};
+    for(let q in this.list_of_questions){
+      let question = this.list_of_questions[q];
+      for(let ans in question['answer_prompt']){
+        if(question['answer_bucket_id'][ans]){
+          let bucket_id = question['answer_bucket_id'][ans];
+          if(!this.bucket_list_counter[bucket_id]){
+            this.bucket_list_counter[bucket_id] = 0
+          }
+          this.bucket_list_counter[bucket_id]++;
+        }
+      }
+    }
+  }
+
+  /*
+  bucket_list reserve copy
+  {"1":{"bucket_id":1,"bucket_name":"Verify Ownership","soft_delete":false,"question_id":null,"quiz_id":null},"2":{"bucket_id":2,"bucket_name":"No verification necessary","soft_delete":false,"question_id":null,"quiz_id":null},"3":{"bucket_id":3,"bucket_name":"Confluence","soft_delete":false,"question_id":null,"quiz_id":null},"4":{"bucket_id":4,"bucket_name":"Ticketmaster","soft_delete":false,"question_id":null,"quiz_id":null},"5":{"bucket_id":5,"bucket_name":"Support Tool","soft_delete":false,"question_id":null,"quiz_id":null},"6":{"bucket_id":6,"bucket_name":"1 - Ticket ID","soft_delete":false,"question_id":null,"quiz_id":null},"7":{"bucket_id":7,"bucket_name":"2 - Ticket origin","soft_delete":false,"question_id":null,"quiz_id":null},"8":{"bucket_id":8,"bucket_name":"3 - User provided info","soft_delete":false,"question_id":null,"quiz_id":null},"9":{"bucket_id":9,"bucket_name":"4 - User provided message","soft_delete":false,"question_id":null,"quiz_id":null},"10":{"bucket_id":10,"bucket_name":"5 - Attachments","soft_delete":false,"question_id":null,"quiz_id":null},"11":{"bucket_id":11,"bucket_name":"6 - Related account","soft_delete":false,"question_id":null,"quiz_id":null},"12":{"bucket_id":12,"bucket_name":"7 - Note from agent","soft_delete":false,"question_id":null,"quiz_id":null},"13":{"bucket_id":13,"bucket_name":"8 - Response from agent","soft_delete":false,"question_id":null,"quiz_id":null},"14":{"bucket_id":14,"bucket_name":"Purchases & Billing","soft_delete":false,"question_id":null,"quiz_id":null},"15":{"bucket_id":15,"bucket_name":"Activity","soft_delete":false,"question_id":null,"quiz_id":null},"16":{"bucket_id":16,"bucket_name":"Security","soft_delete":false,"question_id":null,"quiz_id":null},"17":{"bucket_id":17,"bucket_name":"Security > Two Factor","soft_delete":false,"question_id":null,"quiz_id":null},"18":{"bucket_id":18,"bucket_name":"Security > Phone Number","soft_delete":false,"question_id":null,"quiz_id":null},"19":{"bucket_id":19,"bucket_name":"Security > Steam Guard","soft_delete":false,"question_id":null,"quiz_id":null},"20":{"bucket_id":20,"bucket_name":"Re-categorize","soft_delete":false,"question_id":null,"quiz_id":null},"21":{"bucket_id":21,"bucket_name":"Escalate","soft_delete":false,"question_id":null,"quiz_id":null},"22":{"bucket_id":22,"bucket_name":"Assist the user","soft_delete":false,"question_id":null,"quiz_id":null},"23":{"bucket_id":23,"bucket_name":"1.","soft_delete":false,"question_id":null,"quiz_id":null},"24":{"bucket_id":24,"bucket_name":"2.","soft_delete":false,"question_id":null,"quiz_id":null},"25":{"bucket_id":25,"bucket_name":"3.","soft_delete":false,"question_id":null,"quiz_id":null},"26":{"bucket_id":26,"bucket_name":"4.","soft_delete":false,"question_id":null,"quiz_id":null},"27":{"bucket_id":27,"bucket_name":"5.","soft_delete":false,"question_id":null,"quiz_id":null},"28":{"bucket_id":28,"bucket_name":"Not a part of the process","soft_delete":false,"question_id":null,"quiz_id":null},"33":{"bucket_id":33,"bucket_name":"Send closing response, close ticket","soft_delete":false,"question_id":null,"quiz_id":null},"35":{"bucket_id":35,"bucket_name":"Respond, don't close ticket yet","soft_delete":false,"question_id":null,"quiz_id":null},"36":{"bucket_id":36,"bucket_name":"Accounts","soft_delete":false,"question_id":null,"quiz_id":null},"37":{"bucket_id":37,"bucket_name":"Billing","soft_delete":false,"question_id":null,"quiz_id":null},"38":{"bucket_id":38,"bucket_name":"Tech/Games","soft_delete":false,"question_id":null,"quiz_id":null},"39":{"bucket_id":39,"bucket_name":"Confirm","soft_delete":false,"question_id":null,"quiz_id":null},"40":{"bucket_id":40,"bucket_name":"Set expectations","soft_delete":false,"question_id":null,"quiz_id":null},"41":{"bucket_id":41,"bucket_name":"Assure","soft_delete":false,"question_id":null,"quiz_id":null},"42":{"bucket_id":42,"bucket_name":"Relate","soft_delete":false,"question_id":null,"quiz_id":null}}
+  */
 }
