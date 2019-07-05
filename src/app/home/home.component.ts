@@ -21,23 +21,30 @@ export class HomeComponent implements OnInit {
   currentEng_id = null;
   cats_n_tops_array = [];
   cats_n_tops_bool;
+  current_eng;
 
   constructor(private _ConnectorService: ConnectorService, private location: Location, private _route: ActivatedRoute,private _r: Router) { 
     this._route.paramMap.subscribe(params => {
-      this.currentEng_id = params.get('eng');
-      // console.log("current engagement =>", this.currentEng_id)
-      if(params.get('eng')){
-        if(this.engagements){
-          // console.log("are you trying to renavigate to another engagement?")
-          this.changeCurEng("this._route.paramMap.subscribe(params => {");
-          this.filter_categories_and_topics_by_eng_id(this.cats_n_tops_raw);
+      if(this.currentEng_id  != params.get('eng')){
+        console.log("Switching")
+        this.currentEng_id = params.get('eng');
+        // console.log("current engagement =>", this.currentEng_id)
+        this.getEngagementByEngId(this.currentEng_id);
+        if(params.get('eng')){
+          if(this.engagements){
+            // console.log("are you trying to renavigate to another engagement?")
+            this.changeCurEng("this._route.paramMap.subscribe(params => {");
+            this.filter_categories_and_topics_by_eng_id(this.cats_n_tops_raw);
+            
+          }
         }
       }
     })
     this._ConnectorService.user.subscribe(user => {
       this.currentUser = user;
       if(user){
-        this.getAllCategoriesAndTopicsByProfileId(user.profile_id)
+        this.getAllCategoriesAndTopicsByProfileId(user.profile_id);
+        
       }
     });
     this._ConnectorService.engagements.subscribe(engs => {
@@ -72,6 +79,22 @@ export class HomeComponent implements OnInit {
       this.cats_n_tops_raw = data;
       this.filter_categories_and_topics_by_eng_id(this.cats_n_tops_raw);
 
+    }).catch(function(error) {
+    });
+  }
+  getEngagementByEngId(currentEng_id){
+    this._ConnectorService.getEngagementByEngId(currentEng_id).then(data =>{
+      console.log("getEngagementByEngId: data =>", data)
+      if(data){
+        if(data[0]['background']){
+          console.log("background!!!")
+          console.log()
+          document.getElementById('quiz_selection').style.background = null;
+        }else{
+          console.log("no background!")
+        }
+      }
+      this.current_eng = data[0];
     }).catch(function(error) {
     });
   }

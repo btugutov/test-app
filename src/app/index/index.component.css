@@ -13,6 +13,7 @@
     line-height: 35px;
     margin-top: 20px;
     position: relative;
+    text-decoration:none;
     text-align: center;
 }
 .footer__btn>span {

@@ -54,6 +54,7 @@ export class QuizComponent implements OnInit {
       // console.log(data)
       this.question = data;
       if (data) {
+        console.log(data)
         if (data['completed']) {
           this.completed = true;
           this.completed_link = `/${this.currentEng_id}/home`;
@@ -61,6 +62,12 @@ export class QuizComponent implements OnInit {
         }
         if (this.question.display_type == 4) {
           this.loadScripts()
+        }
+        if(this.question.image){
+          if(this.question.base64.split(",").length == 1){
+            this.question.base64 = `data:image/png;base64,${this.question.base64}`
+          }
+          // console.log(this.question.image.base64)
         }
       }
     }).catch(function (error) {
@@ -86,6 +93,7 @@ export class QuizComponent implements OnInit {
         }
         this.question = data;
         if (data) {
+          document.getElementById('manual_input_field')['value'] = '';
           if (this.question.display_type == 4) {
             this.loadScripts()
           }

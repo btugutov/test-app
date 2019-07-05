@@ -290,40 +290,53 @@ function add_images_table_and_return_image_id_MSSQL(question_id, description, ba
     condensing 2 queries into 1 to save bandwidth 
     this will add item to inages table then query for that information and get the image_id
     */
-    let functionName = 'add_images_table_MSSQL';
-    return new Promise(function(resolve, reject) {
-
+   let functionName = 'add_images_table_and_return_image_id_MSSQL';
+   return new Promise(function(resolve, reject) {
+       if(soft_delete){
+           soft_delete = 1;
+        }else{
+            soft_delete = 0;
+        }
         let values;
-        if (base64 === null) {
+        let length = 0;
+        if(base64){
+            length = base64.length;
+        }
+        console.log("add_images_table_and_return_image_id_MSSQL", ` question_id => ${question_id}, description => ${description}, base64.length => ${length}, soft_delete => ${soft_delete}`)
+        if (base64 === null || length < 1000) {
             values = `'${question_id}',
             '${description}' ,
             NULL,
             '${soft_delete}'`;
         } else {
-            values = `'${question_id}',
+            values = `${question_id},
             '${description}' ,
-            '${base64}' ,
+            '${unescape(base64)}' ,
             '${soft_delete}'`;
         }
 
         let insert = `INSERT INTO KA_images 
         (question_id, description, base64, soft_delete) 
-        VALUES ('${values})`
+        VALUES (${values})`
 
-        let query = `SELECT image_id 
-            FROM [dbo].[KA_images] 
-            WHERE question_id = '${question_id}' 
-            AND description = '${description}' 
-            AND base64 = '${base64}' 
-            AND soft_delete = '${soft_delete}'`
+        // let query = `SELECT image_id 
+        //     FROM [dbo].[KA_images] 
+        //     WHERE question_id = '${question_id}' 
+        //     AND description = '${description}' 
+        //     AND base64 = '${base64}' 
+        //     AND soft_delete = '${soft_delete}'`
 
-        dbQueryMethod.queryRaw(`${insert} ${query}`).then(result => {
+        dbQueryMethod.query(`${insert}`).then(result => {
             resolve(result)
             return result;
-        }).catch(function(error) { reject(error); throw (error); })
+        }).catch(function(error) { 
+            reject(error); 
+            console.log("err")
+            throw (error); 
+        })
     }).catch(function(error) {
         log_event('WARNING', error, functionName);
-        throw (error);
+        // throw (error);
     })
 }
 
@@ -345,7 +358,7 @@ function add_images_table_MSSQL(question_id, description, base64, soft_delete) {
         }
         let insert = `INSERT INTO KA_images 
         (question_id, description, base64, soft_delete) 
-        VALUES ('${values})`
+        VALUES (${values})`
         dbQueryMethod.queryRaw(insert).then(result => {
             resolve(result)
             return result;
@@ -420,8 +433,7 @@ function update_images_table_MSSQL(image_id, question_id, description, base64, s
         } else {
             set = `SET description = '${description}', base64 = '${base64}', question_id = '${question_id}', soft_delete = '${soft_delete}'`;
         }
-        let query = `UPDATE KA_images 
-            SET ${set} 
+        let query = `UPDATE KA_images  ${set} 
             WHERE image_id = ${image_id}`
         dbQueryMethod.queryRaw(query).then(result => {
             resolve(result)
@@ -927,6 +939,7 @@ function update_KA_images_from_admin_edit_quiz(image, question_id, description, 
         try {
             soft_delete = image;
             //description = escape(unescape(unescape(description)));
+            console.log(`update_KA_images_from_admin_edit_quiz: id => ${question_id}; image.length => ${image.length}, base64 => ${base64.length}` )
             get_images_by_question_id_for_edit_MSSQL(question_id).then(currentImageState => {
                 // if image table has row : update row
                 if (description === undefined || !description) {
@@ -998,11 +1011,12 @@ function update_KA_images_from_admin_edit_quiz(image, question_id, description, 
                     }
                     // if soft_delete === false >> add new image
                     else {
+                        console.log("add_images_table_and_return_image_id_MSSQL ======")
                         add_images_table_and_return_image_id_MSSQL(question_id, description, base64, soft_delete).then(result => {
-                            add_images_history_table_MSSQL(result['recordset'][0]['image_id'], question_id, description, base64, soft_delete, edit_by)
-                                    //console.log('image added :: ' + newImageId[0]['image'])
                             resolve('update complete');
                             return 'update complete';
+                            // add_images_history_table_MSSQL(result['recordset'][0]['image_id'], question_id, description, base64, soft_delete, edit_by)
+                                    //console.log('image added :: ' + newImageId[0]['image'])
                         }).catch(function(error) { reject(error); throw (error); })
                         resolve('answer_id === undefined');
                         return 'image === undefined';
@@ -1277,12 +1291,15 @@ function update_topic_main_LOOP(obj, i, edit_by, obj_topic_id, bucket_list, buck
                 // }
 
                 // get image from base64
-                if (obj['base64'] === null || (obj['base64']) === undefined || (obj['base64']) === 'undefined') {
+                console.log(i, obj['base64'].length)
+                if (!obj['image']) {
                     image = false;
                     base64 = null;
+                    console.log(`QUESTION ${i} HAS NO IMAGE`)
                 } else {
                     image = true;
                     base64 = obj['base64'];
+                    console.log(`QUESTION ${i} HAS IMAGE`)
                 }
                 //obj['prompt'] = escape(unescape(unescape(obj['prompt'])))
             } catch (tryError) {
@@ -1686,13 +1703,6 @@ function saveOneBucket(bucket) {
 function recusive_object_hanlder(this_topic_id, object, current_index, edit_by, bucket_ids) {
     let functionName = 'recusive_object_hanlder';
     if (current_index == undefined) { current_index = 0 }
-    // console.log('======recusive_object_hanlder=========')
-    // console.log(current_index)
-    // console.log('===============')
-    // console.log(Object.keys(object).length)
-    // console.log('===============')
-    // console.log(object)
-    // console.log('==============')
 
     return new Promise(function(resolve, reject) {
         let max = Object.keys(object).length;

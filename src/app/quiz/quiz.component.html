@@ -4,9 +4,9 @@
             <h1>Quiz for {{question.topic_name.topic}}</h1>
         </div>
     </div>
-    <div *ngIf="question.image_info" class="row">
+    <div *ngIf="question.image_info && question.image_info != 'null'" class="row">
             <div class="col" style="display: flex;">
-                <img class="element-animation-fadeIn image_question img-fluid" src="data:image/png;base64,{{question.image_info}}" style="cursor: context-menu; width: auto; margin: 0px auto;" />
+                <img class="element-animation-fadeIn image_question img-fluid" src="{{question.image_info}}" style="cursor: context-menu; width: auto; margin: 0px auto;" />
             </div>
         </div>
     <div class="form-row border_info">
@@ -74,16 +74,27 @@
         </div>
     </div>
     <div class="form-row justify-content-center">
-        <button class="btn btn-lg btn-success btn-action-borderless shadow" id="nextButton" type="button" (click)='submit()' style="width:200px;">Next</button>
+        <!-- <button class="btn btn-lg btn-success btn-action-borderless shadow" id="nextButton" type="button"  style="width:200px;">Next</button> -->
+        <a class="footer__btn-bp" (click)='submit()' data-footer-link="2">
+            <span>Next</span>
+            <div class="footer__btn-bp-line">
+                <div class="footer__btn-bp-line-inner"></div>
+            </div>
+        </a>
     </div>
     
 </div>
 <div *ngIf="completed">
     <div class="jumbotron text-xs-center col element-animation-fadeIn" align="center" style="background: white; margin-top: 10%;" id="body_fadeOut">
         <h1 class="display-3">Thank You!</h1>
-        <p class="lead"><strong>You have completed Knowledge Assessment Quiz</strong> for further instructions please contact your TL or instructor.</p>
-        <p class="lead">
-            <a class="btn btn-lg btn-home dropbtn" role="button" style="text-decoration: none; color: black;" id="backToHomePage" [routerLink]="[completed_link]">Back to homepage</a>
-        </p>
+        <p class="lead"><strong>You have completed Skill Assessment Quiz</strong> for further instructions please contact your TL or instructor.</p>
+        <div class="form-row justify-content-center">
+            <a class="footer__btn-bp" [routerLink]="[completed_link]" data-footer-link="2">
+                    <span>Back to homepage</span>
+                    <div class="footer__btn-bp-line">
+                        <div class="footer__btn-bp-line-inner"></div>
+                    </div>
+                </a>
+        </div>
     </div>
 </div>

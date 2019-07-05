@@ -204,6 +204,23 @@ function get_available_engagements_by_profile_id(profile_id) {
     })
 };
 
+function getEngagementByEngId(id){
+    let functionName = 'getEngagementByEngId';
+    return new Promise(function(resolve, reject) {
+        let query = `SELECT TOP 1 *
+             FROM [KA_engagement]
+             WHERE engagement_id = '${id}'`;
+        return dbQueryMethod.query(query).then(result => {
+            resolve(result)
+            return result;
+        }).catch(function(error) { reject(error); throw error; })
+    }).catch(function(error) {
+        log_event('WARNING', error, functionName);
+        reject(error)
+        throw error;
+    })
+}
+
 function time_now_MSSQL() {
     let date = new Date();
     return date.toISOString().replace(/T/, ' ').replace(/\.. + /, '');
@@ -243,7 +260,8 @@ module.exports = {
     update_image_base64_MSSQL: update_image_base64_MSSQL,
     get_testable_topics_by_profile_id: get_testable_topics_by_profile_id,
     get_available_engagements_by_profile_id: get_available_engagements_by_profile_id,
-    get_all_categories_and_topics_by_engagement_id_and_profile_id: get_all_categories_and_topics_by_engagement_id_and_profile_id
+    get_all_categories_and_topics_by_engagement_id_and_profile_id: get_all_categories_and_topics_by_engagement_id_and_profile_id,
+    getEngagementByEngId: getEngagementByEngId
 };
 
 // create a one liner here that is what another file will need to import everything from this file. 

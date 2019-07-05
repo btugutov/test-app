@@ -10,7 +10,10 @@ export class IndexComponent implements OnInit {
   engagements;
   constructor(private _c: ConnectorService) { 
     this._c.user.subscribe(user => this.currentUser = user);
-    this._c.engagements.subscribe(engs => this.engagements = engs);
+    this._c.engagements.subscribe(engs => {
+        this.engagements = engs;
+        console.log(engs)
+      });
   }
   // getAvailableEngagements(profile_id){
   //   this._c.getAvailableEngagements(profile_id).then(data =>{
@@ -36,6 +39,7 @@ export class IndexComponent implements OnInit {
         // }).catch(function(error){
         //   console.log("error =>", error)
         // })
+        console.log(this.engagements)
       }
     }else{
 

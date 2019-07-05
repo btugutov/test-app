@@ -87,6 +87,22 @@ export class ConnectorService {
       );
     })
   };
+  getEngagementByEngId(engId){
+    var that = this;
+    let obj = {
+      eng_id: engId
+    }
+    return new Promise(function (resolve, reject) {
+      that.http.post('/api/getEngagementByEngId', obj).subscribe(
+        res => {
+          resolve(res)
+        },
+        err => {
+          reject(err)
+        }
+      );
+    })
+  }
   // ==============================================================================
 
   // QUIZ FUNCTIONS ===============================================================

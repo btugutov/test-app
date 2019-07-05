@@ -42,6 +42,7 @@ function create_new_engagement_row_MSSQL(engagement) {
 function get_all_engagemets() {
     let functionName = 'add_engagement_table_MSSQL';
     return new Promise(function(resolve, reject) {
+        let start = new Date();
         let query = `SELECT
         eng.engagement_id,
         eng.engagement_name,
@@ -61,6 +62,9 @@ function get_all_engagemets() {
     LEFT JOIN [KA_profile] as profile ON profile.profile_id = perm.profile_id
     LEFT JOIN [KA_employee] as employee ON employee.email = profile.email`
         dbQueryMethod.query(query).then(result => {
+            let end = new Date();
+            console.log("=====DONE======")
+            console.log(start, end)
             resolve(result)
             return result;
         }).catch(function(error) { reject(error); throw (error); })

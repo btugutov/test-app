@@ -216,15 +216,18 @@
                 <td class="font-weight-bold  text-monospace tr_string">{{user.value.topic}}</td>
                 <td class="text-muted tr_string">{{user.value.start_time | date : "short" }}</td>
                 <td class="text-muted tr_string">
-                  <span *ngIf="user.value.diffTime">{{user.value.stop_time | date: "short" }}</span>
-                  <span *ngIf="!user.value.diffTime">DateTime mismatch</span>
+                  <span *ngIf="user.value.diffTime || user.value.diffTime  == 0">{{user.value.stop_time | date: "short" }}</span>
+                  <span *ngIf="!user.value.diffTime && user.value.diffTime  != 0">DateTime mismatch</span>
                 </td>
                 <td class="text-muted tr_string">
-                  <span *ngIf="user.value.diffTime">{{ user.value.diffTime }}</span>
-                  <span *ngIf="!user.value.diffTime">DateTime mismatch</span>
+                  <span *ngIf="user.value.diffTime || user.value.diffTime  == 0">{{ user.value.diffTime }}</span>
+                  <span *ngIf="!user.value.diffTime && user.value.diffTime  != 0">DateTime mismatch </span>
                 </td>
                 <td class="text-muted tr_string">{{user.value.calculated_score * 100 | number:0}}</td>
-                <td class="text-muted tr_string">{{user.value.grader_full_name}}</td>
+                <td class="text-muted tr_string">
+                  <span *ngIf="user.value.graded || user.value.grader_full_name">{{user.value.grader_full_name}}</span>
+                  <span *ngIf="!user.value.graded">Not graded yet</span>
+                </td>
                 <td class="text-muted tr_string">{{user.value.graded_time | date : "short"}}</td>
                 
                 <td class="text-muted tr_string">

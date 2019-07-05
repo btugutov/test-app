@@ -1,4 +1,7 @@
-<div class="quiz-selection element-animation-fadeIn" align="center" id="quiz_selection">
+<div class="quiz-selection element-animation-fadeIn"  
+    [style.background] = "current_eng && current_eng.background ? 'url('+current_eng.background+')' : 'url(/assets/background.png)'" 
+    style="background-position: bottom 0px right 0px !important; background-repeat: no-repeat !important; background-size: cover !important;"
+    align="center" id="quiz_selection">
     <div *ngIf='ready_bool'>
         <div *ngIf="cats_n_tops_bool == False" style='height: 25%; justify-content: center; display: flex; flex-direction: column; flex-wrap: wrap;'>
             <h1 style="margin-top:200px;">You have no permission to take any quiz...yet. Please contact the training team if you feel this is an error.</h1>

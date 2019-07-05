@@ -8,7 +8,7 @@ const { register_user } = require('../backend/user_register.js');
 // classes
 const { debugLog, getLineNumber, log_event, log_object_parser, dbQueryMethod } = require('../backend/classes.js');
 // methods
-const { get_available_quiz_for_profile_id_MSSQL, get_completed_quiz_categorized_submissions, get_gradable_quiz_submit_id_by_profile_and_topic, get_gradable_quiz_session_by_id, get_table_complete, get_submit_id_from_graded_by, time_now_MSSQL, update_image_base64_MSSQL, get_testable_topics_by_profile_id, get_available_engagements_by_profile_id, get_all_categories_and_topics_by_engagement_id_and_profile_id } = require('../backend/methods.js');
+const { get_available_quiz_for_profile_id_MSSQL, get_completed_quiz_categorized_submissions, get_gradable_quiz_submit_id_by_profile_and_topic, get_gradable_quiz_session_by_id, get_table_complete, get_submit_id_from_graded_by, time_now_MSSQL, update_image_base64_MSSQL, get_testable_topics_by_profile_id, get_available_engagements_by_profile_id, get_all_categories_and_topics_by_engagement_id_and_profile_id, getEngagementByEngId } = require('../backend/methods.js');
 // edit_quiz.js
 const { get_topic_to_edit_MSSQL, get_topic_info_for_editQuizHome, update_topic_main, delete_topic_by_id, get_buckets_by_topic_id, saveOneBucket, create_topic_main, deleteQuiz } = require('../backend/edit_quiz.js');
 // get_User
@@ -308,7 +308,7 @@ module.exports = function (app) {
                                     pass_info[5] = question_id;
                                     params.image_info = '';
                                     if (question['image']) {
-                                        params.image_info = question['base64'];
+                                        params.image_info = unescape(question['base64']);
                                     }
 
                                     res.json({
@@ -322,7 +322,7 @@ module.exports = function (app) {
 
                                         log_event: log_event,
                                         hostname: hostname,
-                                        image_info: anstest[0][question_id]['base64'],
+                                        image_info: unescape(anstest[0][question_id]['base64']),
                                         // turn array into a string that can be used in the 'name' attribute
                                         pass_info: pass_info,
                                         params: params,
@@ -345,7 +345,7 @@ module.exports = function (app) {
                                     hostname: hostname,
                                     // turn array into a string that can be used in the 'name' attribute
                                     pass_info: pass_info.join(),
-                                    image_info: anstest[0][question_id]['base64'],
+                                    image_info: unescape(anstest[0][question_id]['base64']),
                                     params: params
                                 });
                             }
@@ -1210,6 +1210,17 @@ module.exports = function (app) {
             res.json(err);
         })
     });
+    
+    app.post('/api/getEngagementByEngId', (req, res, next) => {
+        getEngagementByEngId(req.body.eng_id).then(response => {
+            res.json(unescapingObj(response));
+        }).catch(function (err) {
+            console.log("ERROR => ", err)
+            res.json(err);
+        })
+        
+    });
+
     
     app.post('/api/saveEngagements', (req, res, next) => {
         let response_message = {

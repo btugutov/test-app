@@ -265,9 +265,9 @@ input.placeAfter {
     align-items: center;
     align-content: center;
     background: url('/assets/background.png');
-    background-position: bottom 0px right 0px;
-    background-repeat: no-repeat;
-    background-size: cover;
+    background-position: bottom 0px right 0px !important;
+    background-repeat: no-repeat !important;
+    background-size: cover !important;
 }
 .default-background{
     background: url('/assets/background.png');
