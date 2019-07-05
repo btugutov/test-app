@@ -19,6 +19,8 @@ export class QuizComponent implements OnInit {
   question = null;
   completed = false;
   completed_link = ``;
+  current_index;
+  total_length;
   constructor(private _ConnectorService: ConnectorService, private location: Location, private _route: ActivatedRoute, private dynamicScriptLoader: DynamicScriptLoaderServiceService) {
     this._route.paramMap.subscribe(params => {
       this.currentEng_id = params.get('eng');
@@ -27,10 +29,10 @@ export class QuizComponent implements OnInit {
       this._ConnectorService.user.subscribe(user => {
         this.currentUser = user;
         if (user) {
-          console.log("USER IS HERE!", this.currentEng_id)
+          // console.log("USER IS HERE!", this.currentEng_id)
         }
         if (user) {
-          console.log("TAKING A QUIZ!")
+          // console.log("TAKING A QUIZ!")
           this.takeQuiz()
         }
       });
@@ -55,6 +57,8 @@ export class QuizComponent implements OnInit {
       this.question = data;
       if (data) {
         console.log(data)
+
+        this.getQuizLength(this.topic_id);
         if (data['completed']) {
           this.completed = true;
           this.completed_link = `/${this.currentEng_id}/home`;
@@ -63,15 +67,50 @@ export class QuizComponent implements OnInit {
         if (this.question.display_type == 4) {
           this.loadScripts()
         }
-        if(this.question.image){
-          if(this.question.base64.split(",").length == 1){
-            this.question.base64 = `data:image/png;base64,${this.question.base64}`
-          }
-          // console.log(this.question.image.base64)
-        }
+        
+        this.reformatQuestion();
+        
       }
     }).catch(function (error) {
       // console.log(error)
+    })
+  }
+  reformatQuestion(){
+    // console.log("reformatting question!", this.question.question_prompt)
+    
+    if(this.question.image_info == null || this.question.image_info == "null"){
+      return;
+    }
+    if(this.question.image){
+      if(this.question.base64.split(",").length == 1){
+        this.question.base64 = `data:image/png;base64,${this.question.base64}`
+      }
+      // console.log(this.question.image.base64)
+    }else if( this.question.image_info){
+      if( this.question.image_info.split(',').length == 1){
+        this.question.image_info = `data:image/png;base64,${ this.question.image_info}`
+      }
+    }
+  }
+  getQuizLength(quiz_id){
+    // console.log("requestion quiz length for ", quiz_id)
+    this._ConnectorService.getQuizLength(quiz_id).then(res => {
+      // console.log("getQuizLength response => ", res)
+      // console.log("this.question_id => ", this.question.question_id)
+      let counter = 0;
+      for(let el in res){
+        if(res[el]['question_id']  ==  this.question.question_id){
+          console.log("found!")
+          this.current_index = counter;
+          this.total_length = Object.keys(res).length;
+          break;
+        }
+        counter++
+      }
+      // console.log("this.current_index =>", this.current_index)
+      // console.log("this.total_length =>", this.total_length)
+    }).catch(function(err){
+      console.log("ERROR =>", err)
     })
   }
   submit() {
@@ -85,12 +124,12 @@ export class QuizComponent implements OnInit {
       }
       // console.log("OBJ =>", obj)
       this._ConnectorService.submitAnswer(this.currentEng_id, obj).then(data => {
-        // console.log(data)
         if (data['completed']) {
           this.completed = true;
           this.completed_link = `/${this.currentEng_id}/home`;
           return;
         }
+        console.log("NEW QUESTION =>",data)
         this.question = data;
         if (data) {
           document.getElementById('manual_input_field')['value'] = '';
@@ -98,6 +137,8 @@ export class QuizComponent implements OnInit {
             this.loadScripts()
           }
         }
+        this.getQuizLength(this.topic_id);
+        this.reformatQuestion();
       }).catch(function (error) {
         console.log(error)
       })
@@ -114,7 +155,7 @@ export class QuizComponent implements OnInit {
           }
         }
         if (!answer) {
-          alert("SELECT ANSWER!!!!!")
+          // alert("SELECT ANSWER!!!!!")
           return
         }
         // console.log("ANSWER =>", answer.id)
@@ -134,6 +175,8 @@ export class QuizComponent implements OnInit {
             if (this.question.display_type == 4) {
               this.loadScripts()
             }
+            this.getQuizLength(this.topic_id);
+            this.reformatQuestion();
           }
         }).catch(function (error) {
           console.log(error)
@@ -150,7 +193,7 @@ export class QuizComponent implements OnInit {
           }
         }
         if (answers.length < 1) {
-          alert("PLEASE CHECK ANYTHING!")
+          // alert("PLEASE CHECK ANYTHING!")
         } else {
           let obj = {
             [this.question.pass_info]: answers,
@@ -168,6 +211,8 @@ export class QuizComponent implements OnInit {
               if (this.question.display_type == 4) {
                 this.loadScripts()
               }
+              this.getQuizLength(this.topic_id);
+              this.reformatQuestion();
             }
           }).catch(function (error) {
             console.log(error)
@@ -177,7 +222,7 @@ export class QuizComponent implements OnInit {
       if (this.question.display_type == 3) {
         let inputs = document.getElementById("select_input")
         if (!inputs['value'] || inputs['value'].length < 1) {
-          alert('please select answer')
+          // alert('please select answer')
           return;
         }
         let obj = {
@@ -196,6 +241,8 @@ export class QuizComponent implements OnInit {
             if (this.question.display_type == 4) {
               this.loadScripts()
             }
+            this.getQuizLength(this.topic_id);
+            this.reformatQuestion();
           }
         }).catch(function (error) {
           console.log(error)
@@ -212,7 +259,7 @@ export class QuizComponent implements OnInit {
           }
         }
         if (Object.keys(submit_answers).length < 1) {
-          alert('please answer!')
+          // alert('please answer!')
           return;
         }
         submit_answers['drag_and_drop'] = true;
@@ -244,6 +291,8 @@ export class QuizComponent implements OnInit {
             if (this.question.display_type == 4) {
               this.loadScripts()
             }
+            this.getQuizLength(this.topic_id);
+            this.reformatQuestion();
           }
         }).catch(function (error) {
           console.log(error)

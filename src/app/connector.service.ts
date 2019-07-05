@@ -133,6 +133,23 @@ export class ConnectorService {
       );
     })
   }
+
+  getQuizLength(quiz_id){
+    let that = this;
+    let obj ={
+      quiz_id: quiz_id
+    }
+    return new Promise(function (resolve, reject) {
+      that.http.post(`/api/getQuizLength`, obj).subscribe( // /3/topic/5/user/Bazyr-Tugutovs-Macbook-Pro.local/quiz/1/question/1
+        res => {
+          resolve(res)
+        },
+        err => {
+          reject(err)
+        }
+      );
+    })
+  }
   // ==============================================================================
 
   // CATEGORIES FUNCTIONS =========================================================

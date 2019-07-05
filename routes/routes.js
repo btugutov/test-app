@@ -14,7 +14,7 @@ const { get_topic_to_edit_MSSQL, get_topic_info_for_editQuizHome, update_topic_m
 // get_User
 const { get_User } = require('../backend/get_user.js');
 // get_Quiz
-const { get_Quiz, get_quiz_name_by_topic_id } = require('../backend/get_quiz.js');
+const { get_Quiz, get_quiz_name_by_topic_id, getQuizLength } = require('../backend/get_quiz.js');
 // edit permissions
 const { update_permission_quiz_main, update_permission_admins_main, get_all_users_admin_permission_edit, get_all_users_quiz_permission_edit } = require('../backend/edit_permission.js');
 // grade_quiz
@@ -46,8 +46,6 @@ function preload_block(res, email, topic_id, engagement_id) {
                     resolve(currentUser)
                     return currentUser;
                 } else {
-                    //debugLog("currentUser")
-                    //console.log(currentUser)
                     // if User is not trying to take a quiz don't load get_quiz
 
                     if (undefined == topic_id || (topic_id == "unknown" && !currentUser.active_topic_bool)) {
@@ -312,6 +310,7 @@ module.exports = function (app) {
                                     }
 
                                     res.json({
+                                        returnObj: returnObj,
                                         topic_name: topic_name,
                                         question_id: question_id,
                                         answer_keys: Object.keys(anstest[0][question_id]['answer_prompt']),
@@ -333,6 +332,7 @@ module.exports = function (app) {
                             } else {
                                 let values = questionRenderOderAnswers(question);
                                 res.json({
+                                    returnObj: returnObj,
                                     topic_name: topic_name,
                                     question_id: question_id,
                                     answer_keys: values.answer_keys, //Object.keys(anstest[0][question_id]['answer_prompt']),
@@ -473,6 +473,12 @@ module.exports = function (app) {
                 error_handler(error, res, getLineNumber())
             });
     });
+
+    app.post('/api/getQuizLength', (req, res) => {
+        getQuizLength(req.body.quiz_id).then(quiz => {
+            res.json(switchKey(quiz, 'question_id' ) )
+        })
+    })
 
     // END OF TAKING QUIZ FUNCTIONS ===========================================
     // ************************************************************************

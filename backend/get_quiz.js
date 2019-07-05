@@ -269,11 +269,30 @@ function get_quiz_name_by_topic_id(topic_id) {
         throw error;
     })
 };
+
+function getQuizLength(quiz_id) {
+    let functionName = 'getQuizLength';
+    return new Promise(function(resolve, reject) {
+        let profileQuery = `SELECT qq.question_id FROM [dbo].[KA_quiz_questions] AS qq JOIN KA_questions AS q ON qq.question_id = q.question_id  WHERE qq.quiz_id = '${quiz_id}'`;
+        return dbQueryMethod.query(profileQuery).then(result => {
+            resolve(result)
+            return result;
+        }).catch(function(error) {
+            reject(error)
+            log_event('WARNING', error, functionName);
+            throw error;
+        })
+    }).catch(function(error) {
+        log_event('WARNING', error, functionName);
+        throw error;
+    })
+};
 /* Public / Export functions */
 
 module.exports = {
     get_Quiz: get_Quiz,
-    get_quiz_name_by_topic_id: get_quiz_name_by_topic_id
+    get_quiz_name_by_topic_id: get_quiz_name_by_topic_id,
+    getQuizLength: getQuizLength
 };
 
 //

@@ -4,14 +4,20 @@
             <h1>Quiz for {{question.topic_name.topic}}</h1>
         </div>
     </div>
+    <div class="row align-items-center" *ngIf="current_index != null && total_length">
+        <div class=" progress text-monospace"  style="width: 350px; margin:10px auto; color: black;">
+            <div  class="progress-bar " role="progressbar" [style.width.%]="( (current_index/total_length) * 100)" aria-valuenow="41" aria-valuemin="0" aria-valuemax="100" ></div>
+            {{current_index+1}}/{{total_length}}
+        </div>
+    </div>
     <div *ngIf="question.image_info && question.image_info != 'null'" class="row">
             <div class="col" style="display: flex;">
-                <img class="element-animation-fadeIn image_question img-fluid" src="{{question.image_info}}" style="cursor: context-menu; width: auto; margin: 0px auto;" />
+                <img class="element-animation-fadeIn img-fluid" src="{{question.image_info}}" style="width: auto; margin: 0px auto;" />
             </div>
         </div>
     <div class="form-row border_info">
         <div class="col-6 question" style="display: flex; align-items: center; justify-content: center;">
-            <h4>{{question.question_prompt}}</h4>
+            <h4 style="white-space: pre-wrap">{{question.question_prompt}}</h4>
         </div>
         <div class="col-6">
             <div *ngIf="question.question_type == 2">
@@ -57,15 +63,16 @@
                 <div *ngIf="question.display_type == 4" id="dragAndDrop">
                     <!-- drag and drop -->
                     <div style="width:100%;display: flex; flex-direction: column; flex-wrap: nowrap; justify-content: space-around; align-items: center; align-content: center;" id="dragAndDropContent">
-                        <ol data-draggable="target" style="width: 50%">
-                            <li *ngFor="let c of question.answer_keys" data-draggable="item" class="bucket_question_element bucket_question_choice" id="{{c}}">
+                        Please drag and drop items to the right buckets.
+                        <ul data-draggable="target" class="shadow" style="width: 550px; height: 350px;">
+                            <li *ngFor="let c of question.answer_keys" data-draggable="item" class="bucket_question_element bucket_question_choice list-group-item grab text-monospace text-center" style="font-size: 24px;" id="{{c}}">
                                 {{question.answer_prompt[c]}}</li>
-                        </ol>
+                            </ul>
 
                         <div style="width: 100%; display: flex; flex-direction: row; flex-wrap: wrap; justify-content: space-around; align-items: baseline; align-content: center;">
-                            <div *ngFor="let b of question.bucket_list | keyvalue" class="bucket_question_element bucket_question_bucket droppable unselectable" style="">
+                            <div *ngFor="let b of question.bucket_list | keyvalue" class="bucket_question_element bucket_question_bucket droppable unselectable" style="width: 350px;">
                                 <h4 align="center">{{b.value.bucket_name}}</h4>
-                                <ol class="bucket" data-draggable="target" id='{{b.value.bucket_id}}'></ol>
+                                <ol class="bucket shadow" data-draggable="target" id='{{b.value.bucket_id}}'></ol>
                             </div>
                         </div>
                     </div>

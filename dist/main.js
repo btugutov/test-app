@@ -5307,6 +5307,21 @@ var ConnectorService = /** @class */ (function () {
             });
         });
     };
+    ConnectorService.prototype.getQuizLength = function (quiz_id) {
+        var that = this;
+        var obj = {
+            quiz_id: quiz_id
+        };
+        return new Promise(function (resolve, reject) {
+            that.http.post("/api/getQuizLength", obj).subscribe(// /3/topic/5/user/Bazyr-Tugutovs-Macbook-Pro.local/quiz/1/question/1
+            function (// /3/topic/5/user/Bazyr-Tugutovs-Macbook-Pro.local/quiz/1/question/1
+            res) {
+                resolve(res);
+            }, function (err) {
+                reject(err);
+            });
+        });
+    };
     // ==============================================================================
     // CATEGORIES FUNCTIONS =========================================================
     ConnectorService.prototype.getAllCategoriesAndTopicsByProfileId = function (profile_id) {
@@ -7278,7 +7293,7 @@ module.exports = ".footer__btn-bp {\n    color: #343945;\n    float: left;\n    
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div *ngIf=\"question && !completed\">\n    <div class=\"row align-items-center\">\n        <div class=\"col text-center\">\n            <h1>Quiz for {{question.topic_name.topic}}</h1>\n        </div>\n    </div>\n    <div *ngIf=\"question.image_info && question.image_info != 'null'\" class=\"row\">\n            <div class=\"col\" style=\"display: flex;\">\n                <img class=\"element-animation-fadeIn image_question img-fluid\" src=\"{{question.image_info}}\" style=\"cursor: context-menu; width: auto; margin: 0px auto;\" />\n            </div>\n        </div>\n    <div class=\"form-row border_info\">\n        <div class=\"col-6 question\" style=\"display: flex; align-items: center; justify-content: center;\">\n            <h4>{{question.question_prompt}}</h4>\n        </div>\n        <div class=\"col-6\">\n            <div *ngIf=\"question.question_type == 2\">\n                <!-- manual input  -->\n                <div class=\"form-check\">\n                    <textarea class=\"element-animation-fadeIn form-control\" id=\"manual_input_field\" rows=\"3\" required=\"true\" maxlength=\"500\" autofocus=\"autofocus\"></textarea>\n                </div>\n            </div>\n            <div *ngIf=\"question.question_type != 2\">\n                <div *ngIf=\"question.display_type == 1\">\n                    <!-- radio  -->\n                    <fieldset>\n                        <div *ngFor=\"let q of question.answer_keys; index as i\" class=\"form-check\">\n                            <label class=\"col-form-label element-animation{{i + 1}}\" for=\"radio{{i}}\">\n                                <input class=\"placeAfter radio_input\" id=\"{{q}}\" name=\"radio_answer\" type=\"radio\"\n                                    required=\"true\" value={{question.answer_prompt[i]}} />{{question.answer_prompt[i]}}\n                            </label>\n                        </div>\n                    </fieldset>\n                </div>\n                <div *ngIf=\"question.display_type == 2\">\n                    <!-- check  -->\n                    <fieldset>\n                        <div *ngFor=\"let q of question.answer_keys; index as i\" class=\"form-check\">\n                            <label class=\"col-form-label element-animation{{i + 1}}\" for=\"radio{{i}}\">\n                                <input class=\"placeAfter checkbox_input\" id=\"{{q}}\" type=\"checkbox\" required=\"true\"\n                                    value={{question.answer_prompt[i]}}>{{question.answer_prompt[i]}}\n                            </label>\n                        </div>\n                    </fieldset>\n                </div>\n                <div *ngIf=\"question.display_type == 3\">\n                    <!-- select -->\n                    <div class=\"form-check\">\n                        <select class=\"element-animation-fadeIn form-control\" id=\"select_input\" required=\"true\">\n                            <option value=\"\">Select One</option>\n                            <option *ngFor=\"let q of question.answer_keys; index as i\" value={{q}}>\n                                {{question.answer_prompt[i]}}</option>\n                            <!-- option(id = id_att value= value_att[index])-->\n                        </select>\n                    </div>\n                </div>\n                <div *ngIf=\"question.display_type == 4\" id=\"dragAndDrop\">\n                    <!-- drag and drop -->\n                    <div style=\"width:100%;display: flex; flex-direction: column; flex-wrap: nowrap; justify-content: space-around; align-items: center; align-content: center;\" id=\"dragAndDropContent\">\n                        <ol data-draggable=\"target\" style=\"width: 50%\">\n                            <li *ngFor=\"let c of question.answer_keys\" data-draggable=\"item\" class=\"bucket_question_element bucket_question_choice\" id=\"{{c}}\">\n                                {{question.answer_prompt[c]}}</li>\n                        </ol>\n\n                        <div style=\"width: 100%; display: flex; flex-direction: row; flex-wrap: wrap; justify-content: space-around; align-items: baseline; align-content: center;\">\n                            <div *ngFor=\"let b of question.bucket_list | keyvalue\" class=\"bucket_question_element bucket_question_bucket droppable unselectable\" style=\"\">\n                                <h4 align=\"center\">{{b.value.bucket_name}}</h4>\n                                <ol class=\"bucket\" data-draggable=\"target\" id='{{b.value.bucket_id}}'></ol>\n                            </div>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n    <div class=\"form-row justify-content-center\">\n        <!-- <button class=\"btn btn-lg btn-success btn-action-borderless shadow\" id=\"nextButton\" type=\"button\"  style=\"width:200px;\">Next</button> -->\n        <a class=\"footer__btn-bp\" (click)='submit()' data-footer-link=\"2\">\n            <span>Next</span>\n            <div class=\"footer__btn-bp-line\">\n                <div class=\"footer__btn-bp-line-inner\"></div>\n            </div>\n        </a>\n    </div>\n    \n</div>\n<div *ngIf=\"completed\">\n    <div class=\"jumbotron text-xs-center col element-animation-fadeIn\" align=\"center\" style=\"background: white; margin-top: 10%;\" id=\"body_fadeOut\">\n        <h1 class=\"display-3\">Thank You!</h1>\n        <p class=\"lead\"><strong>You have completed Skill Assessment Quiz</strong> for further instructions please contact your TL or instructor.</p>\n        <div class=\"form-row justify-content-center\">\n            <a class=\"footer__btn-bp\" [routerLink]=\"[completed_link]\" data-footer-link=\"2\">\n                    <span>Back to homepage</span>\n                    <div class=\"footer__btn-bp-line\">\n                        <div class=\"footer__btn-bp-line-inner\"></div>\n                    </div>\n                </a>\n        </div>\n    </div>\n</div>"
+module.exports = "<div *ngIf=\"question && !completed\">\n    <div class=\"row align-items-center\">\n        <div class=\"col text-center\">\n            <h1>Quiz for {{question.topic_name.topic}}</h1>\n        </div>\n    </div>\n    <div class=\"row align-items-center\" *ngIf=\"current_index != null && total_length\">\n        <div class=\" progress text-monospace\"  style=\"width: 350px; margin:10px auto; color: black;\">\n            <div  class=\"progress-bar \" role=\"progressbar\" [style.width.%]=\"( (current_index/total_length) * 100)\" aria-valuenow=\"41\" aria-valuemin=\"0\" aria-valuemax=\"100\" ></div>\n            {{current_index+1}}/{{total_length}}\n        </div>\n    </div>\n    <div *ngIf=\"question.image_info && question.image_info != 'null'\" class=\"row\">\n            <div class=\"col\" style=\"display: flex;\">\n                <img class=\"element-animation-fadeIn img-fluid\" src=\"{{question.image_info}}\" style=\"width: auto; margin: 0px auto;\" />\n            </div>\n        </div>\n    <div class=\"form-row border_info\">\n        <div class=\"col-6 question\" style=\"display: flex; align-items: center; justify-content: center;\">\n            <h4 style=\"white-space: pre-wrap\">{{question.question_prompt}}</h4>\n        </div>\n        <div class=\"col-6\">\n            <div *ngIf=\"question.question_type == 2\">\n                <!-- manual input  -->\n                <div class=\"form-check\">\n                    <textarea class=\"element-animation-fadeIn form-control\" id=\"manual_input_field\" rows=\"3\" required=\"true\" maxlength=\"500\" autofocus=\"autofocus\"></textarea>\n                </div>\n            </div>\n            <div *ngIf=\"question.question_type != 2\">\n                <div *ngIf=\"question.display_type == 1\">\n                    <!-- radio  -->\n                    <fieldset>\n                        <div *ngFor=\"let q of question.answer_keys; index as i\" class=\"form-check\">\n                            <label class=\"col-form-label element-animation{{i + 1}}\" for=\"radio{{i}}\">\n                                <input class=\"placeAfter radio_input\" id=\"{{q}}\" name=\"radio_answer\" type=\"radio\"\n                                    required=\"true\" value={{question.answer_prompt[i]}} />{{question.answer_prompt[i]}}\n                            </label>\n                        </div>\n                    </fieldset>\n                </div>\n                <div *ngIf=\"question.display_type == 2\">\n                    <!-- check  -->\n                    <fieldset>\n                        <div *ngFor=\"let q of question.answer_keys; index as i\" class=\"form-check\">\n                            <label class=\"col-form-label element-animation{{i + 1}}\" for=\"radio{{i}}\">\n                                <input class=\"placeAfter checkbox_input\" id=\"{{q}}\" type=\"checkbox\" required=\"true\"\n                                    value={{question.answer_prompt[i]}}>{{question.answer_prompt[i]}}\n                            </label>\n                        </div>\n                    </fieldset>\n                </div>\n                <div *ngIf=\"question.display_type == 3\">\n                    <!-- select -->\n                    <div class=\"form-check\">\n                        <select class=\"element-animation-fadeIn form-control\" id=\"select_input\" required=\"true\">\n                            <option value=\"\">Select One</option>\n                            <option *ngFor=\"let q of question.answer_keys; index as i\" value={{q}}>\n                                {{question.answer_prompt[i]}}</option>\n                            <!-- option(id = id_att value= value_att[index])-->\n                        </select>\n                    </div>\n                </div>\n                <div *ngIf=\"question.display_type == 4\" id=\"dragAndDrop\">\n                    <!-- drag and drop -->\n                    <div style=\"width:100%;display: flex; flex-direction: column; flex-wrap: nowrap; justify-content: space-around; align-items: center; align-content: center;\" id=\"dragAndDropContent\">\n                        Please drag and drop items to the right buckets.\n                        <ul data-draggable=\"target\" class=\"shadow\" style=\"width: 550px; height: 350px;\">\n                            <li *ngFor=\"let c of question.answer_keys\" data-draggable=\"item\" class=\"bucket_question_element bucket_question_choice list-group-item grab text-monospace text-center\" style=\"font-size: 24px;\" id=\"{{c}}\">\n                                {{question.answer_prompt[c]}}</li>\n                            </ul>\n\n                        <div style=\"width: 100%; display: flex; flex-direction: row; flex-wrap: wrap; justify-content: space-around; align-items: baseline; align-content: center;\">\n                            <div *ngFor=\"let b of question.bucket_list | keyvalue\" class=\"bucket_question_element bucket_question_bucket droppable unselectable\" style=\"width: 350px;\">\n                                <h4 align=\"center\">{{b.value.bucket_name}}</h4>\n                                <ol class=\"bucket shadow\" data-draggable=\"target\" id='{{b.value.bucket_id}}'></ol>\n                            </div>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n    <div class=\"form-row justify-content-center\">\n        <!-- <button class=\"btn btn-lg btn-success btn-action-borderless shadow\" id=\"nextButton\" type=\"button\"  style=\"width:200px;\">Next</button> -->\n        <a class=\"footer__btn-bp\" (click)='submit()' data-footer-link=\"2\">\n            <span>Next</span>\n            <div class=\"footer__btn-bp-line\">\n                <div class=\"footer__btn-bp-line-inner\"></div>\n            </div>\n        </a>\n    </div>\n    \n</div>\n<div *ngIf=\"completed\">\n    <div class=\"jumbotron text-xs-center col element-animation-fadeIn\" align=\"center\" style=\"background: white; margin-top: 10%;\" id=\"body_fadeOut\">\n        <h1 class=\"display-3\">Thank You!</h1>\n        <p class=\"lead\"><strong>You have completed Skill Assessment Quiz</strong> for further instructions please contact your TL or instructor.</p>\n        <div class=\"form-row justify-content-center\">\n            <a class=\"footer__btn-bp\" [routerLink]=\"[completed_link]\" data-footer-link=\"2\">\n                    <span>Back to homepage</span>\n                    <div class=\"footer__btn-bp-line\">\n                        <div class=\"footer__btn-bp-line-inner\"></div>\n                    </div>\n                </a>\n        </div>\n    </div>\n</div>"
 
 /***/ }),
 
@@ -7326,10 +7341,10 @@ var QuizComponent = /** @class */ (function () {
             _this._ConnectorService.user.subscribe(function (user) {
                 _this.currentUser = user;
                 if (user) {
-                    console.log("USER IS HERE!", _this.currentEng_id);
+                    // console.log("USER IS HERE!", this.currentEng_id)
                 }
                 if (user) {
-                    console.log("TAKING A QUIZ!");
+                    // console.log("TAKING A QUIZ!")
                     _this.takeQuiz();
                 }
             });
@@ -7352,6 +7367,7 @@ var QuizComponent = /** @class */ (function () {
             _this.question = data;
             if (data) {
                 console.log(data);
+                _this.getQuizLength(_this.topic_id);
                 if (data['completed']) {
                     _this.completed = true;
                     _this.completed_link = "/" + _this.currentEng_id + "/home";
@@ -7360,15 +7376,49 @@ var QuizComponent = /** @class */ (function () {
                 if (_this.question.display_type == 4) {
                     _this.loadScripts();
                 }
-                if (_this.question.image) {
-                    if (_this.question.base64.split(",").length == 1) {
-                        _this.question.base64 = "data:image/png;base64," + _this.question.base64;
-                    }
-                    // console.log(this.question.image.base64)
-                }
+                _this.reformatQuestion();
             }
         }).catch(function (error) {
             // console.log(error)
+        });
+    };
+    QuizComponent.prototype.reformatQuestion = function () {
+        // console.log("reformatting question!", this.question.question_prompt)
+        if (this.question.image_info == null || this.question.image_info == "null") {
+            return;
+        }
+        if (this.question.image) {
+            if (this.question.base64.split(",").length == 1) {
+                this.question.base64 = "data:image/png;base64," + this.question.base64;
+            }
+            // console.log(this.question.image.base64)
+        }
+        else if (this.question.image_info) {
+            if (this.question.image_info.split(',').length == 1) {
+                this.question.image_info = "data:image/png;base64," + this.question.image_info;
+            }
+        }
+    };
+    QuizComponent.prototype.getQuizLength = function (quiz_id) {
+        var _this = this;
+        // console.log("requestion quiz length for ", quiz_id)
+        this._ConnectorService.getQuizLength(quiz_id).then(function (res) {
+            // console.log("getQuizLength response => ", res)
+            // console.log("this.question_id => ", this.question.question_id)
+            var counter = 0;
+            for (var el in res) {
+                if (res[el]['question_id'] == _this.question.question_id) {
+                    console.log("found!");
+                    _this.current_index = counter;
+                    _this.total_length = Object.keys(res).length;
+                    break;
+                }
+                counter++;
+            }
+            // console.log("this.current_index =>", this.current_index)
+            // console.log("this.total_length =>", this.total_length)
+        }).catch(function (err) {
+            console.log("ERROR =>", err);
         });
     };
     QuizComponent.prototype.submit = function () {
@@ -7384,12 +7434,12 @@ var QuizComponent = /** @class */ (function () {
                 _a);
             // console.log("OBJ =>", obj)
             this._ConnectorService.submitAnswer(this.currentEng_id, obj).then(function (data) {
-                // console.log(data)
                 if (data['completed']) {
                     _this.completed = true;
                     _this.completed_link = "/" + _this.currentEng_id + "/home";
                     return;
                 }
+                console.log("NEW QUESTION =>", data);
                 _this.question = data;
                 if (data) {
                     document.getElementById('manual_input_field')['value'] = '';
@@ -7397,6 +7447,8 @@ var QuizComponent = /** @class */ (function () {
                         _this.loadScripts();
                     }
                 }
+                _this.getQuizLength(_this.topic_id);
+                _this.reformatQuestion();
             }).catch(function (error) {
                 console.log(error);
             });
@@ -7414,7 +7466,7 @@ var QuizComponent = /** @class */ (function () {
                     }
                 }
                 if (!answer) {
-                    alert("SELECT ANSWER!!!!!");
+                    // alert("SELECT ANSWER!!!!!")
                     return;
                 }
                 // console.log("ANSWER =>", answer.id)
@@ -7434,6 +7486,8 @@ var QuizComponent = /** @class */ (function () {
                         if (_this.question.display_type == 4) {
                             _this.loadScripts();
                         }
+                        _this.getQuizLength(_this.topic_id);
+                        _this.reformatQuestion();
                     }
                 }).catch(function (error) {
                     console.log(error);
@@ -7450,7 +7504,7 @@ var QuizComponent = /** @class */ (function () {
                     }
                 }
                 if (answers.length < 1) {
-                    alert("PLEASE CHECK ANYTHING!");
+                    // alert("PLEASE CHECK ANYTHING!")
                 }
                 else {
                     var obj = (_c = {},
@@ -7469,6 +7523,8 @@ var QuizComponent = /** @class */ (function () {
                             if (_this.question.display_type == 4) {
                                 _this.loadScripts();
                             }
+                            _this.getQuizLength(_this.topic_id);
+                            _this.reformatQuestion();
                         }
                     }).catch(function (error) {
                         console.log(error);
@@ -7478,7 +7534,7 @@ var QuizComponent = /** @class */ (function () {
             if (this.question.display_type == 3) {
                 var inputs = document.getElementById("select_input");
                 if (!inputs['value'] || inputs['value'].length < 1) {
-                    alert('please select answer');
+                    // alert('please select answer')
                     return;
                 }
                 var obj = (_d = {},
@@ -7497,6 +7553,8 @@ var QuizComponent = /** @class */ (function () {
                         if (_this.question.display_type == 4) {
                             _this.loadScripts();
                         }
+                        _this.getQuizLength(_this.topic_id);
+                        _this.reformatQuestion();
                     }
                 }).catch(function (error) {
                     console.log(error);
@@ -7513,7 +7571,7 @@ var QuizComponent = /** @class */ (function () {
                     }
                 }
                 if (Object.keys(submit_answers).length < 1) {
-                    alert('please answer!');
+                    // alert('please answer!')
                     return;
                 }
                 submit_answers['drag_and_drop'] = true;
@@ -7544,6 +7602,8 @@ var QuizComponent = /** @class */ (function () {
                         if (_this.question.display_type == 4) {
                             _this.loadScripts();
                         }
+                        _this.getQuizLength(_this.topic_id);
+                        _this.reformatQuestion();
                     }
                 }).catch(function (error) {
                     console.log(error);

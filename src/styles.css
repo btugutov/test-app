@@ -1124,6 +1124,10 @@ a.disabled {
     border-radius: 0.2em;
     background: white;
     color: #555;
+    transition: all 0.3s ease;
+}
+[data-draggable="target"]:hover {
+    border: 2px solid #4f91cd;
 }
 
 
@@ -2093,3 +2097,4 @@ a.disabled {
     box-shadow: 5px 10px 18px #888888;
     background: white
 }
+.grab {cursor: -webkit-grab; cursor: grab;}
