@@ -208,18 +208,33 @@ export class AdminEditquizComponent implements OnInit {
     console.log("=======================FETCHING CHANGES=======================")
     console.log(quiz)
     console.log("==============================================================")
-    this._ConnectorService.saveEditedQuiz(object_to_send, this.currentUser.email).then(res => {
-      console.log("res =>", res)
-      this.submit_ready = false;
-      if (res['status'] == 'success') {
-        this.submit_status.display = true;
-        this.submit_status.status = 'success'
-      } else {
-        this.submit_status.display = true;
-        this.submit_status.status = 'fail';
-        this.submit_status.message = res['message'];
-      }
-    })
+    if(this.topic_soft_delete){
+      this._ConnectorService.disableQuiz(this.topic_id, this.currentUser.email).then(res => {
+        console.log("res =>", res)
+        this.submit_ready = false;
+        if (res['status'] == 'success') {
+          this.submit_status.display = true;
+          this.submit_status.status = 'success'
+        } else {
+          this.submit_status.display = true;
+          this.submit_status.status = 'fail';
+          this.submit_status.message = res['message'];
+        }
+      })
+    }else{
+      this._ConnectorService.saveEditedQuiz(object_to_send, this.currentUser.email).then(res => {
+        console.log("res =>", res)
+        this.submit_ready = false;
+        if (res['status'] == 'success') {
+          this.submit_status.display = true;
+          this.submit_status.status = 'success'
+        } else {
+          this.submit_status.display = true;
+          this.submit_status.status = 'fail';
+          this.submit_status.message = res['message'];
+        }
+      })
+    }
   }
 
 
@@ -662,10 +677,12 @@ export class AdminEditquizComponent implements OnInit {
         this._ConnectorService.saveOneBucket(obj).then(res =>{
           console.log("saveOneBucket response =>", res)
           if(res['status'] == 'success' && el.slice(0,3)=="new"){
+            console.log(`bukcet ${el} will have ID => `, res['body']['recordsets'][0][0][''])
+            let new_id = res['body']['recordsets'][0][0][''];
             this.bucket_list[el].confirmed = true;
-            this.bucket_list[el].bucket_id = res['body']['recordsets'][0][0][''];
-            this.bucket_list[res['body']] = cloneDeep(this.bucket_list[el]);
-            this.bucket_list_original[res['body']] = cloneDeep(this.bucket_list[el]);
+            this.bucket_list[el].bucket_id = new_id;
+            this.bucket_list[new_id] = cloneDeep(this.bucket_list[el]);
+            this.bucket_list_original[new_id] = cloneDeep(this.bucket_list[el]);
             delete this.bucket_list[el];
           }else if(res['status'] == 'success' && el.slice(0,3)!="new"){
             if(this.bucket_list[el]['soft_delete']){
@@ -674,6 +691,7 @@ export class AdminEditquizComponent implements OnInit {
             }
             this.bucket_list_original[el] = this.bucket_list[el];
           }
+          console.log(this.bucket_list)
         }).catch(function(err){
           console.log("ERROR =>", err)
         })
@@ -730,7 +748,7 @@ export class AdminEditquizComponent implements OnInit {
       'status': "success",
       'body': {}
     }
-    if(this.list_of_questions[id]['question_soft_delete'] || this.list_of_questions[id]['question_hard_delete']){
+    if(this.list_of_questions[id]['question_soft_delete'] || this.list_of_questions[id]['question_hard_delete'] || this.topic_soft_delete){
       return res;
     }
     let target = this.list_of_questions[id];

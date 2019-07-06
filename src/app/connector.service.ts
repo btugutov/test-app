@@ -388,6 +388,23 @@ export class ConnectorService {
       );
     })
   }
+  disableQuiz(quiz_id, email){
+    var that = this;
+    return new Promise(function (resolve, reject) {
+      let obj = {
+        'email': email,
+        'quiz_id': quiz_id
+      }
+      that.http.post('/api/disableQuiz', obj).subscribe(
+        res => {
+          resolve(res)
+        },
+        err => {
+          reject(err)
+        }
+      );
+    })
+  }
   deleteQuiz(quiz, email) {
     var that = this;
     return new Promise(function (resolve, reject) {

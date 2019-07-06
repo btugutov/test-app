@@ -10,7 +10,7 @@ function get_topic_table_by_engagement(engagement_id) {
     return new Promise(function(resolve, reject) {
         let image_query = `SELECT * 
             FROM [dbo].[KA_test_topic] 
-            WHERE engagement_id = ${engagement_id}`;
+            WHERE engagement_id = ${engagement_id} AND soft_delete = 0`;
         return dbQueryMethod.query(image_query).then(result => {
             resolve(result)
             return result;

@@ -10,7 +10,7 @@ const { debugLog, getLineNumber, log_event, log_object_parser, dbQueryMethod } =
 // methods
 const { get_available_quiz_for_profile_id_MSSQL, get_completed_quiz_categorized_submissions, get_gradable_quiz_submit_id_by_profile_and_topic, get_gradable_quiz_session_by_id, get_table_complete, get_submit_id_from_graded_by, time_now_MSSQL, update_image_base64_MSSQL, get_testable_topics_by_profile_id, get_available_engagements_by_profile_id, get_all_categories_and_topics_by_engagement_id_and_profile_id, getEngagementByEngId } = require('../backend/methods.js');
 // edit_quiz.js
-const { get_topic_to_edit_MSSQL, get_topic_info_for_editQuizHome, update_topic_main, delete_topic_by_id, get_buckets_by_topic_id, saveOneBucket, create_topic_main, deleteQuiz } = require('../backend/edit_quiz.js');
+const { get_topic_to_edit_MSSQL, get_topic_info_for_editQuizHome, update_topic_main, delete_topic_by_id, get_buckets_by_topic_id, saveOneBucket, create_topic_main, deleteQuiz, disableQuiz } = require('../backend/edit_quiz.js');
 // get_User
 const { get_User } = require('../backend/get_user.js');
 // get_Quiz
@@ -1153,6 +1153,30 @@ module.exports = function (app) {
                 let quiz = returnObj['quiz']
                 // var submitted_quiz = JSON.parse(Object.keys(req.body)) // quiz comes escaped
                 deleteQuiz(req.body.quiz, currentUser.profile_id)
+                    response_message.status = 'success'
+                    res.json(response_message)
+            })
+    })
+    app.post('/api/disableQuiz', (req, res, next) => {
+
+        console.log("================================!================================");
+        console.log(Object.keys(req.body))
+        console.log("================================!================================");
+        let response_message = {
+            'status': 'failed',
+            'message': ''
+        }
+        preload_block(res, req.body.email, undefined, undefined)
+            .catch(function (error) {
+                debugLog("ERROR HERE" + error);
+                response_message.message = error;
+                res.json(response_message);
+            })
+            .then(returnObj => {
+                let currentUser = returnObj['currentUser']
+                let quiz = returnObj['quiz']
+                // var submitted_quiz = JSON.parse(Object.keys(req.body)) // quiz comes escaped
+                disableQuiz(req.body.quiz_id, currentUser.profile_id)
                     response_message.status = 'success'
                     res.json(response_message)
             })

@@ -1358,7 +1358,8 @@ function update_topic_main_LOOP(obj, i, edit_by, obj_topic_id, bucket_list, buck
                                 try {
                                     for (let index in Object.keys(obj['answer_prompt'])) {
                                         let current_index = Object.keys(obj['answer_prompt'])[index]
-    
+                                        console.log("Working on answer", current_index)
+                                        console.log("if there's bucket match, then it should be here =>", obj['answer_bucket_id'][current_index])
                                         let answer_bucket_id;
                                         let answer_correct;
                                         let answer_sort;
@@ -1374,10 +1375,11 @@ function update_topic_main_LOOP(obj, i, edit_by, obj_topic_id, bucket_list, buck
                                                     answer_bucket_id = null;
                                                 } else {
                                                     console.log("obj['answer_bucket_id'][current_index] =>", obj['answer_bucket_id'][current_index])
-                                                    if(bucket_ids && bucket_ids[obj['answer_bucket_id'][current_index]]){
-                                                        answer_bucket_id = bucket_ids[obj['answer_bucket_id'][current_index]]
-                                                        console.log("thereby, answer_bucket_id is => ", answer_bucket_id)
-                                                    }
+                                                    answer_bucket_id = obj['answer_bucket_id'][current_index]
+                                                    // if(bucket_ids && bucket_ids[obj['answer_bucket_id'][current_index]]){
+                                                    //     answer_bucket_id = bucket_ids[obj['answer_bucket_id'][current_index]]
+                                                    //     console.log("thereby, answer_bucket_id is => ", answer_bucket_id)
+                                                    // }
                                                     // let test = String(obj['answer_bucket_id'][current_index]);
                                                     // if (test.includes('new')) {
                                                     //     let bucket_name = bucket_list[obj['answer_bucket_id'][current_index]]
@@ -1876,6 +1878,22 @@ function deleteQuiz(quiz){
     delete_topic_by_id(quiz.topic_id)
     delete_buckets_by_topic_id(quiz.topic_id)
 }
+function disableQuiz(topic_id){
+    let functionName = 'disableQuiz';
+    return new Promise(function(resolve, reject) {
+        let query = `UPDATE KA_test_topic  SET soft_delete = 1
+        WHERE topic_id = ${topic_id}`;
+        dbQueryMethod.query(query).then(result => {
+            console.log(`question ${el} is deleted`)
+            resolve(result)
+            return result;
+        }).catch(function(error) { reject(error); throw (error); })
+    }).catch(function(error) {
+        log_event('WARNING', error, functionName);
+        reject(error);
+        throw (error);
+    })
+}
 function delete_topic_by_id(topic_id){
     let functionName = 'delete_topic_by_id';
     return new Promise(function(resolve, reject) {
@@ -1987,7 +2005,8 @@ module.exports = {
     get_buckets_by_topic_id: get_buckets_by_topic_id,
     saveOneBucket: saveOneBucket,
     create_topic_main:create_topic_main,
-    deleteQuiz: deleteQuiz
+    deleteQuiz: deleteQuiz,
+    disableQuiz: disableQuiz
 };
 
 /*
