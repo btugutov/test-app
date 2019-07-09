@@ -137,6 +137,10 @@ function create_params_object(currentUser) {
     }
 }
 
+function logEvent(func_name, obj, status){
+    console.log(`${func_name} => ${new Date().getMinutes()} : ${new Date().getSeconds()}`)
+}
+
 //==================================
 module.exports = function (app) {
     console.log("router is ready!")
@@ -1265,6 +1269,7 @@ module.exports = function (app) {
             'status': 'fail',
             'message': ''
         }
+        logEvent('/api/get_all_engagemets', null, null)
         console.log("get_all_engagemets: admin email  =>", req.body.email);
         console.log("get_all_engagemets: engagement id =>", req.body.eng_id);
         preload_block(res, req.body['email'], undefined, req.body['eng_id'])
@@ -1276,7 +1281,10 @@ module.exports = function (app) {
             .then(returnObj => {
                 let currentUser = returnObj['currentUser']
                 if (currentUser.admin_permissions || currentUser.admin_owner) {
+                    console.log("currentUser =>", currentUser.email)
+                    console.log("about to start function get_all_engagemets")
                     get_all_engagemets().then(res_engs => {
+                        logEvent('get_all_engagemets().then res_engs', null, null)
                         response_message.status = 'success';
                         response_message.body = res_engs
                         // response_message.body = Object.assign({}, switchKey(unescapingObj(res_engs), 'engagement_id'));
@@ -1606,6 +1614,9 @@ module.exports = function (app) {
         })
 
     });
+
+
+
     // =================== END OF Quiz Submissions FUNCTIONS ==================
     // ************************************************************************
     // ************************* END OF MISC  FUNCTIONS ***********************

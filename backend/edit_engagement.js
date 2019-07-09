@@ -41,7 +41,8 @@ function create_new_engagement_row_MSSQL(engagement) {
 
 function get_all_engagemets() {
     let functionName = 'add_engagement_table_MSSQL';
-    return new Promise(function(resolve, reject) {
+    console.log("get_all_engagemets: start time", new Date().getMinutes(), new Date().getSeconds())
+    return new Promise(function (resolve, reject) {
         let start = new Date();
         let query = `SELECT
         eng.engagement_id,
@@ -60,15 +61,17 @@ function get_all_engagemets() {
     LEFT JOIN [KA_test_topic] as topic ON eng.engagement_id = topic.engagement_id 
     LEFT JOIN [KA_profile_permissions] as perm ON topic.topic_id = perm.topic_id
     LEFT JOIN [KA_profile] as profile ON profile.profile_id = perm.profile_id
-    LEFT JOIN [KA_employee] as employee ON employee.email = profile.email`
+    LEFT JOIN [KA_employee] as employee ON employee.email = profile.email`;
         dbQueryMethod.query(query).then(result => {
             let end = new Date();
-            console.log("=====DONE======")
-            console.log(start, end)
+            console.log("get_all_engagemets: result time", new Date().getMinutes(), new Date().getSeconds())
             resolve(result)
             return result;
-        }).catch(function(error) { reject(error); throw (error); })
-    }).catch(function(error) {
+        }).catch(function (error) { 
+            console.log("ERROR =>", error)
+            reject(error); throw (error); })
+    }).catch(function (error) {
+        console.log("ERROR =>", error)
         log_event('WARNING', error, functionName);
         throw (error);
     })

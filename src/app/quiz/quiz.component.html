@@ -31,7 +31,7 @@
         </div>
     <div class="form-row border_info" [ngClass]="{'filter-blur': expired_bool}">
         <div class="col-6 question" style="display: flex; align-items: center; justify-content: center;">
-            <h4 style="white-space: pre-wrap">{{question.question_prompt}}</h4>
+            <h4 style="white-space: pre-wrap" class="noselect">{{question.question_prompt}}</h4>
         </div>
         <div class="col-6">
             <div *ngIf="question.question_type == 2">
