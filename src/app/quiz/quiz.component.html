@@ -37,7 +37,7 @@
             <div *ngIf="question.question_type == 2">
                 <!-- manual input  -->
                 <div class="form-check">
-                    <textarea [disabled]="expired_bool" class="element-animation-fadeIn form-control" id="manual_input_field" rows="3" required="true" maxlength="500" autofocus="autofocus"></textarea>
+                    <textarea [disabled]="expired_bool" class="element-animation-fadeIn form-control shadow" id="manual_input_field" rows="3" required="true" maxlength="500" autofocus="autofocus"></textarea>
                 </div>
             </div>
             <div *ngIf="question.question_type != 2">
@@ -46,7 +46,7 @@
                     <fieldset>
                         <div *ngFor="let q of question.answer_keys; index as i" class="form-check">
                             <label class="col-form-label element-animation{{i + 1}}" for="radio{{i}}">
-                                <input [disabled]="expired_bool" class="placeAfter radio_input" id="{{q}}" name="radio_answer" type="radio"
+                                <input [disabled]="expired_bool" class="placeAfter radio_input shadow" id="{{q}}" name="radio_answer" type="radio"
                                     required="true" value={{question.answer_prompt[i]}} />{{question.answer_prompt[i]}}
                             </label>
                         </div>
@@ -57,7 +57,7 @@
                     <fieldset>
                         <div *ngFor="let q of question.answer_keys; index as i" class="form-check">
                             <label class="col-form-label element-animation{{i + 1}}" for="radio{{i}}">
-                                <input [disabled]="expired_bool" class="placeAfter checkbox_input" id="{{q}}" type="checkbox" required="true"
+                                <input [disabled]="expired_bool" class="placeAfter checkbox_input shadow" id="{{q}}" type="checkbox" required="true"
                                     value={{question.answer_prompt[i]}}>{{question.answer_prompt[i]}}
                             </label>
                         </div>

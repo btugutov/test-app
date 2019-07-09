@@ -125,15 +125,15 @@ export class AdminCreatequizComponent implements OnInit {
   submitQuiz(){
     console.log("SUBMITTED1");
     let quiz ={
-      questions: cloneDeep(this.list_of_questions),
+      questions: this.escapingQuestions(cloneDeep(this.list_of_questions)),
       engagement_id: this.selected_eng,
-      bucket_list: this.bucket_list,
-      topic: this.selected_topic,
-      category: this.selected_category, 
+      bucket_list: this.escapingBuckets(cloneDeep(this.bucket_list)),
+      topic: this.escapingBuckets(cloneDeep(this.selected_topic)),
+      category: this.escapingBuckets(cloneDeep(this.selected_category)), 
       time_limit: this.time_limit
     } 
     delete quiz.questions['new_question'];
-    this._ConnectorService.createQuiz( this.escapingQuiz(quiz),  this.currentUser.email).then(res => {
+    this._ConnectorService.createQuiz( quiz,  this.currentUser.email).then(res => {
       console.log("res =>", res)
       this.submit_ready = false;
       if(res['status'] == 'success'){
@@ -796,6 +796,36 @@ export class AdminCreatequizComponent implements OnInit {
     }
     q['topic'] = escape(q['topic'])
     q['category'] = escape(q['category'])
+    return q;
+  }
+  escapingQuestions(q) {
+    for (let el in q) {
+      if(el == "new_question" || ( typeof(q[el]) != 'object' )){
+        continue;
+      }else if(el == "bucket_list"){
+        q[el] = this.escapingBucketList(q[el])
+        continue;
+      }
+      console.log("EL =>", el)
+      q[el]['prompt'] = escape(q[el]['prompt']);
+      q[el]['training_url'] = escape(q[el]['training_url']);
+      q[el]['training_module'] = escape(q[el]['training_module']);
+      q[el]['expected_response'] = escape(q[el]['expected_response']);
+      for (let a in q[el]['answer_prompt']) {
+        q[el]['answer_prompt'][a] = escape(q[el]['answer_prompt'][a])
+      }
+    }
+    q['topic'] = escape(q['topic'])
+    q['category'] = escape(q['category'])
+    return q;
+  }
+  escapingBuckets(q) {
+    for (let el in q) {
+      if(( typeof(q[el]) != 'object' )){
+        continue;
+      }
+      q[el]['bucket_name'] = escape(q[el]['bucket_name'] )
+    }
     return q;
   }
   bucketListDifferencesFinder(){

@@ -857,13 +857,21 @@ module.exports = function (app) {
                         console.log("gradeValidate(grades) =>>>", quiz)
                         const reviewer_id = currentUser.profile_id;
                         let questions = Object.keys(quiz);
+                        console.log("QUIZ =>", quiz)
                         // loop through each question and update DB with score (and feedback if provided)
                         for (let i = 0; i < questions.length; i++) {
+                            console.log("============================================================")
+                            console.log(`questions[i] =>${questions[i]}, quiz[questions[i]][2] => ${quiz[questions[i]][2]}, quiz[questions[i]][0] => ${quiz[questions[i]][0]}, quiz[questions[i]][1] => ${quiz[questions[i]][1]}, reviewer_id => ${reviewer_id}`)
                             update_grade_input_response(questions[i], quiz[questions[i]][2], quiz[questions[i]][0], quiz[questions[i]][1], reviewer_id);
+                            console.log("============================================================")
                         }
                         finish_gradable_quiz_session_by_id(grades['submission_id']).then(response => {
                             quizEndChecks(grades['submission_id']).then(graded_done => {
                                 response_message.status = 'success';
+                                response.body = {
+                                    questions: questions,
+                                    quiz: quiz
+                                }
                                 response_message.confirm = graded_done;
                                 res.json(response_message)
                             }).catch(function (error) {

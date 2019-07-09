@@ -505,6 +505,10 @@ function add_question_history_table_MSSQL(question_id, prompt, question_type_id,
 
 function add_question_table_and_return_question_id_MSSQL(prompt, question_type_id, display_type_id, question_sort, image, training_module, training_url, soft_delete, point_value, expected_response) {
     let functionName = 'add_question_table_MSSQL';
+    if(!question_sort || question_sort == 'null' || question_sort==null){
+        question_sort = 1;
+    }
+    console.log("add_question_table_and_return_question_id_MSSQL: ")
     return new Promise(function(resolve, reject) {
         let insert = `INSERT INTO KA_questions 
         ([prompt],[question_type_id],[display_type_id],[sort],[image],[training_module],[training_url],[soft_delete],[point_value],[expected_response]) 
@@ -1098,11 +1102,14 @@ function update_KA_images_from_admin_edit_quiz(image, question_id, description, 
 // function update_KA_questions_from_admin_edit_quiz(question_id, prompt, question_type_id, display_type_id, question_sort, image, training_module, training_url, soft_delete, point_value, expected_response, edit_by) {
 function update_KA_questions_from_admin_edit_quiz(question_id, prompt, question_type_id, display_type_id, question_sort, image, training_module, training_url, soft_delete, point_value, expected_response, edit_by) {
     let functionName = 'update_KA_questions_from_admin_edit_quiz';
+    console.log("update_KA_questions_from_admin_edit_quiz: params =>", `question_id => ${question_id}, prompt => ${prompt}, question_type_id => ${question_type_id}, display_type_id => ${display_type_id}, question_sort => ${question_sort}, image => ${image}`)
     return new Promise(function(resolve, reject) {
         try {
-            if (question_sort == undefined) {
+            if (question_sort == undefined || question_sort == null) {
                 question_sort = '1';
-                //console.log('question_sort was undefined')
+                console.log('question_sort was undefined')
+            }else if(!display_type_id){
+                display_type_id = 1;
             }
             if (prompt === '' || prompt === undefined || prompt === null) {
                 //console.log('this question was not filled out. Skipping');
@@ -1272,7 +1279,13 @@ function update_KA_quiz_questions_from_admin_edit_quiz(question_id, quiz_id) {
 function update_topic_main_LOOP(obj, i, edit_by, obj_topic_id, bucket_list, bucket_ids) {
     let functionName = 'update_topic_main_LOOP';
     console.log("STARTING update_topic_main_LOOP")
+    // console.log("OBJECT =>", obj)
     return new Promise(function(resolve, reject) {
+        if(typeof(obj) != 'object'){
+            console.log("obj is not an object =>", obj)
+            resolve('done');
+            return;
+        }
         try {
             let question_type_id = obj['question_type_id'];
             let display_type_id = obj['display_type_id'];
@@ -1333,7 +1346,6 @@ function update_topic_main_LOOP(obj, i, edit_by, obj_topic_id, bucket_list, buck
                 // }
 
                 // get image from base64
-                console.log(i, obj['base64'].length)
                 if (!obj['image']) {
                     image = false;
                     base64 = null;
@@ -1360,6 +1372,7 @@ function update_topic_main_LOOP(obj, i, edit_by, obj_topic_id, bucket_list, buck
                     resolve('done');
                     return 'done';
                 }else{
+                    console.log("BEFORE update_KA_questions_from_admin_edit_quiz; obj =>", obj)
                     update_KA_questions_from_admin_edit_quiz(i, obj['prompt'], question_type_id, display_type_id, obj['question_sort'], image, obj['training_module'], obj['training_url'], obj['question_soft_delete'], obj['point_value'], obj['expected_response'], edit_by)
                     .then(this_question_id => {
                         update_KA_images_from_admin_edit_quiz(obj['image'], this_question_id, obj['image_description'], obj['base64'], obj['image'], edit_by).catch(function(error) {
@@ -1809,6 +1822,7 @@ function update_topic_main(object, edit_by, engagement_id) {
     console.log('===============')
     console.log("starting update_topic_main")
     console.log('===============')
+    console.log("TIME LIMIT =>", object['time_limit'])
     return new Promise(function(resolve, reject) {
         try {
             update_topic_table_loop(object['topic_id'], object['topic'], object['topic_soft_delete'], object['category'], object['engagement_id'], object['time_limit']).then(this_topic_id => {
@@ -1866,7 +1880,7 @@ function create_topic_main(object, edit_by, engagement_id) {
     return new Promise(function(resolve, reject) {
         try {
             let obj_response = {};
-            update_topic_table_loop(object['topic_id'], object['topic'], object['topic_soft_delete'], object['category'], object['engagement_id']).then(this_topic_id => {
+            update_topic_table_loop(object['topic_id'], object['topic'], object['topic_soft_delete'], object['category'], object['engagement_id'], object['time_limit']).then(this_topic_id => {
                 console.log('=============================update_topic_table_loop: this_topic_id=========================================', this_topic_id)
                 update_quizzes_table_loop(this_topic_id, object['topic']).then(wait => {
                     console.log('============================update_quizzes_table_loop: wait==========================================', wait)
