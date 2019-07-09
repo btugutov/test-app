@@ -34,6 +34,7 @@ function get_quiz_current_MSSQL(topic_id, profile_id, submit_id) {
         ,KA_quizzes.quiz_id
         ,KA_quizzes.quiz_name
         ,KA_quiz_questions.question_id
+        ,KA_questions.sort
         ,KA_questions.prompt 
         ,KA_display_types.display_type_id 
         ,KA_display_types.display_type_description 
@@ -278,7 +279,7 @@ function get_quiz_name_by_topic_id(topic_id) {
 function getQuizLength(quiz_id) {
     let functionName = 'getQuizLength';
     return new Promise(function(resolve, reject) {
-        let profileQuery = `SELECT qq.question_id FROM [dbo].[KA_quiz_questions] AS qq JOIN KA_questions AS q ON qq.question_id = q.question_id  WHERE qq.quiz_id = '${quiz_id}' AND q.soft_delete = 0`;
+        let profileQuery = `SELECT qq.question_id FROM [dbo].[KA_quiz_questions] AS qq JOIN KA_questions AS q ON qq.question_id = q.question_id  WHERE qq.quiz_id = '${quiz_id}' AND q.soft_delete = 0 ORDER BY q.sort`;
         return dbQueryMethod.query(profileQuery).then(result => {
             resolve(result)
             return result;

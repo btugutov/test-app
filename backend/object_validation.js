@@ -256,6 +256,121 @@ function format_quiz_table2(object){
     return res
 }
 
+function format_quiz_table_orderby_question_sort(object) { // return sorted array
+    let functionName = 'format_quiz_table_orderby_question_sort'; 
+    let res = {};
+    let result = [];
+    let quiz_params = {};
+    for(let el in object){
+        let target = object[el];
+        if(!quiz_params['quiz_id']){
+            quiz_params['quiz_id'] = object[el]['quiz_id']
+        }
+        if(!quiz_params['topic_id']){
+            quiz_params['topic_id'] = object[el]['topic_id']
+        }
+        if(!quiz_params['quiz_name']){
+            quiz_params['quiz_name'] = unescape(object[el]['quiz_name'])
+        }
+        if(!quiz_params['topic_soft_delete']){
+            quiz_params['topic_soft_delete'] = object[el]['topic_soft_delete']
+        }
+        if(!quiz_params['category']){
+            quiz_params['category'] = unescape(object[el]['category'])
+        }
+        if(!quiz_params['engagement_id']){
+            quiz_params['engagement_id'] = object[el]['engagement_id']
+        }
+        if(!quiz_params['engagement_name']){
+            quiz_params['engagement_name'] = unescape(object[el]['engagement_name'])
+        }
+        if(!quiz_params['question_sort']){
+            quiz_params['question_sort'] = object[el]['question_sort']
+        }
+        if(!quiz_params['time_limit']){
+            quiz_params['time_limit'] = object[el]['time_limit']
+        }
+        let container_id = object[el]['question_sort'];
+        if(!res[container_id]){
+            res[container_id] = {};
+        }
+
+        if(!res[container_id][target.question_id]){
+            res[container_id][target.question_id] = {
+                answer_bucket_id: {},
+                answer_correct: {},
+                answer_prompt: {},
+                answer_soft_delete: {},
+                answer_sort: {},
+                base64: unescape(target.base64),
+                category: unescape(target.category),
+                display_type_description: unescape(target.display_type_description),
+                display_type_id: target.display_type_id,
+                expected_response: unescape(target.expected_response),
+                image: target.image,
+                point_value: target.point_value,
+                prompt: unescape(target.prompt),
+                question_soft_delete: target.question_soft_delete,
+                question_sort: target.question_sort,
+                question_type_description: unescape(target.question_type_description),
+                question_type_id: target.question_type_id,
+                quiz_id: target.quiz_id,
+                quiz_name: unescape(target.quiz_name),
+                topic:  unescape(target.topic),
+                topic_id: target.topic_id,
+                training_module: unescape(target.training_module),
+                training_url: unescape(target.training_url),
+                question_id: target.question_id
+            }
+        }
+        if( target.answer_id){
+            res[container_id][target.question_id]['answer_bucket_id'][target.answer_id] = target.bucket_id;
+            res[container_id][target.question_id]['answer_correct'][target.answer_id] = target.correct;
+            res[container_id][target.question_id]['answer_prompt'][target.answer_id] = unescape(target.answer_prompt);
+            res[container_id][target.question_id]['answer_soft_delete'][target.answer_id] = target.answer_soft_delete;
+            res[container_id][target.question_id]['answer_sort'][target.answer_id] = target.answer_sort;
+        }
+    }
+    for(let x in res){
+        if(typeof(res[x]) == 'object'){
+            for(let y in res[x]){
+                result.push(res[x][y])
+            }
+        }
+    }
+    res = {};
+    res = {
+        quiz_params: quiz_params,
+        questions: result
+    }
+    return res
+}
+
+function sort_answers_for_question(order_list, answer_prompt){
+    // should return array of answer_keys and answer_prompt
+    // ["739", "740", "565", "564"]
+    // ["Wrong 1", "Right 1", "Wrong 2", "Right answer 3"]
+    let keys = [];
+    let prompts = [];
+    let temp_res = {};
+    for(let el in order_list){
+        if(!temp_res[order_list[el]]){
+            temp_res[order_list[el]] = [];
+        }
+        temp_res[order_list[el]].push(el)
+    }
+    for(let x in temp_res){
+        for(let y in temp_res[x]){
+            let id = temp_res[x][y]
+            keys.push(id);
+            prompts.push( answer_prompt[id])
+        }
+    }
+    return {
+        keys: keys,
+        prompts: prompts
+    }
+}
 function building_dont_use(object) {
     let functionName = 'format_quiz_table';
     // recieve table that is the quiz object
@@ -832,7 +947,9 @@ module.exports = {
     questionRenderOderAnswers: questionRenderOderAnswers,
     reAssignSession: reAssignSession,
     filterEngagementsByAvailableQuizzes: filterEngagementsByAvailableQuizzes,
-    format_quiz_table2: format_quiz_table2
+    format_quiz_table2: format_quiz_table2,
+    format_quiz_table_orderby_question_sort: format_quiz_table_orderby_question_sort,
+    sort_answers_for_question: sort_answers_for_question
 };
 
 

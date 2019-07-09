@@ -26,7 +26,7 @@ const { stay_awake } = require('../backend/stay_awake.js');
 // edit_submission_status
 const { get_KA_quiz_submission_by_profile_id, get_KA_quiz_submission_all, get_KA_quiz_submission_by_engagement_id, edit_submissions_main } = require('../backend/edit_submission_status.js');
 // object_validation
-const { format_quiz_table, unescapingObj, groupBy, groupByKey, categoriesFixer, switchKey, joinUsersByTopicId, removeSpacesFromStr, gradeValidate, findAnswerID, infoValidate, escapeObject, escapingQuiz, sortOnKeys, topicListNameRemoveSpaces, reAssignSession, questionRenderOderAnswers, filterEngagementsByAvailableQuizzes, format_quiz_table2 } = require('../backend/object_validation.js');
+const { format_quiz_table, unescapingObj, groupBy, groupByKey, categoriesFixer, switchKey, joinUsersByTopicId, removeSpacesFromStr, gradeValidate, findAnswerID, infoValidate, escapeObject, escapingQuiz, sortOnKeys, topicListNameRemoveSpaces, reAssignSession, questionRenderOderAnswers, filterEngagementsByAvailableQuizzes, format_quiz_table2, format_quiz_table_orderby_question_sort, sort_answers_for_question } = require('../backend/object_validation.js');
 // edit_engagement.js
 const { update_engagement_main, get_all_engagemets } = require('../backend/edit_engagement.js');
 let hostname = os.hostname();
@@ -258,22 +258,42 @@ module.exports = function (app) {
                 }
                 // If quiz or quizTable return with value, that means there are questions available for the user to answer
                 else {
+                    let object_to_send = {};
                     let date = new Date();
                     res.locals.start_time = date.toISOString().replace(/T/, ' ').replace(/\..+/, '');
+                    // ------------------------------------------------------------ new version ------------------------------------------------------------------------
+                    let anstest = format_quiz_table_orderby_question_sort(quiz.quizTable);
+                    let question = anstest['questions'][0];
+                    let question_id = question.question_id;
+                    let question_type = question['question_type_id'];
+                    let pass_info = [];
+                    pass_info.push(question['question_type_id']);
+                    pass_info.push(question['display_type_id']);
+                    pass_info.push(currentUser.profile_id);
+                    pass_info.push(quiz.submit_id);
+                    pass_info.push(res.locals.start_time);
+                    pass_info.push(question_id);
+                    // -----------------------------------------------------------------------------------------------------------------------------------------------
+                    // ------------------------------------------------------ old version -----------------------------------------------------------------------------------
+                    /* object_to_send.anstest = anstest;
                     let anstest = format_quiz_table(quiz.quizTable);
                     let keys = Object.keys(anstest[0]);
                     let question_id = keys[0];
                     let question_type = anstest[0][question_id]['question_type_id'];
-
-                    // Create an array call pass_info. It will be an array of identifying info that will be included with each user response
-                    // pass info will hold the following: question_type,display_type,profile_id,submit_id,start_time,question_id
+                    object_to_send.anstest = anstest;
                     let pass_info = [];
                     pass_info.push(anstest[0][question_id]['question_type_id']);
                     pass_info.push(anstest[0][question_id]['display_type_id']);
                     pass_info.push(currentUser.profile_id);
                     pass_info.push(quiz.submit_id);
                     pass_info.push(res.locals.start_time);
-                    pass_info.push(question_id);
+                    pass_info.push(question_id); */
+                    // -----------------------------------------------------------------------------------------------------------------------------------------------
+                    object_to_send.anstest2 = format_quiz_table_orderby_question_sort(quiz.quizTable);
+                    
+                    // Create an array call pass_info. It will be an array of identifying info that will be included with each user response
+                    // pass info will hold the following: question_type,display_type,profile_id,submit_id,start_time,question_id
+                    
                     // query database for image related data for current question
                     get_image_by_questionID_MSSQL(question_id).then(result => {
                         get_table_complete('KA_test_topic').then(function (topics) {
@@ -282,9 +302,9 @@ module.exports = function (app) {
                             // check to see that url matches where user should currently be in quiz. If not, redirect to correct url
                             // create an object that holds all the current URL parameters (topicID, userID, quizID, and questionID) that the user SHOULD be on
                             const cPage = {
-                                topicID: anstest[0][question_id]['topic_id'],
+                                topicID: anstest['quiz_params']['topic_id'],
                                 userID: currentUser.email,
-                                quizID: anstest[0][question_id]['quiz_id'],
+                                quizID: anstest['quiz_params']['quiz_id'],
                                 questionID: question_id.toString()
                             };
                             let params = create_params_object(currentUser);
@@ -305,7 +325,7 @@ module.exports = function (app) {
                                 }
                             }
                             let topic_name = groupByKey(topics, 'topic_id', 'topic_id')[cPage['topicID']][cPage['topicID']];
-                            let question = anstest[0][question_id]; // the question that's gonna be displayed to the user
+                            // let question = anstest[0][question_id]; // the question that's gonna be displayed to the user
                             if (question['question_type_description'] === 'drag_and_drop' || question['display_type_description'] === 'drag_and_drop' || question['display_type_id'] === 4) {
                                 get_table_complete('KA_bucket').then(function (b_list) {
                                     let bucket_list = {};
@@ -317,8 +337,8 @@ module.exports = function (app) {
                                         }
                                     }
                                     pass_info = {};
-                                    pass_info[0] = anstest[0][question_id]['question_type_id'];
-                                    pass_info[1] = anstest[0][question_id]['display_type_id'];
+                                    pass_info[0] = question['question_type_id'];
+                                    pass_info[1] = question['display_type_id'];
                                     pass_info[2] = currentUser.profile_id;
                                     pass_info[3] = quiz.submit_id;
                                     pass_info[4] = res.locals.start_time;
@@ -332,21 +352,22 @@ module.exports = function (app) {
                                         // returnObj: returnObj,
                                         topic_name: topic_name,
                                         question_id: question_id,
-                                        answer_keys: Object.keys(anstest[0][question_id]['answer_prompt']),
-                                        answer_prompt: question['answer_prompt'],
-                                        question_prompt: unescapingObj(anstest[0][question_id]['prompt']),
+                                        answer_keys: sort_answers_for_question(question.answer_sort, question.answer_prompt)['keys'],
+                                        answer_prompt: sort_answers_for_question(question.answer_sort, question.answer_prompt)['prompts'],
+                                        question_prompt: unescapingObj(question['prompt']),
                                         question_type: question_type,
-                                        display_type: anstest[0][question_id]['display_type_id'],
+                                        display_type: question['display_type_id'],
 
                                         log_event: log_event,
                                         hostname: hostname,
-                                        image_info: unescape(anstest[0][question_id]['base64']),
+                                        image_info: unescape(question['base64']),
                                         // turn array into a string that can be used in the 'name' attribute
                                         pass_info: pass_info,
                                         params: params,
                                         bucket_list: bucket_list,
                                         start_time: quiz.start_time,
-                                        time_limit: quiz.time_limit
+                                        time_limit: quiz.time_limit,
+                                        object_to_send: object_to_send
                                     });
 
                                 });
@@ -355,19 +376,20 @@ module.exports = function (app) {
                                 console.log("take quiz: response time =>", new Date())
                                 res.json({
                                     // returnObj: returnObj,
+                                    object_to_send: object_to_send,
                                     topic_name: topic_name,
                                     question_id: question_id,
                                     answer_keys: values.answer_keys, //Object.keys(anstest[0][question_id]['answer_prompt']),
                                     answer_prompt: values.answer_prompts, // Object.values(unescapingObj(anstest[0][question_id]['answer_prompt'])),
-                                    question_prompt: unescapingObj(anstest[0][question_id]['prompt']),
+                                    question_prompt: unescapingObj(question['prompt']),
                                     question_type: question_type,
-                                    display_type: anstest[0][question_id]['display_type_id'],
+                                    display_type: question['display_type_id'],
 
                                     log_event: log_event,
                                     hostname: hostname,
                                     // turn array into a string that can be used in the 'name' attribute
                                     pass_info: pass_info.join(),
-                                    image_info: unescape(anstest[0][question_id]['base64']),
+                                    image_info: unescape(question['base64']),
                                     params: params,
                                     start_time: quiz.start_time,
                                     time_limit: quiz.time_limit
@@ -507,7 +529,7 @@ module.exports = function (app) {
 
     app.post('/api/getQuizLength', (req, res) => {
         getQuizLength(req.body.quiz_id).then(quiz => {
-            res.json(switchKey(quiz, 'question_id' ) )
+            res.json(quiz )
         })
     })
 
