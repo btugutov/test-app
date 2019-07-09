@@ -20,9 +20,51 @@ function call_stored_proc_grading() {
 function get_topic_to_edit_MSSQL(topic_id) {
     let functionName = 'get_topic_to_edit_MSSQL';
     return new Promise(function(resolve, reject) {
-        let query_quiz = `SELECT * FROM [dbo].[vw_quiz_object]
-        WHERE topic_id = ${topic_id}`;
+        // let query_quiz = `SELECT * FROM [dbo].[vw_quiz_object]
+        // WHERE topic_id = ${topic_id}`;
+        // console.log(`Start get_topic_to_edit_MSSQL`, new Date())
+        let query_quiz = `SELECT TOP (1000) [topic]
+        ,topic.topic_id
+        ,[category]
+        ,topic.soft_delete
+        ,topic.engagement_id
+        ,topic.time_limit
+        ,topic.hard_delete
+        ,question.question_id
+        ,[prompt]
+        ,[question_type_id]
+        ,question.display_type_id
+        ,question.sort as 'question_sort'
+        ,[image]
+        ,[training_module]
+        ,[training_url]
+        ,question.soft_delete as 'question_soft_delete'
+        ,[point_value]
+        ,[expected_response]
+        ,[answer_id]
+        ,[correct]
+        ,ans.sort as 'answer_sort'
+        ,ans.answer_prompt as 'answer_prompt'
+        ,ans.soft_delete as 'answer_soft_delete'
+        ,[bucket_id]
+        ,dt.display_type_description
+        ,img.base64
+        ,quiz.quiz_id
+        ,quiz.quiz_name
+        ,eng.engagement_name
+    FROM [dbo].[KA_test_topic] as topic
+    LEFT JOIN KA_quizzes as quiz ON quiz.topic_id = topic.topic_id 
+    LEFT JOIN KA_engagement as eng ON eng.engagement_id = topic.engagement_id
+    LEFT JOIN KA_quiz_questions AS qq ON topic.topic_id = qq.quiz_id
+    LEFT JOIN KA_questions as question ON qq.question_id = question.question_id
+    LEFT JOIN KA_display_types as dt on dt.display_type_id = question.display_type_id
+    
+    LEFT JOIN KA_images as img on img.question_id = question.question_id
+  
+    LEFT JOIN KA_answers as ans ON question.question_id = ans.question_id
+    WHERE topic.topic_id = ${topic_id}`;
         return dbQueryMethod.query(query_quiz).then(result => {
+            // console.log(`End get_topic_to_edit_MSSQL`, new Date())
             resolve(result)
             return result;
         }).catch(function(error) { reject(error); throw (error); })
@@ -109,12 +151,12 @@ function get_topic_by_topicName_MSSQL(topic_name) {
     })
 };
 
-function add_test_topic_table_and_get_topic_id_MSSQL(topic, requires0, requires1, category, engagement_id) {
+function add_test_topic_table_and_get_topic_id_MSSQL(topic, requires0, requires1, category, engagement_id, time_limit) {
     let functionName = 'add_test_topic_table_MSSQL';
     return new Promise(function(resolve, reject) {
         let insert = `INSERT INTO dbo.[KA_test_topic] 
-        ([topic],[requires0],[requires1],[category],[engagement_id]) 
-        VALUES ('${topic}', ${requires0}, ${requires1}, '${category}', '${engagement_id}')
+        ([topic],[requires0],[requires1],[category],[engagement_id], [time_limit]) 
+        VALUES ('${topic}', ${requires0}, ${requires1}, '${category}', '${engagement_id}', ${time_limit})
         
         SELECT SCOPE_IDENTITY()`
         dbQueryMethod.queryRaw(insert).then(result => {
@@ -182,12 +224,12 @@ function get_topic_id_by_information_MSSQL(topic, requires0, requires1, category
     })
 }
 
-function update_test_topic_table_MSSQL(topic, topic_id, requires0, requires1, category, soft_delete, engagement_id) {
+function update_test_topic_table_MSSQL(topic, topic_id, requires0, requires1, category, soft_delete, engagement_id, time_limit) {
     let functionName = 'update_test_topic_table_MSSQL';
     if (engagement_id == undefined) { engagement_id = 1 }
     return new Promise(function(resolve, reject) {
         let update = `UPDATE KA_test_topic 
-        SET topic = '${topic}' , requires0 = ${requires0}, requires1 = ${requires1}, category = '${category}', soft_delete = '${soft_delete}', engagement_id = ${engagement_id} 
+        SET topic = '${topic}' , requires0 = ${requires0}, requires1 = ${requires1}, category = '${category}', soft_delete = '${soft_delete}', engagement_id = ${engagement_id}, time_limit = ${time_limit}
         WHERE topic_id = ${topic_id}`
         dbQueryMethod.queryRaw(update).then(result => {
             resolve(result)
@@ -1359,7 +1401,7 @@ function update_topic_main_LOOP(obj, i, edit_by, obj_topic_id, bucket_list, buck
                                     for (let index in Object.keys(obj['answer_prompt'])) {
                                         let current_index = Object.keys(obj['answer_prompt'])[index]
                                         console.log("Working on answer", current_index)
-                                        console.log("if there's bucket match, then it should be here =>", obj['answer_bucket_id'][current_index])
+                                        // console.log("if there's bucket match, then it should be here =>", obj['answer_bucket_id'][current_index])
                                         let answer_bucket_id;
                                         let answer_correct;
                                         let answer_sort;
@@ -1374,7 +1416,7 @@ function update_topic_main_LOOP(obj, i, edit_by, obj_topic_id, bucket_list, buck
                                                 if (undefined == obj['answer_bucket_id'][current_index]) {
                                                     answer_bucket_id = null;
                                                 } else {
-                                                    console.log("obj['answer_bucket_id'][current_index] =>", obj['answer_bucket_id'][current_index])
+                                                    // console.log("obj['answer_bucket_id'][current_index] =>", obj['answer_bucket_id'][current_index])
                                                     answer_bucket_id = obj['answer_bucket_id'][current_index]
                                                     // if(bucket_ids && bucket_ids[obj['answer_bucket_id'][current_index]]){
                                                     //     answer_bucket_id = bucket_ids[obj['answer_bucket_id'][current_index]]
@@ -1462,7 +1504,7 @@ function update_topic_main_LOOP(obj, i, edit_by, obj_topic_id, bucket_list, buck
     })
 }
 
-function update_topic_table_loop(topic_id, topic, soft_delete, category, engagement_id) {
+function update_topic_table_loop(topic_id, topic, soft_delete, category, engagement_id, time_limit) {
     let functionName = 'update_topic_table_loop';
     if (soft_delete === undefined) { soft_delete = false }
     if (topic_id === undefined) { topic_id = 0 }
@@ -1493,13 +1535,16 @@ function update_topic_table_loop(topic_id, topic, soft_delete, category, engagem
                     if ((topic_table[0]['category']) !== category) {
                         delta = true;
                     }
+                    if ((topic_table[0]['time_limit']) !== time_limit) {
+                        delta = true;
+                    }
                 } catch (tryError) {
                     log_event('ERROR', tryError, functionName);
                     reject(tryError);
                 }
                 try {
                     if (delta === true) {
-                        update_test_topic_table_MSSQL(topic, topic_id, topic_table[0]['requires0'], topic_table[0]['requires1'], category, soft_delete, engagement_id).then(placeholder => {
+                        update_test_topic_table_MSSQL(topic, topic_id, topic_table[0]['requires0'], topic_table[0]['requires1'], category, soft_delete, engagement_id, time_limit).then(placeholder => {
                             resolve(topic_id);
                             return topic_id;
                         }).catch(function(error) { reject(error); throw (error); })
@@ -1517,7 +1562,7 @@ function update_topic_table_loop(topic_id, topic, soft_delete, category, engagem
                     let requires0 = null;
                     let requires1 = null;
                     console.log(`TRYING TO RUN add_test_topic_table_and_get_topic_id_MSSQL: topic => ${topic}; category => ${category}; engagement_id => ${engagement_id}`);
-                    add_test_topic_table_and_get_topic_id_MSSQL(topic, requires0, requires1, category, engagement_id).then(new_topic_object => {
+                    add_test_topic_table_and_get_topic_id_MSSQL(topic, requires0, requires1, category, engagement_id, time_limit).then(new_topic_object => {
                         /*
                             Bug found: add_test_topic_table_and_get_topic_id_MSSQL returns recordset as undefined
                         */
@@ -1766,7 +1811,7 @@ function update_topic_main(object, edit_by, engagement_id) {
     console.log('===============')
     return new Promise(function(resolve, reject) {
         try {
-            update_topic_table_loop(object['topic_id'], object['topic'], object['topic_soft_delete'], object['category'], object['engagement_id']).then(this_topic_id => {
+            update_topic_table_loop(object['topic_id'], object['topic'], object['topic_soft_delete'], object['category'], object['engagement_id'], object['time_limit']).then(this_topic_id => {
                 console.log('=============================update_topic_table_loop: this_topic_id=========================================', this_topic_id)
                 update_quizzes_table_loop(this_topic_id, object['topic']).then(wait => {
                     console.log('============================update_quizzes_table_loop: wait==========================================', wait)

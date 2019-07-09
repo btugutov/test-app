@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ConnectorService } from '../connector.service';
 import { Location } from '@angular/common';
+import { first } from 'rxjs-compat/operator/first';
 @Component({
   selector: 'app-admin-grade',
   templateUrl: './admin-grade.component.html',
@@ -42,6 +43,13 @@ export class AdminGradeComponent implements OnInit {
                 console.log("RESPONSE =>", res)
                 this.quiz_name = unescape(res['quiz_name']['quiz_name'])
                 this.submit_id = res['submit_id']
+                for(let el in res['quiz']){
+                  if (res['quiz'][el]['base64'] && res['quiz'][el]['base64'].slice(0, 5) != 'data:') {
+                    res['quiz'][el]['base64'] = "data:image/png;base64," + res['quiz'][el]['base64'];
+                  }else if(res['quiz'][el]['base64'] && res['quiz'][el]['base64'].split(',')[1].slice(0, 5) == "data:"){
+                    res['quiz'][el]['base64'] = res['quiz'][el]['base64'].split(',')[1] + ","+ res['quiz'][el]['base64'].split(',')[2]
+                  }
+                }
                 // console.log("QUIZ =>", this.quiz)
               }else{
                 // console.log("error!")

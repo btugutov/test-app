@@ -4,6 +4,7 @@ import { ConnectorService } from '../connector.service';
 import { Location } from '@angular/common';
 import { Subscription } from 'rxjs';
 import { DynamicScriptLoaderServiceService } from '../dynamic-script-loader-service.service';
+import { Question } from '../question';
 
 @Component({
   selector: 'app-quiz',
@@ -21,6 +22,11 @@ export class QuizComponent implements OnInit {
   completed_link = ``;
   current_index;
   total_length;
+  time_limit = null;
+  start_time = null;
+  expiration_time;
+  expired_bool = false;
+  math = Math;
   constructor(private _ConnectorService: ConnectorService, private location: Location, private _route: ActivatedRoute, private dynamicScriptLoader: DynamicScriptLoaderServiceService) {
     this._route.paramMap.subscribe(params => {
       this.currentEng_id = params.get('eng');
@@ -36,7 +42,22 @@ export class QuizComponent implements OnInit {
           this.takeQuiz()
         }
       });
-    })
+    });
+
+    
+      setInterval(() => {
+        if (this.question && this.question['time_limit'] && !this.completed) {
+          if(this.expiration_time<0 && !this.completed){
+            // this.timeExpired();
+            this.expired_bool = true;
+            // this.completed = true;
+            this.submit();
+          }else{
+            this.expiration_time = (this.question['time_limit'] * 60)  -  (Math.floor((new Date().getTime() - new Date(this.question['start_time']).getTime())/60000 * 60));
+          }
+        }
+      }, 800);
+
   }
 
   ngOnInit() {
@@ -52,12 +73,14 @@ export class QuizComponent implements OnInit {
 
 
   takeQuiz() {
+    if(this.completed){
+      return;
+    }
     this._ConnectorService.takeQuiz(this.currentEng_id, this.currentUser.email, this.topic_id, this.quiz_id).then(data => {
       // console.log(data)
       this.question = data;
       if (data) {
         console.log(data)
-
         this.getQuizLength(this.topic_id);
         if (data['completed']) {
           this.completed = true;
@@ -95,7 +118,7 @@ export class QuizComponent implements OnInit {
   getQuizLength(quiz_id){
     // console.log("requestion quiz length for ", quiz_id)
     this._ConnectorService.getQuizLength(quiz_id).then(res => {
-      // console.log("getQuizLength response => ", res)
+      console.log("getQuizLength response => ", res)
       // console.log("this.question_id => ", this.question.question_id)
       let counter = 0;
       for(let el in res){
@@ -114,7 +137,10 @@ export class QuizComponent implements OnInit {
     })
   }
   submit() {
-    // console.log('reading answer...')
+    console.log('reading answer...')
+    // if(this.completed){
+    //   return;
+    // }
     if (this.question.question_type == 2) {
       // MANUAL INPUT ANSWER
       let input = document.getElementById('manual_input_field');
@@ -122,15 +148,15 @@ export class QuizComponent implements OnInit {
       let obj = {
         [this.question.pass_info]: input['value']
       }
-      // console.log("OBJ =>", obj)
+      console.log("OBJ =>", obj)
       this._ConnectorService.submitAnswer(this.currentEng_id, obj).then(data => {
+        this.question = data;
+        console.log("NEW QUESTION =>",data)
         if (data['completed']) {
           this.completed = true;
           this.completed_link = `/${this.currentEng_id}/home`;
           return;
         }
-        console.log("NEW QUESTION =>",data)
-        this.question = data;
         if (data) {
           document.getElementById('manual_input_field')['value'] = '';
           if (this.question.display_type == 4) {
@@ -154,13 +180,18 @@ export class QuizComponent implements OnInit {
             }
           }
         }
-        if (!answer) {
+        let answer_reponse = null;
+        if (!answer && !this.expired_bool) {
           // alert("SELECT ANSWER!!!!!")
           return
+        }else if(!answer && this.expired_bool){
+          
+        }else{
+          answer_reponse = answer.id;
         }
         // console.log("ANSWER =>", answer.id)
         let obj = {
-          [this.question.pass_info]: answer.id,
+          [this.question.pass_info]: answer_reponse,
         }
         // console.log("OBJ =>", obj)
         this._ConnectorService.submitAnswer(this.currentEng_id, obj).then(data => {
@@ -192,7 +223,7 @@ export class QuizComponent implements OnInit {
             }
           }
         }
-        if (answers.length < 1) {
+        if (answers.length < 1 && !this.expired_bool) {
           // alert("PLEASE CHECK ANYTHING!")
         } else {
           let obj = {
@@ -258,7 +289,7 @@ export class QuizComponent implements OnInit {
             }
           }
         }
-        if (Object.keys(submit_answers).length < 1) {
+        if (Object.keys(submit_answers).length < 1 && !this.expired_bool) {
           // alert('please answer!')
           return;
         }
@@ -301,5 +332,7 @@ export class QuizComponent implements OnInit {
       }
     }
   }
-
+  timeExpired(){
+    console.log("QUIZ IS EXPIRED!")
+  }
 }

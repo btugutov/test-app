@@ -57,7 +57,7 @@ export class AdminCreatequizComponent implements OnInit {
   bucket_new = {
     bucket_name: ''
   }
-
+  time_limit = null;
   constructor(private _ConnectorService: ConnectorService, private location: Location, private _route: ActivatedRoute, private _r: Router) {
     this._route.paramMap.subscribe(params => {
       this.currentEng_id = params.get('eng');
@@ -130,6 +130,7 @@ export class AdminCreatequizComponent implements OnInit {
       bucket_list: this.bucket_list,
       topic: this.selected_topic,
       category: this.selected_category, 
+      time_limit: this.time_limit
     } 
     delete quiz.questions['new_question'];
     this._ConnectorService.createQuiz( this.escapingQuiz(quiz),  this.currentUser.email).then(res => {

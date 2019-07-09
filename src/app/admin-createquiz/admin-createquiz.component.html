@@ -127,6 +127,16 @@
                         </select>
                     </datalist>
                 </div>
+                <div class="admin-create-quiz-body-topic-cat-eng-box-select-box">
+                        <span class="text-muted">Time limit</span>
+                        <select class="custom-select shadow" (change)="valueChanger('time_limit', $event.target.value)">
+                            <option value=null >No limit</option>
+                            <option value="15" >15 minutes</option>
+                            <option value="30" >30 minutes</option>
+                            <option value="45" >45 minutes</option>
+                            <option value="60">60 minutes</option>
+                        </select>
+                    </div>
             </div>
         </div>
         
@@ -200,11 +210,11 @@
                                         type="radio"  name="displayTypeNew"
                                         id="radio " value="Radio"> Radio</button>
                                         
-                                    <button class="btn btn-sm btn-action-borderless btn-outline-secondary "
+                                    <!-- <button class="btn btn-sm btn-action-borderless btn-outline-secondary "
                                         [disabled]="q.value.question_soft_delete"
                                         [ngClass]="{ 'active': q.value.display_type_id == 3 && q.value.question_type_id == 1 }" 
                                         (click)="displayTypeChanger( q.key, 'Dropdown')" type="radio" name="displayTypeNew" 
-                                        id="dropdown" value="Dropdown"> Dropdown</button>
+                                        id="dropdown" value="Dropdown"> Dropdown</button> -->
         
                                     <button  class="btn btn-sm btn-action-borderless btn-outline-secondary"
                                         [ngClass]="{ 'active': q.value.display_type_id == 2 && q.value.question_type_id == 1 }"

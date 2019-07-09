@@ -213,6 +213,9 @@ function format_quiz_table2(object){
         if(!res['question_sort']){
             res['question_sort'] = object[el]['question_sort']
         }
+        if(!res['time_limit']){
+            res['time_limit'] = object[el]['time_limit']
+        }
 
         if(!res[target.question_id]){
             res[target.question_id] = {

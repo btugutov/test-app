@@ -16,6 +16,7 @@ class quiz {
         this.quiz_name;
         this.submit_id;
         this.quiz_session;
+        this.time_limit;
     }
 }
 
@@ -29,6 +30,7 @@ function get_quiz_current_MSSQL(topic_id, profile_id, submit_id) {
         let query_quiz = `SELECT topic
         ,KA_test_topic.topic_id
         ,KA_test_topic.category
+        ,KA_test_topic.time_limit
         ,KA_quizzes.quiz_id
         ,KA_quizzes.quiz_name
         ,KA_quiz_questions.question_id
@@ -100,7 +102,8 @@ function get_quiz_session_MSSQL(profile_id, topic_id, range, engagement_id) {
         ,profile_id 
         ,KA_quizzes.quiz_name 
         ,KA_test_topic.topic 
-        ,KA_test_topic.topic_id 
+        ,KA_test_topic.topic_id
+        ,KA_test_topic.time_limit
         FROM [dbo].[KA_quiz_submission] 
         JOIN KA_quizzes ON KA_quiz_submission.quiz_id = KA_quizzes.quiz_id 
         JOIN KA_test_topic ON KA_quizzes.topic_id = KA_test_topic.topic_id 
@@ -168,6 +171,7 @@ function get_Quiz(topic_id, profile_id, engagement_id, range) {
                 quizObj.quiz_id = quizResult[0]['quiz_id'];
                 quizObj.quiz_name = quizResult[0]['quiz_name'];
                 quizObj.quizTable = quizResult;
+                quizObj.time_limit = quizResult[0]['time_limit'];
             } catch (error) {
                 log_event('WARNING', error, functionName);
                 //debugLog(error);
@@ -183,6 +187,7 @@ function get_Quiz(topic_id, profile_id, engagement_id, range) {
                 quizObj.topic_id = quizSessionResult[0]['topic_id'];
                 quizObj.quiz_id = quizSessionResult[0]['quiz_id'];
                 quizObj.quiz_name = quizSessionResult[0]['quiz_name'];
+                quizObj.time_limit = quizSessionResult[0]['time_limit'];
             } catch (error) {
                 log_event('WARNING', error, functionName);
                 //debugLog(error);
@@ -273,7 +278,7 @@ function get_quiz_name_by_topic_id(topic_id) {
 function getQuizLength(quiz_id) {
     let functionName = 'getQuizLength';
     return new Promise(function(resolve, reject) {
-        let profileQuery = `SELECT qq.question_id FROM [dbo].[KA_quiz_questions] AS qq JOIN KA_questions AS q ON qq.question_id = q.question_id  WHERE qq.quiz_id = '${quiz_id}'`;
+        let profileQuery = `SELECT qq.question_id FROM [dbo].[KA_quiz_questions] AS qq JOIN KA_questions AS q ON qq.question_id = q.question_id  WHERE qq.quiz_id = '${quiz_id}' AND q.soft_delete = 0`;
         return dbQueryMethod.query(profileQuery).then(result => {
             resolve(result)
             return result;

@@ -72,7 +72,10 @@ export class AdminEditquizComponent implements OnInit {
     bucket_name: ''
   }
 
-  bucket_list_counter = {}
+  bucket_list_counter = {};
+  time_limit = null;
+  start_time = null;
+  now: Date = new Date();
 
   constructor(private _ConnectorService: ConnectorService, private location: Location, private _route: ActivatedRoute, private _r: Router) {
     this.list_of_questions = {};
@@ -102,6 +105,11 @@ export class AdminEditquizComponent implements OnInit {
               if (quiz['status'] == 'success') {
                 console.log(quiz)
                 for (let el in quiz['quiz1']) {
+                  // console.log("============")
+                  // console.log("el =>", el)
+                  if(!quiz['quiz1'][el]){
+                    continue;
+                  }
                   if (quiz['quiz1'][el]['prompt']) {
                     if (quiz['quiz1'][el]['base64'] && quiz['quiz1'][el]['base64'].slice(0, 5) != 'data:') {
                       quiz['quiz1'][el]['base64'] = "data:image/png;base64," + quiz['quiz1'][el]['base64'];
@@ -118,6 +126,10 @@ export class AdminEditquizComponent implements OnInit {
                   } else if (el == 'engagement_id') {
                     this.selected_eng = quiz['quiz1'][el];
                     this.original_eng = quiz['quiz1'][el];
+                  }else if(el == 'time_limit'){
+                    this.time_limit = quiz['quiz1'][el];
+                  }else if(el == 'start_time'){
+                    this.start_time = quiz['quiz1'][el];
                   }
                 }
                 this.topic_cat_eng_message.status = 'success'
@@ -152,7 +164,9 @@ export class AdminEditquizComponent implements OnInit {
         this._r.navigate([`/${this.currentEng_id}/home`]);
       }
     })
-
+    setInterval(() => {
+      this.now = new Date();
+    }, 1);
 
 
   }
@@ -205,6 +219,7 @@ export class AdminEditquizComponent implements OnInit {
     object_to_send['topic_soft_delete'] = this.topic_soft_delete;
     object_to_send['list_of_deleted_questions'] = this.list_of_deleted_questions;
     object_to_send['answer_delete_confirm_list'] = this.answer_delete_confirm_list;
+    object_to_send['time_limit'] = this.time_limit;
     console.log("=======================FETCHING CHANGES=======================")
     console.log(quiz)
     console.log("==============================================================")
@@ -299,6 +314,9 @@ export class AdminEditquizComponent implements OnInit {
           this.topic_cat_eng_message.message = 'Looks good!'
         }
       }
+    }else if(target == 'time_limit'){
+      console.log(value);
+      this.time_limit = value;
     }
   }
 
@@ -849,7 +867,10 @@ export class AdminEditquizComponent implements OnInit {
     let list = this.list_of_questions;
     let res = {};
     for (let el in list) {
-      if (el == 'new_question' || el['error_bool']) {
+      console.log("=============================")
+      console.log("EL =>", el, "el['error_bool'] =>", list[el]['error_bool'])
+      console.log("=============================")
+      if (el == 'new_question' || list[el]['error_bool']) {
         continue;
       }
       this.errorHandlerRemover(el);

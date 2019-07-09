@@ -19,9 +19,7 @@
                         <a [routerLink]="[t.value.link]">
                             <button class='btn btn-lg' [disabled]="t.value['topic_status'] == 2" [ngClass]="{
                                 'btn-outline-secondary': t.value['topic_status'] == 0, 
-                                'btn-outline-secondary-hover-side-shadow': t.value['topic_status'] == 0, 
                                 'btn-danger': t.value['topic_status'] == 1, 
-                                'btn-outline-danger-hover-side-shadow':t.value['topic_status'] == 1,  
                                 'btn-success': t.value['topic_status'] == 2, 
                                 'btn-outline-success-hover-side-shadow': t.value['topic_status'] == 2
                             }">{{t.value.topic}} <span *ngIf="t.value['topic_status'] == 2">(completed)</span></button>

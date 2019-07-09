@@ -5,17 +5,31 @@
         </div>
     </div>
     <div class="row align-items-center" *ngIf="current_index != null && total_length">
-        <div class=" progress text-monospace"  style="width: 350px; margin:10px auto; color: black;">
+        <div class=" progress text-monospace shadow"  style="width: 350px; margin:10px auto; color: black;">
             <div  class="progress-bar " role="progressbar" [style.width.%]="( (current_index/total_length) * 100)" aria-valuenow="41" aria-valuemin="0" aria-valuemax="100" ></div>
             {{current_index+1}}/{{total_length}}
         </div>
     </div>
-    <div *ngIf="question.image_info && question.image_info != 'null'" class="row">
+    <div [hidden]="!question.time_limit && !expired_bool" class="row align-items-center" *ngIf="current_index != null && total_length">
+        <div class="text-monospace text-center"  style="width: 350px; margin:10px auto; color: black;"
+            [ngClass]="{
+                'text-warning': math.floor(expiration_time/60) == 2 || math.floor(expiration_time/60) == 1 ,
+                'text-danger': math.floor(expiration_time/60) < 1
+            }">
+            {{ math.floor(expiration_time/60) }}  minute<span *ngIf="math.floor(expiration_time/60)>1">s</span> and {{ expiration_time%60 }}  second<span *ngIf="expiration_time%60>1">s</span> left
+        </div>
+    </div>
+    <div [hidden]="!expired_bool" class="row align-items-center" *ngIf="current_index != null && total_length">
+        <div class="alert alert-warning"  style="width: 350px; margin:10px auto;">
+            Unfortunately, the quiz is expired. Please, standby.
+        </div>
+    </div>
+    <div *ngIf="question.image_info && question.image_info != 'null'" class="row" [ngClass]="{'filter-blur': expired_bool}">
             <div class="col" style="display: flex;">
                 <img class="element-animation-fadeIn img-fluid" src="{{question.image_info}}" style="width: auto; margin: 0px auto;" />
             </div>
         </div>
-    <div class="form-row border_info">
+    <div class="form-row border_info" [ngClass]="{'filter-blur': expired_bool}">
         <div class="col-6 question" style="display: flex; align-items: center; justify-content: center;">
             <h4 style="white-space: pre-wrap">{{question.question_prompt}}</h4>
         </div>
@@ -23,7 +37,7 @@
             <div *ngIf="question.question_type == 2">
                 <!-- manual input  -->
                 <div class="form-check">
-                    <textarea class="element-animation-fadeIn form-control" id="manual_input_field" rows="3" required="true" maxlength="500" autofocus="autofocus"></textarea>
+                    <textarea [disabled]="expired_bool" class="element-animation-fadeIn form-control" id="manual_input_field" rows="3" required="true" maxlength="500" autofocus="autofocus"></textarea>
                 </div>
             </div>
             <div *ngIf="question.question_type != 2">
@@ -32,7 +46,7 @@
                     <fieldset>
                         <div *ngFor="let q of question.answer_keys; index as i" class="form-check">
                             <label class="col-form-label element-animation{{i + 1}}" for="radio{{i}}">
-                                <input class="placeAfter radio_input" id="{{q}}" name="radio_answer" type="radio"
+                                <input [disabled]="expired_bool" class="placeAfter radio_input" id="{{q}}" name="radio_answer" type="radio"
                                     required="true" value={{question.answer_prompt[i]}} />{{question.answer_prompt[i]}}
                             </label>
                         </div>
@@ -43,7 +57,7 @@
                     <fieldset>
                         <div *ngFor="let q of question.answer_keys; index as i" class="form-check">
                             <label class="col-form-label element-animation{{i + 1}}" for="radio{{i}}">
-                                <input class="placeAfter checkbox_input" id="{{q}}" type="checkbox" required="true"
+                                <input [disabled]="expired_bool" class="placeAfter checkbox_input" id="{{q}}" type="checkbox" required="true"
                                     value={{question.answer_prompt[i]}}>{{question.answer_prompt[i]}}
                             </label>
                         </div>
@@ -52,9 +66,9 @@
                 <div *ngIf="question.display_type == 3">
                     <!-- select -->
                     <div class="form-check">
-                        <select class="element-animation-fadeIn form-control" id="select_input" required="true">
+                        <select [disabled]="expired_bool" class="element-animation-fadeIn form-control" id="select_input" required="true">
                             <option value="">Select One</option>
-                            <option *ngFor="let q of question.answer_keys; index as i" value={{q}}>
+                            <option  *ngFor="let q of question.answer_keys; index as i" value={{q}}>
                                 {{question.answer_prompt[i]}}</option>
                             <!-- option(id = id_att value= value_att[index])-->
                         </select>
@@ -80,9 +94,9 @@
             </div>
         </div>
     </div>
-    <div class="form-row justify-content-center">
+    <div class="form-row justify-content-center" [ngClass]="{'filter-blur': expired_bool}">
         <!-- <button class="btn btn-lg btn-success btn-action-borderless shadow" id="nextButton" type="button"  style="width:200px;">Next</button> -->
-        <a class="footer__btn-bp" (click)='submit()' data-footer-link="2">
+        <a class="footer__btn-bp" (click)='submit()' data-footer-link="2" [hidden]="expired_bool">
             <span>Next</span>
             <div class="footer__btn-bp-line">
                 <div class="footer__btn-bp-line-inner"></div>
@@ -91,7 +105,7 @@
     </div>
     
 </div>
-<div *ngIf="completed">
+<div *ngIf="completed ">
     <div class="jumbotron text-xs-center col element-animation-fadeIn" align="center" style="background: white; margin-top: 10%;" id="body_fadeOut">
         <h1 class="display-3">Thank You!</h1>
         <p class="lead"><strong>You have completed Skill Assessment Quiz</strong> for further instructions please contact your TL or instructor.</p>
@@ -105,3 +119,17 @@
         </div>
     </div>
 </div>
+<!-- <div *ngIf="expired">
+    <div class="jumbotron text-xs-center col element-animation-fadeIn" align="center" style="background: white; margin-top: 10%;" id="body_fadeOut">
+        <h1 class="display-3">Thank You!</h1>
+        <p class="lead"><strong>You have completed Skill Assessment Quiz</strong> for further instructions please contact your TL or instructor.</p>
+        <div class="form-row justify-content-center">
+            <a class="footer__btn-bp" [routerLink]="[completed_link]" data-footer-link="2">
+                    <span>Back to homepage</span>
+                    <div class="footer__btn-bp-line">
+                        <div class="footer__btn-bp-line-inner"></div>
+                    </div>
+                </a>
+        </div>
+    </div>
+</div> -->

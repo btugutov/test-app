@@ -144,6 +144,16 @@
                         </select>
                     </datalist>
                 </div>
+                <div class="admin-create-quiz-body-topic-cat-eng-box-select-box">
+                    <span class="text-muted">Time limit</span>
+                    <select class="custom-select shadow" (change)="valueChanger('time_limit', $event.target.value)">
+                        <option value=null [selected]="!time_limit">No limit</option>
+                        <option value="15" [selected]="time_limit == 15">15 minutes</option>
+                        <option value="30" [selected]="time_limit == 30">30 minutes</option>
+                        <option value="45" [selected]="time_limit == 45">45 minutes</option>
+                        <option value="60" [selected]="time_limit == 60">60 minutes</option>
+                    </select>
+                </div>
             </div>
         </div>
 
@@ -162,7 +172,7 @@
 
     <div class='admin-create-quiz-form' style="margin-top: 25px;">
         <table class="table table-borderless ">
-            <thead class="thead-light sticky-top shadow">
+            <thead class="bg-secondary text-white sticky-top">
                 <tr style="height: 50px">
                     <th class="border-0 text-uppercase small font-weight-bold text-center" style="width: 5%">ID/Priority
                     </th>
@@ -207,31 +217,31 @@
                     <td *ngIf="!q.value['error_bool']">
                         <div class="btn-group-vertical btn-group-toggle" data-toggle="buttons" [hidden]='q.value.question_soft_delete || topic_soft_delete'>
                             <button class="btn btn-sm btn-action-borderless btn-outline-secondary" 
-                                [ngClass]="{ 'active': q.value.question_type_id == 2 }"
+                                [ngClass]="{ 'active': q.value.question_type_id == 2, 'shadow':  q.value.question_type_id == 2}"
                                 (click)="displayTypeChanger(q.key, 'textfield input')" 
                                 [disabled]="q.value.question_soft_delete" type="radio"  name="displayTypeNew" 
                                 id="manual_input" value="textfield input" checked="checked"> Manual Input</button>
 
                             <button class="btn btn-sm btn-action-borderless btn-outline-secondary" 
-                                [ngClass]="{ 'active': q.value.display_type_id == 1 && q.value.question_type_id == 1 }" 
+                                [ngClass]="{ 'active': q.value.display_type_id == 1 && q.value.question_type_id == 1, 'shadow': q.value.display_type_id == 1 && q.value.question_type_id == 1 }" 
                                 (click)="displayTypeChanger(q.key, 'Radio')" 
                                 [disabled]="q.value.question_soft_delete"
                                 type="radio"  name="displayTypeNew"
                                 id="radio " value="Radio"> Radio</button>
                                 
-                            <button class="btn btn-sm btn-action-borderless btn-outline-secondary "
+                            <!-- <button class="btn btn-sm btn-action-borderless btn-outline-secondary "
                                 [disabled]="q.value.question_soft_delete"
                                 [ngClass]="{ 'active': q.value.display_type_id == 3 && q.value.question_type_id == 1 }" 
                                 (click)="displayTypeChanger( q.key, 'Dropdown')" type="radio" name="displayTypeNew" 
-                                id="dropdown" value="Dropdown"> Dropdown</button>
+                                id="dropdown" value="Dropdown"> Dropdown</button> -->
 
                             <button  class="btn btn-sm btn-action-borderless btn-outline-secondary"
-                                [ngClass]="{ 'active': q.value.display_type_id == 2 && q.value.question_type_id == 1 }"
+                                [ngClass]="{ 'active': q.value.display_type_id == 2 && q.value.question_type_id == 1, 'shadow': q.value.display_type_id == 2 && q.value.question_type_id == 1 }"
                                 (click)="displayTypeChanger(q.key, 'Checkbox')"
                                 [disabled]="q.value.question_soft_delete" type="radio" name="displayTypeNew " 
                                 id="checkbox " value="Checkbox "> Checkbox</button>
-                            <button class="btn btn-sm btn-action-borderless btn-outline-secondary "
-                                [ngClass]="{ 'active': q.value.question_type_id == 3  }"
+                            <button class="btn btn-sm btn-action-borderless btn-outline-secondary"
+                                [ngClass]="{ 'active': q.value.question_type_id == 3, 'shadow':q.value.question_type_id == 3 }"
                                 (click)="displayTypeChanger( q.key, 'drag_and_drop')"
                                 [disabled]="q.value.question_soft_delete" type="radio" name="displayTypeNew" 
                                 id="drag_and_drop" value="drag_and_drop">Drag'n'Drop</button>
@@ -498,17 +508,29 @@
                     <!-- ADMIN NOTES -->
                     <td *ngIf="!q.value['error_bool']">
                         <div class="input-group">
-                            <input [disabled]="q.value.question_soft_delete || topic_soft_delete " class="create_form_input_shadow form-control " value="{{list_of_questions[q.key]['training_url']}}" type="text" placeholder="Confluence link (optional)" (change)="inputEditor(null, q.key, 'training_url', null, $event.target.value)">
+                            <input [disabled]="q.value.question_soft_delete || topic_soft_delete " 
+                                class="create_form_input_shadow form-control " 
+                                value="{{list_of_questions[q.key]['training_url']}}" 
+                                type="text" placeholder="Confluence link (optional)" 
+                                (change)="inputEditor(null, q.key, 'training_url', null, $event.target.value)"
+                                style="border-radius: 0px"
+                                >
                             <div class="input-group-append">
-                                <button [disabled]="q.value.question_soft_delete || topic_soft_delete" type='button' class='buttonConfluenceLink btn btn-xs  btn-outline-secondary' id='buttonConfluenceLinkForQuestion${id}' (click)="checkModuleLink(q.key)">Check</button>
+                                <button [disabled]="q.value.question_soft_delete || topic_soft_delete" 
+                                        type='button' 
+                                        class='buttonConfluenceLink btn btn-xs  btn-outline-secondary' 
+                                        id='buttonConfluenceLinkForQuestion${id}' 
+                                        (click)="checkModuleLink(q.key)"
+                                        style="border-radius: 0px"
+                                        >Check</button>
                             </div>
                         </div>
                         <div id='module_field${id}'>
                             <input [disabled]="q.value.question_soft_delete || topic_soft_delete" class="create_form_input_shadow form-control" value="{{list_of_questions[q.key]['training_module']}}" (change)="inputEditor('training_module', q.key,'training_module', null, $event.target.value)" id='editModuleForQuestionId${id}' type="text" placeholder="Module note (optional)">
                         </div>
                         <div class="input-group  mb-3" style="width: 185px;">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text bg-secondary text-white" id="basic-addon3">Question value</span>
+                            <div class="input-group-prepend input-group-text bg-secondary text-white">
+                                    Question value
                             </div>
                             <input [disabled]="q.value.question_soft_delete || topic_soft_delete" class="form-control create_form_input_shadow"  value="{{list_of_questions[q.key]['point_value']}}"   (change)="inputEditor('point_value', q.key,'point_value', null, $event.target.value)" type="number" min="1" max="10" style="padding: 0px 5px;">
                         </div>

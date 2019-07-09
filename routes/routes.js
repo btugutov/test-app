@@ -144,7 +144,7 @@ module.exports = function (app) {
         res.json(true)
     });
     app.post('/api/store_user', (req, res, next) => {
-        // console.log("store user =>", req.body)
+        console.log("/api/store_user", JSON.stringify(new Date()))
         let email;
         if (!req.body.mail) {
             email = req.body.email;
@@ -203,18 +203,29 @@ module.exports = function (app) {
 
     // TAKING QUIZ FUNCTIONS  =================================================
     app.get('/api/:eng/topic/:topicID/user/:userID/quiz/:quizID/question/:questionID', (req, res, next) => {
+        console.log("Take quiz call time =>", new Date());
         console.log("engId =>", req.params['eng'])
         console.log("topic_id =>", req.params['topicID'])
         console.log("userID =>", req.params['userID'])
         console.log("quizID =>", req.params['quizID'])
         console.log("questionID =>", req.params['questionID'])
-        console.log("session['user'] =>", req.session['user'])
+        // console.log("session['user'] =>", req.session['user'])
+        let response_message = {
+            'status': 'failed',
+            'body': {},
+            'message': ''
+        }
         preload_block(res, req.session['user']['email'], req.params['topicID'], req.params['eng'])
             .then(returnObj => {
                 let currentUser = returnObj['currentUser']
                 let quiz = returnObj['quiz']
                 // check to see if the database returns anything. If it returns undefined that means that there are no more questions to be answered for this quiz.
                 // Redirect user to the complete page.
+                if(quiz['time_limit']){
+                    if(  Math.floor((new Date() - quiz.start_time)/60000) > quiz['time_limit'] ){
+                        console.log("Quiz is expired!")
+                    }
+                }
                 if (quiz === undefined || quiz.quizTable === undefined) {
                     console.log("somehow the quiz is done!")
                     finish_quiz_session(quiz.submit_id).then(finResult => {
@@ -228,12 +239,16 @@ module.exports = function (app) {
                         }).catch(function (error) {
                             log_event('ERROR', error, 'completed quiz routing');
                             error_handler(error, res, getLineNumber())
+                            response_message.message = error;
+                            res.json(response_message)
                             throw error;
                         });
 
                     }).catch(function (error) {
                         log_event('ERROR', error, 'completed quiz routing');
                         error_handler(error, res, getLineNumber())
+                        response_message.message = error;
+                        res.json(response_message)
                         throw error;
                     });
                 }
@@ -308,9 +323,9 @@ module.exports = function (app) {
                                     if (question['image']) {
                                         params.image_info = unescape(question['base64']);
                                     }
-
+                                    console.log("take quiz: response time =>", new Date())
                                     res.json({
-                                        returnObj: returnObj,
+                                        // returnObj: returnObj,
                                         topic_name: topic_name,
                                         question_id: question_id,
                                         answer_keys: Object.keys(anstest[0][question_id]['answer_prompt']),
@@ -325,14 +340,17 @@ module.exports = function (app) {
                                         // turn array into a string that can be used in the 'name' attribute
                                         pass_info: pass_info,
                                         params: params,
-                                        bucket_list: bucket_list
+                                        bucket_list: bucket_list,
+                                        start_time: quiz.start_time,
+                                        time_limit: quiz.time_limit
                                     });
 
                                 });
                             } else {
                                 let values = questionRenderOderAnswers(question);
+                                console.log("take quiz: response time =>", new Date())
                                 res.json({
-                                    returnObj: returnObj,
+                                    // returnObj: returnObj,
                                     topic_name: topic_name,
                                     question_id: question_id,
                                     answer_keys: values.answer_keys, //Object.keys(anstest[0][question_id]['answer_prompt']),
@@ -346,22 +364,30 @@ module.exports = function (app) {
                                     // turn array into a string that can be used in the 'name' attribute
                                     pass_info: pass_info.join(),
                                     image_info: unescape(anstest[0][question_id]['base64']),
-                                    params: params
+                                    params: params,
+                                    start_time: quiz.start_time,
+                                    time_limit: quiz.time_limit
                                 });
                             }
                         }).catch(function (error) {
                             log_event('ERROR', error, 'quiz page routing');
                             res.json(false)
                             error_handler(error, res, getLineNumber())
+                            response_message.message = error;
+                            res.json(response_message)
                         }).catch(function (error) {
                             log_event('ERROR', error, 'quiz page routing');
                             res.json(false)
                             error_handler(error, res, getLineNumber())
+                            response_message.message = error;
+                            res.json(response_message)
                         });
                     }).catch(function (error) {
                         log_event('ERROR', error, 'quiz page routing');
                         res.json(false)
                         error_handler(error, res, getLineNumber())
+                        response_message.message = error;
+                            res.json(response_message)
                     });
 
                     //question_id, submit_id, profile_id, question_type_id
@@ -373,7 +399,8 @@ module.exports = function (app) {
             }).catch(function (error) {
                 console.log("FAILED =>", error)
                 req.session['error_message'] = error;
-                res.json(error)
+                response_message.message = error;
+                res.json(response_message)
             })
     })
     app.post('/api/:eng/success', (req, res) => {
@@ -693,12 +720,12 @@ module.exports = function (app) {
                             });
 
                     })
-                        .catch(function (error) {
-                            log_event('ERROR', error, 'gradeHome');
-                            error_handler(error, res, getLineNumber())
-                            response_message.message = error;
-                            res.json(response_message)
-                        });
+                    .catch(function (error) {
+                        log_event('ERROR', error, 'gradeHome');
+                        error_handler(error, res, getLineNumber())
+                        response_message.message = error;
+                        res.json(response_message)
+                    });
 
                 }
                 // if not admin, redirect to an error page
@@ -1048,10 +1075,40 @@ module.exports = function (app) {
     });
 
     app.post('/api/getQuizByTopicIdForEdit', (req, res, next) => {
+        let r_r_c = JSON.stringify(new Date());
+        console.log(`Routes revieved a call getQuizByTopicIdForEdit. Start preload_block`, r_r_c)
         let response_message = {
             'status': 'failed',
             'message': ''
         }
+        get_topic_to_edit_MSSQL(req.body['topic_id']).then(result => {
+            //console.log(result)
+            res.locals.quiz = format_quiz_table(result)[0];
+            res.locals.questions = Object.keys(res.locals.quiz);
+            response_message.status = 'success';
+            response_message.quiz1 = format_quiz_table2(result);
+            response_message.quiz_original = result;
+            // response_message.quiz2 = result;
+            // response_message.quiz3 = format_quiz_table2(result);
+            get_buckets_by_topic_id(req.body['topic_id']).then(buckets =>{
+                response_message.buckets = unescapingObj(buckets);
+                let time3 = JSON.stringify(new Date());
+                console.log("rending response to the FE", time3)
+                res.json(response_message)
+                return;
+            }).catch(function (error) {
+                log_event('ERROR', error, 'get_buckets_by_topic_id');
+                error_handler(error, res, getLineNumber())
+                response_message['message'] = error;
+                res.json(response_message)
+            })
+        }).catch(function (error) {
+            log_event('ERROR', error, 'EditTopic');
+            error_handler(error, res, getLineNumber())
+            response_message['message'] = error;
+            res.json(response_message)
+        })
+        return;
         preload_block(res, req.body['email'], undefined, undefined)
             .catch(function (error) {
                 debugLog("ERROR HERE" + error);
@@ -1059,16 +1116,21 @@ module.exports = function (app) {
                 res.json(response_message)
             })
             .then(returnObj => {
+                let time2 = JSON.stringify(new Date());
+                console.log(`End of preload_block.  Routes start get_topic_to_edit_MSSQL`, time2)
                 get_topic_to_edit_MSSQL(req.body['topic_id']).then(result => {
                     //console.log(result)
                     res.locals.quiz = format_quiz_table(result)[0];
                     res.locals.questions = Object.keys(res.locals.quiz);
                     response_message.status = 'success';
                     response_message.quiz1 = format_quiz_table2(result);
+                    response_message.quiz_original = result;
                     // response_message.quiz2 = result;
                     // response_message.quiz3 = format_quiz_table2(result);
-                    get_buckets_by_topic_id(req.body['topic_id']).then(buckets =>{
-                        response_message.buckets = unescapingObj(buckets) ;
+                    get_buckets_by_topic_id(req.body['topic_id']).then(buckets => {
+                        response_message.buckets = unescapingObj(buckets);
+                        let time3 = JSON.stringify(new Date());
+                        console.log("rending response to the FE", time3)
                         res.json(response_message)
                     }).catch(function (error) {
                         log_event('ERROR', error, 'get_buckets_by_topic_id');
