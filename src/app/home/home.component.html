@@ -10,7 +10,28 @@
             <div style='height: 10%; justify-content: center; display: flex; flex-direction: column; flex-wrap: wrap;'>
                 <h1>Please select the test you would like to take</h1>
             </div>
-            <div class="home-main">
+            <!--  -->
+            <div class="card-columns cards-main">
+                <div class="card card-category" *ngFor="let c of cats_n_tops | keyvalue ">
+                    <div class="card-header text-center bg-dark text-white">
+                        <h3>{{c.key}}</h3>
+                      </div>
+                      <div *ngFor="let t of c.value | keyvalue " class="home-category-element ">
+                        <a [routerLink]="[t.value.link]">
+                            <button class='btn btn-lg' [disabled]="t.value['topic_status'] == 2" [ngClass]="{
+                                'btn-outline-secondary': t.value['topic_status'] == 0, 
+                                'btn-danger': t.value['topic_status'] == 1, 
+                                'btn-success': t.value['topic_status'] == 2
+                            }">{{t.value.topic}} 
+                            <span *ngIf="t.value['topic_status'] == 2">(completed)</span>
+                            <span *ngIf="t.value['topic_status'] == 1">(continue)</span>
+                        </button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <!--  -->
+            <!-- <div class="home-main">
                 <div class="home-category" *ngFor="let c of cats_n_tops | keyvalue">
                     <div class="home-category-title bg-dark text-white" style="width: 100%; padding: 5px 0px;">
                         <h2>{{c.key}}</h2>
@@ -24,18 +45,9 @@
                                 'btn-outline-success-hover-side-shadow': t.value['topic_status'] == 2
                             }">{{t.value.topic}} <span *ngIf="t.value['topic_status'] == 2">(completed)</span></button>
                         </a>
-                        <!-- <a *ngIf="t.value['topic_status'] == 0" [routerLink]="[t.value.link]">
-                            <button type="button" class='{{t.value.class}}'>{{t.value.topic}}</button>
-                        </a>
-                        <a *ngIf="t.value['topic_status'] == 1" [routerLink]="[t.value.link]">
-                            <button type="button" class='{{t.value.class}}'>Continue {{t.value.topic}}</button>
-                        </a>
-                        <a *ngIf="t.value['topic_status'] == 2">
-                            <button type="button" class='{{t.value.class}}' disabled>{{t.value.topic}} (completed)</button>
-                        </a> -->
                     </div>
                 </div>
-            </div>
+            </div> -->
         </div>
     </div>
     <div *ngIf="!ready_bool">

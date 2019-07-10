@@ -20,12 +20,35 @@
             <p class="badge btn-lg badge-danger">Quiz is disabled</p>
         </div>
     </div> -->
-    <div class="grade-home-main " id="grade-home-main ">
+
+
+    <!-- <div class="grade-home-main " id="grade-home-main ">
         <div *ngFor="let c of quizzes | keyvalue " class="home-category " >
             <div class="home-category-title bg-dark text-white" style="width: 100%; padding: 5px 0px;">
                 <h3 >{{c.key}}</h3>
             </div>
             <div *ngFor="let t of c.value | keyvalue " class="home-category-element ">
+                <a [routerLink]="[links[t.value.topic_id][ 'topic_link']] ">
+                    <button type="button " class="btn btn-lg" 
+                        [ngClass]="{
+                            'btn-outline-secondary': t.value.question_count > 5 && !t.value.topic_soft_delete, 
+                            'btn-outline-secondary-hover-side-shadow': t.value.question_count > 5 && !t.value.topic_soft_delete, 
+                            'btn-outline-warning': t.value.question_count <= 5 && !t.value.topic_soft_delete, 
+                            'btn-outline-warning-hover-side-shadow':t.value.question_count <= 5 && !t.value.topic_soft_delete,  
+                            'btn-outline-danger': t.value.topic_soft_delete, 
+                            'btn-outline-danger-hover-side-shadow': t.value.topic_soft_delete
+                        }">
+                            {{t.value.topic}} ({{t.value.question_count}})</button>
+                </a>
+            </div>
+        </div>
+    </div> -->
+    <div class="card-columns cards-main">
+        <div class="card card-category" *ngFor="let c of quizzes | keyvalue ">
+            <div class="card-header text-center">
+                <h3>{{c.key}}</h3>
+              </div>
+              <div *ngFor="let t of c.value | keyvalue " class="home-category-element ">
                 <a [routerLink]="[links[t.value.topic_id][ 'topic_link']] ">
                     <button type="button " class="btn btn-lg" 
                         [ngClass]="{
