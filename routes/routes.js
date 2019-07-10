@@ -862,7 +862,7 @@ module.exports = function (app) {
                         for (let i = 0; i < questions.length; i++) {
                             console.log("============================================================")
                             console.log(`questions[i] =>${questions[i]}, quiz[questions[i]][2] => ${quiz[questions[i]][2]}, quiz[questions[i]][0] => ${quiz[questions[i]][0]}, quiz[questions[i]][1] => ${quiz[questions[i]][1]}, reviewer_id => ${reviewer_id}`)
-                            update_grade_input_response(questions[i], quiz[questions[i]][2], quiz[questions[i]][0], quiz[questions[i]][1], reviewer_id);
+                            update_grade_input_response(questions[i], grades.submission_id, quiz[questions[i]][0], quiz[questions[i]][1], reviewer_id);
                             console.log("============================================================")
                         }
                         finish_gradable_quiz_session_by_id(grades['submission_id']).then(response => {

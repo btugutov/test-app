@@ -4,13 +4,13 @@
         #{{submit_id}}</span>
         </h1>
         <div class="d-flex justify-content-center">
-            <button *ngIf="release_status == 'no'" class="btn btn-warning btn-lg text-monospace grading_page-release_button justify-content-center" (click)="release('ask')">Release</button>
-            <button *ngIf="release_status == 'ask'" class="btn btn-warning btn-lg text-monospace grading_page-release_button" (click)="release('yes')">Yes</button>
-            <button *ngIf="release_status == 'ask'" class="btn btn-info btn-lg text-monospace grading_page-release_button" (click)="release('no')">No</button>
+            <button *ngIf="release_status == 'no'" class="btn btn-warning btn-lg text-monospace grading_page-release_button justify-content-center shadow" (click)="release('ask')">Release</button>
+            <button *ngIf="release_status == 'ask'" class="btn btn-warning btn-lg text-monospace grading_page-release_button shadow" (click)="release('yes')">Yes</button>
+            <button *ngIf="release_status == 'ask'" class="btn btn-info btn-lg text-monospace grading_page-release_button shadow" (click)="release('no')">No</button>
         </div>
     </div>
     <div class='grading_page-body'>
-        <table class="table table-striped table-borderless">
+        <table class="table table-striped table-borderless shadow">
             <thead class="thead-light">
                 <tr>
                     <th class="border-0 text-uppercase small font-weight-bold text-center">Question</th>
@@ -51,7 +51,7 @@
         </table>
         <div class="d-flex justify-content-center">
             <button *ngIf="!grading_done_bool" class='btn btn-lg btn-success grading_page-release_button text-monospace ' (click)="submitGrades()" [disabled]="!grading_done_bool">Please grade all answers.</button>
-            <button *ngIf="grading_done_bool" class='btn btn-lg btn-success grading_page-release_button text-monospace ' (click)="submitGrades()" [disabled]="!grading_done_bool">Submit grades</button>
+            <button *ngIf="grading_done_bool" class='btn btn-lg btn-success grading_page-release_button text-monospace shadow' (click)="submitGrades()" [disabled]="!grading_done_bool">Submit grades</button>
         </div>
     </div>
 </div>

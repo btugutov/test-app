@@ -79,8 +79,8 @@
                     <div style="width:100%;display: flex; flex-direction: column; flex-wrap: nowrap; justify-content: space-around; align-items: center; align-content: center;" id="dragAndDropContent">
                         Please drag and drop items to the right buckets.
                         <ul data-draggable="target" class="shadow" style="width: 550px; height: 350px;">
-                            <li *ngFor="let c of question.answer_keys" data-draggable="item" class="bucket_question_element bucket_question_choice list-group-item grab text-monospace text-center" style="font-size: 24px;" id="{{c}}">
-                                {{question.answer_prompt[c]}}</li>
+                            <li *ngFor="let c of question.answer_keys; let idx = index" data-draggable="item" class="bucket_question_element bucket_question_choice list-group-item grab text-monospace text-center" style="font-size: 24px;" id="{{c}}">
+                                {{question.answer_prompt[idx]}}</li>
                             </ul>
 
                         <div style="width: 100%; display: flex; flex-direction: row; flex-wrap: wrap; justify-content: space-around; align-items: baseline; align-content: center;">
@@ -96,7 +96,7 @@
     </div>
     <div class="form-row justify-content-center" [ngClass]="{'filter-blur': expired_bool}">
         <!-- <button class="btn btn-lg btn-success btn-action-borderless shadow" id="nextButton" type="button"  style="width:200px;">Next</button> -->
-        <a class="footer__btn-bp" (click)='submit()' data-footer-link="2" [hidden]="expired_bool">
+        <a class="footer__btn-bp noselect" (click)='submit()' data-footer-link="2" [hidden]="expired_bool">
             <span>Next</span>
             <div class="footer__btn-bp-line">
                 <div class="footer__btn-bp-line-inner"></div>

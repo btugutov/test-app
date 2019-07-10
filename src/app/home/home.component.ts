@@ -75,7 +75,7 @@ export class HomeComponent implements OnInit {
   }
   getAllCategoriesAndTopicsByProfileId(profile_id){
     this._ConnectorService.getAllCategoriesAndTopicsByProfileId(profile_id).then(data =>{
-      // console.log("getAllCategoriesAndTopicsByProfileId DATA =>", data)
+      console.log("getAllCategoriesAndTopicsByProfileId DATA =>", data)
       this.cats_n_tops_raw = data;
       this.filter_categories_and_topics_by_eng_id(this.cats_n_tops_raw);
 
@@ -120,6 +120,7 @@ export class HomeComponent implements OnInit {
       }else{
         this.cats_n_tops_bool = true;
       }
+      console.log(this.cats_n_tops)
       this.cats_n_tops = groupByKey(unescapingObj(this.cats_n_tops), 'category', 'topic_id')
       for(let c in this.cats_n_tops){
         this.cats_n_tops_array[c] = [];
