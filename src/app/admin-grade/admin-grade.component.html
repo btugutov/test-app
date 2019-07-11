@@ -51,7 +51,9 @@
                     <td>{{q.input_value}}</td>
                     <td style="width: 15%">
                         <div class="inline-radio">
-                            <div *ngFor="let num of [0.0, 0.2, 0.4, 0.6, 0.8, 1.0]">
+                            <div *ngFor="let num of [0.0, 0.2, 0.4, 0.6, 0.8, 1.0]" [ngClass]="{
+                                'selected_grade': grade_data[q.question_id] && grade_data[q.question_id]['point'] == num
+                            }">
                                 <input type="radio" (click)="scaleButton($event.target)" value="{{num}}" name="{{q.question_id}}"><label class="admin-radio-hover text-monospace">{{num * 100}}</label>
                             </div>
                         </div>
@@ -69,7 +71,7 @@
             </tbody>
         </table>
         <div class="d-flex justify-content-center">
-            <button *ngIf="!grading_done_bool" class='btn btn-lg btn-success grading_page-release_button text-monospace ' (click)="submitGrades()" [disabled]="!grading_done_bool">Please grade all answers.</button>
+            <button *ngIf="!grading_done_bool" class='btn btn-lg btn-success grading_page-release_button text-monospace' (click)="submitGrades()" [disabled]="!grading_done_bool">Please grade all answers.</button>
             <button *ngIf="grading_done_bool" class='btn btn-lg btn-success grading_page-release_button text-monospace shadow' (click)="submitGrades()" [disabled]="!grading_done_bool">Submit grades</button>
         </div>
     </div>

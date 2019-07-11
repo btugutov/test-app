@@ -140,6 +140,7 @@ export class AdminGradeComponent implements OnInit {
       this.grading_done_bool = true;
       // console.log(this.grade_data)
     }
+    console.log(this.grade_data)
   }
   adminCommentInput(target){
     if(!this.grade_data[target.id]){
@@ -224,3 +225,4 @@ export class AdminGradeComponent implements OnInit {
   //   this.modal_mesage_bool = false;
   // }
 }
+
