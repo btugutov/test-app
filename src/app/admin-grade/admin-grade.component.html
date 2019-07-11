@@ -1,4 +1,23 @@
 <div *ngIf='quiz' class="grading_page">
+        <div [hidden]="!modal_mesage_bool" class="modal_message_box" (click)="closeModal_background_click($event.target)" id="modal_message_box">
+                <div class="modal-dialog modal-dialog-centered modal_message" id="modal_main" role="document" [ngClass]="{
+                    'modal-width-full': modal_message.title == 'Image'
+                }">
+                    <div class="modal-content shadow-lg" *ngIf="modal_message.title == 'Image'">
+                        <div>
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalCenteredLabel">{{modal_message.title}}</h5>
+                                 <button type="button" class="close" (click)="closeModal()" data-dismiss="modal" aria-label="Close">
+                                      <span aria-hidden="true">&times;</span>
+                                    </button>
+                            </div>
+                            <div class="modal-body modal-img" style="padding: 0px 1rem">
+                                <img src="{{modal_message.body}}" class="img-fluid" alt="Responsive image" >
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
     <div class='grading_page-title'>
         <h1 class="text-center ">Please grade provided submitted quiz <span class="text-monospace text-muted">{{quiz_name}}
         #{{submit_id}}</span>
@@ -26,7 +45,7 @@
                 <tr *ngFor='let q of quiz'>
                     <td>{{q.prompt}}</td>
                     <td>
-                        <img *ngIf='q.base64' class='image_question img-fluid' src={{q.base64}} />
+                        <img *ngIf='q.base64' class='image_question img-fluid' (click)="imageZoom(q.base64)" src={{q.base64}} />
                     </td>
                     <td>{{q.expected_response}}</td>
                     <td>{{q.input_value}}</td>

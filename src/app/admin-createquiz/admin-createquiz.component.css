@@ -189,4 +189,16 @@ input[type="file"] {
     background-color: #fd5665;
     border-color: #ff001b;
   }
-  
+  .modal-width-full{
+    width: 100% !important;
+    max-width: 100% !important;
+    height: 100% !important;
+}
+.modal-img{
+    display: flex;
+	flex-direction: column;
+	flex-wrap: nowrap;
+	justify-content: center;
+	align-items: center;
+	align-content: flex-start;
+}

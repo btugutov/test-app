@@ -223,4 +223,16 @@ thead th{
     -ms-filter: blur(5px);
     filter: blur(5px);
 }
-
+.modal-width-full{
+    width: 100% !important;
+    max-width: 100% !important;
+    height: 100% !important;
+}
+.modal-img{
+    display: flex;
+	flex-direction: column;
+	flex-wrap: nowrap;
+	justify-content: center;
+	align-items: center;
+	align-content: flex-start;
+}

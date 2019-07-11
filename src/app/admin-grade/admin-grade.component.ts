@@ -25,6 +25,12 @@ export class AdminGradeComponent implements OnInit {
   points_total_num = 0;
   points_one_value = 0;
   points_map = {};
+  modal_mesage_bool = false;
+  modal_message = {
+    'title': '',
+    'body': ''
+  };
+
   constructor(private _ConnectorService: ConnectorService, private location: Location, private _route: ActivatedRoute, private _r: Router) {
     // this._ConnectorService.quizz_names.subscribe(quiz_names => {
     //   this.quiz_names = quiz_names;
@@ -195,4 +201,26 @@ export class AdminGradeComponent implements OnInit {
     }
     // console.log(status)
   }
+
+  // modal listeners
+  imageZoom(q_id){
+    this.modal_message.title = "Image";
+    this.modal_message.body = q_id;
+    this.modal_mesage_bool = true;
+    document.getElementById('body').style.background = "silver"
+  }
+  closeModal() {
+    document.getElementById('body').style.background = "none"
+    this.modal_mesage_bool = false;
+  }
+
+  closeModal_background_click(target){
+    console.log(target.id)
+    if(this.modal_message.title == "Image" && target.id == "modal_message_box"){
+      this.closeModal();
+    }
+  }
+  // bucketListEditorClose() {
+  //   this.modal_mesage_bool = false;
+  // }
 }

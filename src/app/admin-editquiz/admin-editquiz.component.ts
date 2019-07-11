@@ -654,6 +654,13 @@ export class AdminEditquizComponent implements OnInit {
     console.log("=============================")
   }
 
+  imageZoom(q_id){
+    console.log(this.list_of_questions[q_id])
+    this.modal_message.title = "Image";
+    this.modal_message.body = this.list_of_questions[q_id]['base64']
+    this.modal_mesage_bool = true;
+  }
+
   
   
   // MODAL FUNCTIONS ==================================================================================================================================================================================
@@ -756,6 +763,13 @@ export class AdminEditquizComponent implements OnInit {
       confirmed: false
     }
     this.bucket_new.bucket_name = "";
+  }
+
+  closeModal_background_click(target){
+    console.log(target.id)
+    if(this.modal_message.title == "Image" && target.id == "modal_message_box"){
+      this.closeModal();
+    }
   }
 
   // VALIDATORS ========================================================================================================================================================================================

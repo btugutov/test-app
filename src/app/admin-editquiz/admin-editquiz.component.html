@@ -1,6 +1,8 @@
 <div class="admin-create-quiz" *ngIf="currentUser && engagements">
-    <div [hidden]="!modal_mesage_bool" class="modal_message_box">
-        <div class="modal-dialog modal-dialog-centered modal_message" role="document">
+    <div [hidden]="!modal_mesage_bool" class="modal_message_box" (click)="closeModal_background_click($event.target)" id="modal_message_box">
+        <div class="modal-dialog modal-dialog-centered modal_message" id="modal_main" role="document" [ngClass]="{
+            'modal-width-full': modal_message.title == 'Image'
+        }">
             <!-- EDIT/REMOVE BUCKET LIST -->
             <div class="modal-content shadow-lg" *ngIf="modal_message.title == 'Bucket editor'">
                 <div>
@@ -91,6 +93,20 @@
                         <button type="button" *ngIf="!bucket_list_changes_bool" class="btn btn-action-borderless btn-outline-info" (click)="bucketListEditorClose()" data-dismiss="modal">Close</button>
                         <!-- <button type="button" [hidden]="bucket_list_confirm_bool" class="btn btn-action-borderless btn-outline-warning" (click)="bucketListEditorConfirm()">Confirm</button> -->
                         <button type="button" [disabled]="!bucket_list_changes_bool" class="btn btn-action-borderless btn-outline-success" (click)="bucketListEditorSave()">Save</button>
+                    </div>
+                </div>
+            </div>
+            <!-- IMAGE VIEWER -->
+            <div class="modal-content shadow-lg" *ngIf="modal_message.title == 'Image'">
+                <div>
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalCenteredLabel">{{modal_message.title}}</h5>
+                         <button type="button" class="close" (click)="bucketListEditorClose()" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                    </div>
+                    <div class="modal-body modal-img" style="padding: 0px 1rem">
+                        <img src="{{modal_message.body}}" class="img-fluid" alt="Responsive image" >
                     </div>
                 </div>
             </div>
@@ -210,7 +226,7 @@
                             <input id="file-upload{{q.key}}" type="file"  [disabled]="q.value.question_soft_delete || topic_soft_delete" (change)="inputEditor('img', q.key, 'base64', null, $event.target.files)" accept="image/*" />
                         </div>
                         <div *ngIf="q.value['image']" style="position: relative">
-                            <img src="{{q.value['base64']}}" class="img-fluid" alt="Responsive image">
+                            <img src="{{q.value['base64']}}" class="img-fluid" alt="Responsive image" (click)="imageZoom(q.key)">
                             <button class="btn btn-sm btn-outline-danger btn-image-remove" [disabled]="q.value.question_soft_delete || topic_soft_delete" (click)="removeImg(q.key)">x</button>
                         </div>
                     </td>

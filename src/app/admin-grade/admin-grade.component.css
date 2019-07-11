@@ -64,3 +64,40 @@ new*/
 }
 
 .admin-radio-hover {}
+
+.modal-width-full{
+    width: 100% !important;
+    max-width: 100% !important;
+    height: 100% !important;
+}
+.modal_message_box {
+    position: fixed;
+    z-index: 50;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(179, 182, 185, 0.5)
+}
+
+.modal_message {
+    max-height: 52vh;
+}
+
+.modal-edit-remove-bucket{
+    height: 50vh !important;
+    overflow-y: auto;
+}
+.modal-edit-remove-bucket td{
+    /* padding: 0px 0px !important; */
+}
+.modal-dialog{
+    width: 700px;
+    /* height: 100px; */
+}
+.modal-img{
+    display: flex;
+	flex-direction: column;
+	flex-wrap: nowrap;
+	justify-content: center;
+	align-items: center;
+	align-content: flex-start;
+}
