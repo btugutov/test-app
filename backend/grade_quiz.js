@@ -18,7 +18,44 @@ function call_stored_proc_grading() {
         throw (error);
     })
 }
-
+function call_stored_proc_grading2(submit_id) {
+    let functionName = 'call_stored_proc_grading2';
+    // let's get selected inputs first
+    
+    return new Promise(function(resolve, reject) {
+        
+    }).catch(function(error) {
+        log_event('WARNING', error, functionName);
+        throw (error);
+    })
+}
+function get_selected_inputs_by_submit_id(submit_id){
+    let functionName = 'get_selected_inputs_by_submit_id';
+    return new Promise(function(resolve, reject) {
+        let query_quiz = `SELECT TOP (1000) c_r.answer_id
+        ,c_r.[question_id]
+        ,[correct]
+        ,[time_start]
+        ,[time_stop]
+        ,[submit_id]
+        ,[profile_id]
+        ,c_r.soft_delete
+        ,[choice_response_id]
+        ,[grade_value]
+        ,q.point_value
+    FROM [dbo].[KA_choice_response] as c_r
+   JOIN KA_questions as q on q.question_id =  c_r.question_id
+     where submit_id = ${submit_id}`;
+        return dbQueryMethod.query(query_quiz).then(result => {
+            // console.log(`call_stored_proc_grading() result =>`, result)
+            resolve(result)
+            return result;
+        }).catch(function(error) { reject(error); throw (error); })
+    }).catch(function(error) {
+        log_event('WARNING', error, functionName);
+        throw (error);
+    })
+}
 // This returns a raw list of quizzes that are marked as completed.
 // This is used to see how many quizzes are available to be graded.
 function get_completed_quiz_submissions(profile_id, engagement_id) {
@@ -92,6 +129,7 @@ function get_completed_quiz_by_submissions(submit_id) {
         ,[KA_questions].[training_module]
         ,[KA_questions].[training_url]
         ,[KA_questions].sort as question_sort
+        ,[KA_questions].point_value
         FROM [dbo].[KA_quiz_submission]
         JOIN [KA_quiz_questions] questions ON questions.[quiz_id] = [KA_quiz_submission].[quiz_id]
         FULL OUTER JOIN [KA_choice_response] choice ON choice.[question_id] = questions.[question_id] and choice.[submit_id] = KA_quiz_submission.[submit_id]
@@ -353,14 +391,14 @@ function continue_grading_quiz(profile_id, submit_id) {
     })
 }
 
-function update_grade_input_response(question_id, submit_id, grade_scale, grade_input, reviewer_id) {
+function update_grade_input_response(question_id, submit_id, grade_scale, grade_input, reviewer_id, grade_value) {
     console.log(`update_grade_input_response params =>(question_id = ${question_id}, submit_id = ${submit_id}, grade_scale = ${grade_scale}, grade_input = ${grade_input}, reviewer_id = ${reviewer_id})`)
     let gradeValue = (grade_scale * 5)
     let functionName = 'update_grade_input_response';
     console.log(`****** ${functionName} ******`)
     return new Promise(function(resolve, reject) {
         let query = `UPDATE [KA_input_response] 
-        SET grade = '${gradeValue}', grade_input = '${grade_input}', reviewer_id = '${reviewer_id}' , grade_value = '${gradeValue}', grade_scale = '${grade_scale}' 
+        SET grade = '${gradeValue}', grade_input = '${grade_input}', reviewer_id = '${reviewer_id}' , grade_value = '${grade_value}', grade_scale = '${grade_scale}' 
         WHERE question_id = '${question_id}' and submit_id = '${submit_id}'`;
         dbQueryMethod.queryRaw(query).then(result => {
             resolve(result)

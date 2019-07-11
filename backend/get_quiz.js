@@ -26,6 +26,7 @@ class quiz {
 // Eventually this will return an empty table [] when all questions have been answered
 function get_quiz_current_MSSQL(topic_id, profile_id, submit_id) {
     let functionName = 'get_quiz_current_MSSQL';
+    console.log("get_quiz_current_MSSQL: params =>", topic_id, profile_id, submit_id)
     return new Promise(function(resolve, reject) {
         let query_quiz = `SELECT topic
         ,KA_test_topic.topic_id

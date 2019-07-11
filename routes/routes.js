@@ -853,20 +853,28 @@ module.exports = function (app) {
                     if (currentUser.admin_grader || currentUser.admin_owner) {
                         console.log("GRADES INCOMING!!!!!!!!!!!!!!!!", grades)
                         // validate and sanitize grades
-                        let quiz = gradeValidate(grades);
+                        // let quiz = gradeValidate(grades);
+                        let quiz = grades;
+                        /*
+                        Here, where we should change the grade input
+
+                        */
                         console.log("gradeValidate(grades) =>>>", quiz)
                         const reviewer_id = currentUser.profile_id;
                         let questions = Object.keys(quiz);
                         console.log("QUIZ =>", quiz)
                         // loop through each question and update DB with score (and feedback if provided)
-                        for (let i = 0; i < questions.length; i++) {
+                        for (let el in quiz) {
+                            if(typeof(quiz[el])!='object'){
+                                continue;
+                            }
                             console.log("============================================================")
-                            console.log(`questions[i] =>${questions[i]}, quiz[questions[i]][2] => ${quiz[questions[i]][2]}, quiz[questions[i]][0] => ${quiz[questions[i]][0]}, quiz[questions[i]][1] => ${quiz[questions[i]][1]}, reviewer_id => ${reviewer_id}`)
-                            update_grade_input_response(questions[i], grades.submission_id, quiz[questions[i]][0], quiz[questions[i]][1], reviewer_id);
+                            // question_id, submit_id, grade_scale, grade_input, reviewer_id, grade_value
+                            update_grade_input_response(el, grades.submission_id, quiz[el][0], quiz[el][1], reviewer_id, quiz[el][2]);
                             console.log("============================================================")
                         }
-                        finish_gradable_quiz_session_by_id(grades['submission_id']).then(response => {
-                            quizEndChecks(grades['submission_id']).then(graded_done => {
+                        finish_gradable_quiz_session_by_id(grades.submission_id).then(response => {
+                            quizEndChecks(grades.submission_id).then(graded_done => {
                                 response_message.status = 'success';
                                 response.body = {
                                     questions: questions,

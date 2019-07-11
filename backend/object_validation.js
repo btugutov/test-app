@@ -760,6 +760,8 @@ function gradeValidate(body) {
     }
 
     for (let i = 0; i < keys.length; i++) {
+        console.log("+++++++++++++++++")
+        console.log(body[keys][i])
         if (Array.isArray(body[keys[i]])) {
 
             // This needs to be adjusted if the grade scale feature is changed to allow for scores greater or less than 1-5
@@ -785,6 +787,7 @@ function gradeValidate(body) {
         } else {
             gradeValue = '0';
         }
+        console.log("+++++++++++++++++")
         /*
         console.log(`gradeValue >>>> ${gradeValue}`)
         console.log(gradeValue)
@@ -796,16 +799,23 @@ function gradeValidate(body) {
         */
         // sanitize everything and then add to the final array
         gradeValue = escape(gradeValue);
+        console.log("========")
         gradeContent.push(gradeValue);
+        console.log("gradeValue =>", gradeValue)
         grade_input = escape(grade_input);
         gradeContent.push(grade_input);
+        console.log("grade_input =>", grade_input)
         gradeContent.push(submission_id);
+        console.log("submission_id =>", submission_id)
         //would like to validate further here. add query to check which questions are available in the type of quiz that is being graded
         let question_id = keys[i];
+        console.log("========")
         //question_id = escape(question_id)
         cleanResult[question_id] = gradeContent;
         gradeContent = [];
     }
+
+    console.log("CLEAN RESULT =>", cleanResult)
     return cleanResult;
 }
 

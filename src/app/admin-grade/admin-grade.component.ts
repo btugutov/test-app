@@ -22,6 +22,9 @@ export class AdminGradeComponent implements OnInit {
   topic_id;
   grading_done_bool = false;
   grades_submitted = false;
+  points_total_num = 0;
+  points_one_value = 0;
+  points_map = {};
   constructor(private _ConnectorService: ConnectorService, private location: Location, private _route: ActivatedRoute, private _r: Router) {
     // this._ConnectorService.quizz_names.subscribe(quiz_names => {
     //   this.quiz_names = quiz_names;
@@ -44,9 +47,11 @@ export class AdminGradeComponent implements OnInit {
                 this.quiz_name = unescape(res['quiz_name']['quiz_name'])
                 this.submit_id = res['submit_id']
                 for(let el in res['quiz']){
+                  console.log(el)
                   if (res['quiz'][el]['base64'] && res['quiz'][el]['base64'].slice(0, 5) != 'data:') {
                     res['quiz'][el]['base64'] = "data:image/png;base64," + res['quiz'][el]['base64'];
                   }else if(res['quiz'][el]['base64'] && res['quiz'][el]['base64'].split(',')[1].slice(0, 5) == "data:"){
+                    console.log("hey")
                     res['quiz'][el]['base64'] = res['quiz'][el]['base64'].split(',')[1] + ","+ res['quiz'][el]['base64'].split(',')[2]
                   }
                 }
@@ -67,6 +72,15 @@ export class AdminGradeComponent implements OnInit {
                 console.log("RESPONSE =>", res)
                 this.quiz_name = unescape(res['quiz_name']['quiz_name'])
                 this.submit_id = this.target;
+                for(let el in res['quiz']){
+                  // console.log(el)
+                  if (res['quiz'][el]['base64'] && res['quiz'][el]['base64'].slice(0, 5) != 'data:') {
+                    res['quiz'][el]['base64'] = "data:image/png;base64," + res['quiz'][el]['base64'];
+                  }else if(res['quiz'][el]['base64'] && res['quiz'][el]['base64'].split(',')[1].slice(0, 5) == "data:"){
+                    // console.log("hey")
+                    res['quiz'][el]['base64'] = res['quiz'][el]['base64'].split(',')[1] + ","+ res['quiz'][el]['base64'].split(',')[2]
+                  }
+                }
                 // console.log("QUIZ =>", this.quiz)
               }else{
                 // console.log("error!")
@@ -89,7 +103,9 @@ export class AdminGradeComponent implements OnInit {
       if(!this.topic_id){
         this.topic_id = quiz[el]['quiz_id']
       }
-      if(quiz[el]['input_value']){
+      this.points_map[quiz[el]['question_id']] = quiz[el]['point_value'];
+      this.points_total_num += quiz[el]['point_value'];
+      if(quiz[el]['input_value'] != null){
         if(quiz[el]['base64']){
           let new_base64 = `data:image/png;base64,${quiz[el]['base64']}`;
           quiz[el]['base64'] = new_base64;
@@ -97,6 +113,11 @@ export class AdminGradeComponent implements OnInit {
         new_result.push(quiz[el]);
       }
     }
+    this.points_one_value = 100/this.points_total_num;
+    console.log('===============================')
+    console.log("this.points_one_value =>", this.points_one_value, "; this.points_total_num =>", this.points_total_num)
+    console.log("this.points_map =>", this.points_map)
+    console.log('===============================')
     return new_result;
   }
 
@@ -125,8 +146,9 @@ export class AdminGradeComponent implements OnInit {
     let obj = {
       "submission_id": this.submit_id
     };
+    // console.log("this.grade_data[el]['point'] * this.points_map[el] =>", this.grade_data[el]['point'] * this.points_map[el])
     for(let el in this.grade_data){
-      obj[el] = [this.grade_data[el]['point'], this.grade_data[el]['grader_comment']]
+      obj[el] = [this.grade_data[el]['point'] , this.grade_data[el]['grader_comment'], this.grade_data[el]['point'] * this.points_map[el]]
     }
     this._ConnectorService.submitGrades(obj, this.currentUser.email).then(res =>{
       // console.log("RES =>", res)
