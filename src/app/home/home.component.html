@@ -8,10 +8,11 @@
         </div>
         <div *ngIf="cats_n_tops">
             <div style='height: 10%; justify-content: center; display: flex; flex-direction: column; flex-wrap: wrap;'>
-                <h1>Please select the test you would like to take</h1>
+                <h1>Please select the test you would like to take {{categories_length}}</h1>
+
             </div>
             <!--  -->
-            <div class="card-columns cards-main">
+            <div class="card-columns cards-main" *ngIf="categories_length>1">
                 <div class="card card-category" *ngFor="let c of cats_n_tops | keyvalue ">
                     <div class="card-header text-center bg-dark text-white">
                         <h3>{{c.key}}</h3>
@@ -30,9 +31,10 @@
                     </div>
                 </div>
             </div>
+
             <!--  -->
-            <!-- <div class="home-main">
-                <div class="home-category" *ngFor="let c of cats_n_tops | keyvalue">
+           <div class="home-main" *ngIf="categories_length == 1">
+                <div class="home-category" *ngFor="let c of cats_n_tops | keyvalue" >
                     <div class="home-category-title bg-dark text-white" style="width: 100%; padding: 5px 0px;">
                         <h2>{{c.key}}</h2>
                     </div>
@@ -47,7 +49,7 @@
                         </a>
                     </div>
                 </div>
-            </div> -->
+            </div> 
         </div>
     </div>
     <div *ngIf="!ready_bool">

@@ -26,6 +26,7 @@ export class QuizComponent implements OnInit {
   start_time = null;
   expiration_time;
   expired_bool = false;
+  submitting_bool = false;
   math = Math;
   constructor(private _ConnectorService: ConnectorService, private location: Location, private _route: ActivatedRoute, private dynamicScriptLoader: DynamicScriptLoaderServiceService) {
     this._route.paramMap.subscribe(params => {
@@ -141,6 +142,10 @@ export class QuizComponent implements OnInit {
     // if(this.completed){
     //   return;
     // }
+    if(this.submitting_bool){
+      console.log("CAN'T DO ANYTHING SINCE THE RESPONSE IS IN PROCESS")
+      return;
+    }
     if (this.question.question_type == 2) {
       // MANUAL INPUT ANSWER
       let input = document.getElementById('manual_input_field');
@@ -149,8 +154,10 @@ export class QuizComponent implements OnInit {
         [this.question.pass_info]: input['value']
       }
       console.log("OBJ =>", obj)
+      this.submitting_bool = true;
       this._ConnectorService.submitAnswer(this.currentEng_id, obj).then(data => {
         this.question = data;
+        
         console.log("NEW QUESTION =>",data)
         if (data['completed']) {
           this.completed = true;
@@ -158,6 +165,7 @@ export class QuizComponent implements OnInit {
           return;
         }
         if (data) {
+          this.submitting_bool = false;
           document.getElementById('manual_input_field')['value'] = '';
           if (this.question.display_type == 4) {
             this.loadScripts()
@@ -194,10 +202,12 @@ export class QuizComponent implements OnInit {
           [this.question.pass_info]: answer_reponse,
         }
         // console.log("OBJ =>", obj)
+        this.submitting_bool = true;
         this._ConnectorService.submitAnswer(this.currentEng_id, obj).then(data => {
           // console.log(data)
           this.question = data;
           if (data) {
+            this.submitting_bool = false;
             if (data['completed']) {
               this.completed = true;
               this.completed_link = `/${this.currentEng_id}/home`;
@@ -230,10 +240,12 @@ export class QuizComponent implements OnInit {
             [this.question.pass_info]: answers,
           }
           // console.log("OBJ =>", obj)
+          this.submitting_bool = true;
           this._ConnectorService.submitAnswer(this.currentEng_id, obj).then(data => {
             // console.log(data)
             this.question = data;
             if (data) {
+              this.submitting_bool = false;
               if (data['completed']) {
                 this.completed = true;
                 this.completed_link = `/${this.currentEng_id}/home`;
@@ -260,10 +272,12 @@ export class QuizComponent implements OnInit {
           [this.question.pass_info]: inputs['value'],
         }
         // console.log("OBJ =>", obj)
+        this.submitting_bool = true;
         this._ConnectorService.submitAnswer(this.currentEng_id, obj).then(data => {
           // console.log(data)
           this.question = data;
           if (data) {
+            this.submitting_bool = false;
             if (data['completed']) {
               this.completed = true;
               this.completed_link = `/${this.currentEng_id}/home`;
@@ -280,6 +294,7 @@ export class QuizComponent implements OnInit {
         })
       }
       if (this.question.display_type == 4) {
+        
         let buckets = document.getElementsByClassName('bucket')
         let submit_answers = {};
         for (let b in buckets) {
@@ -293,6 +308,7 @@ export class QuizComponent implements OnInit {
           // alert('please answer!')
           return;
         }
+        this.submitting_bool = true;
         submit_answers['drag_and_drop'] = true;
 
         // somehow drag'n'drop questions have 'info' property as object. It has to be a string
@@ -314,6 +330,7 @@ export class QuizComponent implements OnInit {
           // console.log(data)
           this.question = data;
           if (data) {
+            this.submitting_bool = false;
             if (data['completed']) {
               this.completed = true;
               this.completed_link = `/${this.currentEng_id}/home`;

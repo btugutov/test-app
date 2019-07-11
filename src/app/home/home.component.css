@@ -28,7 +28,7 @@
 .home-category:hover {
     color: black;
     background: rgba(255, 255, 255, 0.8);
-    box-shadow: 15px 15px 15px #888888;
+    box-shadow: 8px 8px 15px rgba(4, 0, 0, 0.2)
 }
 
 .home-category-element .btn {
@@ -138,7 +138,7 @@
 .card-category:hover{
     color: black;
     background: rgba(255, 255, 255, 0.8);
-    box-shadow: 5px 10px 18px #888888;
+    box-shadow: 8px 8px 15px rgba(4, 0, 0, 0.2);
 }
 .card-body{
     padding: 0px 0px;

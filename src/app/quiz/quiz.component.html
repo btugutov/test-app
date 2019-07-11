@@ -96,12 +96,16 @@
     </div>
     <div class="form-row justify-content-center" [ngClass]="{'filter-blur': expired_bool}">
         <!-- <button class="btn btn-lg btn-success btn-action-borderless shadow" id="nextButton" type="button"  style="width:200px;">Next</button> -->
-        <a class="footer__btn-bp noselect" (click)='submit()' data-footer-link="2" [hidden]="expired_bool">
-            <span>Next</span>
+        <a class="footer__btn-bp noselect" [attr.disabled]="submitting_bool" (click)='submit()' data-footer-link="2" [hidden]="expired_bool">
+            <span *ngIf="!submitting_bool">Next</span>
+            <span *ngIf="submitting_bool">Loading</span>
             <div class="footer__btn-bp-line">
                 <div class="footer__btn-bp-line-inner"></div>
             </div>
         </a>
+        <!-- <div class="spinner-border" [hidden]="submitting_bool" style="color: #4f91cd; margin-top: 20px" role="status">
+                <span class="sr-only">Loading...</span>
+              </div> -->
     </div>
     
 </div>

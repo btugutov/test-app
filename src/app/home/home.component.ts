@@ -15,6 +15,7 @@ export class HomeComponent implements OnInit {
   ready_bool = false;
   cats_n_tops_raw;
   cats_n_tops;
+  categories_length = 0;
   currentUser = null;
   currentEng = null;
   engagements = null;
@@ -128,6 +129,7 @@ export class HomeComponent implements OnInit {
           this.cats_n_tops_array[c].push(this.cats_n_tops[c][t])
         }
       }
+      this.categories_length = Object.keys(this.cats_n_tops).length;
       // console.log(this.cats_n_tops_array)
       this.ready_bool = true;
   }
