@@ -50,7 +50,8 @@ export class AdminEditsubmissionsComponent implements OnInit {
   };
 
 
-
+  forceRegrade_message = '  ';
+  submitGradesForOneQuiz_message = '  ';
   list_control = {};
   list_control_copy = {};
   list_control_changed_bool = false; 
@@ -63,6 +64,7 @@ export class AdminEditsubmissionsComponent implements OnInit {
     this._ConnectorService.user.subscribe(user => {
       if (user) {
         this.currentUser = user;
+        console.log('CURRENT USER =>', user)
         let obj = {
           'email': user.email,
           'eng_id': this.currentEng_id
@@ -381,6 +383,44 @@ export class AdminEditsubmissionsComponent implements OnInit {
         }
       }
     }
+  }
+  forceRegrade() {
+    let key = document.getElementById('forceRegrade')['value'];
+    if (this.all_users_original[key] && this.sorted_users.all_users[key]) {
+      this.all_users_original[key]['regrade_submission'] = false;
+      this.sorted_users.all_users[key]['regrade_submission'] = true;
+      this.forceRegrade_message = "Change accepted";
+      document.getElementById('forceRegrade')['value'] = '';
+    } else {
+      this.forceRegrade_message = "Wrong entry";
+    }
+    let that = this;
+    setTimeout(function () {
+      that.forceRegrade_message = '    '
+    }, 3000)
+  }
+  submitGradesForOneQuiz(){
+    let key = document.getElementById('forceRegrade')['value'];
+    if (this.all_users_original[key] && this.sorted_users.all_users[key]) {
+      this.all_users_original[key]['regrade_submission'] = false;
+      this.sorted_users.all_users[key]['regrade_submission'] = true;
+      this.submitGradesForOneQuiz_message = "ID accepted";
+      let obj = {
+        submit_id: key
+      }
+      this._ConnectorService.submitGradesForOneQuiz(obj).then(result => {
+        console.log("submitGradesForOneQuiz RESULT", result)
+      }).catch(function(err){
+        console.log("submitGradesForOneQuiz ERROR =>", err)
+      })
+      document.getElementById('forceRegrade')['value'] = '';
+    } else {
+      this.submitGradesForOneQuiz_message = "Wrong entry";
+    }
+    let that = this;
+    setTimeout(function () {
+      that.submitGradesForOneQuiz_message = '    '
+    }, 3000)
   }
   goBack(){
     this.location.back();

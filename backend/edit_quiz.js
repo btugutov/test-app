@@ -944,13 +944,13 @@ function update_KA_answers_from_admin_edit_quiz(answer_id, question_id, correct,
                             })
                             update_answers_table_MSSQL(answer_id, question_id, correct, answer_sort, answer_prompt, soft_delete, bucket_id).then(trash => {
                                 if (grade_procedure == true) {
-                                    console.log("===-=-=-=-=-=--=-=-==-sp_calculate_scores IS TRIGGERED!=-=-=-=-=-=-=-=-=-=-=-=-=--")
-                                    call_stored_proc_grading().then(result => {
-                                        //console.log(result);
-                                    }).catch(function(error) {
-                                        //console.log('error');
-                                        //console.log(error);
-                                    })
+                                    console.log("===-=-=-=-=-=--=-=-==-sp_calculate_scores SHOULD BE TRIGGERED, BUT it is disabled!=-=-=-=-=-=-=-=-=-=-=-=-=--")
+                                    // call_stored_proc_grading().then(result => {
+                                    //     //console.log(result);
+                                    // }).catch(function(error) {
+                                    //     //console.log('error');
+                                    //     //console.log(error);
+                                    // })
                                 }
                             }).catch(function(error) {
                                 //console.log('error');

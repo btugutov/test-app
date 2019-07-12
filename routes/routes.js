@@ -18,7 +18,7 @@ const { get_Quiz, get_quiz_name_by_topic_id, getQuizLength } = require('../backe
 // edit permissions
 const { update_permission_quiz_main, update_permission_admins_main, get_all_users_admin_permission_edit, get_all_users_quiz_permission_edit } = require('../backend/edit_permission.js');
 // grade_quiz
-const { get_completed_quiz_submissions, get_completed_quiz_by_submissions, finish_gradable_quiz_session_by_id, release_grade_hold, release_grade_hold_all, start_grading_quiz, update_grade_input_response, quizEndChecks, continue_grading_quiz, check_current_quizzes, call_stored_proc_grading } = require('../backend/grade_quiz.js');
+const { get_completed_quiz_submissions, get_completed_quiz_by_submissions, finish_gradable_quiz_session_by_id, release_grade_hold, release_grade_hold_all, start_grading_quiz, update_grade_input_response, quizEndChecks, continue_grading_quiz, check_current_quizzes, call_stored_proc_grading, call_stored_proc_grading2 } = require('../backend/grade_quiz.js');
 // take_quiz
 const { finish_quiz_session, finish_response, get_image_by_questionID_MSSQL, start_response, get_topic_table_by_engagement } = require('../backend/take_quiz.js');
 // stay_awake
@@ -911,7 +911,27 @@ module.exports = function (app) {
             res.json(err)
         }
     })
-
+    app.post('/api/submitGradesForOneQuiz', function (req, res, next) {
+        let response_message = {
+            'status': 'failed',
+            'message': ''
+        }
+        let functionName = "api/submitGrades";
+        let grades = req.body.grades;
+        try {
+            call_stored_proc_grading2(req.body.submit_id).then(res =>{
+                response_message.status = 'success';
+                response_message.body = res;
+                res.json(response_message)
+            }).catch(function(err){
+                response_message.message = err;
+                res.join(response_message);
+            })
+        } catch (err) {
+            response_message.status = err;
+            res.json(err)
+        }
+    })
     // ************************************************************************
     // ************************ END OF GRADING FUNCTIONS **********************
     // ************************************************************************
@@ -1537,26 +1557,7 @@ module.exports = function (app) {
             .then(returnObj => {
                 let currentUser = returnObj['currentUser']
                 if (currentUser.admin_permissions || currentUser.admin_owner) {
-                    edit_submissions_main(req.body['users'], currentUser['profile_id']);
-                    for(let el in req.body['users']){
-                        //quizEndChecks(el)
-                        if(req.body['users'][el]['regrade_submission']){
-                            console.log("Regrading", el)
-                            quizEndChecks(el).then(response => {
-                                console.log(response)
-                            }).catch(function (error) {
-                                log_event('ERROR', error, 'completed quiz routing');
-                                error_handler(error, res, getLineNumber())
-                                response_message.message = error;
-                                res.json(response_message)
-                                throw error;
-                            });
-                        }
-                    }
-                    setTimeout(function () {
-                        // call_stored_proc_grading().catch(function(error) {
-                        //     log_event('ERROR', error, 'call_stored_proc_grading');
-                        // })
+                    edit_submissions_main(req.body['users'], currentUser['profile_id']).then(ressult1 =>{
                         get_KA_quiz_submission_by_engagement_id(req.body['eng_id']).then(result => {
                             // render homepage and turn header ID token into usable variable (user email)
                             // currentUser.admin_permissions || currentUser.admin_owner
@@ -1573,16 +1574,45 @@ module.exports = function (app) {
                             response_message.response = {
                                 users: users,
                             }
+                            console.log('all fine')
                             response_message.status = 'success';
                             res.json(response_message)
-
+                            return;
                         }).catch(function (error) {
                             log_event('ERROR', error, 'editSubmissionStatus');
                             error_handler(error, res, getLineNumber())
                             response_message.message = error;
                             res.json(response_message)
+                            return;
                         })
-                    }, Object.keys(req.body['users']).length * 100)
+                    }).catch(function (error) {
+                        log_event('ERROR', error, 'editSubmissionStatus');
+                        error_handler(error, res, getLineNumber())
+                        response_message.message = error;
+                        res.json(response_message)
+                        return;
+                    });
+                    // for(let el in req.body['users']){
+                    //     //quizEndChecks(el)
+                    //     if(req.body['users'][el]['regrade_submission']){
+                    //         console.log("Regrading", el)
+                    //         quizEndChecks(el).then(response => {
+                    //             console.log(el,"is regraded")
+                    //         }).catch(function (error) {
+                    //             log_event('ERROR', error, 'completed quiz routing');
+                    //             error_handler(error, res, getLineNumber())
+                    //             response_message.message = error;
+                    //             res.json(response_message)
+                    //             throw error;
+                    //         });
+                    //     }
+                    // }
+                    // setTimeout(function () {
+                    //     // call_stored_proc_grading().catch(function(error) {
+                    //     //     log_event('ERROR', error, 'call_stored_proc_grading');
+                    //     // })
+                        
+                    // }, Object.keys(req.body['users']).length * 100)
                 }
                 // if not admin with editing permissions, redirect to error page
                 else {

@@ -124,6 +124,38 @@
         </label>
       </div>
     </div>
+    <div class="admin-quiz-permission-by_teams">
+      <div class="admin-quiz-permission-list_buttons"  role="group">
+        <label>
+          Force Re-grade 
+          <br>
+          <span>Hope you know what are you doing</span>
+          <div class="input-group shadow">
+            <input type="text" class="form-control form-control-bp-shadow" id="forceRegrade" placeholder="" aria-label="" style="border-radius: 0px" placeholder="Enter Submit ID" aria-describedby="basic-addon1">
+            <div class="input-group-append">
+              <button class="btn btn-dark btn-outline-secondary-hover-side-shadow" type="button" (click)="forceRegrade()" style="border-color: #2675a3; border-radius: 0px">Submit</button>
+            </div>
+          </div>
+          {{forceRegrade_message}}
+        </label>
+      </div>
+    </div>
+    <div class="admin-quiz-permission-by_teams" [hidden]="!currentUser || currentUser.title != 'Web Developer'">
+      <div class="admin-quiz-permission-list_buttons"  role="group">
+        <label>
+          GRADING TESTING FIELD
+          <br>
+          <div class="input-group shadow">
+            <input type="text" class="form-control form-control-bp-shadow" id="forceRegrade" placeholder="" aria-label="" style="border-radius: 0px" placeholder="Enter Submit ID" aria-describedby="basic-addon1">
+            <div class="input-group-append">
+              <button class="btn btn-dark btn-outline-secondary-hover-side-shadow" type="button" (click)="submitGradesForOneQuiz()" style="border-color: #2675a3; border-radius: 0px">SEND</button>
+            </div>
+          </div>
+          {{forceRegrade_message}}
+        </label>
+      </div>
+    </div>
+   
   <!-- <div class="admin-quiz-permission-by_teams">
       <div class="admin-quiz-permission-list_buttons"  role="group" >
           <button class="btn btn-secondary btn-lg btn-action-borderless shadow-lg" (click)="openModal('list_control', '')">List control</button>

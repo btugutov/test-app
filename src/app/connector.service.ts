@@ -295,6 +295,19 @@ export class ConnectorService {
       );
     })
   }
+  submitGradesForOneQuiz(submit_id){
+    var that = this;
+    return new Promise(function (resolve, reject) {
+      that.http.post('/api/submitGradesForOneQuiz', submit_id).subscribe(
+        res => {
+          resolve(res)
+        },
+        err => {
+          reject(err)
+        }
+      );
+    })
+  }
   // ==============================================================================
   // CREATE QUIZ FUNCTIONS ========================================================
 

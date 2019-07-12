@@ -19,12 +19,33 @@ function call_stored_proc_grading() {
         throw (error);
     })
 }
+function call_stored_proc_grading_for_one(submit_id) {
+    let functionName = 'call_stored_proc_grading_for_one';
+    console.log("call_stored_proc_grading_for_one", submit_id)
+    return new Promise(function(resolve, reject) {
+        let query_quiz = `EXEC sp_calculate_scores_test ${submit_id}`;
+        return dbQueryMethod.queryRaw(query_quiz).then(result => {
+            console.log(`call_stored_proc_grading_for_one() result =>`, result)
+            resolve(result)
+            return result;
+        }).catch(function(error) { reject(error); throw (error); })
+    }).catch(function(error) {
+        log_event('WARNING', error, functionName);
+        throw (error);
+    })
+}
 function call_stored_proc_grading2(submit_id) {
     let functionName = 'call_stored_proc_grading2';
     // let's get selected inputs first
     
     return new Promise(function(resolve, reject) {
-        
+        let scores = {};
+        get_selected_inputs_by_submit_id(submit_id).then(res1 => {
+            resolve(res1)
+        }).catch(function(error) {
+            log_event('WARNING', error, 'get_selected_inputs_by_submit_id');
+            throw (error);
+        })
     }).catch(function(error) {
         log_event('WARNING', error, functionName);
         throw (error);
@@ -36,14 +57,12 @@ function get_selected_inputs_by_submit_id(submit_id){
         let query_quiz = `SELECT TOP (1000) c_r.answer_id
         ,c_r.[question_id]
         ,[correct]
-        ,[time_start]
-        ,[time_stop]
         ,[submit_id]
         ,[profile_id]
         ,c_r.soft_delete
         ,[choice_response_id]
-        ,[grade_value]
         ,q.point_value
+        ,q.display_type_id
     FROM [dbo].[KA_choice_response] as c_r
    JOIN KA_questions as q on q.question_id =  c_r.question_id
      where submit_id = ${submit_id}`;
@@ -446,11 +465,17 @@ function quizEndChecks(submit_id) {
                     finish_gradable_quiz_session_by_id(submit_id).then(wait => {
                         // kick of grade calculation stored procedure 
                         // console.log(`finish_gradable_quiz_session_by_id(submit_id).then(wait => `, wait)
-                        call_stored_proc_grading().catch(function(error) {
-                            log_event('ERROR', error, 'call_stored_proc_grading');
+                        call_stored_proc_grading_for_one(submit_id).then(res_gradings =>{
+                            resolve(result)
+                        }).catch(function(error){
+                            log_event('ERROR', error, 'call_stored_proc_grading_for_one');
+                            reject(error)
                         })
-                        resolve(result)
-                        return result;
+                        // call_stored_proc_grading().catch(function(error) {
+                        //     
+                        // })
+                        // resolve(result)
+                        // return result;
                     }).catch(function(error) {
                         log_event('WARNING', error, functionName);
                         reject(error)
@@ -460,12 +485,18 @@ function quizEndChecks(submit_id) {
                 // if >0 
                 else {
                     // normal call when grading is complete
-                    call_stored_proc_grading().catch(function(error) {
-                            log_event('ERROR', error, 'call_stored_proc_grading');
-                        })
-                        // do nothing.
-                    resolve('complete')
-                    return 'complete';
+                    // call_stored_proc_grading().catch(function(error) {
+                    //         log_event('ERROR', error, 'call_stored_proc_grading');
+                    //     })
+                    //     // do nothing.
+                    // resolve('complete')
+                    // return 'complete';
+                    call_stored_proc_grading_for_one(submit_id).then(res_gradings =>{
+                        resolve(result)
+                    }).catch(function(error){
+                        log_event('ERROR', error, 'call_stored_proc_grading_for_one');
+                        reject(error)
+                    })
                 }
             }).catch(function(error) {
                 log_event('WARNING', error, functionName);
@@ -492,7 +523,8 @@ module.exports = {
     continue_grading_quiz: continue_grading_quiz,
     quizEndChecks: quizEndChecks,
     check_current_quizzes: check_current_quizzes,
-    call_stored_proc_grading: call_stored_proc_grading
+    call_stored_proc_grading: call_stored_proc_grading,
+    call_stored_proc_grading2: call_stored_proc_grading2
 };
 
 // create a one liner here that is what another file will need to import everything from this file. 

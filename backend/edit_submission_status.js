@@ -162,23 +162,42 @@ function edit_submissions_main_LOOP(obj, submit_id, edit_by) {
     let functionName = 'edit_submissions_main_LOOP';
     // get
     //for(let a in Object.keys(objKeys)){
-    try {
-        update_KA_quiz_submission_by_submit_id(submit_id, obj['invalidate_submission'], obj['retake_topic'], obj['regrade_submission']).then(result => {
-            console.log('done')
-            if(obj['retake_topic'] == 1){
-                quizEndChecks(submit_id).then(report => {
-                    console.log('***********************************************')
-                    console.log('***********************update_KA_quiz_submission_by_submit_id************************')
-                    console.log(report)
-                    console.log('***********************************************')
-                })
+    return new Promise(function (resolve, reject) {
+        try {
+            console.log(`obj['invalidate_submission'], obj['retake_topic'], obj['regrade_submission'] =>`, obj['invalidate_submission'], obj['retake_topic'], obj['regrade_submission'])
+            if (obj['regrade_submission']) {
+                call_stored_proc_grading_for_one(submit_id).then(res => {
+                    update_KA_quiz_submission_by_submit_id(submit_id, obj['invalidate_submission'], obj['retake_topic'], false).then(result => {
+                        console.log("call_stored_proc_grading_for_one and update_KA_quiz_submission_by_submit_id are done", submit_id)
+                        resolve(result)
+                    }).catch(function (error) { reject(error); })
+                }).catch(function (error) { reject(error); })
+            }else{
+                //update_KA_quiz_submission_by_submit_id(submit_id, invalidate_submission, retake_topic, regrade_submission)
+                update_KA_quiz_submission_by_submit_id(submit_id, obj['invalidate_submission'], obj['retake_topic'], obj['regrade_submission']).then(result => {
+                    console.log('update_KA_quiz_submission_by_submit_id is done', submit_id)
+                    resolve(result)
+                    // if(obj['retake_topic'] == 1){
+                    //     quizEndChecks(submit_id).then(report => {
+                    //         console.log('***********************************************')
+                    //         console.log('***********************update_KA_quiz_submission_by_submit_id************************')
+                    //         console.log(report)
+                    //         console.log('***********************************************')
+                    //     })
+                    // }
+                }).catch(function (error) { reject(error); })
             }
-        })
-    } catch (err) {
-        console.log('calling promise object to write updates to KA_quiz_submissions table.')
-        console.log(err)
-        log_event('WARNING', err, functionName);
-    }
+        } catch (err) {
+            console.log('calling promise object to write updates to KA_quiz_submissions table.')
+            console.log(err)
+            log_event('WARNING', err, functionName);
+            reject(error);
+        }
+    }).catch(function (error) {
+        log_event('WARNING', error, functionName);
+        // throw (error);
+        reject(error);
+    })
 }
 
 
@@ -192,40 +211,78 @@ function edit_submissions_main(object, edit_by) {
     //console.log(object)
     //console.log(edit_by)
     //console.log('**********************************************')
-    try {
-        get_users_admin_permission_by_profile_id_MSSQL(edit_by).then(permission_table => {
-            try {
-                if (true === (permission_table[0]['admin_owner'] || permission_table[0]['admin_grader'])) {
-                    let objKeys = Object.keys(object)
-                    for (let a in Object.keys(objKeys)) {
-                        let i = objKeys[a]
-                        //console.log(object[i])
-                        let result = edit_submissions_main_LOOP(object[i], i, edit_by)
-                        //console.log(result)
+    return new Promise(function (resolve, reject) {
+
+
+        try {
+            get_users_admin_permission_by_profile_id_MSSQL(edit_by).then(permission_table => {
+                try {
+                    let results = {};
+                    if (true === (permission_table[0]['admin_owner'] || permission_table[0]['admin_grader'])) {
+                        let length = Object.keys(object).length;
+                        for (let el in object) {
+                            // let i = objKeys[a]
+                            //console.log(object[i])
+                            edit_submissions_main_LOOP(object[el], el, edit_by).then(res => {
+                                results[el] = res;
+                                console.log(`${Object.keys(results).length}/${length}: incoming res => ${el}`)
+                                if (Object.keys(results).length == length) {
+                                    resolve(results);
+                                }
+                            }).catch(function (error) {
+                                results[el] = error;
+                                console.log(`${Object.keys(results).length}/${length}: incoming res => ${el}`)
+                                if (Object.keys(results).length == length) {
+                                    resolve(results);
+                                }
+                            })
+                        }
+                        // return 'edit_submissions_main COMPLETE'
                     }
-                    return 'edit_submissions_main COMPLETE'
+                    else {
+                        console.log('the user is not permitted to make requested change. FAIL')
+                        throw 'the user is not permitted to make requested change. FAIL'
+                    }
                 }
-                else {
-                    console.log('the user is not permitted to make requested change. FAIL')
-                    throw 'the user is not permitted to make requested change. FAIL'
+                catch (err) {
+                    console.log(err)
+                    console.log('issue with checking if a user has permission to change status of sumbitted quizzes')
+                    reject(error);
+                    throw err
                 }
-            }
-            catch (err) {
-                console.log(err)
-                console.log('issue with checking if a user has permission to change status of sumbitted quizzes')
-                throw err
-            }
-        }).catch(function (error) {
-            log_event('WARNING', error, functionName);
+            }).catch(function (error) {
+                log_event('WARNING', error, functionName);
+                reject(error);
+                throw (error);
+            })
+        }
+        catch (err) {
+            console.log(err)
+            console.log('issue with checking if a user has permission to change status of sumbitted quizzes')
             reject(error);
-            throw (error);
-        })
-    }
-    catch (err) {
-        console.log(err)
-        console.log('issue with checking if a user has permission to change status of sumbitted quizzes')
-        throw err
-    }
+            throw err
+        }
+    }).catch(function (error) {
+        log_event('WARNING', error, functionName);
+        reject(error);
+        throw (error);
+    })
+}
+
+function call_stored_proc_grading_for_one(submit_id) {
+    let functionName = 'call_stored_proc_grading_for_one';
+    console.log("call_stored_proc_grading_for_one", submit_id)
+    return new Promise(function(resolve, reject) {
+        let query_quiz = `EXEC sp_calculate_scores_test ${submit_id}`;
+        return dbQueryMethod.queryRaw(query_quiz).then(result => {
+            // console.log(`call_stored_proc_grading_for_one() result =>`, result)
+            resolve(result)
+            return result;
+        }).catch(function(error) { reject(error); throw (error); })
+    }).catch(function(error) {
+        log_event('WARNING', error, functionName);
+        throw (error);
+    })
 }
 /*
 EXPORTS 
