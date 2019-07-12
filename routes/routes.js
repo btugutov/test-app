@@ -1538,6 +1538,21 @@ module.exports = function (app) {
                 let currentUser = returnObj['currentUser']
                 if (currentUser.admin_permissions || currentUser.admin_owner) {
                     edit_submissions_main(req.body['users'], currentUser['profile_id']);
+                    for(let el in req.body['users']){
+                        //quizEndChecks(el)
+                        if(req.body['users'][el]['regrade_submission']){
+                            console.log("Regrading", el)
+                            quizEndChecks(el).then(response => {
+                                console.log(response)
+                            }).catch(function (error) {
+                                log_event('ERROR', error, 'completed quiz routing');
+                                error_handler(error, res, getLineNumber())
+                                response_message.message = error;
+                                res.json(response_message)
+                                throw error;
+                            });
+                        }
+                    }
                     setTimeout(function () {
                         get_KA_quiz_submission_by_engagement_id(req.body['eng_id']).then(result => {
                             // render homepage and turn header ID token into usable variable (user email)

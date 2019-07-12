@@ -226,6 +226,7 @@
                 <td class="text-muted tr_string">{{user.value.calculated_score * 100 | number:0}}</td>
                 <td class="text-muted tr_string">
                   <span *ngIf="user.value.graded || user.value.grader_full_name">{{user.value.grader_full_name}}</span>
+                  <span class="text-muted font-weight-light" *ngIf="user.value.graded && !user.value.grader_full_name">Auto graded</span>
                   <span *ngIf="!user.value.graded && !user.value.grader_full_name">Not graded yet</span>
                 </td>
                 <td class="text-muted tr_string">{{user.value.graded_time | date : "short"}}</td>
