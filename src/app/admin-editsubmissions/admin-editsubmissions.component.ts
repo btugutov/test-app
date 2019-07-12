@@ -362,14 +362,14 @@ export class AdminEditsubmissionsComponent implements OnInit {
 
     let activeList = [];
     let table_body_target = document.getElementById('table_body_target').querySelectorAll('tr')
-    console.log("table_body_target => ", table_body_target)
+    // console.log("table_body_target => ", table_body_target)
     for(let el in table_body_target){
       if(table_body_target[el]){
         if(typeof(table_body_target[el]) == "object"){
           let row_values = table_body_target[el].getElementsByClassName('tr_string')
           let bool = false;
           for(let value in row_values){
-            if(typeof(row_values[value]) == "object" && row_values[value]['innerHTML'].toLowerCase().includes(key)){
+            if(typeof(row_values[value]) == "object" && row_values[value]['innerHTML'].toLowerCase().includes(key.toLowerCase())){
               bool = true;
               table_body_target[el].classList.remove('hidden')
               break;
@@ -389,6 +389,10 @@ export class AdminEditsubmissionsComponent implements OnInit {
   differencesFinder() {
     let res = {};
     for (let u in this.sorted_users.all_users) {
+      // if(u == '1930'){
+      //   this.all_users_original[u]['regrade_submission'] = false;
+      //   this.sorted_users.all_users[u]['regrade_submission'] = true;
+      // }
       if (this.sorted_users.all_users[u]['invalidate_submission'] !== this.all_users_original[u]['invalidate_submission']) {
         res[u] = this.sorted_users.all_users[u];
         continue;

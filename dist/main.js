@@ -1864,7 +1864,7 @@ var AdminEditpermissionsComponent = /** @class */ (function () {
                     var row_values = table_body_target[el].getElementsByClassName('tr_string');
                     var bool = false;
                     for (var value in row_values) {
-                        if (typeof (row_values[value]) == "object" && row_values[value]['innerHTML'].toLowerCase().includes(key)) {
+                        if (typeof (row_values[value]) == "object" && row_values[value]['innerHTML'].toLowerCase().includes(key.toLowerCase())) {
                             bool = true;
                             table_body_target[el].classList.remove('hidden');
                             break;
@@ -3456,14 +3456,14 @@ var AdminEditsubmissionsComponent = /** @class */ (function () {
         }
         var activeList = [];
         var table_body_target = document.getElementById('table_body_target').querySelectorAll('tr');
-        console.log("table_body_target => ", table_body_target);
+        // console.log("table_body_target => ", table_body_target)
         for (var el in table_body_target) {
             if (table_body_target[el]) {
                 if (typeof (table_body_target[el]) == "object") {
                     var row_values = table_body_target[el].getElementsByClassName('tr_string');
                     var bool = false;
                     for (var value in row_values) {
-                        if (typeof (row_values[value]) == "object" && row_values[value]['innerHTML'].toLowerCase().includes(key)) {
+                        if (typeof (row_values[value]) == "object" && row_values[value]['innerHTML'].toLowerCase().includes(key.toLowerCase())) {
                             bool = true;
                             table_body_target[el].classList.remove('hidden');
                             break;
@@ -3482,6 +3482,10 @@ var AdminEditsubmissionsComponent = /** @class */ (function () {
     AdminEditsubmissionsComponent.prototype.differencesFinder = function () {
         var res = {};
         for (var u in this.sorted_users.all_users) {
+            // if(u == '1930'){
+            //   this.all_users_original[u]['regrade_submission'] = false;
+            //   this.sorted_users.all_users[u]['regrade_submission'] = true;
+            // }
             if (this.sorted_users.all_users[u]['invalidate_submission'] !== this.all_users_original[u]['invalidate_submission']) {
                 res[u] = this.sorted_users.all_users[u];
                 continue;
@@ -3976,7 +3980,7 @@ var AdminEditusersComponent = /** @class */ (function () {
                     var row_values = table_body_target[el].getElementsByClassName('tr_string');
                     var bool = false;
                     for (var value in row_values) {
-                        if (typeof (row_values[value]) == "object" && row_values[value]['innerHTML'].toLowerCase().includes(key)) {
+                        if (typeof (row_values[value]) == "object" && row_values[value]['innerHTML'].toLowerCase().includes(key.toLowerCase())) {
                             bool = true;
                             table_body_target[el].classList.remove('hidden');
                             break;

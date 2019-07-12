@@ -382,7 +382,7 @@ export class AdminEditusersComponent implements OnInit {
           let row_values = table_body_target[el].getElementsByClassName('tr_string')
           let bool = false;
           for(let value in row_values){
-            if(typeof(row_values[value]) == "object" && row_values[value]['innerHTML'].toLowerCase().includes(key)){
+            if(typeof(row_values[value]) == "object" && row_values[value]['innerHTML'].toLowerCase().includes(key.toLowerCase())){
               bool = true;
               table_body_target[el].classList.remove('hidden')
               break;

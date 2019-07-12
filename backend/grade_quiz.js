@@ -6,10 +6,11 @@ const { debugLog, getLineNumber, log_event, dbQueryMethod } = require('./classes
 
 function call_stored_proc_grading() {
     let functionName = 'call_stored_proc_grading';
+    console.log("call_stored_proc_grading")
     return new Promise(function(resolve, reject) {
         let query_quiz = `EXEC sp_calculate_scores`;
         return dbQueryMethod.queryRaw(query_quiz).then(result => {
-            // console.log(`call_stored_proc_grading() result =>`, result)
+            console.log(`call_stored_proc_grading() result =>`, result)
             resolve(result)
             return result;
         }).catch(function(error) { reject(error); throw (error); })
@@ -490,7 +491,8 @@ module.exports = {
     update_grade_input_response: update_grade_input_response,
     continue_grading_quiz: continue_grading_quiz,
     quizEndChecks: quizEndChecks,
-    check_current_quizzes: check_current_quizzes
+    check_current_quizzes: check_current_quizzes,
+    call_stored_proc_grading: call_stored_proc_grading
 };
 
 // create a one liner here that is what another file will need to import everything from this file. 

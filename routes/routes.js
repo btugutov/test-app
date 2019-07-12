@@ -18,7 +18,7 @@ const { get_Quiz, get_quiz_name_by_topic_id, getQuizLength } = require('../backe
 // edit permissions
 const { update_permission_quiz_main, update_permission_admins_main, get_all_users_admin_permission_edit, get_all_users_quiz_permission_edit } = require('../backend/edit_permission.js');
 // grade_quiz
-const { get_completed_quiz_submissions, get_completed_quiz_by_submissions, finish_gradable_quiz_session_by_id, release_grade_hold, release_grade_hold_all, start_grading_quiz, update_grade_input_response, quizEndChecks, continue_grading_quiz, check_current_quizzes } = require('../backend/grade_quiz.js');
+const { get_completed_quiz_submissions, get_completed_quiz_by_submissions, finish_gradable_quiz_session_by_id, release_grade_hold, release_grade_hold_all, start_grading_quiz, update_grade_input_response, quizEndChecks, continue_grading_quiz, check_current_quizzes, call_stored_proc_grading } = require('../backend/grade_quiz.js');
 // take_quiz
 const { finish_quiz_session, finish_response, get_image_by_questionID_MSSQL, start_response, get_topic_table_by_engagement } = require('../backend/take_quiz.js');
 // stay_awake
@@ -1554,6 +1554,9 @@ module.exports = function (app) {
                         }
                     }
                     setTimeout(function () {
+                        // call_stored_proc_grading().catch(function(error) {
+                        //     log_event('ERROR', error, 'call_stored_proc_grading');
+                        // })
                         get_KA_quiz_submission_by_engagement_id(req.body['eng_id']).then(result => {
                             // render homepage and turn header ID token into usable variable (user email)
                             // currentUser.admin_permissions || currentUser.admin_owner
