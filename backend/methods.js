@@ -156,14 +156,15 @@ function get_testable_topics_by_profile_id(profile_id) {
         JOIN [dbo].[KA_engagement] on [KA_test_topic].engagement_id = [KA_engagement].engagement_id
         JOIN [dbo].[KA_profile_permissions] on [KA_test_topic].topic_id = [KA_profile_permissions].topic_id
         FULL OUTER JOIN [dbo].[KA_quiz_submission] on (KA_quiz_submission.profile_id = KA_profile_permissions.profile_id) AND (KA_quiz_submission.quiz_id = KA_profile_permissions.topic_id) AND KA_quiz_submission.retake_topic = 0
-        where [KA_test_topic].topic_id IN 
+        WHERE [KA_test_topic].topic_id IN 
         (
             SELECT DISTINCT [KA_test_topic].[topic_id]
             FROM [dbo].[KA_test_topic]
             JOIN [dbo].[KA_profile_permissions] on [KA_test_topic].topic_id = [KA_profile_permissions].topic_id
-            where profile_id = ${profile_id} and [KA_profile_permissions].[soft_delete] = 0
+            WHERE profile_id = ${profile_id} and [KA_profile_permissions].[soft_delete] = 0
         )
         AND KA_profile_permissions.profile_id = ${profile_id}
+        AND [KA_test_topic].[soft_delete] = 0
         ORDER by [KA_test_topic].[topic_id] asc`
         return dbQueryMethod.query(query).then(result => {
             resolve(result)

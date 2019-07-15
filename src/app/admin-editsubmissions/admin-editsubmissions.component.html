@@ -246,28 +246,28 @@
                 <td class="tr_string">{{user.value.title}}</td>
                 <td class="font-weight-bold  text-monospace tr_string">{{ topics_unsorted[user.value.quiz_id]["category"] }}</td>
                 <td class="font-weight-bold  text-monospace tr_string">{{user.value.topic}}</td>
-                <td class="text-muted tr_string">{{user.value.start_time | date : "short" }}</td>
-                <td class="text-muted tr_string">
+                <td class="text-muted tr_string text-center">{{user.value.start_time | date : "short" }}</td>
+                <td class="text-muted tr_string text-center">
                   <span *ngIf="user.value.diffTime || user.value.diffTime  == 0">{{user.value.stop_time | date: "short" }}</span>
                   <span *ngIf="!user.value.diffTime && user.value.diffTime  != 0">DateTime mismatch</span>
                 </td>
-                <td class="text-muted tr_string">
+                <td class="text-muted tr_string text-center">
                   <span *ngIf="user.value.diffTime || user.value.diffTime  == 0">{{ user.value.diffTime }}</span>
                   <span *ngIf="!user.value.diffTime && user.value.diffTime  != 0">DateTime mismatch </span>
                 </td>
-                <td class="text-muted tr_string">{{user.value.calculated_score * 100 | number:0}}</td>
-                <td class="text-muted tr_string">
+                <td class="tr_string text-center font-weight-bold text-monospace ">{{user.value.calculated_score * 100 | number:0}}</td>
+                <td class="text-muted tr_string text-center">
                   <span *ngIf="user.value.graded || user.value.grader_full_name">{{user.value.grader_full_name}}</span>
                   <span class="text-muted font-weight-light" *ngIf="user.value.graded && !user.value.grader_full_name">Auto graded</span>
                   <span *ngIf="!user.value.graded && !user.value.grader_full_name">Not graded yet</span>
                 </td>
-                <td class="text-muted tr_string">{{user.value.graded_time | date : "short"}}</td>
+                <td class="text-muted tr_string text-center">{{user.value.graded_time | date : "short"}}</td>
                 
                 <td class="text-muted tr_string">
                     <!-- all_users_original[user.key] and user.value -->
                       <div class="switchToggle">
                           <input type="checkbox"  id="retake_for_{{user.key}}" (click)="actionButton(user.key, 'retake_topic', null)" [checked]="(user.value.retake_topic)" [disabled]="all_users_original[user.key]['retake_topic']" >
-                          <label for="retake_for_{{user.key}}" [ngClass]="{
+                          <label style="margin: 0px auto;" for="retake_for_{{user.key}}" [ngClass]="{
                             'switchToggle_checked_disabled': all_users_original[user.key]['retake_topic'] ,
                             'switchToggle_checked_green': !all_users_original[user.key]['retake_topic'] && user.value.retake_topic
                           }"></label>
@@ -276,7 +276,7 @@
                 <td class="text-muted tr_string">
                       <div class="switchToggle">
                           <input type="checkbox"  id="regrade_for_{{user.key}}" (click)="actionButton(user.key,'regrade_submission', null)" [checked]='user.value.regrade_submission' [disabled]="all_users_original[user.key]['regrade_submission']" >
-                          <label for="regrade_for_{{user.key}}" [ngClass]="{
+                          <label style="margin: 0px auto;"  for="regrade_for_{{user.key}}" [ngClass]="{
                             'switchToggle_checked_disabled': all_users_original[user.key]['regrade_submission'],
                             'switchToggle_checked_green': !all_users_original[user.key]['regrade_submission'] && user.value.regrade_submission
                           }"></label>
@@ -285,7 +285,7 @@
                 <td class="text-muted tr_string">
                       <div class="switchToggle">
                           <input type="checkbox"  id="invalidate_for_{{user.key}}" (click)="actionButton(user.key, 'invalidate_submission', null)" [checked]="(user.value.invalidate_submission)" >
-                          <label for="invalidate_for_{{user.key}}" 
+                          <label style="margin: 0px auto;"  for="invalidate_for_{{user.key}}" 
                             [ngClass]="{
                               'switchToggle_checked_green': !all_users_original[user.key]['invalidate_submission'] && user.value.invalidate_submission, 
                               'switchToggle_checked_red':  all_users_original[user.key]['invalidate_submission'] && !user.value.invalidate_submission

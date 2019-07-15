@@ -267,6 +267,8 @@ export class AppComponent implements OnInit {
         }
       }else{
         if(!this.user_obj || !this.user_obj.profile_id){
+          console.log("NO USER!");
+          this._r.navigate([''])
           return;
         }
         this._c.getAvailableEngagements(this.user_obj.profile_id).then(res => {
