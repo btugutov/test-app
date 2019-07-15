@@ -1,7 +1,19 @@
 const Promise = require('promise');
 const os = require('os');
 const classModule = require('./classes.js');
-const { debugLog, getLineNumber, log_event, dbQueryMethod } = require('./classes.js');
+const { debugLog, getLineNumber, log_event, log_object_parser, dbQueryMethod, logEvent } = require('../backend/classes.js');
+
+function logEventParser(log_level, log_event, host, line, user_id){
+    let obj = {
+        log_event: log_event,
+        log_level: log_level,
+        host: host,
+        line: line,
+        user_id: user_id,
+        event_time: new Date()
+      }
+    logEvent(obj)
+}
 
 function call_stored_proc_grading() {
     let functionName = 'get_topic_to_edit_MSSQL';
@@ -1943,12 +1955,20 @@ function disableQuiz(topic_id){
     return new Promise(function(resolve, reject) {
         let query = `UPDATE KA_test_topic  SET soft_delete = 1
         WHERE topic_id = ${topic_id}`;
-        dbQueryMethod.query(query).then(result => {
-            console.log(`question ${el} is deleted`)
+        dbQueryMethod.queryRaw(query).then(result => {
+            console.log(`quiz ${topic_id} is disabled`)
+            // console.log("RESULT =>", result)
             resolve(result)
             return result;
-        }).catch(function(error) { reject(error); throw (error); })
+        }).catch(function(error) { 
+            console.log("Error is here!", error)
+            logEventParser("ERROR", error, "edit_quiz.js", "disableQuiz", null);
+            reject(error); 
+            throw (error); 
+        })
     }).catch(function(error) {
+        console.log("Error is here!", error)
+        logEventParser("ERROR", error, "edit_quiz.js", "disableQuiz", null);
         log_event('WARNING', error, functionName);
         reject(error);
         throw (error);
@@ -1967,9 +1987,10 @@ function delete_topic_by_id(topic_id){
             dbQueryMethod.queryRaw(delete_topic_by_id).then(result2 =>{
                 resolve(result2)
                 return result2;
-            }).catch(function(error) { reject(error); throw (error); })
-        }).catch(function(error) { reject(error); throw (error); })
+            }).catch(function(error) { logEventParser("ERROR", error, "edit_quiz.js", "delete_topic_by_id: dbQueryMethod.queryRaw(delete_topic_by_id)", null); reject(error); throw (error); })
+        }).catch(function(error) { logEventParser("ERROR", error, "edit_quiz.js", "delete_topic_by_id: dbQueryMethod.queryRaw(delete_topic_question_connection)", null); reject(error); throw (error); })
     }).catch(function(error) {
+        logEventParser("ERROR", error, "edit_quiz.js", "delete_topic_by_id", null)
         log_event('WARNING', error, functionName);
         throw (error);
     })
@@ -1983,9 +2004,11 @@ function delete_answers_by_question_id(question_id){
         dbQueryMethod.query(query).then(result => {
             resolve(result)
             return result;
-        }).catch(function(error) { reject(error); throw (error); })
+        }).catch(function(error) { logEventParser("ERROR", error, "edit_quiz.js", "delete_answers_by_question_id: dbQueryMethod.query(query)", null); reject(error); throw (error); })
     }).catch(function(error) {
         log_event('WARNING', error, functionName);
+        // logEventParser(log_level, log_event, host, line, user_id)
+        logEventParser("ERROR", error, "edit_quiz.js", "delete_answers_by_question_id", null)
         reject(error);
         throw (error);
     })
@@ -2000,8 +2023,9 @@ function delete_quiz_question_connection(question_id){
             console.log(`question ${el} is deleted`)
             resolve(result)
             return result;
-        }).catch(function(error) { reject(error); throw (error); })
+        }).catch(function(error) { logEventParser("ERROR", error, "edit_quiz.js", "delete_quiz_question_connection: dbQueryMethod.query(query)", null); reject(error); throw (error); })
     }).catch(function(error) {
+        logEventParser("ERROR", error, "edit_quiz.js", "delete_quiz_question_connection", null);
         log_event('WARNING', error, functionName);
         reject(error);
         throw (error);
@@ -2017,8 +2041,9 @@ function delete_question(question_id){
             console.log(`question ${el} is deleted`)
             resolve(result)
             return result;
-        }).catch(function(error) { reject(error); throw (error); })
+        }).catch(function(error) { logEventParser("ERROR", error, "edit_quiz.js", "delete_question: dbQueryMethod.query(query)", null);reject(error); throw (error); })
     }).catch(function(error) {
+        logEventParser("ERROR", error, "edit_quiz.js", "delete_question", null);
         log_event('WARNING', error, functionName);
         reject(error);
         throw (error);
@@ -2033,8 +2058,9 @@ function delete_buckets_by_topic_id(topic_id){
             console.log(`bucket ${el} is deleted`)
             resolve(result)
             return result;
-        }).catch(function(error) { reject(error); throw (error); })
+        }).catch(function(error) { logEventParser("ERROR", error, "edit_quiz.js", "delete_buckets_by_topic_id: dbQueryMethod.query(query)", null);reject(error); throw (error); })
     }).catch(function(error) {
+        logEventParser("ERROR", error, "edit_quiz.js", "delete_buckets_by_topic_id", null);
         log_event('WARNING', error, functionName);
         reject(error);
         throw (error);

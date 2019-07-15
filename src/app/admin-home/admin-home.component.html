@@ -51,6 +51,9 @@
                 <a class="" [routerLink]="['/',currentEng_id, 'AdminEditengagements']">
                     <button class="btn btn-outline-warning btn-lg btn-outline-warning-hover-side-shadow" [disabled]="!currentUser.admin_permissions && !currentUser.admin_owner" type="button">Edit Engagements</button>
                 </a>
+                <a class="" [routerLink]="['/', 'log_event']">
+                    <button class="btn btn-outline-warning btn-lg btn-outline-warning-hover-side-shadow" [disabled]="!currentUser.admin_permissions && !currentUser.admin_owner" type="button">Event Log</button>
+                </a>
             </div>
         </div>
     </div>

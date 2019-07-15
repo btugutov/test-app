@@ -351,6 +351,65 @@ function log_object_parser (object) {
     finally {}
     return 'complete'
 }
+function logEvent(obj){
+    console.log("typeof obj.log_event =>", typeof(obj.log_event))
+    console.log("escape(JSON.stringify(obj.log_event)) =>", escape(JSON.stringify(obj.log_event)))
+    console.log("escape(obj.log_event) =>", escape(obj.log_event))
+    console.log("JSON.stringify(obj.log_event) =>", JSON.stringify(obj.log_event))
+        /*
+        let obj = {
+                        log_event: log_event,
+                        log_level: log_level,
+                        host: host,
+                        line: line,
+                        user_id: this.cur_user['user_id'],
+                        event_time: new Date()
+                    }
+
+        */
+        let insert = `INSERT INTO KA_log
+        (log_level, log_event, host, webapp, line_number, user_id, event_time) 
+        VALUES ('${obj.log_level}', '${escape((obj.log_event))}', '${escape(obj.host)}', 'Skill Assessment', '${escape(obj.line)}', '${obj.user_id}', getdate());`;
+            dbQueryMethod.queryRaw(insert).then(result => {
+                console.log(result)
+            }).catch(function (error) { 
+                console.log("ERROR =>", error);
+            })
+}
+function getEventLog(){
+    return new Promise(function(resolve, reject) {
+        let insert = `SELECT TOP(200) log_id FROM [dbo].[KA_log] Order By log_id DESC`;
+        dbQueryMethod.query(insert).then(result => {
+            console.log("we got result!", result.length)
+            resolve(result);
+            return result
+        }).catch(function (error) { 
+
+            console.log("ERROR =>", error);
+            reject(error)
+        })
+    }).catch(function(error) {
+        log_event('WARNING', error, "getEventLog");
+        reject(error)
+        throw error;
+    })
+}
+function getEventLogByID(log_id){
+    return new Promise(function(resolve, reject) {
+        let insert = `SELECT * FROM [dbo].[KA_log] WHERE log_id = ${log_id}`;
+        dbQueryMethod.query(insert).then(result => {
+            resolve(result);
+            return result
+        }).catch(function (error) { 
+            console.log("ERROR =>", error);
+            reject(error)
+        })
+    }).catch(function(error) {
+        log_event('WARNING', error, "getEventLog");
+        reject(error)
+        throw error;
+    })
+}
 
 // CREATED ONCE TO SAVE MEMORY.
 // NO NEED TO INSTANTIATE MULTIPLE 
@@ -365,7 +424,11 @@ module.exports = {
     log_event: log_event,
     checkTrust: checkTrust,
     dbQueryMethod: dbQueryMethod,
-    log_object_parser: log_object_parser
+    log_object_parser: log_object_parser,
+    logEvent: logEvent,
+    getEventLog: getEventLog,
+    getEventLogByID: getEventLogByID
+
 };
 
 /*

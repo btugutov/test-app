@@ -67,8 +67,11 @@ export class QuizComponent implements OnInit {
     // You can load multiple scripts by just providing the key as argument into load method of the service
     this.dynamicScriptLoader.load('quizQuestionRender').then(data => {
       // Script Loaded Successfully
-    }).catch(error => 
+    }).catch(error => {
+
+      this._ConnectorService.logEvent(error, "ERROR", "QuizComponent", "loadScripts")
       console.log(error)
+    }
       );
   }
 
@@ -96,6 +99,7 @@ export class QuizComponent implements OnInit {
         
       }
     }).catch(function (error) {
+      this._ConnectorService.logEvent(error, "ERROR", "QuizComponent", "takeQuiz")
       // console.log(error)
     })
   }
@@ -134,6 +138,7 @@ export class QuizComponent implements OnInit {
       // console.log("this.current_index =>", this.current_index)
       // console.log("this.total_length =>", this.total_length)
     }).catch(function(err){
+      this._ConnectorService.logEvent(err, "ERROR", "QuizComponent", "getQuizLength")
       console.log("ERROR =>", err)
     })
   }
@@ -221,6 +226,7 @@ export class QuizComponent implements OnInit {
           }
         }).catch(function (error) {
           console.log(error)
+          this._ConnectorService.logEvent(error, "ERROR", "QuizComponent", "submitAnswer")
         })
       }
       if (this.question.display_type == 2) {
@@ -259,6 +265,7 @@ export class QuizComponent implements OnInit {
             }
           }).catch(function (error) {
             console.log(error)
+            this._ConnectorService.logEvent(error, "ERROR", "QuizComponent", "submitAnswer")
           })
         }
       }
@@ -291,6 +298,7 @@ export class QuizComponent implements OnInit {
           }
         }).catch(function (error) {
           console.log(error)
+          this._ConnectorService.logEvent(error, "ERROR", "QuizComponent", "submitAnswer")
         })
       }
       if (this.question.display_type == 4) {
@@ -344,6 +352,7 @@ export class QuizComponent implements OnInit {
           }
         }).catch(function (error) {
           console.log(error)
+          this._ConnectorService.logEvent(error, "ERROR", "QuizComponent", "submitAnswer")
         })
 
       }

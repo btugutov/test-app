@@ -5,6 +5,7 @@ import { HttpClient } from '@angular/common/http';
 import 'rxjs/add/observable/merge';
 import 'rxjs/add/operator/map';
 import 'rxjs/Rx';
+import { log } from 'util';
 @Injectable({
   providedIn: 'root'
 })
@@ -87,7 +88,7 @@ export class ConnectorService {
       );
     })
   };
-  getEngagementByEngId(engId){
+  getEngagementByEngId(engId) {
     var that = this;
     let obj = {
       eng_id: engId
@@ -134,9 +135,9 @@ export class ConnectorService {
     })
   }
 
-  getQuizLength(quiz_id){
+  getQuizLength(quiz_id) {
     let that = this;
-    let obj ={
+    let obj = {
       quiz_id: quiz_id
     }
     return new Promise(function (resolve, reject) {
@@ -295,7 +296,7 @@ export class ConnectorService {
       );
     })
   }
-  submitGradesForOneQuiz(submit_id){
+  submitGradesForOneQuiz(submit_id) {
     var that = this;
     return new Promise(function (resolve, reject) {
       that.http.post('/api/submitGradesForOneQuiz', submit_id).subscribe(
@@ -401,7 +402,7 @@ export class ConnectorService {
       );
     })
   }
-  disableQuiz(quiz_id, email){
+  disableQuiz(quiz_id, email) {
     var that = this;
     return new Promise(function (resolve, reject) {
       let obj = {
@@ -492,7 +493,7 @@ export class ConnectorService {
   // ==============================================================================
 
   // EDIT QUIZ PERMISSIONS FUNCTIONS ==============================================
-  getQuizPermissions(obj){
+  getQuizPermissions(obj) {
     var that = this;
     return new Promise(function (resolve, reject) {
       that.http.post('/api/getQuizPermissions', obj).subscribe(
@@ -505,10 +506,10 @@ export class ConnectorService {
       );
     })
   }
-  saveQuizPermissions(users, email){
+  saveQuizPermissions(users, email) {
     let obj = {
-        'users': users,
-        'email': email
+      'users': users,
+      'email': email
     }
     var that = this;
     return new Promise(function (resolve, reject) {
@@ -525,7 +526,7 @@ export class ConnectorService {
   // ==============================================================================
 
   // EDIT QUIZ SUBMISSION FUNCTIONS ==============================================
-  getQuizSubmissions(obj){
+  getQuizSubmissions(obj) {
     var that = this;
     return new Promise(function (resolve, reject) {
       that.http.post('/api/getQuizSubmissions', obj).subscribe(
@@ -538,8 +539,8 @@ export class ConnectorService {
       );
     })
   }
-  saveQuizSubmissions(obj){
-    
+  saveQuizSubmissions(obj) {
+
     var that = this;
     return new Promise(function (resolve, reject) {
       that.http.post('/api/saveQuizSubmissions', obj).subscribe(
@@ -555,7 +556,7 @@ export class ConnectorService {
   // ==============================================================================
 
   // EDIT USER PERMISSION FUNCTIONS ==============================================
-  getUserPermissions(obj){
+  getUserPermissions(obj) {
     var that = this;
     return new Promise(function (resolve, reject) {
       that.http.post('/api/getUserPermissions', obj).subscribe(
@@ -568,7 +569,7 @@ export class ConnectorService {
       );
     })
   }
-  saveUserPermissions(obj){
+  saveUserPermissions(obj) {
     var that = this;
     return new Promise(function (resolve, reject) {
       that.http.post('/api/saveUserPermissions', obj).subscribe(
@@ -583,7 +584,7 @@ export class ConnectorService {
   }
   // ==============================================================================
   // EDIT ENGAGEMENTS FUNCTIONS ===================================================
-  getAllEngagements(obj){
+  getAllEngagements(obj) {
     var that = this;
     return new Promise(function (resolve, reject) {
       that.http.post('/api/get_all_engagemets', obj).subscribe(
@@ -593,10 +594,10 @@ export class ConnectorService {
         err => {
           reject(err)
         }
-        );
-      })
-    }
-  saveEngagements(obj){
+      );
+    })
+  }
+  saveEngagements(obj) {
     var that = this;
     return new Promise(function (resolve, reject) {
       that.http.post('/api/saveEngagements', obj).subscribe(
@@ -606,13 +607,13 @@ export class ConnectorService {
         err => {
           reject(err)
         }
-        );
-      })
+      );
+    })
   }
   // ==============================================================================
-      
+
   // EDIT ENGAGEMENTS FUNCTIONS ===================================================
-  saveBuckets(obj){
+  saveBuckets(obj) {
     var that = this;
     return new Promise(function (resolve, reject) {
       that.http.post('/api/saveBuckets', obj).subscribe(
@@ -622,10 +623,10 @@ export class ConnectorService {
         err => {
           reject(err)
         }
-        );
-      })
+      );
+    })
   }
-  saveOneBucket(obj){
+  saveOneBucket(obj) {
     var that = this;
     return new Promise(function (resolve, reject) {
       that.http.post('/api/saveOneBucket', obj).subscribe(
@@ -635,8 +636,8 @@ export class ConnectorService {
         err => {
           reject(err)
         }
-        );
-      })
+      );
+    })
   }
 
   // ==============================================================================
@@ -706,5 +707,68 @@ export class ConnectorService {
       reader.onload = () => resolve(reader.result);
       reader.onerror = error => reject(error);
     });
+  }
+
+  logEvent(log_event, log_level, host, line) {
+    //
+    var that = this;
+    //     [log_level]
+    //     ,[log_time]
+    //     ,[log_event]
+    //     ,[pid]
+    //     ,[webapp]
+    //     ,[event_time]
+    //     ,[host]
+    //     ,[user_id]
+    //     ,[line_number]
+    let obj = {
+      log_event: log_event,
+      log_level: log_level,
+      host: host,
+      line: line,
+      user_id: this.cur_user['user_id'],
+      event_time: new Date()
+    }
+
+    return new Promise(function (resolve, reject) {
+      that.http.post('/api/logEvent', obj).subscribe(
+        res => {
+          console.log("/api/logEvent RESULT =>", res)
+          resolve(res)
+        },
+        err => {
+          reject(err)
+        }
+      );
+    })
+  }
+  getEventLog(user_email){
+    var that = this;
+    return new Promise(function (resolve, reject) {
+      that.http.post('/api/getEventLog', user_email).subscribe(
+        res => {
+          resolve(res)
+        },
+        err => {
+          reject(err)
+        }
+      );
+    })
+  }
+  getEventLogByID(log_id){
+    var that = this;
+    let obj = {
+      log_id: log_id,
+    }
+    return new Promise(function (resolve, reject) {
+      that.http.post('/api/getEventLogByID', obj).subscribe(
+        res => {
+          resolve(res)
+        },
+        err => {
+          reject(err)
+        }
+      );
+    })
   }
 }

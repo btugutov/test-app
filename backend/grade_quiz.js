@@ -25,7 +25,7 @@ function call_stored_proc_grading_for_one(submit_id) {
     return new Promise(function(resolve, reject) {
         let query_quiz = `EXEC sp_calculate_scores_test ${submit_id}`;
         return dbQueryMethod.queryRaw(query_quiz).then(result => {
-            console.log(`call_stored_proc_grading_for_one() result =>`, result)
+            // console.log(`call_stored_proc_grading_for_one() result =>`, result)
             resolve(result)
             return result;
         }).catch(function(error) { reject(error); throw (error); })

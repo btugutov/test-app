@@ -104,6 +104,11 @@ export class AppComponent implements OnInit {
     }).catch(function (error) {
       this.popup_error_message = error;
       // console.log(error);
+      
+      let obj = {
+
+      }
+      this._c.logEvent(error, "ERROR", "app.component", "signIn")
     });
   }
 
@@ -122,18 +127,20 @@ export class AppComponent implements OnInit {
         that._c.storeUser(data)
       });
     }).catch(function (error) {
+      this._c.logEvent(error, "ERROR", "app.component", "acquireTokenPopupAndCallMSGraph")
       // console.log(error);
       // Upon acquireTokenSilent failure (due to consent or interaction or login required ONLY)
       // Call acquireTokenPopup(popup window) 
       if (that.requiresInteraction(error.errorCode)) {
         that.myMSALObj.acquireTokenPopup(that.requestObj).then(function (tokenResponse) {
           that.callMSGraph(that.graphConfig.graphMeEndpoint, tokenResponse.accessToken, function (data) {
-            console.log("THIS.USER_OBJECT =>", data)
+            // console.log("THIS.USER_OBJECT =>", data)
             that.user_obj = data;
             that._c.storeUser(data)
           });
         }).catch(function (error) {
           // console.log(error);
+          this._c.logEvent(error, "ERROR", "app.component", "that.myMSALObj.acquireTokenPopup")
         });
       }
     });
@@ -175,6 +182,7 @@ export class AppComponent implements OnInit {
       // console.log(error);
       // Upon acquireTokenSilent failure (due to consent or interaction or login required ONLY)
       // Call acquireTokenRedirect
+      this._c.logEvent(error, "ERROR", "app.component", "acquireTokenRedirectAndCallMSGraph")
       if (this.requiresInteraction(error.errorCode)) {
         this.myMSALObj.acquireTokenRedirect(this.requestObj);
       }
@@ -184,6 +192,7 @@ export class AppComponent implements OnInit {
   authRedirectCallBack(error, response) {
     if (error) {
       // console.log(error);
+      this._c.logEvent(error, "ERROR", "app.component", "authRedirectCallBack")
     } else {
       if (response.tokenType === "access_token") {
         this.callMSGraph(this.graphConfig.graphMeEndpoint, response.accessToken, function (data) {
@@ -199,6 +208,7 @@ export class AppComponent implements OnInit {
     if (!errorCode || !errorCode.length) {
       return false;
     }
+    this._c.logEvent(errorCode, "ERROR", "app.component", "requiresInteraction")
     return errorCode === "consent_required" ||
       errorCode === "interaction_required" ||
       errorCode === "login_required";
@@ -285,6 +295,7 @@ export class AppComponent implements OnInit {
           this._r.navigateByUrl('/');
         })
         .catch(function(err){
+          this._c.logEvent(err, "ERROR", "app.component", "getAvailableEngagements")
           // console.log( "ERR =>", err)
         })
       }

@@ -66,7 +66,7 @@ export class AdminCreatequizComponent implements OnInit {
       if (user) {
         this.currentUser = user;
         this._ConnectorService.getCatsTopsEngs(user.email).then(res => {
-          console.log("RES =>", res)
+          // console.log("RES =>", res)
           if (res['status'] == 'success') {
             this.main_content = cloneDeep(res);
             this.engagements = res['engs'];
@@ -80,7 +80,8 @@ export class AdminCreatequizComponent implements OnInit {
             this.selected_eng = this.currentEng_id;
           }
         }).catch(function (err) {
-          console.log("ERROR =>", err)
+          this._ConnectorService.logEvent(err, "ERROR", "AdminCreatequizComponent", "getCatsTopsEngs")
+          // console.log("ERROR =>", err)
         })
       }
       if (user && !user.admin) {
@@ -99,23 +100,23 @@ export class AdminCreatequizComponent implements OnInit {
     let errors = this.validateAllQuestions();
     if(Object.keys(errors).length>0 || this.topic_cat_eng_message.status != 'success'){
       if(this.topic_cat_eng_message.status != 'success'){
-        console.log("ENGAGEMENT_CATEGORY_TOPIC ERROR!")
+        // console.log("ENGAGEMENT_CATEGORY_TOPIC ERROR!")
         this.topic_cat_eng_message.display = true;
         this.topic_cat_eng_message.message = "Please select engagement, category, topic.";
         this.topic_cat_eng_message.status = 'fail';
       }
 
-      console.log("SUBMIT errors =>", errors)
+      // console.log("SUBMIT errors =>", errors)
       for(let error in errors){
-        console.log("ERROR =>", errors[error]['body'])
+        // console.log("ERROR =>", errors[error]['body'])
         for(let el in errors[error]['body']){
-          console.log("EL =>", el)
+          // console.log("EL =>", el)
           //errors[error]['body'][el]
           this.errorHandler(error, el, errors[error]['body'][el])
         }
       }
     }else if(Object.keys(this.list_of_questions).length > 1){
-      console.log("ALL GOOD!")
+      // console.log("ALL GOOD!")
       this.submit_ready = true;
     }
   }
@@ -123,7 +124,7 @@ export class AdminCreatequizComponent implements OnInit {
     this.submit_ready = false;
   }
   submitQuiz(){
-    console.log("SUBMITTED1");
+    // console.log("SUBMITTED1");
     let quiz ={
       questions: this.escapingQuestions(cloneDeep(this.list_of_questions)),
       engagement_id: this.selected_eng,
@@ -134,16 +135,20 @@ export class AdminCreatequizComponent implements OnInit {
     } 
     delete quiz.questions['new_question'];
     this._ConnectorService.createQuiz( quiz,  this.currentUser.email).then(res => {
-      console.log("res =>", res)
+      // console.log("res =>", res)
       this.submit_ready = false;
       if(res['status'] == 'success'){
         this.submit_status.display = true;
         this.submit_status.status = 'success'
+        // this._ConnectorService.logEvent("Quiz was created", "INFO", "AdminCreatequizComponent", "submitQuiz")
       }else{
         this.submit_status.display = true;
         this.submit_status.status = 'fail';
         this.submit_status.message = res['message'];
+        this._ConnectorService.logEvent(res['message'], "ERROR", "AdminCreatequizComponent", "submitQuiz")
       }
+    }).catch(function(err){
+      this._ConnectorService.logEvent(err, "ERROR", "AdminCreatequizComponent", "submitQuiz")
     })
   }
 
@@ -151,12 +156,12 @@ export class AdminCreatequizComponent implements OnInit {
   // LISTENERS ========================================================================================================================================================================================
 
   valueChanger(target, value) { // engagement/category/topic changer
-    console.log(target, value)
+    // console.log(target, value)
     this.cancelSubmitQuiz()
     if (target == 'engagement') {
       if (this.selected_eng != value) {
-        console.log("this.engagements_obj =>", this.engagements_obj);
-        console.log(`this.engagements_obj[target] =>`, this.engagements_obj[value]);
+        // console.log("this.engagements_obj =>", this.engagements_obj);
+        // console.log(`this.engagements_obj[target] =>`, this.engagements_obj[value]);
         this.categories_list = this.engagements_obj[value]['categories'];
         this.topic_list = null;
         this.selected_topic = null;
@@ -198,7 +203,7 @@ export class AdminCreatequizComponent implements OnInit {
   displayTypeChanger(target, value) {
     this.cancelSubmitQuiz()
     if (value === 'textfield input') {
-      console.log('text!')
+      // console.log('text!')
       this.list_of_questions[target]['display_type_description'] = "Manual input";
       this.list_of_questions[target]['question_type_description'] = 'textfield input';
       this.list_of_questions[target]['question_type_id'] = 2;
@@ -208,7 +213,7 @@ export class AdminCreatequizComponent implements OnInit {
       this.list_of_questions[target]['question_type_id'] = 3;
       this.list_of_questions[target]['display_type_id'] = 4;
     } else {
-      console.log("selected input")
+      // console.log("selected input")
       this.list_of_questions[target]['question_type_description'] = "selected input";
       this.list_of_questions[target]['question_type_id'] = 1;
       if (value === "Checkbox") {
@@ -252,14 +257,14 @@ export class AdminCreatequizComponent implements OnInit {
 
   addAnswer(target) {
     this.cancelSubmitQuiz()
-    console.log('add answer for =>', target)
+    // console.log('add answer for =>', target)
     let value = document.getElementById(`newAnswerFor_${target}`)['value'];
-    console.log("document.getElementById(`newAnswerFor_${target}`) =>", document.getElementById(`newAnswerFor_${target}`) )
+    // console.log("document.getElementById(`newAnswerFor_${target}`) =>", document.getElementById(`newAnswerFor_${target}`) )
     if (value.length < 1) {
-      console.log("empty input");
+      // console.log("empty input");
       return;
     }
-    console.log("Value =>", value)
+    // console.log("Value =>", value)
     document.getElementById(`newAnswerFor_${target}`)['value'] = '';
     let answers_list = this.list_of_questions[target]['answer_prompt'];
     for (let el in answers_list) {
@@ -315,7 +320,7 @@ export class AdminCreatequizComponent implements OnInit {
         this.list_of_questions[q_id]['image'] = true;
         this.clearErrors(q_id, 'image_uploader')
       }).catch(function (err) {
-        console.log("ERROR =>", err)
+        // console.log("ERROR =>", err)
         this.errorHandler(q_id, "image_uploader", JSON.stringify(err))
       })
     } else if (target == 'drag_and_drop') { // drag and drop logic
@@ -340,7 +345,7 @@ export class AdminCreatequizComponent implements OnInit {
 
   dragAndDropAdder(id) {
     this.cancelSubmitQuiz()
-    console.log(this.list_of_questions[id]['temp_bucket_storage'])
+    // console.log(this.list_of_questions[id]['temp_bucket_storage'])
     let input_val = this.list_of_questions[id]['temp_bucket_storage']['answer_input'];
     let bucket_val = this.list_of_questions[id]['temp_bucket_storage']['bucket_id'];
     this.clearErrors(id, 'bucket_input');
@@ -364,7 +369,7 @@ export class AdminCreatequizComponent implements OnInit {
     temp_id = temp_id.slice(0,3) + (Number(temp_id.slice(3,4)) + 1)
     let new_id = temp_id; // new answer ID
     try{
-      console.log("this.list_of_questions[id]['answer_prompt'] =>",this.list_of_questions[id]['answer_prompt'])
+      // console.log("this.list_of_questions[id]['answer_prompt'] =>",this.list_of_questions[id]['answer_prompt'])
       this.list_of_questions[id]['answer_prompt'][new_id] = input_val
       this.list_of_questions[id]['answer_bucket_id'][new_id] = bucket_val;
       this.list_of_questions[id]['answer_soft_delete'][new_id] = false;
@@ -374,8 +379,8 @@ export class AdminCreatequizComponent implements OnInit {
       this.list_of_questions[id]['temp_bucket_storage']['bucket_id'] = null;
       this.bucketList_reloader[id] = false;
       document.getElementById(`bucket_input_add_input_${id}`)['value'] = '';
-      console.log(this.list_of_questions[id])
-      console.log("document.getElementById(`bucket_list_pick_${id}`)['value']  =>", document.getElementById(`bucket_list_pick_${id}`)  )
+      // console.log(this.list_of_questions[id])
+      // console.log("document.getElementById(`bucket_list_pick_${id}`)['value']  =>", document.getElementById(`bucket_list_pick_${id}`)  )
       // there was a weird bug with the choose bucket dropdown. It just didn't reset the old value after adding a new bucket choice
       // so, by calling "  this.bucketList_reloader[id] = false " we delete the choose bucket dropdown ...
       let that = this;
@@ -385,7 +390,7 @@ export class AdminCreatequizComponent implements OnInit {
       }, 50)
     }
     catch(error){
-      console.log("ERROR =>", error)
+      // console.log("ERROR =>", error)
     }
    
   }
@@ -395,7 +400,7 @@ export class AdminCreatequizComponent implements OnInit {
       this.clearErrors(id, 'training_url')
       window.open(this.list_of_questions[id]['training_url'], "_blank")
     }else{
-      console.log("NOT GOOD!")
+      // console.log("NOT GOOD!")
       this.errorHandler(id, 'training_url', "Confluence link is invalid")
     }
   }
@@ -413,27 +418,27 @@ export class AdminCreatequizComponent implements OnInit {
     }
     let counter = 1;
     for(let el in this.list_of_questions){
-      console.log("EL =>>>>", el)
+      // console.log("EL =>>>>", el)
       if(el.includes('added_')){
-        console.log("added is already here!", el.split('_')[1])
+        // console.log("added is already here!", el.split('_')[1])
         counter = Number(el.split('_')[1]) + 1;
       }
     }
     
     let new_id = 'added_'+counter;
-    console.log("New ID =>", new_id)
+    // console.log("New ID =>", new_id)
     this.list_of_questions[new_id] = this.list_of_questions['new_question'];
     this.bucketList_reloader[new_id] = true;
     this.list_of_questions['new_question'] = new Question();
   }
   removeQuestion(id){
     this.cancelSubmitQuiz()
-    console.log("ID =>", id)
+    // console.log("ID =>", id)
     delete this.list_of_questions[id]
   }
   removeDragAndDropChoice(id, c_id){ // id = question_id, c_id = choice id
     this.cancelSubmitQuiz()
-    console.log(id, c_id)
+    // console.log(id, c_id)
     try{
       delete this.list_of_questions[id]['answer_prompt'][c_id]
       delete this.list_of_questions[id]['answer_correct'][c_id]
@@ -445,13 +450,13 @@ export class AdminCreatequizComponent implements OnInit {
     }
   }
   inputTest(target) {
-    console.log("=============================")
-    console.log(target)
-    console.log("=============================")
+    // console.log("=============================")
+    // console.log(target)
+    // console.log("=============================")
   }
 
   imageZoom(q_id){
-    console.log(this.list_of_questions[q_id])
+    // console.log(this.list_of_questions[q_id])
     this.modal_message.title = "Image";
     this.modal_message.body = this.list_of_questions[q_id]['base64']
     this.modal_mesage_bool = true;
@@ -466,7 +471,7 @@ export class AdminCreatequizComponent implements OnInit {
     this.bucket_list_counter_updater();
     this.modal_message.title = "Bucket editor";
     this.modal_mesage_bool = true;
-    console.log("OPEN MODAL")
+    // console.log("OPEN MODAL")
   }
   bucketListEditor(index, key, value){
     if(key == 'soft_delete'){
@@ -475,7 +480,7 @@ export class AdminCreatequizComponent implements OnInit {
     }
     this.bucket_list[index][key] = value;
     // this.bucket_list_changes_bool = ( Object.keys(this.differenceFinderBuckets(this.bucket_list, this.bucket_list_original)).length > 0);
-    console.log("counter =>", this.bucket_list_changes_bool)
+    // console.log("counter =>", this.bucket_list_changes_bool)
   }
   bucketListEditorConfirm(){
     this.bucket_list_confirm_bool = true;
@@ -529,7 +534,7 @@ export class AdminCreatequizComponent implements OnInit {
     this.bucket_new.bucket_name = "";
   }
   closeModal_background_click(target){
-    console.log(target.id)
+    // console.log(target.id)
     if(this.modal_message.title == "Image" && target.id == "modal_message_box"){
       this.closeModal();
     }
@@ -632,7 +637,7 @@ export class AdminCreatequizComponent implements OnInit {
   //  MISC ============================================================================================================================================================================================
 
   errorHandler(id, source, message){
-    console.log(`WE GOT ERROR HERE! ID => ${id}, source => ${source}, message => ${message}`);
+    // console.log(`WE GOT ERROR HERE! ID => ${id}, source => ${source}, message => ${message}`);
     if(!this.list_of_questions[id+"_error"]){
       this.list_of_questions[id+"_error"] = {
         'error_bool': true,
@@ -652,7 +657,7 @@ export class AdminCreatequizComponent implements OnInit {
       delete this.list_of_questions[id+'_error'];
     }
     catch(error){
-      console.log(error)
+      // console.log(error)
     }
     return true
   }
@@ -661,7 +666,7 @@ export class AdminCreatequizComponent implements OnInit {
       delete this.list_of_questions[id];
     }
     catch(error){
-      console.log(error)
+      // console.log(error)
     }
     return true
   }
@@ -679,7 +684,7 @@ export class AdminCreatequizComponent implements OnInit {
   }
   clearErrorMessageTimer(id, time){
     let that = this;
-    console.log('1st this =>', this)
+    // console.log('1st this =>', this)
     setTimeout(
       function(){
         delete that.list_of_questions[id+'_error'];
@@ -695,7 +700,7 @@ export class AdminCreatequizComponent implements OnInit {
       }
       res[engs[el]['engagement_id']] = engs[el]
     }
-    console.log(`orderByEngID(engs) =>`, res)
+    // console.log(`orderByEngID(engs) =>`, res)
     return res;
   }
   sortCategoriesByEngs(engs, list) {
@@ -797,7 +802,7 @@ export class AdminCreatequizComponent implements OnInit {
         q[el] = this.escapingBucketList(q[el])
         continue;
       }
-      console.log("EL =>", el)
+      // console.log("EL =>", el)
       q[el]['prompt'] = escape(q[el]['prompt']);
       q[el]['training_url'] = escape(q[el]['training_url']);
       q[el]['training_module'] = escape(q[el]['training_module']);
@@ -818,7 +823,7 @@ export class AdminCreatequizComponent implements OnInit {
         q[el] = this.escapingBucketList(q[el])
         continue;
       }
-      console.log("EL =>", el)
+      // console.log("EL =>", el)
       q[el]['prompt'] = escape(q[el]['prompt']);
       q[el]['training_url'] = escape(q[el]['training_url']);
       q[el]['training_module'] = escape(q[el]['training_module']);
@@ -849,10 +854,10 @@ export class AdminCreatequizComponent implements OnInit {
     this.location.back();
   }
   checkState(){
-    console.log(this)
+    // console.log(this)
   }
   bucket_list_counter_updater(){
-    console.log("bucket_list_counter_updater")
+    // console.log("bucket_list_counter_updater")
     this.bucket_list_counter = {};
     for(let q in this.list_of_questions){
       let question = this.list_of_questions[q];

@@ -72,6 +72,7 @@ export class HomeComponent implements OnInit {
     }
     if(!eng_exists_bool){
       this._r.navigateByUrl('/oops')
+      this._ConnectorService.logEvent("such engagement doesn\tt exist", "ERROR", "home.component", "getEngagementByEngId")
     }
   }
   getAllCategoriesAndTopicsByProfileId(profile_id){
@@ -81,6 +82,7 @@ export class HomeComponent implements OnInit {
       this.filter_categories_and_topics_by_eng_id(this.cats_n_tops_raw);
 
     }).catch(function(error) {
+      this._ConnectorService.logEvent(error, "ERROR", "home.component", "getAllCategoriesAndTopicsByProfileId")
     });
   }
   getEngagementByEngId(currentEng_id){
@@ -97,6 +99,7 @@ export class HomeComponent implements OnInit {
       }
       this.current_eng = data[0];
     }).catch(function(error) {
+      this._ConnectorService.logEvent(error, "ERROR", "home.component", "getEngagementByEngId")
     });
   }
   filter_categories_and_topics_by_eng_id(data){

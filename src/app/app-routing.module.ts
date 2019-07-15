@@ -38,7 +38,9 @@ const routes: Routes = [
   { path: ':eng/AdminEditusersComponent', component: AdminEditusersComponent},
   { path: ':eng/grade/:target_id/:action', component: AdminGradeComponent},
   { path: 'auth/login/aad/callback', component: AuthComponent},
+
   { path: 'oops', component: OopsComponent},
+  { path: 'log_event', component: ConnectorComponent},
 
   { path: '**', component: NotfoundComponent }
 ];

@@ -2,7 +2,7 @@ function loadDragAndDrop() {
 
 
     $(document).ready(function() {
-        console.log("let go")
+        // console.log("let go")
         dragAndDropLogic();
 
         function dragAndDropLogic() { // Drag and drop functionality ================================================================

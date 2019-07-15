@@ -162,7 +162,7 @@
                 </div>
                 <div class="admin-create-quiz-body-topic-cat-eng-box-select-box">
                     <span class="text-muted">Time limit</span>
-                    <select class="custom-select shadow" (change)="valueChanger('time_limit', $event.target.value)">
+                    <select  [disabled]="topic_soft_delete" class="custom-select shadow" (change)="valueChanger('time_limit', $event.target.value)">
                         <option value=null [selected]="!time_limit">No limit</option>
                         <option value="15" [selected]="time_limit == 15">15 minutes</option>
                         <option value="30" [selected]="time_limit == 30">30 minutes</option>

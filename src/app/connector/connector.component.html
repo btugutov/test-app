@@ -1,3 +1,31 @@
-<p>
-  connector works!
-</p>
+
+<table class="table table-borderless" *ngIf="logs.length>0">
+    <thead class="thead-dark ">
+      <tr>
+        <th>Event ID</th>
+        <th>Level</th>
+        <th>Content</th>
+        <th>Host</th>
+        <th>Line</th>
+        <th>User ID</th>
+        <th>Time</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let el of logs; let i = index" [ngClass]="{
+        'alert-warning': ready[el.log_id] && el.log_level == 'WARNING',
+        'alert-danger': ready[el.log_id] && el.log_level == 'ERROR'
+      }">
+        <td *ngIf="!ready[el.log_id]" colspan="7">
+            <div class="alert alert-warning text-center">Loading</div>
+        </td>
+        <th scope="row" *ngIf="ready[el.log_id]">{{el.log_id}}</th>
+        <td *ngIf="ready[el.log_id]">{{el.log_level}}</td>
+        <td *ngIf="ready[el.log_id]">{{el.log_event}}</td>
+        <td *ngIf="ready[el.log_id]">{{el.host}}</td>
+        <td *ngIf="ready[el.log_id]">{{el.line_number}}</td>
+        <td *ngIf="ready[el.log_id]">{{el.user_id}}</td>
+        <td *ngIf="ready[el.log_id]">{{el.event_time | date:'medium'}}</td>
+      </tr>
+    </tbody>
+  </table>

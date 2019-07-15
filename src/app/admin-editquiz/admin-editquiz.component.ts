@@ -225,6 +225,9 @@ export class AdminEditquizComponent implements OnInit {
     console.log("==============================================================")
     if(this.topic_soft_delete){
       this._ConnectorService.disableQuiz(this.topic_id, this.currentUser.email).then(res => {
+        if(res){
+          console.log("IF RES =>", res)
+        }
         console.log("res =>", res)
         this.submit_ready = false;
         if (res['status'] == 'success') {

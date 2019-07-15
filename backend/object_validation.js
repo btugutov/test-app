@@ -190,33 +190,36 @@ function format_quiz_table2(object){
     for(let el in object){
         let target = object[el];
         if(!res['quiz_id']){
-            res['quiz_id'] = object[el]['quiz_id']
+            res['quiz_id'] = object[el]['quiz_id'];
         }
         if(!res['topic_id']){
-            res['topic_id'] = object[el]['topic_id']
+            res['topic_id'] = object[el]['topic_id'];
         }
         if(!res['quiz_name']){
-            res['quiz_name'] = unescape(object[el]['quiz_name'])
+            res['quiz_name'] = unescape(object[el]['quiz_name']);
         }
         if(!res['topic_soft_delete']){
-            res['topic_soft_delete'] = object[el]['topic_soft_delete']
+            res['topic_soft_delete'] = object[el]['topic_soft_delete'];
         }
         if(!res['category']){
-            res['category'] = unescape(object[el]['category'])
+            res['category'] = unescape(object[el]['category']);
         }
         if(!res['engagement_id']){
-            res['engagement_id'] = object[el]['engagement_id']
+            res['engagement_id'] = object[el]['engagement_id'];
         }
         if(!res['engagement_name']){
-            res['engagement_name'] = unescape(object[el]['engagement_name'])
+            res['engagement_name'] = unescape(object[el]['engagement_name']);
         }
         if(!res['question_sort']){
-            res['question_sort'] = object[el]['question_sort']
+            res['question_sort'] = object[el]['question_sort'];
         }
         if(!res['time_limit']){
-            res['time_limit'] = object[el]['time_limit']
+            res['time_limit'] = object[el]['time_limit'];
         }
-
+        if(!res['soft_delete']){
+            res['soft_delete'] = object[el]['soft_delete'];
+            res['topic_soft_delete'] = object[el]['soft_delete'];
+        }
         if(!res[target.question_id]){
             res[target.question_id] = {
                 answer_bucket_id: {},

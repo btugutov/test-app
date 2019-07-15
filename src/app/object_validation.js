@@ -40,8 +40,8 @@ function log_event(logLevel, event, functionName, event_time) {
         stringEscaped = mysql_real_escape_string(event);
     } catch (error) {
         stringEscaped = event;
-        console.log('ERROR! CANNOT escape event string!');
-        console.log(error);
+        // console.log('ERROR! CANNOT escape event string!');
+        // console.log(error);
     }
 
     if (event_time == undefined) {
@@ -62,7 +62,7 @@ function log_event(logLevel, event, functionName, event_time) {
 
     let logValues = `'${logLevel}', '${stringEscaped}', 'Knowledge Assessment', '${functionName}', '${line_number}', ${event_time}`;
     dbLogWrite.log(logValues);
-    console.log(`${line_number} : ${event}`); // use non escaped string here in for log output. Otherwise string looks strange and hard to debug.
+    // console.log(`${line_number} : ${event}`); // use non escaped string here in for log output. Otherwise string looks strange and hard to debug.
 };
 
 function format_quiz_table(object) {
@@ -419,7 +419,7 @@ function building_dont_use(object) {
                     throw tryError;
                 }
                 results.push(questions);
-                console.log(results)
+                // console.log(results)
                 return results;
             } else {
                 //debugLog("object empty");
@@ -546,8 +546,8 @@ function joinUsersByTopicId(list) {
         for (let u in list) {
             // if (list[u]['profile_id']) {
             //     if (list[u]['profile_id'] == 727) {
-            //         console.log("==================list[u]['profile_id'] == 727===========================")
-            //         console.log(list[u])
+                    console.log("==================list[u]['profile_id'] == 727===========================")
+                    console.log(list[u])
             //     }
             // }
             if (typeof(list[u]) !== 'object' || list[u]['soft_delete']) {
@@ -659,13 +659,13 @@ function gradeValidate(body) {
             gradeValue = '0';
         }
         /*
-        console.log(`gradeValue >>>> ${gradeValue}`)
-        console.log(gradeValue)
-        console.log(typeof gradeValue)
-        console.log(`grade_input >>>> ${grade_input}`)
-        console.log(`escape(grade_input) >>>> ${escape(grade_input)}`)
-        console.log(`submission_id >>>> ${submission_id}`)
-        console.log(`keys[i] >>>> ${keys[i]}`)
+        // console.log(`gradeValue >>>> ${gradeValue}`)
+        // console.log(gradeValue)
+        // console.log(typeof gradeValue)
+        // console.log(`grade_input >>>> ${grade_input}`)
+        // console.log(`escape(grade_input) >>>> ${escape(grade_input)}`)
+        // console.log(`submission_id >>>> ${submission_id}`)
+        // console.log(`keys[i] >>>> ${keys[i]}`)
         */
         // sanitize everything and then add to the final array
         gradeValue = escape(gradeValue);

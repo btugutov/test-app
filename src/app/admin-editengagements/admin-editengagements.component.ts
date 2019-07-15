@@ -49,7 +49,7 @@ export class AdminEditengagementsComponent implements OnInit {
     this._ConnectorService.user.subscribe(user => {
       if (user) {
         if(user.admin_owner || user.admin_permissions){
-          console.log("we are fine here!")
+          // console.log("we are fine here!")
         }else{
           this.goBack();
         }
@@ -59,15 +59,15 @@ export class AdminEditengagementsComponent implements OnInit {
           'eng_id': this.currentEng_id
         }
         this._ConnectorService.getAllEngagements(obj).then(res => {
-          console.log("RES =>", res);
+          // console.log("RES =>", res);
           this.engagements = this.engagementFormat(cloneDeep(res['body']));
           this.engagements_original = this.engagementFormat(cloneDeep(res['body']))
           this.engagements['new'] = cloneDeep(this.new_eng_form);
           this.engagements_original['new'] = cloneDeep(this.new_eng_form);
-          console.log(this.engagements)
+          // console.log(this.engagements)
           
         }).catch(function (err) {
-          console.log("ERROR =>", err)
+          // console.log("ERROR =>", err)
         })
       }
       if (user && !user.admin) {
@@ -90,7 +90,7 @@ export class AdminEditengagementsComponent implements OnInit {
       this.modal_message.counter_end = message;
     }else{
       this.modal_message.body = message;
-      console.log(this.modal_message)
+      // console.log(this.modal_message)
     }
   }
   closeModal(){
@@ -101,7 +101,7 @@ export class AdminEditengagementsComponent implements OnInit {
 
   // LISTENERSFUNCTOINS =============
   actionButton(eng_id, key){
-    console.log(key == 'soft_delete', !this.engagements[eng_id][key])
+    // console.log(key == 'soft_delete', !this.engagements[eng_id][key])
     if(key == 'soft_delete' && !this.engagements[eng_id][key]){
       this.errorHandlerRemover(eng_id)
     }else if(key == 'soft_delete' && this.engagements[eng_id][key]){
@@ -135,7 +135,7 @@ export class AdminEditengagementsComponent implements OnInit {
       this.errorHandlerRemover(eng_id)
     }
     this.engagements[eng_id][key] = input.value;
-    console.log(this.engagements[eng_id][key])
+    // console.log(this.engagements[eng_id][key])
   }
 
   checkChanges(){
@@ -151,7 +151,7 @@ export class AdminEditengagementsComponent implements OnInit {
           this.list_changes[el] = cur_list[el];
           continue
         }
-        console.log(cur_list[el]['engagement_name'], old_list[el]['engagement_name'])
+        // console.log(cur_list[el]['engagement_name'], old_list[el]['engagement_name'])
         if(cur_list[el]['engagement_name'] != old_list[el]['engagement_name']){
           this.list_changes[el] = cur_list[el];
           continue
@@ -167,7 +167,7 @@ export class AdminEditengagementsComponent implements OnInit {
     if(Object.keys(this.list_changes).length > 0){
       this.openModal('list_changes', null);
     }
-    console.log(this.list_changes)
+    // console.log(this.list_changes)
   }
 
   undoChanges(id, key) {
@@ -189,7 +189,7 @@ export class AdminEditengagementsComponent implements OnInit {
         diff_finder_bool = true;
       }
       if (!diff_finder_bool) {
-        console.log("removing from the change list")
+        // console.log("removing from the change list")
         delete this.list_changes[id];
       }
     }
@@ -204,10 +204,10 @@ export class AdminEditengagementsComponent implements OnInit {
   }
   addBackground(eng_id, value){
     this._ConnectorService.imgToBase64(value).then(data => {
-      console.log("ADDING IMAGE FOR =>", eng_id)
+      // console.log("ADDING IMAGE FOR =>", eng_id)
       this.engagements[eng_id]['background'] = String(data);
     }).catch(function (err) {
-      console.log("ERROR =>", err)
+      // console.log("ERROR =>", err)
       // this.errorHandler(q_id, "image_uploader", JSON.stringify(err))
     })
   }
@@ -226,18 +226,18 @@ export class AdminEditengagementsComponent implements OnInit {
     }
     let id = 'added1';
     for(let el in this.engagements){
-      console.log("EL =>", el, el.slice(0,5))
+      // console.log("EL =>", el, el.slice(0,5))
       if(el.slice(0,5) == 'added'){
-        console.log("awesome!")
+        // console.log("awesome!")
         id = 'added' + (Number(el.slice(5)) + 1);
-        console.log("SETTING THIS ID =>", id)
+        // console.log("SETTING THIS ID =>", id)
       }
     }
     this.errorHandlerRemover('new')
-    console.log("new id! =>", id)
+    // console.log("new id! =>", id)
     this.last_added = id;
     if(this.engagements[id]){
-      console.log("FAILED!");
+      // console.log("FAILED!");
       return;
     }
 
@@ -258,7 +258,7 @@ export class AdminEditengagementsComponent implements OnInit {
       'email': this.currentUser.email,
     }
     this._ConnectorService.saveEngagements(obj).then(res => {
-      console.log('RESULT =>', res)
+      // console.log('RESULT =>', res)
       this.engagements_original = cloneDeep(this.engagements);
       this.closeModal();
       this.list_changes = {};
@@ -269,12 +269,12 @@ export class AdminEditengagementsComponent implements OnInit {
   // MISC FUNCTIONS ======================
   checkState() {
     this.engagements['new'] = this.new_eng_form;
-    console.log(this)
+    // console.log(this)
 
   }
 
   sortType(key){
-    console.log(key)
+    // console.log(key)
   }
   
   goBack(){
@@ -301,7 +301,7 @@ export class AdminEditengagementsComponent implements OnInit {
      }, 100);
       
     } else{
-      console.log("done!")
+      // console.log("done!")
       return;
     }
   }
@@ -371,7 +371,7 @@ export class AdminEditengagementsComponent implements OnInit {
   }
 
   errorHandler(id, source, message) {
-    console.log(`WE GOT ERROR HERE! ID => ${id}, source => ${source}, message => ${message}`);
+    // console.log(`WE GOT ERROR HERE! ID => ${id}, source => ${source}, message => ${message}`);
     if (!this.engagements[id + "_error"]) {
       this.errors_length++;
       this.engagements[id + "_error"] = {
@@ -397,7 +397,7 @@ export class AdminEditengagementsComponent implements OnInit {
       }
     }
     catch (error) {
-      console.log(error)
+      // console.log(error)
     }
     return true
   }
@@ -410,7 +410,7 @@ export class AdminEditengagementsComponent implements OnInit {
       }
     }
     catch (error) {
-      console.log(error)
+      // console.log(error)
     }
     return true
   }

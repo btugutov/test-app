@@ -126,7 +126,7 @@ var AdminCreatequizComponent = /** @class */ (function () {
             if (user) {
                 _this.currentUser = user;
                 _this._ConnectorService.getCatsTopsEngs(user.email).then(function (res) {
-                    console.log("RES =>", res);
+                    // console.log("RES =>", res)
                     if (res['status'] == 'success') {
                         _this.main_content = lodash_cloneDeep__WEBPACK_IMPORTED_MODULE_6__(res);
                         _this.engagements = res['engs'];
@@ -140,7 +140,8 @@ var AdminCreatequizComponent = /** @class */ (function () {
                         _this.selected_eng = _this.currentEng_id;
                     }
                 }).catch(function (err) {
-                    console.log("ERROR =>", err);
+                    this._ConnectorService.logEvent(err, "ERROR", "AdminCreatequizComponent", "getCatsTopsEngs");
+                    // console.log("ERROR =>", err)
                 });
             }
             if (user && !user.admin) {
@@ -156,23 +157,23 @@ var AdminCreatequizComponent = /** @class */ (function () {
         var errors = this.validateAllQuestions();
         if (Object.keys(errors).length > 0 || this.topic_cat_eng_message.status != 'success') {
             if (this.topic_cat_eng_message.status != 'success') {
-                console.log("ENGAGEMENT_CATEGORY_TOPIC ERROR!");
+                // console.log("ENGAGEMENT_CATEGORY_TOPIC ERROR!")
                 this.topic_cat_eng_message.display = true;
                 this.topic_cat_eng_message.message = "Please select engagement, category, topic.";
                 this.topic_cat_eng_message.status = 'fail';
             }
-            console.log("SUBMIT errors =>", errors);
+            // console.log("SUBMIT errors =>", errors)
             for (var error in errors) {
-                console.log("ERROR =>", errors[error]['body']);
+                // console.log("ERROR =>", errors[error]['body'])
                 for (var el in errors[error]['body']) {
-                    console.log("EL =>", el);
+                    // console.log("EL =>", el)
                     //errors[error]['body'][el]
                     this.errorHandler(error, el, errors[error]['body'][el]);
                 }
             }
         }
         else if (Object.keys(this.list_of_questions).length > 1) {
-            console.log("ALL GOOD!");
+            // console.log("ALL GOOD!")
             this.submit_ready = true;
         }
     };
@@ -181,7 +182,7 @@ var AdminCreatequizComponent = /** @class */ (function () {
     };
     AdminCreatequizComponent.prototype.submitQuiz = function () {
         var _this = this;
-        console.log("SUBMITTED1");
+        // console.log("SUBMITTED1");
         var quiz = {
             questions: this.escapingQuestions(lodash_cloneDeep__WEBPACK_IMPORTED_MODULE_6__(this.list_of_questions)),
             engagement_id: this.selected_eng,
@@ -192,27 +193,31 @@ var AdminCreatequizComponent = /** @class */ (function () {
         };
         delete quiz.questions['new_question'];
         this._ConnectorService.createQuiz(quiz, this.currentUser.email).then(function (res) {
-            console.log("res =>", res);
+            // console.log("res =>", res)
             _this.submit_ready = false;
             if (res['status'] == 'success') {
                 _this.submit_status.display = true;
                 _this.submit_status.status = 'success';
+                // this._ConnectorService.logEvent("Quiz was created", "INFO", "AdminCreatequizComponent", "submitQuiz")
             }
             else {
                 _this.submit_status.display = true;
                 _this.submit_status.status = 'fail';
                 _this.submit_status.message = res['message'];
+                _this._ConnectorService.logEvent(res['message'], "ERROR", "AdminCreatequizComponent", "submitQuiz");
             }
+        }).catch(function (err) {
+            this._ConnectorService.logEvent(err, "ERROR", "AdminCreatequizComponent", "submitQuiz");
         });
     };
     // LISTENERS ========================================================================================================================================================================================
     AdminCreatequizComponent.prototype.valueChanger = function (target, value) {
-        console.log(target, value);
+        // console.log(target, value)
         this.cancelSubmitQuiz();
         if (target == 'engagement') {
             if (this.selected_eng != value) {
-                console.log("this.engagements_obj =>", this.engagements_obj);
-                console.log("this.engagements_obj[target] =>", this.engagements_obj[value]);
+                // console.log("this.engagements_obj =>", this.engagements_obj);
+                // console.log(`this.engagements_obj[target] =>`, this.engagements_obj[value]);
                 this.categories_list = this.engagements_obj[value]['categories'];
                 this.topic_list = null;
                 this.selected_topic = null;
@@ -255,7 +260,7 @@ var AdminCreatequizComponent = /** @class */ (function () {
     AdminCreatequizComponent.prototype.displayTypeChanger = function (target, value) {
         this.cancelSubmitQuiz();
         if (value === 'textfield input') {
-            console.log('text!');
+            // console.log('text!')
             this.list_of_questions[target]['display_type_description'] = "Manual input";
             this.list_of_questions[target]['question_type_description'] = 'textfield input';
             this.list_of_questions[target]['question_type_id'] = 2;
@@ -267,7 +272,7 @@ var AdminCreatequizComponent = /** @class */ (function () {
             this.list_of_questions[target]['display_type_id'] = 4;
         }
         else {
-            console.log("selected input");
+            // console.log("selected input")
             this.list_of_questions[target]['question_type_description'] = "selected input";
             this.list_of_questions[target]['question_type_id'] = 1;
             if (value === "Checkbox") {
@@ -314,14 +319,14 @@ var AdminCreatequizComponent = /** @class */ (function () {
     };
     AdminCreatequizComponent.prototype.addAnswer = function (target) {
         this.cancelSubmitQuiz();
-        console.log('add answer for =>', target);
+        // console.log('add answer for =>', target)
         var value = document.getElementById("newAnswerFor_" + target)['value'];
-        console.log("document.getElementById(`newAnswerFor_${target}`) =>", document.getElementById("newAnswerFor_" + target));
+        // console.log("document.getElementById(`newAnswerFor_${target}`) =>", document.getElementById(`newAnswerFor_${target}`) )
         if (value.length < 1) {
-            console.log("empty input");
+            // console.log("empty input");
             return;
         }
-        console.log("Value =>", value);
+        // console.log("Value =>", value)
         document.getElementById("newAnswerFor_" + target)['value'] = '';
         var answers_list = this.list_of_questions[target]['answer_prompt'];
         for (var el in answers_list) {
@@ -379,7 +384,7 @@ var AdminCreatequizComponent = /** @class */ (function () {
                 _this.list_of_questions[q_id]['image'] = true;
                 _this.clearErrors(q_id, 'image_uploader');
             }).catch(function (err) {
-                console.log("ERROR =>", err);
+                // console.log("ERROR =>", err)
                 this.errorHandler(q_id, "image_uploader", JSON.stringify(err));
             });
         }
@@ -404,7 +409,7 @@ var AdminCreatequizComponent = /** @class */ (function () {
     };
     AdminCreatequizComponent.prototype.dragAndDropAdder = function (id) {
         this.cancelSubmitQuiz();
-        console.log(this.list_of_questions[id]['temp_bucket_storage']);
+        // console.log(this.list_of_questions[id]['temp_bucket_storage'])
         var input_val = this.list_of_questions[id]['temp_bucket_storage']['answer_input'];
         var bucket_val = this.list_of_questions[id]['temp_bucket_storage']['bucket_id'];
         this.clearErrors(id, 'bucket_input');
@@ -428,7 +433,7 @@ var AdminCreatequizComponent = /** @class */ (function () {
         temp_id = temp_id.slice(0, 3) + (Number(temp_id.slice(3, 4)) + 1);
         var new_id = temp_id; // new answer ID
         try {
-            console.log("this.list_of_questions[id]['answer_prompt'] =>", this.list_of_questions[id]['answer_prompt']);
+            // console.log("this.list_of_questions[id]['answer_prompt'] =>",this.list_of_questions[id]['answer_prompt'])
             this.list_of_questions[id]['answer_prompt'][new_id] = input_val;
             this.list_of_questions[id]['answer_bucket_id'][new_id] = bucket_val;
             this.list_of_questions[id]['answer_soft_delete'][new_id] = false;
@@ -438,8 +443,8 @@ var AdminCreatequizComponent = /** @class */ (function () {
             this.list_of_questions[id]['temp_bucket_storage']['bucket_id'] = null;
             this.bucketList_reloader[id] = false;
             document.getElementById("bucket_input_add_input_" + id)['value'] = '';
-            console.log(this.list_of_questions[id]);
-            console.log("document.getElementById(`bucket_list_pick_${id}`)['value']  =>", document.getElementById("bucket_list_pick_" + id));
+            // console.log(this.list_of_questions[id])
+            // console.log("document.getElementById(`bucket_list_pick_${id}`)['value']  =>", document.getElementById(`bucket_list_pick_${id}`)  )
             // there was a weird bug with the choose bucket dropdown. It just didn't reset the old value after adding a new bucket choice
             // so, by calling "  this.bucketList_reloader[id] = false " we delete the choose bucket dropdown ...
             var that_1 = this;
@@ -449,7 +454,7 @@ var AdminCreatequizComponent = /** @class */ (function () {
             }, 50);
         }
         catch (error) {
-            console.log("ERROR =>", error);
+            // console.log("ERROR =>", error)
         }
     };
     AdminCreatequizComponent.prototype.checkModuleLink = function (id) {
@@ -458,7 +463,7 @@ var AdminCreatequizComponent = /** @class */ (function () {
             window.open(this.list_of_questions[id]['training_url'], "_blank");
         }
         else {
-            console.log("NOT GOOD!");
+            // console.log("NOT GOOD!")
             this.errorHandler(id, 'training_url', "Confluence link is invalid");
         }
     };
@@ -476,26 +481,26 @@ var AdminCreatequizComponent = /** @class */ (function () {
         }
         var counter = 1;
         for (var el in this.list_of_questions) {
-            console.log("EL =>>>>", el);
+            // console.log("EL =>>>>", el)
             if (el.includes('added_')) {
-                console.log("added is already here!", el.split('_')[1]);
+                // console.log("added is already here!", el.split('_')[1])
                 counter = Number(el.split('_')[1]) + 1;
             }
         }
         var new_id = 'added_' + counter;
-        console.log("New ID =>", new_id);
+        // console.log("New ID =>", new_id)
         this.list_of_questions[new_id] = this.list_of_questions['new_question'];
         this.bucketList_reloader[new_id] = true;
         this.list_of_questions['new_question'] = new _question__WEBPACK_IMPORTED_MODULE_5__["Question"]();
     };
     AdminCreatequizComponent.prototype.removeQuestion = function (id) {
         this.cancelSubmitQuiz();
-        console.log("ID =>", id);
+        // console.log("ID =>", id)
         delete this.list_of_questions[id];
     };
     AdminCreatequizComponent.prototype.removeDragAndDropChoice = function (id, c_id) {
         this.cancelSubmitQuiz();
-        console.log(id, c_id);
+        // console.log(id, c_id)
         try {
             delete this.list_of_questions[id]['answer_prompt'][c_id];
             delete this.list_of_questions[id]['answer_correct'][c_id];
@@ -506,12 +511,12 @@ var AdminCreatequizComponent = /** @class */ (function () {
         }
     };
     AdminCreatequizComponent.prototype.inputTest = function (target) {
-        console.log("=============================");
-        console.log(target);
-        console.log("=============================");
+        // console.log("=============================")
+        // console.log(target)
+        // console.log("=============================")
     };
     AdminCreatequizComponent.prototype.imageZoom = function (q_id) {
-        console.log(this.list_of_questions[q_id]);
+        // console.log(this.list_of_questions[q_id])
         this.modal_message.title = "Image";
         this.modal_message.body = this.list_of_questions[q_id]['base64'];
         this.modal_mesage_bool = true;
@@ -524,7 +529,7 @@ var AdminCreatequizComponent = /** @class */ (function () {
         this.bucket_list_counter_updater();
         this.modal_message.title = "Bucket editor";
         this.modal_mesage_bool = true;
-        console.log("OPEN MODAL");
+        // console.log("OPEN MODAL")
     };
     AdminCreatequizComponent.prototype.bucketListEditor = function (index, key, value) {
         if (key == 'soft_delete') {
@@ -533,7 +538,7 @@ var AdminCreatequizComponent = /** @class */ (function () {
         }
         this.bucket_list[index][key] = value;
         // this.bucket_list_changes_bool = ( Object.keys(this.differenceFinderBuckets(this.bucket_list, this.bucket_list_original)).length > 0);
-        console.log("counter =>", this.bucket_list_changes_bool);
+        // console.log("counter =>", this.bucket_list_changes_bool)
     };
     AdminCreatequizComponent.prototype.bucketListEditorConfirm = function () {
         this.bucket_list_confirm_bool = true;
@@ -587,7 +592,7 @@ var AdminCreatequizComponent = /** @class */ (function () {
         this.bucket_new.bucket_name = "";
     };
     AdminCreatequizComponent.prototype.closeModal_background_click = function (target) {
-        console.log(target.id);
+        // console.log(target.id)
         if (this.modal_message.title == "Image" && target.id == "modal_message_box") {
             this.closeModal();
         }
@@ -684,7 +689,7 @@ var AdminCreatequizComponent = /** @class */ (function () {
     };
     //  MISC ============================================================================================================================================================================================
     AdminCreatequizComponent.prototype.errorHandler = function (id, source, message) {
-        console.log("WE GOT ERROR HERE! ID => " + id + ", source => " + source + ", message => " + message);
+        // console.log(`WE GOT ERROR HERE! ID => ${id}, source => ${source}, message => ${message}`);
         if (!this.list_of_questions[id + "_error"]) {
             this.list_of_questions[id + "_error"] = {
                 'error_bool': true,
@@ -703,7 +708,7 @@ var AdminCreatequizComponent = /** @class */ (function () {
             delete this.list_of_questions[id + '_error'];
         }
         catch (error) {
-            console.log(error);
+            // console.log(error)
         }
         return true;
     };
@@ -712,7 +717,7 @@ var AdminCreatequizComponent = /** @class */ (function () {
             delete this.list_of_questions[id];
         }
         catch (error) {
-            console.log(error);
+            // console.log(error)
         }
         return true;
     };
@@ -729,7 +734,7 @@ var AdminCreatequizComponent = /** @class */ (function () {
     };
     AdminCreatequizComponent.prototype.clearErrorMessageTimer = function (id, time) {
         var that = this;
-        console.log('1st this =>', this);
+        // console.log('1st this =>', this)
         setTimeout(function () {
             delete that.list_of_questions[id + '_error'];
         }, time);
@@ -742,7 +747,7 @@ var AdminCreatequizComponent = /** @class */ (function () {
             }
             res[engs[el]['engagement_id']] = engs[el];
         }
-        console.log("orderByEngID(engs) =>", res);
+        // console.log(`orderByEngID(engs) =>`, res)
         return res;
     };
     AdminCreatequizComponent.prototype.sortCategoriesByEngs = function (engs, list) {
@@ -844,7 +849,7 @@ var AdminCreatequizComponent = /** @class */ (function () {
                 q[el] = this.escapingBucketList(q[el]);
                 continue;
             }
-            console.log("EL =>", el);
+            // console.log("EL =>", el)
             q[el]['prompt'] = escape(q[el]['prompt']);
             q[el]['training_url'] = escape(q[el]['training_url']);
             q[el]['training_module'] = escape(q[el]['training_module']);
@@ -866,7 +871,7 @@ var AdminCreatequizComponent = /** @class */ (function () {
                 q[el] = this.escapingBucketList(q[el]);
                 continue;
             }
-            console.log("EL =>", el);
+            // console.log("EL =>", el)
             q[el]['prompt'] = escape(q[el]['prompt']);
             q[el]['training_url'] = escape(q[el]['training_url']);
             q[el]['training_module'] = escape(q[el]['training_module']);
@@ -896,10 +901,10 @@ var AdminCreatequizComponent = /** @class */ (function () {
         this.location.back();
     };
     AdminCreatequizComponent.prototype.checkState = function () {
-        console.log(this);
+        // console.log(this)
     };
     AdminCreatequizComponent.prototype.bucket_list_counter_updater = function () {
-        console.log("bucket_list_counter_updater");
+        // console.log("bucket_list_counter_updater")
         this.bucket_list_counter = {};
         for (var q in this.list_of_questions) {
             var question = this.list_of_questions[q];
@@ -1010,7 +1015,7 @@ var AdminEditengagementsComponent = /** @class */ (function () {
         this._ConnectorService.user.subscribe(function (user) {
             if (user) {
                 if (user.admin_owner || user.admin_permissions) {
-                    console.log("we are fine here!");
+                    // console.log("we are fine here!")
                 }
                 else {
                     _this.goBack();
@@ -1021,14 +1026,14 @@ var AdminEditengagementsComponent = /** @class */ (function () {
                     'eng_id': _this.currentEng_id
                 };
                 _this._ConnectorService.getAllEngagements(obj).then(function (res) {
-                    console.log("RES =>", res);
+                    // console.log("RES =>", res);
                     _this.engagements = _this.engagementFormat(lodash_cloneDeep__WEBPACK_IMPORTED_MODULE_5__(res['body']));
                     _this.engagements_original = _this.engagementFormat(lodash_cloneDeep__WEBPACK_IMPORTED_MODULE_5__(res['body']));
                     _this.engagements['new'] = lodash_cloneDeep__WEBPACK_IMPORTED_MODULE_5__(_this.new_eng_form);
                     _this.engagements_original['new'] = lodash_cloneDeep__WEBPACK_IMPORTED_MODULE_5__(_this.new_eng_form);
-                    console.log(_this.engagements);
+                    // console.log(this.engagements)
                 }).catch(function (err) {
-                    console.log("ERROR =>", err);
+                    // console.log("ERROR =>", err)
                 });
             }
             if (user && !user.admin) {
@@ -1049,7 +1054,7 @@ var AdminEditengagementsComponent = /** @class */ (function () {
         }
         else {
             this.modal_message.body = message;
-            console.log(this.modal_message);
+            // console.log(this.modal_message)
         }
     };
     AdminEditengagementsComponent.prototype.closeModal = function () {
@@ -1058,7 +1063,7 @@ var AdminEditengagementsComponent = /** @class */ (function () {
     };
     // LISTENERSFUNCTOINS =============
     AdminEditengagementsComponent.prototype.actionButton = function (eng_id, key) {
-        console.log(key == 'soft_delete', !this.engagements[eng_id][key]);
+        // console.log(key == 'soft_delete', !this.engagements[eng_id][key])
         if (key == 'soft_delete' && !this.engagements[eng_id][key]) {
             this.errorHandlerRemover(eng_id);
         }
@@ -1095,7 +1100,7 @@ var AdminEditengagementsComponent = /** @class */ (function () {
             this.errorHandlerRemover(eng_id);
         }
         this.engagements[eng_id][key] = input.value;
-        console.log(this.engagements[eng_id][key]);
+        // console.log(this.engagements[eng_id][key])
     };
     AdminEditengagementsComponent.prototype.checkChanges = function () {
         this.list_changes = {};
@@ -1110,7 +1115,7 @@ var AdminEditengagementsComponent = /** @class */ (function () {
                     this.list_changes[el] = cur_list[el];
                     continue;
                 }
-                console.log(cur_list[el]['engagement_name'], old_list[el]['engagement_name']);
+                // console.log(cur_list[el]['engagement_name'], old_list[el]['engagement_name'])
                 if (cur_list[el]['engagement_name'] != old_list[el]['engagement_name']) {
                     this.list_changes[el] = cur_list[el];
                     continue;
@@ -1127,7 +1132,7 @@ var AdminEditengagementsComponent = /** @class */ (function () {
         if (Object.keys(this.list_changes).length > 0) {
             this.openModal('list_changes', null);
         }
-        console.log(this.list_changes);
+        // console.log(this.list_changes)
     };
     AdminEditengagementsComponent.prototype.undoChanges = function (id, key) {
         if (key == 'remove') {
@@ -1152,7 +1157,7 @@ var AdminEditengagementsComponent = /** @class */ (function () {
                 diff_finder_bool = true;
             }
             if (!diff_finder_bool) {
-                console.log("removing from the change list");
+                // console.log("removing from the change list")
                 delete this.list_changes[id];
             }
         }
@@ -1168,10 +1173,10 @@ var AdminEditengagementsComponent = /** @class */ (function () {
     AdminEditengagementsComponent.prototype.addBackground = function (eng_id, value) {
         var _this = this;
         this._ConnectorService.imgToBase64(value).then(function (data) {
-            console.log("ADDING IMAGE FOR =>", eng_id);
+            // console.log("ADDING IMAGE FOR =>", eng_id)
             _this.engagements[eng_id]['background'] = String(data);
         }).catch(function (err) {
-            console.log("ERROR =>", err);
+            // console.log("ERROR =>", err)
             // this.errorHandler(q_id, "image_uploader", JSON.stringify(err))
         });
     };
@@ -1189,18 +1194,18 @@ var AdminEditengagementsComponent = /** @class */ (function () {
         }
         var id = 'added1';
         for (var el in this.engagements) {
-            console.log("EL =>", el, el.slice(0, 5));
+            // console.log("EL =>", el, el.slice(0,5))
             if (el.slice(0, 5) == 'added') {
-                console.log("awesome!");
+                // console.log("awesome!")
                 id = 'added' + (Number(el.slice(5)) + 1);
-                console.log("SETTING THIS ID =>", id);
+                // console.log("SETTING THIS ID =>", id)
             }
         }
         this.errorHandlerRemover('new');
-        console.log("new id! =>", id);
+        // console.log("new id! =>", id)
         this.last_added = id;
         if (this.engagements[id]) {
-            console.log("FAILED!");
+            // console.log("FAILED!");
             return;
         }
         this.engagements[id] = lodash_cloneDeep__WEBPACK_IMPORTED_MODULE_5__(this.engagements['new']);
@@ -1220,7 +1225,7 @@ var AdminEditengagementsComponent = /** @class */ (function () {
             'email': this.currentUser.email,
         };
         this._ConnectorService.saveEngagements(obj).then(function (res) {
-            console.log('RESULT =>', res);
+            // console.log('RESULT =>', res)
             _this.engagements_original = lodash_cloneDeep__WEBPACK_IMPORTED_MODULE_5__(_this.engagements);
             _this.closeModal();
             _this.list_changes = {};
@@ -1230,10 +1235,10 @@ var AdminEditengagementsComponent = /** @class */ (function () {
     // MISC FUNCTIONS ======================
     AdminEditengagementsComponent.prototype.checkState = function () {
         this.engagements['new'] = this.new_eng_form;
-        console.log(this);
+        // console.log(this)
     };
     AdminEditengagementsComponent.prototype.sortType = function (key) {
-        console.log(key);
+        // console.log(key)
     };
     AdminEditengagementsComponent.prototype.goBack = function () {
         this.location.back();
@@ -1254,7 +1259,7 @@ var AdminEditengagementsComponent = /** @class */ (function () {
             }, 100);
         }
         else {
-            console.log("done!");
+            // console.log("done!")
             return;
         }
     };
@@ -1319,7 +1324,7 @@ var AdminEditengagementsComponent = /** @class */ (function () {
         return res;
     };
     AdminEditengagementsComponent.prototype.errorHandler = function (id, source, message) {
-        console.log("WE GOT ERROR HERE! ID => " + id + ", source => " + source + ", message => " + message);
+        // console.log(`WE GOT ERROR HERE! ID => ${id}, source => ${source}, message => ${message}`);
         if (!this.engagements[id + "_error"]) {
             this.errors_length++;
             this.engagements[id + "_error"] = {
@@ -1344,7 +1349,7 @@ var AdminEditengagementsComponent = /** @class */ (function () {
             }
         }
         catch (error) {
-            console.log(error);
+            // console.log(error)
         }
         return true;
     };
@@ -1357,7 +1362,7 @@ var AdminEditengagementsComponent = /** @class */ (function () {
             }
         }
         catch (error) {
-            console.log(error);
+            // console.log(error)
         }
         return true;
     };
@@ -1913,7 +1918,7 @@ module.exports = ".admin-create-quiz {\n    margin-top: 50px;\n}\n\n.admin-creat
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"admin-create-quiz\" *ngIf=\"currentUser && engagements\">\n    <div [hidden]=\"!modal_mesage_bool\" class=\"modal_message_box\" (click)=\"closeModal_background_click($event.target)\" id=\"modal_message_box\">\n        <div class=\"modal-dialog modal-dialog-centered modal_message\" id=\"modal_main\" role=\"document\" [ngClass]=\"{\n            'modal-width-full': modal_message.title == 'Image'\n        }\">\n            <!-- EDIT/REMOVE BUCKET LIST -->\n            <div class=\"modal-content shadow-lg\" *ngIf=\"modal_message.title == 'Bucket editor'\">\n                <div>\n                    <div class=\"modal-header\">\n                        <h5 class=\"modal-title\" id=\"exampleModalCenteredLabel\">{{modal_message.title}}</h5>\n                        <!-- <button type=\"button\" class=\"close\" (click)=\"bucketListEditorClose()\" data-dismiss=\"modal\" aria-label=\"Close\">\n                              <span aria-hidden=\"true\">&times;</span>\n                            </button> -->\n                    </div>\n                    <div class=\"modal-body modal-edit-remove-bucket\" style=\"padding: 0px 1rem\">\n                        <table [hidden]=\"bucket_list_confirm_bool\" class=\"table table-borderless table-sm\">\n                            <thead class=\"thead-light\">\n                                <tr >\n                                    <th class=\"text-center\">ID</th>\n                                    <th>Bucket Title</th>\n                                    <th class=\"text-center\">Delete</th>\n                                </tr>\n                            </thead>\n                            <tbody>\n                                <tr *ngFor=\"let b of bucket_list | keyvalue\" [ngClass]=\"{\n                                    'alert-danger': b.value.soft_delete\n                                }\">\n                                    <th class=\"text-monospace\" scope=\"row\">{{b.value.bucket_id}}</th>\n                                    <td>\n                                        <input type=\"text\"  [disabled]=\"b.value.soft_delete\" class=\"form-control openBucketListSettings_inputs create_form_input_shadow\"\n                                            (change)=\"bucketListEditor( b.key,  'bucket_name',$event.target.value)\" value={{b.value.bucket_name}}>\n                                    </td>\n                                    <td class=\"text-center\" [hidden]=\"bucket_list_counter[b.key]\">\n                                        <button (click)=\"bucketListEditor(b.key, 'soft_delete', true)\"\n                                            class='btn btn-outline-danger btn-action-borderless' *ngIf=\"!b.value.soft_delete\" style=\"width: 100%\">Delete</button>\n                                        <button (click)=\"bucketListEditor(b.key, 'soft_delete', false)\"\n                                            class='btn btn-outline-success btn-action-borderless' *ngIf=\"b.value.soft_delete\" style=\"width: 100%\">Restore</button>\n                                    </td>\n                                    <td class=\"text-center alert-warning\" [hidden]=\"!bucket_list_counter[b.key]\">\n                                        <p *ngIf=\"bucket_list_counter[b.key]\"  style=\"font-size: 12px; margin-bottom: 0px\">{{bucket_list_counter[b.key]}} answer(s) </p>\n                                        <p *ngIf=\"bucket_list_counter[b.key]\" style=\"font-size: 12px;margin-bottom: 0px\">are using this bucket</p>\n                                    </td>\n                                    <!-- <td *ngIf=\"b.value.soft_delete\" class=\"table-secondary\">\n                                        <input type=\"text\" disabled class=\"form-control openBucketListSettings_inputs\"\n                                            (change)=\"bucketListEditor(i, 'bucket_name', $event.target.value)\" value={{b.value.bucket_name}}>\n                                    </td>\n                                    <td *ngIf=\"b.value.soft_delete\" class=\"table-secondary\">\n                                        <button *ngIf=\"b.value.soft_delete\" (click)=\"bucketListEditor(i, 'soft_delete', false)\"\n                                            class='btn btn-outline-success btn-action-borderless'>Enable</button>\n                                    </td> -->\n                                </tr>\n                            </tbody>\n                        </table>\n                        <div style=\"width: 100%\" [hidden]=\"bucket_list_confirm_bool\">\n                            <div class=\"input-group shadow\">\n                                <input type=\"text\" class=\"form-control create_form_input_shadow openBucketListSettings_inputs\" id=\"updatable_bucket_list_newBucket\"\n                                    placeholder=\"Add a new bucket\" value={{bucket_new.bucket_name}} (change)=\"bucket_new.bucket_name = $event.target.value\">\n                                <div class=\"input-group-append\">\n                                    <button type=\"button\" class=\"btn btn-success btn-action-borderless\" id=\"updatable_bucket_list_add\" (click)=\"addNewBucket()\">Add</button>\n                                </div>\n                            </div>\n                        </div>\n                        <table [hidden]=\"!bucket_list_confirm_bool\" class=\"table table-borderless table-sm \">\n                                <thead class=\"thead-light\">\n                                    <tr>\n                                        <th>ID</th>\n                                        <th>Bucket Name</th>\n                                        <th>Bucket change</th>\n                                        <th>Action</th>\n                                    </tr>\n                                </thead>\n                                <tbody>\n                                    <tr *ngFor=\"let b of bucket_list_confirm_list | keyvalue\">\n                                        <th  scope=\"row\">{{b.key}}</th>\n                                        <td>{{b.value['bucket_name']}}</td>\n                                        <td>\n                                            <p *ngIf=\"b.value['New Bucket name']\">New name: <span class=\"text-success\" >{{b.value['New Bucket name']}}</span></p>\n                                            <p *ngIf=\"b.value['status']\">Now is \n                                                <span *ngIf=\"!b.value['soft_delete']\" class=\"text-success\">{{b.value['status']}}</span>\n                                                <span *ngIf=\"b.value['soft_delete']\" class=\"text-danger\">{{b.value['status']}}</span>\n                                            </p>\n                                        </td>\n                                        <td>\n                                            <button  (click)=\"bucketUndoOne(b.key, b.value['index'])\" class='btn btn-outline-warning btn-action-borderless'>Undo</button>\n                                        </td>\n                                    </tr>\n                                </tbody>\n                        </table>\n\n                    </div>\n                    <div class=\"modal-footer\">\n                        <button type=\"button\" *ngIf=\"bucket_list_changes_bool\" class=\"btn btn-action-borderless btn-outline-danger\" (click)=\"bucketListEditorCancel()\" data-dismiss=\"modal\">Cancel changes</button>\n                        <button type=\"button\" *ngIf=\"!bucket_list_changes_bool\" class=\"btn btn-action-borderless btn-outline-info\" (click)=\"bucketListEditorClose()\" data-dismiss=\"modal\">Close</button>\n                        <!-- <button type=\"button\" [hidden]=\"bucket_list_confirm_bool\" class=\"btn btn-action-borderless btn-outline-warning\" (click)=\"bucketListEditorConfirm()\">Confirm</button> -->\n                        <button type=\"button\" [disabled]=\"!bucket_list_changes_bool\" class=\"btn btn-action-borderless btn-outline-success\" (click)=\"bucketListEditorSave()\">Save</button>\n                    </div>\n                </div>\n            </div>\n            <!-- IMAGE VIEWER -->\n            <div class=\"modal-content shadow-lg\" *ngIf=\"modal_message.title == 'Image'\">\n                <div>\n                    <div class=\"modal-header\">\n                        <h5 class=\"modal-title\" id=\"exampleModalCenteredLabel\">{{modal_message.title}}</h5>\n                         <button type=\"button\" class=\"close\" (click)=\"bucketListEditorClose()\" data-dismiss=\"modal\" aria-label=\"Close\">\n                              <span aria-hidden=\"true\">&times;</span>\n                            </button>\n                    </div>\n                    <div class=\"modal-body modal-img\" style=\"padding: 0px 1rem\">\n                        <img src=\"{{modal_message.body}}\" class=\"img-fluid\" alt=\"Responsive image\" >\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n\n    <div class=\"admin-create-quiz-title\" role=\"group\">\n        <h1>Edit a quiz #{{topic_id}}</h1>\n        <div class=\"btn-group-vertical\" style=\"margin: 20px auto\" role=\"group\" aria-label=\"\">\n            <!-- <button (click)=\"checkState()\">Check state</button> -->\n          <button class=\"btn btn-warning shadow btn-action-borderless btn-outline-warning-hover-side-shadow\" *ngIf='!topic_soft_delete' (click)=\"topic_soft_delete = true\" >Disable Quiz</button>\n          <button class=\"btn btn-success shadow btn-action-borderless\" *ngIf='topic_soft_delete && !topic_delete_confirm' (click)=\"topic_soft_delete = false\">Enable  Quiz</button>\n          <button class=\"btn btn-danger shadow btn-action-borderless\" *ngIf='topic_soft_delete && !topic_delete_confirm' (click)=\"topic_delete_confirm = true\">Delete  Quiz</button>\n        </div>\n        <div class=\"admin-create-quiz-title\" style=\"margin: 20px auto\" *ngIf=\"topic_delete_confirm\">\n          <p class='text-monospace'>Are you sure to delete this quiz?</p>\n          <div class=\"btn-group\" role=\"group\" aria-label=\"\">\n              <button type=\"button\"  (click)=\"deleteQuiz()\" class=\"btn btn-danger text-monospace\" >Yes</button>\n              <button type=\"button\" (click)=\"topic_delete_confirm = false\" class=\"btn btn-warning text-monospace\" >Cancel</button>\n            </div>\n        </div>\n    </div>\n    <div class=\"admin-create-quiz-body\" style=\"margin: 20px auto\">\n        <div class=\"admin-create-quiz-body-topic-cat-eng-box\">\n            <div class=\"input-group\">\n                <div class=\"admin-create-quiz-body-topic-cat-eng-box-select-box\">\n                    <span class=\"text-muted\">Engagement</span>\n                    <select class=\"custom-select shadow\" (change)=\"valueChanger('engagement', $event.target.value)\" [disabled]=\"topic_soft_delete\">\n                        <option *ngFor=\"let eng of engagements\" [selected]=\"eng.engagement_id==selected_eng\"\n                            [disabled]=\"eng.soft_delete\" value={{eng.engagement_id}}>{{eng.engagement_name}}</option>\n                    </select>\n                </div>\n                <div class=\"admin-create-quiz-body-topic-cat-eng-box-select-box\">\n                    <span class=\"text-muted\">Category</span>\n                    <input [disabled]=\"!selected_eng || topic_soft_delete\" class=\"custom-select shadow\" type=\"text\" id=\"category_selector\" list=\"categories\" value=\"{{selected_category}}\" (change)=\"valueChanger('category', $event.target.value)\" />\n                    <datalist id=\"categories\">\n                        <select class=\"custom-select\">\n                            <option *ngFor=\"let c of categories_list | keyvalue\" [selected]=\"c.key == selected_category\" [value]=\"c.key\"><span *ngIf=\"c.key == original_category\">(Original)</span></option>\n                        </select>\n                    </datalist>\n                </div>\n                <div class=\"admin-create-quiz-body-topic-cat-eng-box-select-box\">\n                    <span class=\"text-muted\">Topic</span>\n                    <input [disabled]=\"!selected_category || topic_soft_delete\" id=\"topic_selector\" class=\"custom-select shadow\" type=\"text\" list=\"topics\" value=\"{{selected_topic}}\" (change)=\"valueChanger('topic', $event.target.value)\" />\n                    <datalist id=\"topics\">\n                        <select class=\"custom-select\">\n                            <option *ngFor=\"let t of topic_list | keyvalue\" [value]=\"t.value['topic']\">\n                              <span *ngIf=\"t.value['topic'] != original_topic\">(Already exists)</span>\n                              <span *ngIf=\"t.value['topic'] == original_topic\">(Original)</span>\n                            </option>\n                        </select>\n                    </datalist>\n                </div>\n                <div class=\"admin-create-quiz-body-topic-cat-eng-box-select-box\">\n                    <span class=\"text-muted\">Time limit</span>\n                    <select class=\"custom-select shadow\" (change)=\"valueChanger('time_limit', $event.target.value)\">\n                        <option value=null [selected]=\"!time_limit\">No limit</option>\n                        <option value=\"15\" [selected]=\"time_limit == 15\">15 minutes</option>\n                        <option value=\"30\" [selected]=\"time_limit == 30\">30 minutes</option>\n                        <option value=\"45\" [selected]=\"time_limit == 45\">45 minutes</option>\n                        <option value=\"60\" [selected]=\"time_limit == 60\">60 minutes</option>\n                    </select>\n                </div>\n            </div>\n        </div>\n\n        <div style=\"margin-top: 15px\">\n           <button class=\"btn btn-lg btn-action-borderless btn-info bp-secondary shadow\" [disabled]=\"topic_soft_delete\" (click)=\"openBucketEditor()\">Add/Edit Buckets</button>\n        </div>\n        <div *ngIf=\"topic_cat_eng_message.display\" style=\"margin-top: 15px\">\n            <div *ngIf=\"topic_cat_eng_message.status == 'fail'\" class=\"alert alert-warning shadow\" role=\"alert\">\n                <strong>Warning!</strong> {{topic_cat_eng_message.message}}\n            </div>\n            <div *ngIf=\"topic_cat_eng_message.status == 'success'\" class=\"alert alert-success shadow\" role=\"alert\">\n                <strong>Nice!</strong> {{topic_cat_eng_message.message}}\n            </div>\n        </div>\n    </div>\n\n    <div class='admin-create-quiz-form' style=\"margin-top: 25px;\">\n        <table class=\"table table-borderless \">\n            <thead class=\"thead-dark sticky-top\">\n                <tr style=\"height: 50px\">\n                    <th class=\"border-0 text-uppercase small font-weight-bold text-center\" style=\"width: 5%\">ID/Priority\n                    </th>\n                    <th class=\"border-0 text-uppercase small font-weight-bold text-center\">Question prompt</th>\n                    <th class=\"border-0 text-uppercase small font-weight-bold text-center\">Image</th>\n                    <th class=\"border-0 text-uppercase small font-weight-bold text-center\" style=\"width: 7%\">Display Type\n                    </th>\n                    <th class=\"border-0 text-uppercase small font-weight-bold text-center\">List of choices/Expected Answer\n                    </th>\n                    <th class=\"border-0 text-uppercase small font-weight-bold text-center\">Admin notes</th>\n                    <th class=\"border-0 text-uppercase small font-weight-bold text-center\" style=\"width: 5%\">Action</th>\n                </tr>\n            </thead>\n            <tbody>\n                <tr *ngFor='let q of list_of_questions | keyvalue' class=\"create_form_row\" [ngClass]=\"{ \n                    'border border-success': q.key == 'new_question',\n                    'element_hard_deleted': q.value['question_hard_delete'], \n                    'alert-secondary': q.value['question_soft_delete'] || topic_soft_delete }\">\n                    <!-- QUESTIONS -->\n                    <td *ngIf=\"!q.value['error_bool']\" class='text-center table-row'>\n                        <p class=\"text-monospace\" [ngClass]=\"{ 'text-success': q.key == 'new_question' }\">{{q.key}}</p>\n                        <div>\n                            <input style=\"width: 100%; padding: 0px 0px !important\" [disabled]=\"q.value.question_soft_delete || topic_soft_delete\" (change)=\"inputEditor('question_sort', q.key, 'question_sort', null, $event.target.value)\" class=\"edit_sort_value form-control create_form_input_shadow\" min=1 max=99 type=\"number\" value=1 title=\"Set Question Priority\"\n                                data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Tooltip on bottom\" value=\"{{list_of_questions[q.key]['question_sort']}}\">\n                        </div>\n                    </td>\n                    <td *ngIf=\"!q.value['error_bool']\" style=\"padding: 0px 3px !important;\">\n                        <textarea class='textAreaPrompt form-control create_form_input_shadow' [disabled]=\"q.value.question_soft_delete || topic_soft_delete\" (change)=\"inputEditor('prompt', q.key, 'prompt', null, $event.target.value)\" rows=4 name='questionPromts' id='questionPromt_{{q.key}}' value=\"{{q.value['prompt']}}\"></textarea>\n                    </td>\n                    <td *ngIf=\"!q.value['error_bool']\" class='create_form_img_box' align=\"center\">\n                        <div *ngIf=\"!q.value['image']\">\n                            <label for=\"file-upload{{q.key}}\" style=\"width: 100%;\" class=\"custom-file-upload btn btn-sm btn-outline-secondary btn-action-borderless\">\n                                    &#8682; Upload Picture\n                                </label>\n                            <input id=\"file-upload{{q.key}}\" type=\"file\"  [disabled]=\"q.value.question_soft_delete || topic_soft_delete\" (change)=\"inputEditor('img', q.key, 'base64', null, $event.target.files)\" accept=\"image/*\" />\n                        </div>\n                        <div *ngIf=\"q.value['image']\" style=\"position: relative\">\n                            <img src=\"{{q.value['base64']}}\" class=\"img-fluid\" alt=\"Responsive image\" (click)=\"imageZoom(q.key)\">\n                            <button class=\"btn btn-sm btn-outline-danger btn-image-remove\" [disabled]=\"q.value.question_soft_delete || topic_soft_delete\" (click)=\"removeImg(q.key)\">x</button>\n                        </div>\n                    </td>\n                    <td *ngIf=\"!q.value['error_bool']\">\n                        <div class=\"btn-group-vertical btn-group-toggle\" data-toggle=\"buttons\" [hidden]='q.value.question_soft_delete || topic_soft_delete'>\n                            <button class=\"btn btn-sm btn-action-borderless btn-outline-secondary\" \n                                [ngClass]=\"{ 'active': q.value.question_type_id == 2, 'shadow':  q.value.question_type_id == 2}\"\n                                (click)=\"displayTypeChanger(q.key, 'textfield input')\" \n                                [disabled]=\"q.value.question_soft_delete\" type=\"radio\"  name=\"displayTypeNew\" \n                                id=\"manual_input\" value=\"textfield input\" checked=\"checked\"> Manual Input</button>\n\n                            <button class=\"btn btn-sm btn-action-borderless btn-outline-secondary\" \n                                [ngClass]=\"{ 'active': q.value.display_type_id == 1 && q.value.question_type_id == 1, 'shadow': q.value.display_type_id == 1 && q.value.question_type_id == 1 }\" \n                                (click)=\"displayTypeChanger(q.key, 'Radio')\" \n                                [disabled]=\"q.value.question_soft_delete\"\n                                type=\"radio\"  name=\"displayTypeNew\"\n                                id=\"radio \" value=\"Radio\"> Radio</button>\n                                \n                            <!-- <button class=\"btn btn-sm btn-action-borderless btn-outline-secondary \"\n                                [disabled]=\"q.value.question_soft_delete\"\n                                [ngClass]=\"{ 'active': q.value.display_type_id == 3 && q.value.question_type_id == 1 }\" \n                                (click)=\"displayTypeChanger( q.key, 'Dropdown')\" type=\"radio\" name=\"displayTypeNew\" \n                                id=\"dropdown\" value=\"Dropdown\"> Dropdown</button> -->\n\n                            <button  class=\"btn btn-sm btn-action-borderless btn-outline-secondary\"\n                                [ngClass]=\"{ 'active': q.value.display_type_id == 2 && q.value.question_type_id == 1, 'shadow': q.value.display_type_id == 2 && q.value.question_type_id == 1 }\"\n                                (click)=\"displayTypeChanger(q.key, 'Checkbox')\"\n                                [disabled]=\"q.value.question_soft_delete\" type=\"radio\" name=\"displayTypeNew \" \n                                id=\"checkbox \" value=\"Checkbox \"> Checkbox</button>\n                            <button class=\"btn btn-sm btn-action-borderless btn-outline-secondary\"\n                                [ngClass]=\"{ 'active': q.value.question_type_id == 3, 'shadow':q.value.question_type_id == 3 }\"\n                                (click)=\"displayTypeChanger( q.key, 'drag_and_drop')\"\n                                [disabled]=\"q.value.question_soft_delete\" type=\"radio\" name=\"displayTypeNew\" \n                                id=\"drag_and_drop\" value=\"drag_and_drop\">Drag'n'Drop</button>\n                        </div>\n                        <div class=\"btn-group-vertical btn-group-toggle bg-secondary text-white create_form_input_shadow\" style=\"text-align: center;\" [hidden]='!q.value.question_soft_delete || topic_soft_delete || q.value.question_hard_delete' role=\"alert\">\n                            Question is disabled\n                        </div>\n                        <div class=\"btn-group-vertical btn-group-toggle bg-danger text-white create_form_input_shadow shadow\" style=\"text-align: center;\" [hidden]='!q.value.question_hard_delete' role=\"alert\">\n                            Question will be deleted\n                        </div>\n                    </td>\n                    <td *ngIf=\"!q.value['error_bool']\">\n                        <!-- NOT SELECTED -->\n                        <div *ngIf=\"!q.value['question_type_description']\">\n                            <p align=\"center\" class='text-muted'>Please check type of question.</p>\n                        </div>\n                        <!-- <p>hide text input => {{q.value['question_type_id'] != 2}}</p>\n                        <p>hide drag and drop => {{q.value['question_type_id'] != 3}}</p>\n                        <p>hide radio => {{q.value['question_type_id'] != 1}} {{q.value['display_type_id'] != 1}}</p>\n                        <p></p> -->\n\n                        <!-- MANUAL INPUT -->\n                        <div style=\"padding: 0px 3px !important;\" [hidden]=\"q.value['question_type_id'] != 2\">\n                            <textarea [disabled]=\"q.value.question_soft_delete || topic_soft_delete\" (change)=\"inputEditor('expected_response', q.key, 'expected_response', null, $event.target.value)\" class='textAreaExpectedAnswer form-control create_form_input_shadow' rows=4 placeholder=\"Expected answer (optional)\" value=\"{{q.value['expected_response']}}\"></textarea>\n                        </div>\n\n\n                        <!-- DRAG AND DROP  -->\n                        <div class=\"input-group mt-2\" [hidden]=\"q.value['question_type_id'] != 3\">\n                            <div *ngFor=\"let ans of q.value['answer_prompt'] | keyvalue\" class=\"input-group mt-1\" [ngClass]=\"{\n                                'alert-secondary': q.value['answer_soft_delete'][ans.key] && !answer_delete_confirm_list[ans.key],\n                                'element_hard_deleted': answer_delete_confirm_list[ans.key]\n                                }\">\n                                <input type=\"text\" [disabled]=\"q.value.question_soft_delete || topic_soft_delete || q.value.answer_soft_delete[ans.key]\" (change)=\"inputEditor('drag_and_drop', q.key, 'answer_prompt', ans.key, $event.target.value)\" class=\"form-control bucket_input_edit bucket_input_edit_question_{{q.key}}\" id=\"bucket_input_edit_{{q.key}}\" placeholder='Add a choice' style=\"padding: 0px;\"\n                                    value=\"{{ans.value}}\">\n                                <select list=\"bucket_list\" [disabled]=\"q.value.question_soft_delete || topic_soft_delete || q.value.answer_soft_delete[ans.key]\" (change)=\"inputEditor('drag_and_drop', q.key, 'answer_bucket_id', ans.key, $event.target.value)\" class=\"form-control bucket_list_pick\" id=\"bucket_list_pick_{{q.key}}\" placeholder='Bucket' style=\"padding: 0px;\">\n                                        <!-- <option *ngFor=\"let b of bucket_list\" value=\"{{b.bucket_id}}\"\n                                            [selected]=\"q['answer_bucket_id'][ans.key] == b.bucket_id\">\n                                            {{b.bucket_name}}</option> -->\n                                        <option disabled>\n                                            Choose Bucket</option>\n\n                                            <ng-container *ngFor=\"let b of bucket_list | keyvalue\">\n                                                    <option *ngIf=\"!b.value.soft_delete\" [selected]=\"q.value['answer_bucket_id'][ans.key] == b.key\" value=\"{{b.key}}\">{{b.value.bucket_name}}</option>\n                                                </ng-container>\n                                    </select>\n                                <div class=\"input-group-append\">\n                                        <button [disabled]=\"q.value.question_soft_delete || topic_soft_delete\" class=\"btn btn-warning\"\n                                        (click)=\"inputEditor('answer', q.key, 'answer_hard_delete', ans.key, false)\"\n                                        *ngIf=\"answer_delete_confirm_list[ans.key] \"\n                                        id='buttonRemoveAnswer${i}' type=\"button\">Restore</button>\n                                    <button [disabled]=\"q.value.question_soft_delete || topic_soft_delete\" class=\"btn btn-danger\"\n                                        (click)=\"inputEditor('answer', q.key, 'answer_hard_delete', ans.key, true)\"\n                                        *ngIf=\"q.value['answer_soft_delete'][ans.key] && !answer_delete_confirm_list[ans.key]\"\n                                        id='buttonRemoveAnswer${i}' type=\"button\">Delete</button>\n                                    <button [disabled]=\"q.value.question_soft_delete || topic_soft_delete\" class=\"btn btn-outline-success buttonRemoveAnswer\"\n                                        (click)=\"inputEditor('answer', q.key, 'answer_soft_delete', ans.key, false)\"\n                                        *ngIf=\"q.value['answer_soft_delete'][ans.key] && !answer_delete_confirm_list[ans.key]\"\n                                        id='buttonRemoveAnswer${i}' type=\"button\">+</button>\n                                    <button [disabled]=\"q.value.question_soft_delete || topic_soft_delete\" class=\"btn btn-outline-warning buttonRemoveAnswer\"\n                                        (click)=\"inputEditor('answer', q.key, 'answer_soft_delete', ans.key, true)\"\n                                        *ngIf=\"!q.value['answer_soft_delete'][ans.key]\"\n                                        id='buttonRemoveAnswer${i}' type=\"button\">-</button>\n                                </div>\n                            </div>\n                            <div class=\"input-group-prepend\">\n                                <button \n                                    [disabled]=\"q.value.question_soft_delete || topic_soft_delete\" \n                                    class=\"btn btn-outline-success bucket_input_add_button btn-action-borderless\"\n                                    (click)=\"dragAndDropAdder(q.key)\"\n                                    style=\"font-size: smaller; padding: 8px;\" \n                                    id='bucket_input_add_button_{{q.key}}' \n                                    type=\"button\">+</button>\n                            </div>\n                            <input type=\"text\" [disabled]=\"q.value.question_soft_delete || topic_soft_delete\" (change)=\"inputEditor('drag_and_drop', q.key, 'temp_bucket_storage', 'answer_input', $event.target.value)\" class=\"form-control bucket_input_add\" id=\"bucket_input_add_input_{{q.key}}\" placeholder='Add a choice' style=\"padding: 0px;\">\n                            <select \n                                [disabled]=\"q.value.question_soft_delete || topic_soft_delete\"  \n                                list=\"bucket_list\" \n                                type=\"text\" \n                                (change)=\"inputEditor('drag_and_drop', q.key, 'temp_bucket_storage', 'bucket_id', $event.target.value)\"\n                                class=\"form-control bucket_list_pick\" \n                                id=\"bucket_list_pick_{{q.key}}\" \n                                placeholder='Bucket' \n                                style=\"padding: 0px;\">\n                                    <option value=\"\" selected disabled class=\"text-muted\">Choose bucket</option>\n                                    <option disabled style=\"margin-top:8px; border-top:1px solid #666; padding:0;\">____________</option>\n                                    <ng-container *ngFor=\"let b of bucket_list | keyvalue\">\n                                        <option *ngIf=\"!b.value.soft_delete\" value=\"{{b.key}}\">{{b.value.bucket_name}}</option>\n                                    </ng-container>\n                                </select>\n                        </div>\n\n\n                        <!-- CHECKBOX  -->\n                        <!-- {{q.value['display_type_description'] == 'Checkbox'}} {{q.value['question_type_description'] == 'selected input'}} {{ q.value.display_type_id == 1}} -->\n                        \n                        <div [hidden]=\"q.value['question_type_id'] != 1 || q.value['display_type_id'] != 2\">\n                            <div *ngFor=\"let ans of q.value['answer_prompt'] | keyvalue\" [ngClass]=\"{\n                                'alert-secondary': q.value['answer_soft_delete'][ans.key] && !answer_delete_confirm_list[ans.key],\n                                'element_hard_deleted': answer_delete_confirm_list[ans.key]\n                                }\">\n                                <div>\n                                    <input [disabled]=\"q.value.question_soft_delete || topic_soft_delete || q.value.answer_soft_delete[ans.key]\" class=\"answerChoice\" style=\"margin: 5px\" (change)=\"inputEditor('answer', q.key, 'answer_correct', ans.key, !q.value['answer_correct'][ans.key])\" [checked]=q.value.answer_correct[ans.key] type=\"checkbox\" id=\"checkbox_{{ans.key}}\" title=\"Select the right answer. You can chose multiple.\"/>\n                                    <label for=\"checkbox_{{ans.key}}\" onclick=\"return false;\" style=\"margin:0px 0px; width:92%\">\n                                            <div class=\"input-group mb-1\">\n                                                <div class=\"input-group-prepend\" style=\"width: 15%;\">\n                                                    <input [disabled]=\"q.value.question_soft_delete || topic_soft_delete || q.value.answer_soft_delete[ans.key]\" type=\"number\"\n                                                        (change)=\"inputEditor('answer', q.key, 'answer_sort', ans.key, $event.target.value)\"\n                                                        class=\"answer_order_edit form-control create_form_input_shadow\"\n                                                        min=\"1\" id=\"answer_order_edit_{{ans.key}}\" style=\"width: 90%;\"\n                                                        value=\"{{q.value['answer_sort'][ans.key] }}\"\n                                                        data-toggle=\"tooltip\" data-placement=\"bottom\"\n                                                        title=\"Set priority of the answer.\">\n                                                </div>\n                                                <input [disabled]=\"q.value.question_soft_delete || topic_soft_delete || q.value.answer_soft_delete[ans.key]\" class=\"form-control create_form_input_shadow\" type=\"text\"\n                                                    id=\"answerId${id}\" value=\"\" aria-describedby=\"basic-addon2\"\n                                                    value='{{ans.value}}'\n                                                    (change)=\"inputEditor('answer', q.key, 'answer_prompt', ans.key, $event.target.value)\" />\n                                                <div class=\"input-group-append\">\n                                                    <button [disabled]=\"q.value.question_soft_delete || topic_soft_delete\" class=\"btn btn-warning\"\n                                                        (click)=\"inputEditor('answer', q.key, 'answer_hard_delete', ans.key, false)\"\n                                                        *ngIf=\"answer_delete_confirm_list[ans.key] \"\n                                                        id='buttonRemoveAnswer${i}' type=\"button\">Restore</button>\n                                                    <button [disabled]=\"q.value.question_soft_delete || topic_soft_delete\" class=\"btn btn-danger\"\n                                                        (click)=\"inputEditor('answer', q.key, 'answer_hard_delete', ans.key, true)\"\n                                                        *ngIf=\"q.value['answer_soft_delete'][ans.key] && !answer_delete_confirm_list[ans.key]\"\n                                                        id='buttonRemoveAnswer${i}' type=\"button\">Delete</button>\n                                                    <button [disabled]=\"q.value.question_soft_delete || topic_soft_delete\" class=\"btn btn-outline-success buttonRemoveAnswer\"\n                                                        (click)=\"inputEditor('answer', q.key, 'answer_soft_delete', ans.key, false)\"\n                                                        *ngIf=\"q.value['answer_soft_delete'][ans.key] && !answer_delete_confirm_list[ans.key]\"\n                                                        id='buttonRemoveAnswer${i}' type=\"button\">+</button>\n                                                    <button [disabled]=\"q.value.question_soft_delete || topic_soft_delete\" class=\"btn btn-outline-warning buttonRemoveAnswer\"\n                                                        (click)=\"inputEditor('answer', q.key, 'answer_soft_delete', ans.key, true)\"\n                                                        *ngIf=\"!q.value['answer_soft_delete'][ans.key]\"\n                                                        id='buttonRemoveAnswer${i}' type=\"button\">-</button>\n                                                </div>\n                                            </div>\n                                        </label>\n                                </div>\n                            </div>\n                        </div>\n\n\n                        <!-- DROPDOWN/SELECT -->\n                        <!-- <div [hidden]=\"q.value['question_type_id'] != 1 || q.value['display_type_id'] != 3\">\n                            <div *ngFor=\"let ans of q.value['answer_prompt'] | keyvalue\" class=\"custom-radio\" [ngClass]=\"{\n                                'alert-secondary': q.value['answer_soft_delete'][ans.key] && !answer_delete_confirm_list[ans.key],\n                                'element_hard_deleted': answer_delete_confirm_list[ans.key]\n                                }\">\n                                <div>\n                                        {{q.value.answer_correct | json}}\n                                    <input [disabled]=\"q.value.question_soft_delete || topic_soft_delete || q.value.answer_soft_delete[ans.key]\" \n                                            class=\"answerChoice\" \n                                            style=\"margin: 5px\" \n                                            (change)=\"inputEditor('answer',q.key, 'answer_correct', ans.key, !q.value['answer_correct'][ans.key])\" \n                                            [checked]=q.value.answer_correct[ans.key] \n                                            type=\"radio\" \n                                            id=\"checkbox_{{ans.key}}\" \n                                            title=\"Select the right answer. You can chose only one answer.\"\n                                            name=\"radio_answer_for_question_{{q.key}}\" />\n                                    <label for=\"checkbox_{{ans.key}}\" onclick=\"return false;\" style=\"margin:0px 0px; width:92%\">\n                                            <div class=\"input-group mb-1\">\n                                                <div class=\"input-group-prepend\" style=\"width: 15%;\">\n                                                    <input [disabled]=\"q.value.question_soft_delete || topic_soft_delete || q.value.answer_soft_delete[ans.key]\" \n                                                        type=\"number\"\n                                                        (change)=\"inputEditor('answer',q.key, 'answer_sort', ans.key, $event.target.value)\"\n                                                        class=\"form-control answer_order_edit create_form_input_shadow\"\n                                                        min=\"1\" id=\"answer_order_edit_{{ans.key}}\" style=\"width: 90%;\"\n                                                        value=\"{{q.value['answer_sort'][ans.key] }}\"\n                                                        data-toggle=\"tooltip\" data-placement=\"bottom\"\n                                                        title=\"Set priority of the answer.\">\n                                                </div>\n                                                <input [disabled]=\"q.value.question_soft_delete || topic_soft_delete || q.value.answer_soft_delete[ans.key]\" class=\"form-control create_form_input_shadow\" type=\"text\"\n                                                    id=\"answerId${id}\" value=\"\" aria-describedby=\"basic-addon2\"\n                                                    value='{{ans.value}}'\n                                                    (change)=\"inputEditor('answer',q.key, 'answer_prompt', ans.key, $event.target.value)\" />\n                                                <div class=\"input-group-append\">\n                                                        <button [disabled]=\"q.value.question_soft_delete || topic_soft_delete\" class=\"btn btn-warning\"\n                                                        (click)=\"inputEditor('answer', q.key, 'answer_hard_delete', ans.key, false)\"\n                                                        *ngIf=\"answer_delete_confirm_list[ans.key] \"\n                                                        id='buttonRemoveAnswer${i}' type=\"button\">Restore</button>\n                                                    <button [disabled]=\"q.value.question_soft_delete || topic_soft_delete\" class=\"btn btn-danger\"\n                                                        (click)=\"inputEditor('answer', q.key, 'answer_hard_delete', ans.key, true)\"\n                                                        *ngIf=\"q.value['answer_soft_delete'][ans.key] && !answer_delete_confirm_list[ans.key]\"\n                                                        id='buttonRemoveAnswer${i}' type=\"button\">Delete</button>\n                                                    <button [disabled]=\"q.value.question_soft_delete || topic_soft_delete\" class=\"btn btn-outline-success buttonRemoveAnswer\"\n                                                        (click)=\"inputEditor('answer', q.key, 'answer_soft_delete', ans.key, false)\"\n                                                        *ngIf=\"q.value['answer_soft_delete'][ans.key] && !answer_delete_confirm_list[ans.key]\"\n                                                        id='buttonRemoveAnswer${i}' type=\"button\">+</button>\n                                                    <button [disabled]=\"q.value.question_soft_delete || topic_soft_delete\" class=\"btn btn-outline-warning buttonRemoveAnswer\"\n                                                        (click)=\"inputEditor('answer', q.key, 'answer_soft_delete', ans.key, true)\"\n                                                        *ngIf=\"!q.value['answer_soft_delete'][ans.key]\"\n                                                        id='buttonRemoveAnswer${i}' type=\"button\">-</button>\n                                                </div>\n                                            </div>\n                                        </label>\n                                </div>\n                            </div>\n                        </div> -->\n\n\n                        <!-- RADIO -->\n                        <div [hidden]=\"q.value['question_type_id'] != 1 || q.value['display_type_id'] != 1\">\n                            <div *ngFor=\"let ans of q.value['answer_prompt'] | keyvalue\" class=\"custom-radio\" [ngClass]=\"{\n                                'alert-secondary': q.value['answer_soft_delete'][ans.key] && !answer_delete_confirm_list[ans.key],\n                                'element_hard_deleted': answer_delete_confirm_list[ans.key]\n                                }\">\n                                <div>\n                                    <input [disabled]=\"q.value.question_soft_delete || topic_soft_delete || q.value.answer_soft_delete[ans.key]\" class=\"answerChoice\" style=\"margin: 5px\" (change)=\"inputEditor('answer',q.key, 'answer_correct', ans.key, !q.value['answer_correct'][ans.key])\" [checked]=q.value.answer_correct[ans.key] type=\"radio\" id=\"checkbox_{{ans.key}}\" title=\"Select the right answer. You can chose only one answer.\"\n                                        name=\"radio_answer_for_question_{{q.key}}\" />\n                                    <label for=\"checkbox_{{ans.key}}\" onclick=\"return false;\" style=\"margin:0px 0px; width:92%\">\n                                            <div class=\"input-group mb-1\">\n                                                <div class=\"input-group-prepend\" style=\"width: 15%;\">\n                                                    <input [disabled]=\"q.value.question_soft_delete || topic_soft_delete || q.value.answer_soft_delete[ans.key]\" type=\"number\"\n                                                        (change)=\"inputEditor('answer',q.key, 'answer_sort', ans.key, $event.target.value)\"\n                                                        class=\"form-control answer_order_edit create_form_input_shadow\"\n                                                        min=\"1\" id=\"answer_order_edit_{{ans.key}}\" style=\"width: 90%;\"\n                                                        value=\"{{q.value['answer_sort'][ans.key] }}\"\n                                                        data-toggle=\"tooltip\" data-placement=\"bottom\"\n                                                        title=\"Set priority of the answer.\">\n                                                </div>\n                                                <input [disabled]=\"q.value.question_soft_delete || topic_soft_delete || q.value.answer_soft_delete[ans.key]\" class=\"form-control create_form_input_shadow\" type=\"text\"\n                                                    id=\"answerId${id}\" value=\"\" aria-describedby=\"basic-addon2\"\n                                                    value='{{ans.value}}'\n                                                    (change)=\"inputEditor('answer',q.key, 'answer_prompt', ans.key, $event.target.value)\" />\n                                                <div class=\"input-group-append\">\n                                                        <button [disabled]=\"q.value.question_soft_delete || topic_soft_delete\" class=\"btn btn-warning\"\n                                                        (click)=\"inputEditor('answer', q.key, 'answer_hard_delete', ans.key, false)\"\n                                                        *ngIf=\"answer_delete_confirm_list[ans.key] \"\n                                                        id='buttonRemoveAnswer${i}' type=\"button\">Restore</button>\n                                                    <button [disabled]=\"q.value.question_soft_delete || topic_soft_delete\" class=\"btn btn-danger\"\n                                                        (click)=\"inputEditor('answer', q.key, 'answer_hard_delete', ans.key, true)\"\n                                                        *ngIf=\"q.value['answer_soft_delete'][ans.key] && !answer_delete_confirm_list[ans.key]\"\n                                                        id='buttonRemoveAnswer${i}' type=\"button\">Delete</button>\n                                                    <button [disabled]=\"q.value.question_soft_delete || topic_soft_delete\" class=\"btn btn-outline-success buttonRemoveAnswer\"\n                                                        (click)=\"inputEditor('answer', q.key, 'answer_soft_delete', ans.key, false)\"\n                                                        *ngIf=\"q.value['answer_soft_delete'][ans.key] && !answer_delete_confirm_list[ans.key]\"\n                                                        id='buttonRemoveAnswer${i}' type=\"button\">+</button>\n                                                    <button [disabled]=\"q.value.question_soft_delete || topic_soft_delete\" class=\"btn btn-outline-warning buttonRemoveAnswer\"\n                                                        (click)=\"inputEditor('answer', q.key, 'answer_soft_delete', ans.key, true)\"\n                                                        *ngIf=\"!q.value['answer_soft_delete'][ans.key]\"\n                                                        id='buttonRemoveAnswer${i}' type=\"button\">-</button>\n                                                </div>\n                                            </div>\n                                        </label>\n                                </div>\n                            </div>\n                        </div>\n\n\n                        <!-- ADD ANSWER FORM -->\n                        <div style=\"padding-right: 3px !important;\"\n                            class=\"input-group mb-3 create_form_input_shadow\" \n                            [hidden]=\"q.value['question_type_id'] != 1\">\n                            <div class=\"input-group-prepend\" style=\"width: 25px\">\n                               \n                                <button [disabled]=\"q.value.question_soft_delete || topic_soft_delete\" class=\"btn btn-success create_form_answer_add btn-action-borderless\" id='buttonAddNewAnswer_{{q.key}}' type=\"button\" (click)=\"addAnswer(q.key)\">+</button>\n                            </div>\n                            <input [disabled]=\"q.value.question_soft_delete || topic_soft_delete\" type=\"text\" class=\"form-control create_form_input_shadowless  edit_quiz_input_text_add\" id=\"newAnswerFor_{{q.key}}\" placeholder='Add an answer' aria-describedby=\"basic-addon2\">\n                        </div>\n\n                    </td>\n\n                    <!-- ADMIN NOTES -->\n                    <td *ngIf=\"!q.value['error_bool']\">\n                        <div class=\"input-group\">\n                            <input [disabled]=\"q.value.question_soft_delete || topic_soft_delete \" \n                                class=\"create_form_input_shadow form-control \" \n                                value=\"{{list_of_questions[q.key]['training_url']}}\" \n                                type=\"text\" placeholder=\"Confluence link (optional)\" \n                                (change)=\"inputEditor(null, q.key, 'training_url', null, $event.target.value)\"\n                                style=\"border-radius: 0px\"\n                                >\n                            <div class=\"input-group-append\">\n                                <button [disabled]=\"q.value.question_soft_delete || topic_soft_delete\" \n                                        type='button' \n                                        class='buttonConfluenceLink btn btn-xs  btn-outline-secondary' \n                                        id='buttonConfluenceLinkForQuestion${id}' \n                                        (click)=\"checkModuleLink(q.key)\"\n                                        style=\"border-radius: 0px\"\n                                        >Check</button>\n                            </div>\n                        </div>\n                        <div id='module_field${id}'>\n                            <input [disabled]=\"q.value.question_soft_delete || topic_soft_delete\" class=\"create_form_input_shadow form-control\" value=\"{{list_of_questions[q.key]['training_module']}}\" (change)=\"inputEditor('training_module', q.key,'training_module', null, $event.target.value)\" id='editModuleForQuestionId${id}' type=\"text\" placeholder=\"Module note (optional)\">\n                        </div>\n                        <div class=\"input-group  mb-3\" style=\"width: 185px;\">\n                            <div class=\"input-group-prepend input-group-text bg-secondary text-white\">\n                                    Question value\n                            </div>\n                            <input [disabled]=\"q.value.question_soft_delete || topic_soft_delete\" class=\"form-control create_form_input_shadow\"  value=\"{{list_of_questions[q.key]['point_value']}}\"   (change)=\"inputEditor('point_value', q.key,'point_value', null, $event.target.value)\" type=\"number\" min=\"1\" max=\"10\" style=\"padding: 0px 5px;\">\n                        </div>\n                    </td>\n\n                    <!-- ACTION BUTTONS -->\n                    <td style='text-align: center' *ngIf=\"!q.value['error_bool']\">\n                        <div [hidden]=\"topic_soft_delete\">\n                            <!-- <button class='btn btn-outline-primary btn-action-borderless' disabled style=\"width: 100%\">🔍 Preview</button> -->\n                            <button *ngIf=\"q.key == 'new_question'\" class='btn btn-outline-success btn-action-borderless' (click)=\"addQuestion()\" style=\"width: 100%\">+ Add</button>\n                            <button *ngIf=\"q.key != 'new_question' && q.value['question_soft_delete'] && !list_of_new_questions[q.key] &&  !q.value['question_hard_delete']\" class='btn btn-outline-success btn-action-borderless' (click)=\"enableQuestion(q.key)\" style=\"width: 100%\">Enable</button>\n                            <button *ngIf=\"q.key != 'new_question' &&  !q.value['question_hard_delete'] && q.value['question_soft_delete'] || list_of_new_questions[q.key]\" class='btn btn-danger btn-action-borderless' (click)=\"removeQuestion(q.key)\" style=\"width: 100%\">Remove</button>\n                            <button *ngIf=\"q.key != 'new_question' && !q.value['question_soft_delete'] && !list_of_new_questions[q.key]\" class='btn btn-outline-warning btn-action-borderless' (click)=\"disableQuestion(q.key)\" style=\"width: 100%\">Disable</button>\n                           \n                            <button *ngIf=\"q.key != 'new_question' && q.value['question_hard_delete']\" class='btn btn-warning btn-action-borderless' (click)=\"restoreQuestion(q.key)\" style=\"width: 100%\">Restore</button>\n\n                        </div>\n                    </td>\n\n                    <!-- ERROR -->\n                    <td colspan=\"7\" *ngIf=\"q.value['error_bool']\" style=\"padding: 10px 10px !important\">\n                        <div class=\"alert alert-warning shadow\" role=\"alert\" style=\"width: 500px; margin: 0px auto;\">\n                            <button type=\"button\" class=\"close\" (click)=\"errorRemoveById(q.key)\">\n                                <span aria-hidden=\"true\">&times;</span>\n                            </button>\n                            <p class=\"text-center text-monospace\"><strong>{{q.value['target']}} error(s):</strong></p>\n                           <p *ngFor=\"let error of q.value['errors'] | keyvalue\" class=\"text-center\" style=\"margin-bottom: 0px !important\">{{error.value}}</p>\n                        </div>\n                    </td>\n\n\n                </tr>\n                <!-- <tr *ngIf=\"list_of_questions.new_question_error\" class=\"create_form_row\">\n                    <td colspan=\"7\" (click)=\"errorHandlerRemover('new_question')\" class=\"errorHandlerBox\">\n                        <div class=\"alert alert-danger shadow errorHandler\" role=\"alert\">\n                            <p class=\"text-center\" *ngFor=\"let el of list_of_questions.new_question_error.errors | keyvalue\">\n                                {{el.value}}\n                            </p>\n                        </div>\n                    </td>\n                </tr> -->\n            </tbody>\n        </table>\n        <div [hidden]=\"!submit_ready\" class=\"alert alert-success text-center shadow\" style=\"width: 500px; margin: 0px auto;\" role=\"alert\">\n            <strong>All questions are good!</strong>\n        </div>\n        <div class=\"d-flex justify-content-center\" *ngIf=\"!submit_status.display\" style=\"margin-top: 50px; margin-bottom: 100px;\">\n            <button [hidden]=\"submit_ready\" class=\"btn btn-lg btn-info btn-action-borderless shadow\" (click)=\"validateQuiz()\">Validate</button>\n            <div [hidden]=\"!submit_ready\" class=\"shadow btn-group btn-group-lg text-monospace\" role=\"group\">\n                <button  class=\"btn btn-lg btn-success\" (click)=\"submitQuiz()\">Submit</button>\n                <button  class=\"btn btn-lg btn-warning\" (click)=\"cancelSubmitQuiz()\">Cancel</button>\n            </div>\n        </div>\n\n        <div class=\"d-flex justify-content-center\" *ngIf=\"submit_status.display && submit_status.status == 'success'\" style=\"margin-top: 50px; margin-bottom: 100px;\">\n            <div class=\"alert alert-success shadow\" role=\"alert\" style=\"display: flex; align-items: center; flex-direction: column;\">\n                <h4 class=\"alert-heading\">Well done!</h4>\n                You successfully edited the quiz.\n                <br>\n                <a [hidden]=\"submit_ready\" class=\"btn btn-outline-light btn-action-borderless text-monospace\" (click)=\"goBack()\">Click here to go back to the admin portal</a>\n            </div>\n        </div>\n\n        <div class=\"d-flex justify-content-center\" *ngIf=\"submit_status.display && submit_status.status == 'fail'\" style=\"margin-top: 50px; margin-bottom: 100px;\">\n            <div class=\"alert alert-error shadow\" role=\"alert\" style=\"display: flex; align-items: center; flex-direction: column;\">\n                <h4 class=\"alert-heading\">Quiz updating failed</h4>\n                Something went wrong on the backend.\n                {{submit_status.message}}\n                <a [hidden]=\"submit_ready\" class=\"btn btn-link btn-action-borderless text-monospace\" (click)=\"goBack()\">Click here to go back to the admin portal</a>\n            </div>\n        </div>\n        <!-- <button class=\"btn btn-lg shadow\" (click)=\"checkState()\">Check State</button> -->\n        \n        \n    </div>\n</div>\n<div *ngIf=\"!list_of_questions_bool\" class=\" loading_box \">\n    <img class=\"loading_box-ing \" src='./../../assets/loading.gif'>\n</div>"
+module.exports = "<div class=\"admin-create-quiz\" *ngIf=\"currentUser && engagements\">\n    <div [hidden]=\"!modal_mesage_bool\" class=\"modal_message_box\" (click)=\"closeModal_background_click($event.target)\" id=\"modal_message_box\">\n        <div class=\"modal-dialog modal-dialog-centered modal_message\" id=\"modal_main\" role=\"document\" [ngClass]=\"{\n            'modal-width-full': modal_message.title == 'Image'\n        }\">\n            <!-- EDIT/REMOVE BUCKET LIST -->\n            <div class=\"modal-content shadow-lg\" *ngIf=\"modal_message.title == 'Bucket editor'\">\n                <div>\n                    <div class=\"modal-header\">\n                        <h5 class=\"modal-title\" id=\"exampleModalCenteredLabel\">{{modal_message.title}}</h5>\n                        <!-- <button type=\"button\" class=\"close\" (click)=\"bucketListEditorClose()\" data-dismiss=\"modal\" aria-label=\"Close\">\n                              <span aria-hidden=\"true\">&times;</span>\n                            </button> -->\n                    </div>\n                    <div class=\"modal-body modal-edit-remove-bucket\" style=\"padding: 0px 1rem\">\n                        <table [hidden]=\"bucket_list_confirm_bool\" class=\"table table-borderless table-sm\">\n                            <thead class=\"thead-light\">\n                                <tr >\n                                    <th class=\"text-center\">ID</th>\n                                    <th>Bucket Title</th>\n                                    <th class=\"text-center\">Delete</th>\n                                </tr>\n                            </thead>\n                            <tbody>\n                                <tr *ngFor=\"let b of bucket_list | keyvalue\" [ngClass]=\"{\n                                    'alert-danger': b.value.soft_delete\n                                }\">\n                                    <th class=\"text-monospace\" scope=\"row\">{{b.value.bucket_id}}</th>\n                                    <td>\n                                        <input type=\"text\"  [disabled]=\"b.value.soft_delete\" class=\"form-control openBucketListSettings_inputs create_form_input_shadow\"\n                                            (change)=\"bucketListEditor( b.key,  'bucket_name',$event.target.value)\" value={{b.value.bucket_name}}>\n                                    </td>\n                                    <td class=\"text-center\" [hidden]=\"bucket_list_counter[b.key]\">\n                                        <button (click)=\"bucketListEditor(b.key, 'soft_delete', true)\"\n                                            class='btn btn-outline-danger btn-action-borderless' *ngIf=\"!b.value.soft_delete\" style=\"width: 100%\">Delete</button>\n                                        <button (click)=\"bucketListEditor(b.key, 'soft_delete', false)\"\n                                            class='btn btn-outline-success btn-action-borderless' *ngIf=\"b.value.soft_delete\" style=\"width: 100%\">Restore</button>\n                                    </td>\n                                    <td class=\"text-center alert-warning\" [hidden]=\"!bucket_list_counter[b.key]\">\n                                        <p *ngIf=\"bucket_list_counter[b.key]\"  style=\"font-size: 12px; margin-bottom: 0px\">{{bucket_list_counter[b.key]}} answer(s) </p>\n                                        <p *ngIf=\"bucket_list_counter[b.key]\" style=\"font-size: 12px;margin-bottom: 0px\">are using this bucket</p>\n                                    </td>\n                                    <!-- <td *ngIf=\"b.value.soft_delete\" class=\"table-secondary\">\n                                        <input type=\"text\" disabled class=\"form-control openBucketListSettings_inputs\"\n                                            (change)=\"bucketListEditor(i, 'bucket_name', $event.target.value)\" value={{b.value.bucket_name}}>\n                                    </td>\n                                    <td *ngIf=\"b.value.soft_delete\" class=\"table-secondary\">\n                                        <button *ngIf=\"b.value.soft_delete\" (click)=\"bucketListEditor(i, 'soft_delete', false)\"\n                                            class='btn btn-outline-success btn-action-borderless'>Enable</button>\n                                    </td> -->\n                                </tr>\n                            </tbody>\n                        </table>\n                        <div style=\"width: 100%\" [hidden]=\"bucket_list_confirm_bool\">\n                            <div class=\"input-group shadow\">\n                                <input type=\"text\" class=\"form-control create_form_input_shadow openBucketListSettings_inputs\" id=\"updatable_bucket_list_newBucket\"\n                                    placeholder=\"Add a new bucket\" value={{bucket_new.bucket_name}} (change)=\"bucket_new.bucket_name = $event.target.value\">\n                                <div class=\"input-group-append\">\n                                    <button type=\"button\" class=\"btn btn-success btn-action-borderless\" id=\"updatable_bucket_list_add\" (click)=\"addNewBucket()\">Add</button>\n                                </div>\n                            </div>\n                        </div>\n                        <table [hidden]=\"!bucket_list_confirm_bool\" class=\"table table-borderless table-sm \">\n                                <thead class=\"thead-light\">\n                                    <tr>\n                                        <th>ID</th>\n                                        <th>Bucket Name</th>\n                                        <th>Bucket change</th>\n                                        <th>Action</th>\n                                    </tr>\n                                </thead>\n                                <tbody>\n                                    <tr *ngFor=\"let b of bucket_list_confirm_list | keyvalue\">\n                                        <th  scope=\"row\">{{b.key}}</th>\n                                        <td>{{b.value['bucket_name']}}</td>\n                                        <td>\n                                            <p *ngIf=\"b.value['New Bucket name']\">New name: <span class=\"text-success\" >{{b.value['New Bucket name']}}</span></p>\n                                            <p *ngIf=\"b.value['status']\">Now is \n                                                <span *ngIf=\"!b.value['soft_delete']\" class=\"text-success\">{{b.value['status']}}</span>\n                                                <span *ngIf=\"b.value['soft_delete']\" class=\"text-danger\">{{b.value['status']}}</span>\n                                            </p>\n                                        </td>\n                                        <td>\n                                            <button  (click)=\"bucketUndoOne(b.key, b.value['index'])\" class='btn btn-outline-warning btn-action-borderless'>Undo</button>\n                                        </td>\n                                    </tr>\n                                </tbody>\n                        </table>\n\n                    </div>\n                    <div class=\"modal-footer\">\n                        <button type=\"button\" *ngIf=\"bucket_list_changes_bool\" class=\"btn btn-action-borderless btn-outline-danger\" (click)=\"bucketListEditorCancel()\" data-dismiss=\"modal\">Cancel changes</button>\n                        <button type=\"button\" *ngIf=\"!bucket_list_changes_bool\" class=\"btn btn-action-borderless btn-outline-info\" (click)=\"bucketListEditorClose()\" data-dismiss=\"modal\">Close</button>\n                        <!-- <button type=\"button\" [hidden]=\"bucket_list_confirm_bool\" class=\"btn btn-action-borderless btn-outline-warning\" (click)=\"bucketListEditorConfirm()\">Confirm</button> -->\n                        <button type=\"button\" [disabled]=\"!bucket_list_changes_bool\" class=\"btn btn-action-borderless btn-outline-success\" (click)=\"bucketListEditorSave()\">Save</button>\n                    </div>\n                </div>\n            </div>\n            <!-- IMAGE VIEWER -->\n            <div class=\"modal-content shadow-lg\" *ngIf=\"modal_message.title == 'Image'\">\n                <div>\n                    <div class=\"modal-header\">\n                        <h5 class=\"modal-title\" id=\"exampleModalCenteredLabel\">{{modal_message.title}}</h5>\n                         <button type=\"button\" class=\"close\" (click)=\"bucketListEditorClose()\" data-dismiss=\"modal\" aria-label=\"Close\">\n                              <span aria-hidden=\"true\">&times;</span>\n                            </button>\n                    </div>\n                    <div class=\"modal-body modal-img\" style=\"padding: 0px 1rem\">\n                        <img src=\"{{modal_message.body}}\" class=\"img-fluid\" alt=\"Responsive image\" >\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n\n    <div class=\"admin-create-quiz-title\" role=\"group\">\n        <h1>Edit a quiz #{{topic_id}}</h1>\n        <div class=\"btn-group-vertical\" style=\"margin: 20px auto\" role=\"group\" aria-label=\"\">\n            <!-- <button (click)=\"checkState()\">Check state</button> -->\n          <button class=\"btn btn-warning shadow btn-action-borderless btn-outline-warning-hover-side-shadow\" *ngIf='!topic_soft_delete' (click)=\"topic_soft_delete = true\" >Disable Quiz</button>\n          <button class=\"btn btn-success shadow btn-action-borderless\" *ngIf='topic_soft_delete && !topic_delete_confirm' (click)=\"topic_soft_delete = false\">Enable  Quiz</button>\n          <button class=\"btn btn-danger shadow btn-action-borderless\" *ngIf='topic_soft_delete && !topic_delete_confirm' (click)=\"topic_delete_confirm = true\">Delete  Quiz</button>\n        </div>\n        <div class=\"admin-create-quiz-title\" style=\"margin: 20px auto\" *ngIf=\"topic_delete_confirm\">\n          <p class='text-monospace'>Are you sure to delete this quiz?</p>\n          <div class=\"btn-group\" role=\"group\" aria-label=\"\">\n              <button type=\"button\"  (click)=\"deleteQuiz()\" class=\"btn btn-danger text-monospace\" >Yes</button>\n              <button type=\"button\" (click)=\"topic_delete_confirm = false\" class=\"btn btn-warning text-monospace\" >Cancel</button>\n            </div>\n        </div>\n    </div>\n    <div class=\"admin-create-quiz-body\" style=\"margin: 20px auto\">\n        <div class=\"admin-create-quiz-body-topic-cat-eng-box\">\n            <div class=\"input-group\">\n                <div class=\"admin-create-quiz-body-topic-cat-eng-box-select-box\">\n                    <span class=\"text-muted\">Engagement</span>\n                    <select class=\"custom-select shadow\" (change)=\"valueChanger('engagement', $event.target.value)\" [disabled]=\"topic_soft_delete\">\n                        <option *ngFor=\"let eng of engagements\" [selected]=\"eng.engagement_id==selected_eng\"\n                            [disabled]=\"eng.soft_delete\" value={{eng.engagement_id}}>{{eng.engagement_name}}</option>\n                    </select>\n                </div>\n                <div class=\"admin-create-quiz-body-topic-cat-eng-box-select-box\">\n                    <span class=\"text-muted\">Category</span>\n                    <input [disabled]=\"!selected_eng || topic_soft_delete\" class=\"custom-select shadow\" type=\"text\" id=\"category_selector\" list=\"categories\" value=\"{{selected_category}}\" (change)=\"valueChanger('category', $event.target.value)\" />\n                    <datalist id=\"categories\">\n                        <select class=\"custom-select\">\n                            <option *ngFor=\"let c of categories_list | keyvalue\" [selected]=\"c.key == selected_category\" [value]=\"c.key\"><span *ngIf=\"c.key == original_category\">(Original)</span></option>\n                        </select>\n                    </datalist>\n                </div>\n                <div class=\"admin-create-quiz-body-topic-cat-eng-box-select-box\">\n                    <span class=\"text-muted\">Topic</span>\n                    <input [disabled]=\"!selected_category || topic_soft_delete\" id=\"topic_selector\" class=\"custom-select shadow\" type=\"text\" list=\"topics\" value=\"{{selected_topic}}\" (change)=\"valueChanger('topic', $event.target.value)\" />\n                    <datalist id=\"topics\">\n                        <select class=\"custom-select\">\n                            <option *ngFor=\"let t of topic_list | keyvalue\" [value]=\"t.value['topic']\">\n                              <span *ngIf=\"t.value['topic'] != original_topic\">(Already exists)</span>\n                              <span *ngIf=\"t.value['topic'] == original_topic\">(Original)</span>\n                            </option>\n                        </select>\n                    </datalist>\n                </div>\n                <div class=\"admin-create-quiz-body-topic-cat-eng-box-select-box\">\n                    <span class=\"text-muted\">Time limit</span>\n                    <select  [disabled]=\"topic_soft_delete\" class=\"custom-select shadow\" (change)=\"valueChanger('time_limit', $event.target.value)\">\n                        <option value=null [selected]=\"!time_limit\">No limit</option>\n                        <option value=\"15\" [selected]=\"time_limit == 15\">15 minutes</option>\n                        <option value=\"30\" [selected]=\"time_limit == 30\">30 minutes</option>\n                        <option value=\"45\" [selected]=\"time_limit == 45\">45 minutes</option>\n                        <option value=\"60\" [selected]=\"time_limit == 60\">60 minutes</option>\n                    </select>\n                </div>\n            </div>\n        </div>\n\n        <div style=\"margin-top: 15px\">\n           <button class=\"btn btn-lg btn-action-borderless btn-info bp-secondary shadow\" [disabled]=\"topic_soft_delete\" (click)=\"openBucketEditor()\">Add/Edit Buckets</button>\n        </div>\n        <div *ngIf=\"topic_cat_eng_message.display\" style=\"margin-top: 15px\">\n            <div *ngIf=\"topic_cat_eng_message.status == 'fail'\" class=\"alert alert-warning shadow\" role=\"alert\">\n                <strong>Warning!</strong> {{topic_cat_eng_message.message}}\n            </div>\n            <div *ngIf=\"topic_cat_eng_message.status == 'success'\" class=\"alert alert-success shadow\" role=\"alert\">\n                <strong>Nice!</strong> {{topic_cat_eng_message.message}}\n            </div>\n        </div>\n    </div>\n\n    <div class='admin-create-quiz-form' style=\"margin-top: 25px;\">\n        <table class=\"table table-borderless \">\n            <thead class=\"thead-dark sticky-top\">\n                <tr style=\"height: 50px\">\n                    <th class=\"border-0 text-uppercase small font-weight-bold text-center\" style=\"width: 5%\">ID/Priority\n                    </th>\n                    <th class=\"border-0 text-uppercase small font-weight-bold text-center\">Question prompt</th>\n                    <th class=\"border-0 text-uppercase small font-weight-bold text-center\">Image</th>\n                    <th class=\"border-0 text-uppercase small font-weight-bold text-center\" style=\"width: 7%\">Display Type\n                    </th>\n                    <th class=\"border-0 text-uppercase small font-weight-bold text-center\">List of choices/Expected Answer\n                    </th>\n                    <th class=\"border-0 text-uppercase small font-weight-bold text-center\">Admin notes</th>\n                    <th class=\"border-0 text-uppercase small font-weight-bold text-center\" style=\"width: 5%\">Action</th>\n                </tr>\n            </thead>\n            <tbody>\n                <tr *ngFor='let q of list_of_questions | keyvalue' class=\"create_form_row\" [ngClass]=\"{ \n                    'border border-success': q.key == 'new_question',\n                    'element_hard_deleted': q.value['question_hard_delete'], \n                    'alert-secondary': q.value['question_soft_delete'] || topic_soft_delete }\">\n                    <!-- QUESTIONS -->\n                    <td *ngIf=\"!q.value['error_bool']\" class='text-center table-row'>\n                        <p class=\"text-monospace\" [ngClass]=\"{ 'text-success': q.key == 'new_question' }\">{{q.key}}</p>\n                        <div>\n                            <input style=\"width: 100%; padding: 0px 0px !important\" [disabled]=\"q.value.question_soft_delete || topic_soft_delete\" (change)=\"inputEditor('question_sort', q.key, 'question_sort', null, $event.target.value)\" class=\"edit_sort_value form-control create_form_input_shadow\" min=1 max=99 type=\"number\" value=1 title=\"Set Question Priority\"\n                                data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Tooltip on bottom\" value=\"{{list_of_questions[q.key]['question_sort']}}\">\n                        </div>\n                    </td>\n                    <td *ngIf=\"!q.value['error_bool']\" style=\"padding: 0px 3px !important;\">\n                        <textarea class='textAreaPrompt form-control create_form_input_shadow' [disabled]=\"q.value.question_soft_delete || topic_soft_delete\" (change)=\"inputEditor('prompt', q.key, 'prompt', null, $event.target.value)\" rows=4 name='questionPromts' id='questionPromt_{{q.key}}' value=\"{{q.value['prompt']}}\"></textarea>\n                    </td>\n                    <td *ngIf=\"!q.value['error_bool']\" class='create_form_img_box' align=\"center\">\n                        <div *ngIf=\"!q.value['image']\">\n                            <label for=\"file-upload{{q.key}}\" style=\"width: 100%;\" class=\"custom-file-upload btn btn-sm btn-outline-secondary btn-action-borderless\">\n                                    &#8682; Upload Picture\n                                </label>\n                            <input id=\"file-upload{{q.key}}\" type=\"file\"  [disabled]=\"q.value.question_soft_delete || topic_soft_delete\" (change)=\"inputEditor('img', q.key, 'base64', null, $event.target.files)\" accept=\"image/*\" />\n                        </div>\n                        <div *ngIf=\"q.value['image']\" style=\"position: relative\">\n                            <img src=\"{{q.value['base64']}}\" class=\"img-fluid\" alt=\"Responsive image\" (click)=\"imageZoom(q.key)\">\n                            <button class=\"btn btn-sm btn-outline-danger btn-image-remove\" [disabled]=\"q.value.question_soft_delete || topic_soft_delete\" (click)=\"removeImg(q.key)\">x</button>\n                        </div>\n                    </td>\n                    <td *ngIf=\"!q.value['error_bool']\">\n                        <div class=\"btn-group-vertical btn-group-toggle\" data-toggle=\"buttons\" [hidden]='q.value.question_soft_delete || topic_soft_delete'>\n                            <button class=\"btn btn-sm btn-action-borderless btn-outline-secondary\" \n                                [ngClass]=\"{ 'active': q.value.question_type_id == 2, 'shadow':  q.value.question_type_id == 2}\"\n                                (click)=\"displayTypeChanger(q.key, 'textfield input')\" \n                                [disabled]=\"q.value.question_soft_delete\" type=\"radio\"  name=\"displayTypeNew\" \n                                id=\"manual_input\" value=\"textfield input\" checked=\"checked\"> Manual Input</button>\n\n                            <button class=\"btn btn-sm btn-action-borderless btn-outline-secondary\" \n                                [ngClass]=\"{ 'active': q.value.display_type_id == 1 && q.value.question_type_id == 1, 'shadow': q.value.display_type_id == 1 && q.value.question_type_id == 1 }\" \n                                (click)=\"displayTypeChanger(q.key, 'Radio')\" \n                                [disabled]=\"q.value.question_soft_delete\"\n                                type=\"radio\"  name=\"displayTypeNew\"\n                                id=\"radio \" value=\"Radio\"> Radio</button>\n                                \n                            <!-- <button class=\"btn btn-sm btn-action-borderless btn-outline-secondary \"\n                                [disabled]=\"q.value.question_soft_delete\"\n                                [ngClass]=\"{ 'active': q.value.display_type_id == 3 && q.value.question_type_id == 1 }\" \n                                (click)=\"displayTypeChanger( q.key, 'Dropdown')\" type=\"radio\" name=\"displayTypeNew\" \n                                id=\"dropdown\" value=\"Dropdown\"> Dropdown</button> -->\n\n                            <button  class=\"btn btn-sm btn-action-borderless btn-outline-secondary\"\n                                [ngClass]=\"{ 'active': q.value.display_type_id == 2 && q.value.question_type_id == 1, 'shadow': q.value.display_type_id == 2 && q.value.question_type_id == 1 }\"\n                                (click)=\"displayTypeChanger(q.key, 'Checkbox')\"\n                                [disabled]=\"q.value.question_soft_delete\" type=\"radio\" name=\"displayTypeNew \" \n                                id=\"checkbox \" value=\"Checkbox \"> Checkbox</button>\n                            <button class=\"btn btn-sm btn-action-borderless btn-outline-secondary\"\n                                [ngClass]=\"{ 'active': q.value.question_type_id == 3, 'shadow':q.value.question_type_id == 3 }\"\n                                (click)=\"displayTypeChanger( q.key, 'drag_and_drop')\"\n                                [disabled]=\"q.value.question_soft_delete\" type=\"radio\" name=\"displayTypeNew\" \n                                id=\"drag_and_drop\" value=\"drag_and_drop\">Drag'n'Drop</button>\n                        </div>\n                        <div class=\"btn-group-vertical btn-group-toggle bg-secondary text-white create_form_input_shadow\" style=\"text-align: center;\" [hidden]='!q.value.question_soft_delete || topic_soft_delete || q.value.question_hard_delete' role=\"alert\">\n                            Question is disabled\n                        </div>\n                        <div class=\"btn-group-vertical btn-group-toggle bg-danger text-white create_form_input_shadow shadow\" style=\"text-align: center;\" [hidden]='!q.value.question_hard_delete' role=\"alert\">\n                            Question will be deleted\n                        </div>\n                    </td>\n                    <td *ngIf=\"!q.value['error_bool']\">\n                        <!-- NOT SELECTED -->\n                        <div *ngIf=\"!q.value['question_type_description']\">\n                            <p align=\"center\" class='text-muted'>Please check type of question.</p>\n                        </div>\n                        <!-- <p>hide text input => {{q.value['question_type_id'] != 2}}</p>\n                        <p>hide drag and drop => {{q.value['question_type_id'] != 3}}</p>\n                        <p>hide radio => {{q.value['question_type_id'] != 1}} {{q.value['display_type_id'] != 1}}</p>\n                        <p></p> -->\n\n                        <!-- MANUAL INPUT -->\n                        <div style=\"padding: 0px 3px !important;\" [hidden]=\"q.value['question_type_id'] != 2\">\n                            <textarea [disabled]=\"q.value.question_soft_delete || topic_soft_delete\" (change)=\"inputEditor('expected_response', q.key, 'expected_response', null, $event.target.value)\" class='textAreaExpectedAnswer form-control create_form_input_shadow' rows=4 placeholder=\"Expected answer (optional)\" value=\"{{q.value['expected_response']}}\"></textarea>\n                        </div>\n\n\n                        <!-- DRAG AND DROP  -->\n                        <div class=\"input-group mt-2\" [hidden]=\"q.value['question_type_id'] != 3\">\n                            <div *ngFor=\"let ans of q.value['answer_prompt'] | keyvalue\" class=\"input-group mt-1\" [ngClass]=\"{\n                                'alert-secondary': q.value['answer_soft_delete'][ans.key] && !answer_delete_confirm_list[ans.key],\n                                'element_hard_deleted': answer_delete_confirm_list[ans.key]\n                                }\">\n                                <input type=\"text\" [disabled]=\"q.value.question_soft_delete || topic_soft_delete || q.value.answer_soft_delete[ans.key]\" (change)=\"inputEditor('drag_and_drop', q.key, 'answer_prompt', ans.key, $event.target.value)\" class=\"form-control bucket_input_edit bucket_input_edit_question_{{q.key}}\" id=\"bucket_input_edit_{{q.key}}\" placeholder='Add a choice' style=\"padding: 0px;\"\n                                    value=\"{{ans.value}}\">\n                                <select list=\"bucket_list\" [disabled]=\"q.value.question_soft_delete || topic_soft_delete || q.value.answer_soft_delete[ans.key]\" (change)=\"inputEditor('drag_and_drop', q.key, 'answer_bucket_id', ans.key, $event.target.value)\" class=\"form-control bucket_list_pick\" id=\"bucket_list_pick_{{q.key}}\" placeholder='Bucket' style=\"padding: 0px;\">\n                                        <!-- <option *ngFor=\"let b of bucket_list\" value=\"{{b.bucket_id}}\"\n                                            [selected]=\"q['answer_bucket_id'][ans.key] == b.bucket_id\">\n                                            {{b.bucket_name}}</option> -->\n                                        <option disabled>\n                                            Choose Bucket</option>\n\n                                            <ng-container *ngFor=\"let b of bucket_list | keyvalue\">\n                                                    <option *ngIf=\"!b.value.soft_delete\" [selected]=\"q.value['answer_bucket_id'][ans.key] == b.key\" value=\"{{b.key}}\">{{b.value.bucket_name}}</option>\n                                                </ng-container>\n                                    </select>\n                                <div class=\"input-group-append\">\n                                        <button [disabled]=\"q.value.question_soft_delete || topic_soft_delete\" class=\"btn btn-warning\"\n                                        (click)=\"inputEditor('answer', q.key, 'answer_hard_delete', ans.key, false)\"\n                                        *ngIf=\"answer_delete_confirm_list[ans.key] \"\n                                        id='buttonRemoveAnswer${i}' type=\"button\">Restore</button>\n                                    <button [disabled]=\"q.value.question_soft_delete || topic_soft_delete\" class=\"btn btn-danger\"\n                                        (click)=\"inputEditor('answer', q.key, 'answer_hard_delete', ans.key, true)\"\n                                        *ngIf=\"q.value['answer_soft_delete'][ans.key] && !answer_delete_confirm_list[ans.key]\"\n                                        id='buttonRemoveAnswer${i}' type=\"button\">Delete</button>\n                                    <button [disabled]=\"q.value.question_soft_delete || topic_soft_delete\" class=\"btn btn-outline-success buttonRemoveAnswer\"\n                                        (click)=\"inputEditor('answer', q.key, 'answer_soft_delete', ans.key, false)\"\n                                        *ngIf=\"q.value['answer_soft_delete'][ans.key] && !answer_delete_confirm_list[ans.key]\"\n                                        id='buttonRemoveAnswer${i}' type=\"button\">+</button>\n                                    <button [disabled]=\"q.value.question_soft_delete || topic_soft_delete\" class=\"btn btn-outline-warning buttonRemoveAnswer\"\n                                        (click)=\"inputEditor('answer', q.key, 'answer_soft_delete', ans.key, true)\"\n                                        *ngIf=\"!q.value['answer_soft_delete'][ans.key]\"\n                                        id='buttonRemoveAnswer${i}' type=\"button\">-</button>\n                                </div>\n                            </div>\n                            <div class=\"input-group-prepend\">\n                                <button \n                                    [disabled]=\"q.value.question_soft_delete || topic_soft_delete\" \n                                    class=\"btn btn-outline-success bucket_input_add_button btn-action-borderless\"\n                                    (click)=\"dragAndDropAdder(q.key)\"\n                                    style=\"font-size: smaller; padding: 8px;\" \n                                    id='bucket_input_add_button_{{q.key}}' \n                                    type=\"button\">+</button>\n                            </div>\n                            <input type=\"text\" [disabled]=\"q.value.question_soft_delete || topic_soft_delete\" (change)=\"inputEditor('drag_and_drop', q.key, 'temp_bucket_storage', 'answer_input', $event.target.value)\" class=\"form-control bucket_input_add\" id=\"bucket_input_add_input_{{q.key}}\" placeholder='Add a choice' style=\"padding: 0px;\">\n                            <select \n                                [disabled]=\"q.value.question_soft_delete || topic_soft_delete\"  \n                                list=\"bucket_list\" \n                                type=\"text\" \n                                (change)=\"inputEditor('drag_and_drop', q.key, 'temp_bucket_storage', 'bucket_id', $event.target.value)\"\n                                class=\"form-control bucket_list_pick\" \n                                id=\"bucket_list_pick_{{q.key}}\" \n                                placeholder='Bucket' \n                                style=\"padding: 0px;\">\n                                    <option value=\"\" selected disabled class=\"text-muted\">Choose bucket</option>\n                                    <option disabled style=\"margin-top:8px; border-top:1px solid #666; padding:0;\">____________</option>\n                                    <ng-container *ngFor=\"let b of bucket_list | keyvalue\">\n                                        <option *ngIf=\"!b.value.soft_delete\" value=\"{{b.key}}\">{{b.value.bucket_name}}</option>\n                                    </ng-container>\n                                </select>\n                        </div>\n\n\n                        <!-- CHECKBOX  -->\n                        <!-- {{q.value['display_type_description'] == 'Checkbox'}} {{q.value['question_type_description'] == 'selected input'}} {{ q.value.display_type_id == 1}} -->\n                        \n                        <div [hidden]=\"q.value['question_type_id'] != 1 || q.value['display_type_id'] != 2\">\n                            <div *ngFor=\"let ans of q.value['answer_prompt'] | keyvalue\" [ngClass]=\"{\n                                'alert-secondary': q.value['answer_soft_delete'][ans.key] && !answer_delete_confirm_list[ans.key],\n                                'element_hard_deleted': answer_delete_confirm_list[ans.key]\n                                }\">\n                                <div>\n                                    <input [disabled]=\"q.value.question_soft_delete || topic_soft_delete || q.value.answer_soft_delete[ans.key]\" class=\"answerChoice\" style=\"margin: 5px\" (change)=\"inputEditor('answer', q.key, 'answer_correct', ans.key, !q.value['answer_correct'][ans.key])\" [checked]=q.value.answer_correct[ans.key] type=\"checkbox\" id=\"checkbox_{{ans.key}}\" title=\"Select the right answer. You can chose multiple.\"/>\n                                    <label for=\"checkbox_{{ans.key}}\" onclick=\"return false;\" style=\"margin:0px 0px; width:92%\">\n                                            <div class=\"input-group mb-1\">\n                                                <div class=\"input-group-prepend\" style=\"width: 15%;\">\n                                                    <input [disabled]=\"q.value.question_soft_delete || topic_soft_delete || q.value.answer_soft_delete[ans.key]\" type=\"number\"\n                                                        (change)=\"inputEditor('answer', q.key, 'answer_sort', ans.key, $event.target.value)\"\n                                                        class=\"answer_order_edit form-control create_form_input_shadow\"\n                                                        min=\"1\" id=\"answer_order_edit_{{ans.key}}\" style=\"width: 90%;\"\n                                                        value=\"{{q.value['answer_sort'][ans.key] }}\"\n                                                        data-toggle=\"tooltip\" data-placement=\"bottom\"\n                                                        title=\"Set priority of the answer.\">\n                                                </div>\n                                                <input [disabled]=\"q.value.question_soft_delete || topic_soft_delete || q.value.answer_soft_delete[ans.key]\" class=\"form-control create_form_input_shadow\" type=\"text\"\n                                                    id=\"answerId${id}\" value=\"\" aria-describedby=\"basic-addon2\"\n                                                    value='{{ans.value}}'\n                                                    (change)=\"inputEditor('answer', q.key, 'answer_prompt', ans.key, $event.target.value)\" />\n                                                <div class=\"input-group-append\">\n                                                    <button [disabled]=\"q.value.question_soft_delete || topic_soft_delete\" class=\"btn btn-warning\"\n                                                        (click)=\"inputEditor('answer', q.key, 'answer_hard_delete', ans.key, false)\"\n                                                        *ngIf=\"answer_delete_confirm_list[ans.key] \"\n                                                        id='buttonRemoveAnswer${i}' type=\"button\">Restore</button>\n                                                    <button [disabled]=\"q.value.question_soft_delete || topic_soft_delete\" class=\"btn btn-danger\"\n                                                        (click)=\"inputEditor('answer', q.key, 'answer_hard_delete', ans.key, true)\"\n                                                        *ngIf=\"q.value['answer_soft_delete'][ans.key] && !answer_delete_confirm_list[ans.key]\"\n                                                        id='buttonRemoveAnswer${i}' type=\"button\">Delete</button>\n                                                    <button [disabled]=\"q.value.question_soft_delete || topic_soft_delete\" class=\"btn btn-outline-success buttonRemoveAnswer\"\n                                                        (click)=\"inputEditor('answer', q.key, 'answer_soft_delete', ans.key, false)\"\n                                                        *ngIf=\"q.value['answer_soft_delete'][ans.key] && !answer_delete_confirm_list[ans.key]\"\n                                                        id='buttonRemoveAnswer${i}' type=\"button\">+</button>\n                                                    <button [disabled]=\"q.value.question_soft_delete || topic_soft_delete\" class=\"btn btn-outline-warning buttonRemoveAnswer\"\n                                                        (click)=\"inputEditor('answer', q.key, 'answer_soft_delete', ans.key, true)\"\n                                                        *ngIf=\"!q.value['answer_soft_delete'][ans.key]\"\n                                                        id='buttonRemoveAnswer${i}' type=\"button\">-</button>\n                                                </div>\n                                            </div>\n                                        </label>\n                                </div>\n                            </div>\n                        </div>\n\n\n                        <!-- DROPDOWN/SELECT -->\n                        <!-- <div [hidden]=\"q.value['question_type_id'] != 1 || q.value['display_type_id'] != 3\">\n                            <div *ngFor=\"let ans of q.value['answer_prompt'] | keyvalue\" class=\"custom-radio\" [ngClass]=\"{\n                                'alert-secondary': q.value['answer_soft_delete'][ans.key] && !answer_delete_confirm_list[ans.key],\n                                'element_hard_deleted': answer_delete_confirm_list[ans.key]\n                                }\">\n                                <div>\n                                        {{q.value.answer_correct | json}}\n                                    <input [disabled]=\"q.value.question_soft_delete || topic_soft_delete || q.value.answer_soft_delete[ans.key]\" \n                                            class=\"answerChoice\" \n                                            style=\"margin: 5px\" \n                                            (change)=\"inputEditor('answer',q.key, 'answer_correct', ans.key, !q.value['answer_correct'][ans.key])\" \n                                            [checked]=q.value.answer_correct[ans.key] \n                                            type=\"radio\" \n                                            id=\"checkbox_{{ans.key}}\" \n                                            title=\"Select the right answer. You can chose only one answer.\"\n                                            name=\"radio_answer_for_question_{{q.key}}\" />\n                                    <label for=\"checkbox_{{ans.key}}\" onclick=\"return false;\" style=\"margin:0px 0px; width:92%\">\n                                            <div class=\"input-group mb-1\">\n                                                <div class=\"input-group-prepend\" style=\"width: 15%;\">\n                                                    <input [disabled]=\"q.value.question_soft_delete || topic_soft_delete || q.value.answer_soft_delete[ans.key]\" \n                                                        type=\"number\"\n                                                        (change)=\"inputEditor('answer',q.key, 'answer_sort', ans.key, $event.target.value)\"\n                                                        class=\"form-control answer_order_edit create_form_input_shadow\"\n                                                        min=\"1\" id=\"answer_order_edit_{{ans.key}}\" style=\"width: 90%;\"\n                                                        value=\"{{q.value['answer_sort'][ans.key] }}\"\n                                                        data-toggle=\"tooltip\" data-placement=\"bottom\"\n                                                        title=\"Set priority of the answer.\">\n                                                </div>\n                                                <input [disabled]=\"q.value.question_soft_delete || topic_soft_delete || q.value.answer_soft_delete[ans.key]\" class=\"form-control create_form_input_shadow\" type=\"text\"\n                                                    id=\"answerId${id}\" value=\"\" aria-describedby=\"basic-addon2\"\n                                                    value='{{ans.value}}'\n                                                    (change)=\"inputEditor('answer',q.key, 'answer_prompt', ans.key, $event.target.value)\" />\n                                                <div class=\"input-group-append\">\n                                                        <button [disabled]=\"q.value.question_soft_delete || topic_soft_delete\" class=\"btn btn-warning\"\n                                                        (click)=\"inputEditor('answer', q.key, 'answer_hard_delete', ans.key, false)\"\n                                                        *ngIf=\"answer_delete_confirm_list[ans.key] \"\n                                                        id='buttonRemoveAnswer${i}' type=\"button\">Restore</button>\n                                                    <button [disabled]=\"q.value.question_soft_delete || topic_soft_delete\" class=\"btn btn-danger\"\n                                                        (click)=\"inputEditor('answer', q.key, 'answer_hard_delete', ans.key, true)\"\n                                                        *ngIf=\"q.value['answer_soft_delete'][ans.key] && !answer_delete_confirm_list[ans.key]\"\n                                                        id='buttonRemoveAnswer${i}' type=\"button\">Delete</button>\n                                                    <button [disabled]=\"q.value.question_soft_delete || topic_soft_delete\" class=\"btn btn-outline-success buttonRemoveAnswer\"\n                                                        (click)=\"inputEditor('answer', q.key, 'answer_soft_delete', ans.key, false)\"\n                                                        *ngIf=\"q.value['answer_soft_delete'][ans.key] && !answer_delete_confirm_list[ans.key]\"\n                                                        id='buttonRemoveAnswer${i}' type=\"button\">+</button>\n                                                    <button [disabled]=\"q.value.question_soft_delete || topic_soft_delete\" class=\"btn btn-outline-warning buttonRemoveAnswer\"\n                                                        (click)=\"inputEditor('answer', q.key, 'answer_soft_delete', ans.key, true)\"\n                                                        *ngIf=\"!q.value['answer_soft_delete'][ans.key]\"\n                                                        id='buttonRemoveAnswer${i}' type=\"button\">-</button>\n                                                </div>\n                                            </div>\n                                        </label>\n                                </div>\n                            </div>\n                        </div> -->\n\n\n                        <!-- RADIO -->\n                        <div [hidden]=\"q.value['question_type_id'] != 1 || q.value['display_type_id'] != 1\">\n                            <div *ngFor=\"let ans of q.value['answer_prompt'] | keyvalue\" class=\"custom-radio\" [ngClass]=\"{\n                                'alert-secondary': q.value['answer_soft_delete'][ans.key] && !answer_delete_confirm_list[ans.key],\n                                'element_hard_deleted': answer_delete_confirm_list[ans.key]\n                                }\">\n                                <div>\n                                    <input [disabled]=\"q.value.question_soft_delete || topic_soft_delete || q.value.answer_soft_delete[ans.key]\" class=\"answerChoice\" style=\"margin: 5px\" (change)=\"inputEditor('answer',q.key, 'answer_correct', ans.key, !q.value['answer_correct'][ans.key])\" [checked]=q.value.answer_correct[ans.key] type=\"radio\" id=\"checkbox_{{ans.key}}\" title=\"Select the right answer. You can chose only one answer.\"\n                                        name=\"radio_answer_for_question_{{q.key}}\" />\n                                    <label for=\"checkbox_{{ans.key}}\" onclick=\"return false;\" style=\"margin:0px 0px; width:92%\">\n                                            <div class=\"input-group mb-1\">\n                                                <div class=\"input-group-prepend\" style=\"width: 15%;\">\n                                                    <input [disabled]=\"q.value.question_soft_delete || topic_soft_delete || q.value.answer_soft_delete[ans.key]\" type=\"number\"\n                                                        (change)=\"inputEditor('answer',q.key, 'answer_sort', ans.key, $event.target.value)\"\n                                                        class=\"form-control answer_order_edit create_form_input_shadow\"\n                                                        min=\"1\" id=\"answer_order_edit_{{ans.key}}\" style=\"width: 90%;\"\n                                                        value=\"{{q.value['answer_sort'][ans.key] }}\"\n                                                        data-toggle=\"tooltip\" data-placement=\"bottom\"\n                                                        title=\"Set priority of the answer.\">\n                                                </div>\n                                                <input [disabled]=\"q.value.question_soft_delete || topic_soft_delete || q.value.answer_soft_delete[ans.key]\" class=\"form-control create_form_input_shadow\" type=\"text\"\n                                                    id=\"answerId${id}\" value=\"\" aria-describedby=\"basic-addon2\"\n                                                    value='{{ans.value}}'\n                                                    (change)=\"inputEditor('answer',q.key, 'answer_prompt', ans.key, $event.target.value)\" />\n                                                <div class=\"input-group-append\">\n                                                        <button [disabled]=\"q.value.question_soft_delete || topic_soft_delete\" class=\"btn btn-warning\"\n                                                        (click)=\"inputEditor('answer', q.key, 'answer_hard_delete', ans.key, false)\"\n                                                        *ngIf=\"answer_delete_confirm_list[ans.key] \"\n                                                        id='buttonRemoveAnswer${i}' type=\"button\">Restore</button>\n                                                    <button [disabled]=\"q.value.question_soft_delete || topic_soft_delete\" class=\"btn btn-danger\"\n                                                        (click)=\"inputEditor('answer', q.key, 'answer_hard_delete', ans.key, true)\"\n                                                        *ngIf=\"q.value['answer_soft_delete'][ans.key] && !answer_delete_confirm_list[ans.key]\"\n                                                        id='buttonRemoveAnswer${i}' type=\"button\">Delete</button>\n                                                    <button [disabled]=\"q.value.question_soft_delete || topic_soft_delete\" class=\"btn btn-outline-success buttonRemoveAnswer\"\n                                                        (click)=\"inputEditor('answer', q.key, 'answer_soft_delete', ans.key, false)\"\n                                                        *ngIf=\"q.value['answer_soft_delete'][ans.key] && !answer_delete_confirm_list[ans.key]\"\n                                                        id='buttonRemoveAnswer${i}' type=\"button\">+</button>\n                                                    <button [disabled]=\"q.value.question_soft_delete || topic_soft_delete\" class=\"btn btn-outline-warning buttonRemoveAnswer\"\n                                                        (click)=\"inputEditor('answer', q.key, 'answer_soft_delete', ans.key, true)\"\n                                                        *ngIf=\"!q.value['answer_soft_delete'][ans.key]\"\n                                                        id='buttonRemoveAnswer${i}' type=\"button\">-</button>\n                                                </div>\n                                            </div>\n                                        </label>\n                                </div>\n                            </div>\n                        </div>\n\n\n                        <!-- ADD ANSWER FORM -->\n                        <div style=\"padding-right: 3px !important;\"\n                            class=\"input-group mb-3 create_form_input_shadow\" \n                            [hidden]=\"q.value['question_type_id'] != 1\">\n                            <div class=\"input-group-prepend\" style=\"width: 25px\">\n                               \n                                <button [disabled]=\"q.value.question_soft_delete || topic_soft_delete\" class=\"btn btn-success create_form_answer_add btn-action-borderless\" id='buttonAddNewAnswer_{{q.key}}' type=\"button\" (click)=\"addAnswer(q.key)\">+</button>\n                            </div>\n                            <input [disabled]=\"q.value.question_soft_delete || topic_soft_delete\" type=\"text\" class=\"form-control create_form_input_shadowless  edit_quiz_input_text_add\" id=\"newAnswerFor_{{q.key}}\" placeholder='Add an answer' aria-describedby=\"basic-addon2\">\n                        </div>\n\n                    </td>\n\n                    <!-- ADMIN NOTES -->\n                    <td *ngIf=\"!q.value['error_bool']\">\n                        <div class=\"input-group\">\n                            <input [disabled]=\"q.value.question_soft_delete || topic_soft_delete \" \n                                class=\"create_form_input_shadow form-control \" \n                                value=\"{{list_of_questions[q.key]['training_url']}}\" \n                                type=\"text\" placeholder=\"Confluence link (optional)\" \n                                (change)=\"inputEditor(null, q.key, 'training_url', null, $event.target.value)\"\n                                style=\"border-radius: 0px\"\n                                >\n                            <div class=\"input-group-append\">\n                                <button [disabled]=\"q.value.question_soft_delete || topic_soft_delete\" \n                                        type='button' \n                                        class='buttonConfluenceLink btn btn-xs  btn-outline-secondary' \n                                        id='buttonConfluenceLinkForQuestion${id}' \n                                        (click)=\"checkModuleLink(q.key)\"\n                                        style=\"border-radius: 0px\"\n                                        >Check</button>\n                            </div>\n                        </div>\n                        <div id='module_field${id}'>\n                            <input [disabled]=\"q.value.question_soft_delete || topic_soft_delete\" class=\"create_form_input_shadow form-control\" value=\"{{list_of_questions[q.key]['training_module']}}\" (change)=\"inputEditor('training_module', q.key,'training_module', null, $event.target.value)\" id='editModuleForQuestionId${id}' type=\"text\" placeholder=\"Module note (optional)\">\n                        </div>\n                        <div class=\"input-group  mb-3\" style=\"width: 185px;\">\n                            <div class=\"input-group-prepend input-group-text bg-secondary text-white\">\n                                    Question value\n                            </div>\n                            <input [disabled]=\"q.value.question_soft_delete || topic_soft_delete\" class=\"form-control create_form_input_shadow\"  value=\"{{list_of_questions[q.key]['point_value']}}\"   (change)=\"inputEditor('point_value', q.key,'point_value', null, $event.target.value)\" type=\"number\" min=\"1\" max=\"10\" style=\"padding: 0px 5px;\">\n                        </div>\n                    </td>\n\n                    <!-- ACTION BUTTONS -->\n                    <td style='text-align: center' *ngIf=\"!q.value['error_bool']\">\n                        <div [hidden]=\"topic_soft_delete\">\n                            <!-- <button class='btn btn-outline-primary btn-action-borderless' disabled style=\"width: 100%\">🔍 Preview</button> -->\n                            <button *ngIf=\"q.key == 'new_question'\" class='btn btn-outline-success btn-action-borderless' (click)=\"addQuestion()\" style=\"width: 100%\">+ Add</button>\n                            <button *ngIf=\"q.key != 'new_question' && q.value['question_soft_delete'] && !list_of_new_questions[q.key] &&  !q.value['question_hard_delete']\" class='btn btn-outline-success btn-action-borderless' (click)=\"enableQuestion(q.key)\" style=\"width: 100%\">Enable</button>\n                            <button *ngIf=\"q.key != 'new_question' &&  !q.value['question_hard_delete'] && q.value['question_soft_delete'] || list_of_new_questions[q.key]\" class='btn btn-danger btn-action-borderless' (click)=\"removeQuestion(q.key)\" style=\"width: 100%\">Remove</button>\n                            <button *ngIf=\"q.key != 'new_question' && !q.value['question_soft_delete'] && !list_of_new_questions[q.key]\" class='btn btn-outline-warning btn-action-borderless' (click)=\"disableQuestion(q.key)\" style=\"width: 100%\">Disable</button>\n                           \n                            <button *ngIf=\"q.key != 'new_question' && q.value['question_hard_delete']\" class='btn btn-warning btn-action-borderless' (click)=\"restoreQuestion(q.key)\" style=\"width: 100%\">Restore</button>\n\n                        </div>\n                    </td>\n\n                    <!-- ERROR -->\n                    <td colspan=\"7\" *ngIf=\"q.value['error_bool']\" style=\"padding: 10px 10px !important\">\n                        <div class=\"alert alert-warning shadow\" role=\"alert\" style=\"width: 500px; margin: 0px auto;\">\n                            <button type=\"button\" class=\"close\" (click)=\"errorRemoveById(q.key)\">\n                                <span aria-hidden=\"true\">&times;</span>\n                            </button>\n                            <p class=\"text-center text-monospace\"><strong>{{q.value['target']}} error(s):</strong></p>\n                           <p *ngFor=\"let error of q.value['errors'] | keyvalue\" class=\"text-center\" style=\"margin-bottom: 0px !important\">{{error.value}}</p>\n                        </div>\n                    </td>\n\n\n                </tr>\n                <!-- <tr *ngIf=\"list_of_questions.new_question_error\" class=\"create_form_row\">\n                    <td colspan=\"7\" (click)=\"errorHandlerRemover('new_question')\" class=\"errorHandlerBox\">\n                        <div class=\"alert alert-danger shadow errorHandler\" role=\"alert\">\n                            <p class=\"text-center\" *ngFor=\"let el of list_of_questions.new_question_error.errors | keyvalue\">\n                                {{el.value}}\n                            </p>\n                        </div>\n                    </td>\n                </tr> -->\n            </tbody>\n        </table>\n        <div [hidden]=\"!submit_ready\" class=\"alert alert-success text-center shadow\" style=\"width: 500px; margin: 0px auto;\" role=\"alert\">\n            <strong>All questions are good!</strong>\n        </div>\n        <div class=\"d-flex justify-content-center\" *ngIf=\"!submit_status.display\" style=\"margin-top: 50px; margin-bottom: 100px;\">\n            <button [hidden]=\"submit_ready\" class=\"btn btn-lg btn-info btn-action-borderless shadow\" (click)=\"validateQuiz()\">Validate</button>\n            <div [hidden]=\"!submit_ready\" class=\"shadow btn-group btn-group-lg text-monospace\" role=\"group\">\n                <button  class=\"btn btn-lg btn-success\" (click)=\"submitQuiz()\">Submit</button>\n                <button  class=\"btn btn-lg btn-warning\" (click)=\"cancelSubmitQuiz()\">Cancel</button>\n            </div>\n        </div>\n\n        <div class=\"d-flex justify-content-center\" *ngIf=\"submit_status.display && submit_status.status == 'success'\" style=\"margin-top: 50px; margin-bottom: 100px;\">\n            <div class=\"alert alert-success shadow\" role=\"alert\" style=\"display: flex; align-items: center; flex-direction: column;\">\n                <h4 class=\"alert-heading\">Well done!</h4>\n                You successfully edited the quiz.\n                <br>\n                <a [hidden]=\"submit_ready\" class=\"btn btn-outline-light btn-action-borderless text-monospace\" (click)=\"goBack()\">Click here to go back to the admin portal</a>\n            </div>\n        </div>\n\n        <div class=\"d-flex justify-content-center\" *ngIf=\"submit_status.display && submit_status.status == 'fail'\" style=\"margin-top: 50px; margin-bottom: 100px;\">\n            <div class=\"alert alert-error shadow\" role=\"alert\" style=\"display: flex; align-items: center; flex-direction: column;\">\n                <h4 class=\"alert-heading\">Quiz updating failed</h4>\n                Something went wrong on the backend.\n                {{submit_status.message}}\n                <a [hidden]=\"submit_ready\" class=\"btn btn-link btn-action-borderless text-monospace\" (click)=\"goBack()\">Click here to go back to the admin portal</a>\n            </div>\n        </div>\n        <!-- <button class=\"btn btn-lg shadow\" (click)=\"checkState()\">Check State</button> -->\n        \n        \n    </div>\n</div>\n<div *ngIf=\"!list_of_questions_bool\" class=\" loading_box \">\n    <img class=\"loading_box-ing \" src='./../../assets/loading.gif'>\n</div>"
 
 /***/ }),
 
@@ -2150,6 +2155,9 @@ var AdminEditquizComponent = /** @class */ (function () {
         console.log("==============================================================");
         if (this.topic_soft_delete) {
             this._ConnectorService.disableQuiz(this.topic_id, this.currentUser.email).then(function (res) {
+                if (res) {
+                    console.log("IF RES =>", res);
+                }
                 console.log("res =>", res);
                 _this.submit_ready = false;
                 if (res['status'] == 'success') {
@@ -4716,7 +4724,7 @@ module.exports = ".grade-home-main {\n    width: 80%;\n    margin: 0px auto;\n  
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div *ngIf='currentUser && currentUser.admin' class=\"quiz-selection element-animation-fadeIn\" align=\"center\" id=\"body_fadeOut\">\n    <div style=\"height: 10%; justify-content: center; display: flex; flex-direction: column;flex-wrap: wrap;\">\n        <h1 class=\"text-center\">Welcome, {{currentUser.first_name}} {{currentUser.last_name}}</h1>\n    </div>\n    <div class=\"home-main\" id=\"homeCategories\" *ngIf=\"currentEng\">\n        <div class=\"home-category\">\n            <div class=\"home-category-title bg-dark text-white\" style=\"width: 100%; padding: 5px 0px;\">\n                <h2>Grader</h2>\n            </div>\n            <div class=\"home-category-element\">\n                <a class=\"\" [routerLink]=\"['/', currentEng_id, 'adminhomegrade']\">\n                    <button *ngIf=\"gradings_counter>0\" class=\"btn btn-outline-success btn-outline-success-hover-side-shadow btn-lg \" [disabled]=\"!currentUser.admin_grader && !currentUser.admin_owner\" type=\"button\">Grade a Quiz ({{gradings_counter}})</button>\n                    <button *ngIf=\"!gradings_counter || gradings_counter<1\" class=\"btn btn-outline-success btn-lg \" disabled type=\"button\">No quizzes to grade</button>\n                </a>\n            </div>\n        </div>\n        <div class=\"home-category\">\n            <div class=\"home-category-title bg-dark text-white\" style=\"width: 100%; padding: 5px 0px;\">\n                <h2>Editor</h2>\n            </div>\n            <div class=\"home-category-element\">\n                <a class=\"\" [routerLink]=\"['/',currentEng_id, 'admincreatequiz']\">\n                    <button class=\"btn btn-outline-info btn-lg btn-outline-info-hover-side-shadow\" type=\"button\" [disabled]=\"!currentUser.admin_editor && !currentUser.admin_owner\">Create a Quiz</button>\n                </a>\n                <a class=\"\" [routerLink]=\"['/',currentEng_id, 'adminhomeedit']\">\n                    <button class=\"btn btn-lg btn-outline-info btn-outline-info-hover-side-shadow\" type=\"button\" [disabled]=\"!currentUser.admin_editor && !currentUser.admin_owner\">Edit a Quiz</button>\n                </a>\n            </div>\n        </div>\n        <div class=\"home-category\">\n            <div class=\"home-category-title bg-dark text-white\" style=\"width: 100%; padding: 5px 0px;\">\n                <h2>Quiz Controls</h2>\n            </div>\n            <div class=\"home-category-element\">\n                <a class=\"\" [routerLink]=\"['/',currentEng_id, 'AdminEditpermissions']\">\n                    <button class=\"btn btn-outline-secondary btn-lg btn-outline-secondary-hover-side-shadow\" [disabled]=\"!currentUser.admin_permissions && !currentUser.admin_owner\" type=\"button\">Quiz Permissions</button>\n                </a>\n                <a class=\"\" [routerLink]=\"['/',currentEng_id, 'AdminEditsubmissions']\">\n                    <button class=\"btn btn-outline-secondary btn-lg btn-outline-secondary-hover-side-shadow\" [disabled]=\"!currentUser.admin_permissions && !currentUser.admin_owner\" type=\"button\">Quiz Submissions</button>\n                </a>\n            </div>\n        </div>\n        <div class=\"home-category\">\n            <div class=\"home-category-title bg-dark text-white\" style=\"width: 100%; padding: 5px 0px;\">\n                <h2>Admin Controls</h2>\n            </div>\n            <div class=\"home-category-element\">\n                <a class=\"\" [routerLink]=\"['/',currentEng_id, 'AdminEditusersComponent']\">\n                    <button class=\"btn btn-outline-warning btn-lg btn-outline-warning-hover-side-shadow\" [disabled]=\"!currentUser.admin_permissions && !currentUser.admin_owner\" type=\"button\">User Permissions</button>\n                </a>\n                <a class=\"\" [routerLink]=\"['/',currentEng_id, 'AdminEditengagements']\">\n                    <button class=\"btn btn-outline-warning btn-lg btn-outline-warning-hover-side-shadow\" [disabled]=\"!currentUser.admin_permissions && !currentUser.admin_owner\" type=\"button\">Edit Engagements</button>\n                </a>\n            </div>\n        </div>\n    </div>\n</div>"
+module.exports = "<div *ngIf='currentUser && currentUser.admin' class=\"quiz-selection element-animation-fadeIn\" align=\"center\" id=\"body_fadeOut\">\n    <div style=\"height: 10%; justify-content: center; display: flex; flex-direction: column;flex-wrap: wrap;\">\n        <h1 class=\"text-center\">Welcome, {{currentUser.first_name}} {{currentUser.last_name}}</h1>\n    </div>\n    <div class=\"home-main\" id=\"homeCategories\" *ngIf=\"currentEng\">\n        <div class=\"home-category\">\n            <div class=\"home-category-title bg-dark text-white\" style=\"width: 100%; padding: 5px 0px;\">\n                <h2>Grader</h2>\n            </div>\n            <div class=\"home-category-element\">\n                <a class=\"\" [routerLink]=\"['/', currentEng_id, 'adminhomegrade']\">\n                    <button *ngIf=\"gradings_counter>0\" class=\"btn btn-outline-success btn-outline-success-hover-side-shadow btn-lg \" [disabled]=\"!currentUser.admin_grader && !currentUser.admin_owner\" type=\"button\">Grade a Quiz ({{gradings_counter}})</button>\n                    <button *ngIf=\"!gradings_counter || gradings_counter<1\" class=\"btn btn-outline-success btn-lg \" disabled type=\"button\">No quizzes to grade</button>\n                </a>\n            </div>\n        </div>\n        <div class=\"home-category\">\n            <div class=\"home-category-title bg-dark text-white\" style=\"width: 100%; padding: 5px 0px;\">\n                <h2>Editor</h2>\n            </div>\n            <div class=\"home-category-element\">\n                <a class=\"\" [routerLink]=\"['/',currentEng_id, 'admincreatequiz']\">\n                    <button class=\"btn btn-outline-info btn-lg btn-outline-info-hover-side-shadow\" type=\"button\" [disabled]=\"!currentUser.admin_editor && !currentUser.admin_owner\">Create a Quiz</button>\n                </a>\n                <a class=\"\" [routerLink]=\"['/',currentEng_id, 'adminhomeedit']\">\n                    <button class=\"btn btn-lg btn-outline-info btn-outline-info-hover-side-shadow\" type=\"button\" [disabled]=\"!currentUser.admin_editor && !currentUser.admin_owner\">Edit a Quiz</button>\n                </a>\n            </div>\n        </div>\n        <div class=\"home-category\">\n            <div class=\"home-category-title bg-dark text-white\" style=\"width: 100%; padding: 5px 0px;\">\n                <h2>Quiz Controls</h2>\n            </div>\n            <div class=\"home-category-element\">\n                <a class=\"\" [routerLink]=\"['/',currentEng_id, 'AdminEditpermissions']\">\n                    <button class=\"btn btn-outline-secondary btn-lg btn-outline-secondary-hover-side-shadow\" [disabled]=\"!currentUser.admin_permissions && !currentUser.admin_owner\" type=\"button\">Quiz Permissions</button>\n                </a>\n                <a class=\"\" [routerLink]=\"['/',currentEng_id, 'AdminEditsubmissions']\">\n                    <button class=\"btn btn-outline-secondary btn-lg btn-outline-secondary-hover-side-shadow\" [disabled]=\"!currentUser.admin_permissions && !currentUser.admin_owner\" type=\"button\">Quiz Submissions</button>\n                </a>\n            </div>\n        </div>\n        <div class=\"home-category\">\n            <div class=\"home-category-title bg-dark text-white\" style=\"width: 100%; padding: 5px 0px;\">\n                <h2>Admin Controls</h2>\n            </div>\n            <div class=\"home-category-element\">\n                <a class=\"\" [routerLink]=\"['/',currentEng_id, 'AdminEditusersComponent']\">\n                    <button class=\"btn btn-outline-warning btn-lg btn-outline-warning-hover-side-shadow\" [disabled]=\"!currentUser.admin_permissions && !currentUser.admin_owner\" type=\"button\">User Permissions</button>\n                </a>\n                <a class=\"\" [routerLink]=\"['/',currentEng_id, 'AdminEditengagements']\">\n                    <button class=\"btn btn-outline-warning btn-lg btn-outline-warning-hover-side-shadow\" [disabled]=\"!currentUser.admin_permissions && !currentUser.admin_owner\" type=\"button\">Edit Engagements</button>\n                </a>\n                <a class=\"\" [routerLink]=\"['/', 'log_event']\">\n                    <button class=\"btn btn-outline-warning btn-lg btn-outline-warning-hover-side-shadow\" [disabled]=\"!currentUser.admin_permissions && !currentUser.admin_owner\" type=\"button\">Event Log</button>\n                </a>\n            </div>\n        </div>\n    </div>\n</div>"
 
 /***/ }),
 
@@ -4805,23 +4813,25 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
 /* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
 /* harmony import */ var _auth_auth_component__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./auth/auth.component */ "./src/app/auth/auth.component.ts");
-/* harmony import */ var _admin_createquiz_admin_createquiz_component__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./admin-createquiz/admin-createquiz.component */ "./src/app/admin-createquiz/admin-createquiz.component.ts");
-/* harmony import */ var _admin_editengagements_admin_editengagements_component__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./admin-editengagements/admin-editengagements.component */ "./src/app/admin-editengagements/admin-editengagements.component.ts");
-/* harmony import */ var _admin_editpermissions_admin_editpermissions_component__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./admin-editpermissions/admin-editpermissions.component */ "./src/app/admin-editpermissions/admin-editpermissions.component.ts");
-/* harmony import */ var _admin_editquiz_admin_editquiz_component__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./admin-editquiz/admin-editquiz.component */ "./src/app/admin-editquiz/admin-editquiz.component.ts");
-/* harmony import */ var _admin_editsubmissions_admin_editsubmissions_component__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./admin-editsubmissions/admin-editsubmissions.component */ "./src/app/admin-editsubmissions/admin-editsubmissions.component.ts");
-/* harmony import */ var _admin_editusers_admin_editusers_component__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./admin-editusers/admin-editusers.component */ "./src/app/admin-editusers/admin-editusers.component.ts");
-/* harmony import */ var _admin_grade_admin_grade_component__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./admin-grade/admin-grade.component */ "./src/app/admin-grade/admin-grade.component.ts");
-/* harmony import */ var _admin_home_admin_home_component__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./admin-home/admin-home.component */ "./src/app/admin-home/admin-home.component.ts");
-/* harmony import */ var _admin_home_edit_admin_home_edit_component__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./admin-home-edit/admin-home-edit.component */ "./src/app/admin-home-edit/admin-home-edit.component.ts");
-/* harmony import */ var _admin_home_grade_admin_home_grade_component__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./admin-home-grade/admin-home-grade.component */ "./src/app/admin-home-grade/admin-home-grade.component.ts");
-/* harmony import */ var _home_home_component__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./home/home.component */ "./src/app/home/home.component.ts");
-/* harmony import */ var _index_index_component__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./index/index.component */ "./src/app/index/index.component.ts");
-/* harmony import */ var _oops_oops_component__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./oops/oops.component */ "./src/app/oops/oops.component.ts");
-/* harmony import */ var _quiz_quiz_component__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./quiz/quiz.component */ "./src/app/quiz/quiz.component.ts");
-/* harmony import */ var _user_user_component__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ./user/user.component */ "./src/app/user/user.component.ts");
-/* harmony import */ var _notfound_notfound_component__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ./notfound/notfound.component */ "./src/app/notfound/notfound.component.ts");
-/* harmony import */ var _register_register_component__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ./register/register.component */ "./src/app/register/register.component.ts");
+/* harmony import */ var _connector_connector_component__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./connector/connector.component */ "./src/app/connector/connector.component.ts");
+/* harmony import */ var _admin_createquiz_admin_createquiz_component__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./admin-createquiz/admin-createquiz.component */ "./src/app/admin-createquiz/admin-createquiz.component.ts");
+/* harmony import */ var _admin_editengagements_admin_editengagements_component__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./admin-editengagements/admin-editengagements.component */ "./src/app/admin-editengagements/admin-editengagements.component.ts");
+/* harmony import */ var _admin_editpermissions_admin_editpermissions_component__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./admin-editpermissions/admin-editpermissions.component */ "./src/app/admin-editpermissions/admin-editpermissions.component.ts");
+/* harmony import */ var _admin_editquiz_admin_editquiz_component__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./admin-editquiz/admin-editquiz.component */ "./src/app/admin-editquiz/admin-editquiz.component.ts");
+/* harmony import */ var _admin_editsubmissions_admin_editsubmissions_component__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./admin-editsubmissions/admin-editsubmissions.component */ "./src/app/admin-editsubmissions/admin-editsubmissions.component.ts");
+/* harmony import */ var _admin_editusers_admin_editusers_component__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./admin-editusers/admin-editusers.component */ "./src/app/admin-editusers/admin-editusers.component.ts");
+/* harmony import */ var _admin_grade_admin_grade_component__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./admin-grade/admin-grade.component */ "./src/app/admin-grade/admin-grade.component.ts");
+/* harmony import */ var _admin_home_admin_home_component__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./admin-home/admin-home.component */ "./src/app/admin-home/admin-home.component.ts");
+/* harmony import */ var _admin_home_edit_admin_home_edit_component__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./admin-home-edit/admin-home-edit.component */ "./src/app/admin-home-edit/admin-home-edit.component.ts");
+/* harmony import */ var _admin_home_grade_admin_home_grade_component__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./admin-home-grade/admin-home-grade.component */ "./src/app/admin-home-grade/admin-home-grade.component.ts");
+/* harmony import */ var _home_home_component__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./home/home.component */ "./src/app/home/home.component.ts");
+/* harmony import */ var _index_index_component__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./index/index.component */ "./src/app/index/index.component.ts");
+/* harmony import */ var _oops_oops_component__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./oops/oops.component */ "./src/app/oops/oops.component.ts");
+/* harmony import */ var _quiz_quiz_component__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ./quiz/quiz.component */ "./src/app/quiz/quiz.component.ts");
+/* harmony import */ var _user_user_component__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ./user/user.component */ "./src/app/user/user.component.ts");
+/* harmony import */ var _notfound_notfound_component__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ./notfound/notfound.component */ "./src/app/notfound/notfound.component.ts");
+/* harmony import */ var _register_register_component__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ./register/register.component */ "./src/app/register/register.component.ts");
+
 
 
 
@@ -4844,24 +4854,25 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var routes = [
-    { path: '', component: _index_index_component__WEBPACK_IMPORTED_MODULE_15__["IndexComponent"] },
-    { path: 'register', component: _register_register_component__WEBPACK_IMPORTED_MODULE_20__["RegisterComponent"] },
-    { path: ':eng/home', component: _home_home_component__WEBPACK_IMPORTED_MODULE_14__["HomeComponent"] },
-    { path: ':eng/topic/:topic_id/user/:email/quiz/:quiz_id/question/:question_num', component: _quiz_quiz_component__WEBPACK_IMPORTED_MODULE_17__["QuizComponent"] },
-    { path: 'user/:id', component: _user_user_component__WEBPACK_IMPORTED_MODULE_18__["UserComponent"] },
-    { path: ':eng/admin', component: _admin_home_admin_home_component__WEBPACK_IMPORTED_MODULE_11__["AdminHomeComponent"] },
-    { path: ':eng/adminhomegrade', component: _admin_home_grade_admin_home_grade_component__WEBPACK_IMPORTED_MODULE_13__["AdminHomeGradeComponent"] },
-    { path: ':eng/adminhomeedit', component: _admin_home_edit_admin_home_edit_component__WEBPACK_IMPORTED_MODULE_12__["AdminHomeEditComponent"] },
-    { path: ':eng/admincreatequiz', component: _admin_createquiz_admin_createquiz_component__WEBPACK_IMPORTED_MODULE_4__["AdminCreatequizComponent"] },
-    { path: ':eng/AdminEditengagements', component: _admin_editengagements_admin_editengagements_component__WEBPACK_IMPORTED_MODULE_5__["AdminEditengagementsComponent"] },
-    { path: ':eng/AdminEditpermissions', component: _admin_editpermissions_admin_editpermissions_component__WEBPACK_IMPORTED_MODULE_6__["AdminEditpermissionsComponent"] },
-    { path: ':eng/AdminEditquiz/:topicID', component: _admin_editquiz_admin_editquiz_component__WEBPACK_IMPORTED_MODULE_7__["AdminEditquizComponent"] },
-    { path: ':eng/AdminEditsubmissions', component: _admin_editsubmissions_admin_editsubmissions_component__WEBPACK_IMPORTED_MODULE_8__["AdminEditsubmissionsComponent"] },
-    { path: ':eng/AdminEditusersComponent', component: _admin_editusers_admin_editusers_component__WEBPACK_IMPORTED_MODULE_9__["AdminEditusersComponent"] },
-    { path: ':eng/grade/:target_id/:action', component: _admin_grade_admin_grade_component__WEBPACK_IMPORTED_MODULE_10__["AdminGradeComponent"] },
+    { path: '', component: _index_index_component__WEBPACK_IMPORTED_MODULE_16__["IndexComponent"] },
+    { path: 'register', component: _register_register_component__WEBPACK_IMPORTED_MODULE_21__["RegisterComponent"] },
+    { path: ':eng/home', component: _home_home_component__WEBPACK_IMPORTED_MODULE_15__["HomeComponent"] },
+    { path: ':eng/topic/:topic_id/user/:email/quiz/:quiz_id/question/:question_num', component: _quiz_quiz_component__WEBPACK_IMPORTED_MODULE_18__["QuizComponent"] },
+    { path: 'user/:id', component: _user_user_component__WEBPACK_IMPORTED_MODULE_19__["UserComponent"] },
+    { path: ':eng/admin', component: _admin_home_admin_home_component__WEBPACK_IMPORTED_MODULE_12__["AdminHomeComponent"] },
+    { path: ':eng/adminhomegrade', component: _admin_home_grade_admin_home_grade_component__WEBPACK_IMPORTED_MODULE_14__["AdminHomeGradeComponent"] },
+    { path: ':eng/adminhomeedit', component: _admin_home_edit_admin_home_edit_component__WEBPACK_IMPORTED_MODULE_13__["AdminHomeEditComponent"] },
+    { path: ':eng/admincreatequiz', component: _admin_createquiz_admin_createquiz_component__WEBPACK_IMPORTED_MODULE_5__["AdminCreatequizComponent"] },
+    { path: ':eng/AdminEditengagements', component: _admin_editengagements_admin_editengagements_component__WEBPACK_IMPORTED_MODULE_6__["AdminEditengagementsComponent"] },
+    { path: ':eng/AdminEditpermissions', component: _admin_editpermissions_admin_editpermissions_component__WEBPACK_IMPORTED_MODULE_7__["AdminEditpermissionsComponent"] },
+    { path: ':eng/AdminEditquiz/:topicID', component: _admin_editquiz_admin_editquiz_component__WEBPACK_IMPORTED_MODULE_8__["AdminEditquizComponent"] },
+    { path: ':eng/AdminEditsubmissions', component: _admin_editsubmissions_admin_editsubmissions_component__WEBPACK_IMPORTED_MODULE_9__["AdminEditsubmissionsComponent"] },
+    { path: ':eng/AdminEditusersComponent', component: _admin_editusers_admin_editusers_component__WEBPACK_IMPORTED_MODULE_10__["AdminEditusersComponent"] },
+    { path: ':eng/grade/:target_id/:action', component: _admin_grade_admin_grade_component__WEBPACK_IMPORTED_MODULE_11__["AdminGradeComponent"] },
     { path: 'auth/login/aad/callback', component: _auth_auth_component__WEBPACK_IMPORTED_MODULE_3__["AuthComponent"] },
-    { path: 'oops', component: _oops_oops_component__WEBPACK_IMPORTED_MODULE_16__["OopsComponent"] },
-    { path: '**', component: _notfound_notfound_component__WEBPACK_IMPORTED_MODULE_19__["NotfoundComponent"] }
+    { path: 'oops', component: _oops_oops_component__WEBPACK_IMPORTED_MODULE_17__["OopsComponent"] },
+    { path: 'log_event', component: _connector_connector_component__WEBPACK_IMPORTED_MODULE_4__["ConnectorComponent"] },
+    { path: '**', component: _notfound_notfound_component__WEBPACK_IMPORTED_MODULE_20__["NotfoundComponent"] }
 ];
 var AppRoutingModule = /** @class */ (function () {
     function AppRoutingModule() {
@@ -5014,6 +5025,8 @@ var AppComponent = /** @class */ (function () {
         }).catch(function (error) {
             this.popup_error_message = error;
             // console.log(error);
+            var obj = {};
+            this._c.logEvent(error, "ERROR", "app.component", "signIn");
         });
     };
     AppComponent.prototype.signOut = function () {
@@ -5030,18 +5043,20 @@ var AppComponent = /** @class */ (function () {
                 that._c.storeUser(data);
             });
         }).catch(function (error) {
+            this._c.logEvent(error, "ERROR", "app.component", "acquireTokenPopupAndCallMSGraph");
             // console.log(error);
             // Upon acquireTokenSilent failure (due to consent or interaction or login required ONLY)
             // Call acquireTokenPopup(popup window) 
             if (that.requiresInteraction(error.errorCode)) {
                 that.myMSALObj.acquireTokenPopup(that.requestObj).then(function (tokenResponse) {
                     that.callMSGraph(that.graphConfig.graphMeEndpoint, tokenResponse.accessToken, function (data) {
-                        console.log("THIS.USER_OBJECT =>", data);
+                        // console.log("THIS.USER_OBJECT =>", data)
                         that.user_obj = data;
                         that._c.storeUser(data);
                     });
                 }).catch(function (error) {
                     // console.log(error);
+                    this._c.logEvent(error, "ERROR", "app.component", "that.myMSALObj.acquireTokenPopup");
                 });
             }
         });
@@ -5079,6 +5094,7 @@ var AppComponent = /** @class */ (function () {
             // console.log(error);
             // Upon acquireTokenSilent failure (due to consent or interaction or login required ONLY)
             // Call acquireTokenRedirect
+            this._c.logEvent(error, "ERROR", "app.component", "acquireTokenRedirectAndCallMSGraph");
             if (this.requiresInteraction(error.errorCode)) {
                 this.myMSALObj.acquireTokenRedirect(this.requestObj);
             }
@@ -5087,6 +5103,7 @@ var AppComponent = /** @class */ (function () {
     AppComponent.prototype.authRedirectCallBack = function (error, response) {
         if (error) {
             // console.log(error);
+            this._c.logEvent(error, "ERROR", "app.component", "authRedirectCallBack");
         }
         else {
             if (response.tokenType === "access_token") {
@@ -5103,6 +5120,7 @@ var AppComponent = /** @class */ (function () {
         if (!errorCode || !errorCode.length) {
             return false;
         }
+        this._c.logEvent(errorCode, "ERROR", "app.component", "requiresInteraction");
         return errorCode === "consent_required" ||
             errorCode === "interaction_required" ||
             errorCode === "login_required";
@@ -5184,6 +5202,7 @@ var AppComponent = /** @class */ (function () {
                     _this._r.navigateByUrl('/');
                 })
                     .catch(function (err) {
+                    this._c.logEvent(err, "ERROR", "app.component", "getAvailableEngagements");
                     // console.log( "ERR =>", err)
                 });
             }
@@ -5971,6 +5990,58 @@ var ConnectorService = /** @class */ (function () {
             reader.onerror = function (error) { return reject(error); };
         });
     };
+    ConnectorService.prototype.logEvent = function (log_event, log_level, host, line) {
+        //
+        var that = this;
+        //     [log_level]
+        //     ,[log_time]
+        //     ,[log_event]
+        //     ,[pid]
+        //     ,[webapp]
+        //     ,[event_time]
+        //     ,[host]
+        //     ,[user_id]
+        //     ,[line_number]
+        var obj = {
+            log_event: log_event,
+            log_level: log_level,
+            host: host,
+            line: line,
+            user_id: this.cur_user['user_id'],
+            event_time: new Date()
+        };
+        return new Promise(function (resolve, reject) {
+            that.http.post('/api/logEvent', obj).subscribe(function (res) {
+                console.log("/api/logEvent RESULT =>", res);
+                resolve(res);
+            }, function (err) {
+                reject(err);
+            });
+        });
+    };
+    ConnectorService.prototype.getEventLog = function (user_email) {
+        var that = this;
+        return new Promise(function (resolve, reject) {
+            that.http.post('/api/getEventLog', user_email).subscribe(function (res) {
+                resolve(res);
+            }, function (err) {
+                reject(err);
+            });
+        });
+    };
+    ConnectorService.prototype.getEventLogByID = function (log_id) {
+        var that = this;
+        var obj = {
+            log_id: log_id,
+        };
+        return new Promise(function (resolve, reject) {
+            that.http.post('/api/getEventLogByID', obj).subscribe(function (res) {
+                resolve(res);
+            }, function (err) {
+                reject(err);
+            });
+        });
+    };
     ConnectorService = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Injectable"])({
             providedIn: 'root'
@@ -5991,7 +6062,7 @@ var ConnectorService = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJzcmMvYXBwL2Nvbm5lY3Rvci9jb25uZWN0b3IuY29tcG9uZW50LmNzcyJ9 */"
+module.exports = "@-webkit-keyframes placeHolderShimmer{\n    0%{\n        background-position: -468px 0\n    }\n    100%{\n        background-position: 468px 0\n    }\n}\n\n@keyframes placeHolderShimmer{\n    0%{\n        background-position: -468px 0\n    }\n    100%{\n        background-position: 468px 0\n    }\n}\n\n.linear-background {\n    -webkit-animation-duration: 1s;\n            animation-duration: 1s;\n    -webkit-animation-fill-mode: forwards;\n            animation-fill-mode: forwards;\n    -webkit-animation-iteration-count: infinite;\n            animation-iteration-count: infinite;\n    -webkit-animation-name: placeHolderShimmer;\n            animation-name: placeHolderShimmer;\n    -webkit-animation-timing-function: linear;\n            animation-timing-function: linear;\n    background: #f6f7f8;\n    background: linear-gradient(to right, #eeeeee 8%, #dddddd 18%, #eeeeee 33%);\n    background-size: 1000px 104px;\n    height: 200px;\n    position: relative;\n    overflow: hidden;\n}\n\n.inter-draw{\n  background: #FFF;\n  width: 100%;\n  height: 100px;\n  position: absolute;\n  top: 100px;\n}\n\n.inter-right--top{\n  background: #FFF;\n  width: 100%;\n  height: 20px;\n  position: absolute;\n  top: 20px;\n  left: 100px;\n}\n\n.inter-right--bottom{\n  background: #FFF;\n  width: 100%;\n  height: 50px;\n  position: absolute;\n  top: 60px;\n  left: 100px;\n}\n\n.inter-crop{\n  background: #FFF;\n  width: 20px;\n  height: 100%;\n  position: absolute;\n  top: 0;\n  left: 100px;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNyYy9hcHAvY29ubmVjdG9yL2Nvbm5lY3Rvci5jb21wb25lbnQuY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBO0lBQ0k7UUFDSTtJQUNKO0lBQ0E7UUFDSTtJQUNKO0FBQ0o7O0FBUEE7SUFDSTtRQUNJO0lBQ0o7SUFDQTtRQUNJO0lBQ0o7QUFDSjs7QUFFQTtJQUNJLDhCQUFzQjtZQUF0QixzQkFBc0I7SUFDdEIscUNBQTZCO1lBQTdCLDZCQUE2QjtJQUM3QiwyQ0FBbUM7WUFBbkMsbUNBQW1DO0lBQ25DLDBDQUFrQztZQUFsQyxrQ0FBa0M7SUFDbEMseUNBQWlDO1lBQWpDLGlDQUFpQztJQUNqQyxtQkFBbUI7SUFDbkIsMkVBQTJFO0lBQzNFLDZCQUE2QjtJQUM3QixhQUFhO0lBQ2Isa0JBQWtCO0lBQ2xCLGdCQUFnQjtBQUNwQjs7QUFDQTtFQUNFLGdCQUFnQjtFQUNoQixXQUFXO0VBQ1gsYUFBYTtFQUNiLGtCQUFrQjtFQUNsQixVQUFVO0FBQ1o7O0FBQ0E7RUFDRSxnQkFBZ0I7RUFDaEIsV0FBVztFQUNYLFlBQVk7RUFDWixrQkFBa0I7RUFDbEIsU0FBUztFQUNULFdBQVc7QUFDYjs7QUFDQTtFQUNFLGdCQUFnQjtFQUNoQixXQUFXO0VBQ1gsWUFBWTtFQUNaLGtCQUFrQjtFQUNsQixTQUFTO0VBQ1QsV0FBVztBQUNiOztBQUNBO0VBQ0UsZ0JBQWdCO0VBQ2hCLFdBQVc7RUFDWCxZQUFZO0VBQ1osa0JBQWtCO0VBQ2xCLE1BQU07RUFDTixXQUFXO0FBQ2IiLCJmaWxlIjoic3JjL2FwcC9jb25uZWN0b3IvY29ubmVjdG9yLmNvbXBvbmVudC5jc3MiLCJzb3VyY2VzQ29udGVudCI6WyJAa2V5ZnJhbWVzIHBsYWNlSG9sZGVyU2hpbW1lcntcbiAgICAwJXtcbiAgICAgICAgYmFja2dyb3VuZC1wb3NpdGlvbjogLTQ2OHB4IDBcbiAgICB9XG4gICAgMTAwJXtcbiAgICAgICAgYmFja2dyb3VuZC1wb3NpdGlvbjogNDY4cHggMFxuICAgIH1cbn1cblxuLmxpbmVhci1iYWNrZ3JvdW5kIHtcbiAgICBhbmltYXRpb24tZHVyYXRpb246IDFzO1xuICAgIGFuaW1hdGlvbi1maWxsLW1vZGU6IGZvcndhcmRzO1xuICAgIGFuaW1hdGlvbi1pdGVyYXRpb24tY291bnQ6IGluZmluaXRlO1xuICAgIGFuaW1hdGlvbi1uYW1lOiBwbGFjZUhvbGRlclNoaW1tZXI7XG4gICAgYW5pbWF0aW9uLXRpbWluZy1mdW5jdGlvbjogbGluZWFyO1xuICAgIGJhY2tncm91bmQ6ICNmNmY3Zjg7XG4gICAgYmFja2dyb3VuZDogbGluZWFyLWdyYWRpZW50KHRvIHJpZ2h0LCAjZWVlZWVlIDglLCAjZGRkZGRkIDE4JSwgI2VlZWVlZSAzMyUpO1xuICAgIGJhY2tncm91bmQtc2l6ZTogMTAwMHB4IDEwNHB4O1xuICAgIGhlaWdodDogMjAwcHg7XG4gICAgcG9zaXRpb246IHJlbGF0aXZlO1xuICAgIG92ZXJmbG93OiBoaWRkZW47XG59XG4uaW50ZXItZHJhd3tcbiAgYmFja2dyb3VuZDogI0ZGRjtcbiAgd2lkdGg6IDEwMCU7XG4gIGhlaWdodDogMTAwcHg7XG4gIHBvc2l0aW9uOiBhYnNvbHV0ZTtcbiAgdG9wOiAxMDBweDtcbn1cbi5pbnRlci1yaWdodC0tdG9we1xuICBiYWNrZ3JvdW5kOiAjRkZGO1xuICB3aWR0aDogMTAwJTtcbiAgaGVpZ2h0OiAyMHB4O1xuICBwb3NpdGlvbjogYWJzb2x1dGU7XG4gIHRvcDogMjBweDtcbiAgbGVmdDogMTAwcHg7XG59XG4uaW50ZXItcmlnaHQtLWJvdHRvbXtcbiAgYmFja2dyb3VuZDogI0ZGRjtcbiAgd2lkdGg6IDEwMCU7XG4gIGhlaWdodDogNTBweDtcbiAgcG9zaXRpb246IGFic29sdXRlO1xuICB0b3A6IDYwcHg7XG4gIGxlZnQ6IDEwMHB4O1xufVxuLmludGVyLWNyb3B7XG4gIGJhY2tncm91bmQ6ICNGRkY7XG4gIHdpZHRoOiAyMHB4O1xuICBoZWlnaHQ6IDEwMCU7XG4gIHBvc2l0aW9uOiBhYnNvbHV0ZTtcbiAgdG9wOiAwO1xuICBsZWZ0OiAxMDBweDtcbn0iXX0= */"
 
 /***/ }),
 
@@ -6002,7 +6073,7 @@ module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<p>\n  connector works!\n</p>\n"
+module.exports = "\n<table class=\"table table-borderless\" *ngIf=\"logs.length>0\">\n    <thead class=\"thead-dark \">\n      <tr>\n        <th>Event ID</th>\n        <th>Level</th>\n        <th>Content</th>\n        <th>Host</th>\n        <th>Line</th>\n        <th>User ID</th>\n        <th>Time</th>\n      </tr>\n    </thead>\n    <tbody>\n      <tr *ngFor=\"let el of logs; let i = index\" [ngClass]=\"{\n        'alert-warning': ready[el.log_id] && el.log_level == 'WARNING',\n        'alert-danger': ready[el.log_id] && el.log_level == 'ERROR'\n      }\">\n        <td *ngIf=\"!ready[el.log_id]\" colspan=\"7\">\n            <div class=\"alert alert-warning text-center\">Loading</div>\n        </td>\n        <th scope=\"row\" *ngIf=\"ready[el.log_id]\">{{el.log_id}}</th>\n        <td *ngIf=\"ready[el.log_id]\">{{el.log_level}}</td>\n        <td *ngIf=\"ready[el.log_id]\">{{el.log_event}}</td>\n        <td *ngIf=\"ready[el.log_id]\">{{el.host}}</td>\n        <td *ngIf=\"ready[el.log_id]\">{{el.line_number}}</td>\n        <td *ngIf=\"ready[el.log_id]\">{{el.user_id}}</td>\n        <td *ngIf=\"ready[el.log_id]\">{{el.event_time | date:'medium'}}</td>\n      </tr>\n    </tbody>\n  </table>"
 
 /***/ }),
 
@@ -6018,12 +6089,81 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ConnectorComponent", function() { return ConnectorComponent; });
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
+/* harmony import */ var _connector_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../connector.service */ "./src/app/connector.service.ts");
+/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/common */ "./node_modules/@angular/common/fesm5/common.js");
+
+
+
 
 
 var ConnectorComponent = /** @class */ (function () {
-    function ConnectorComponent() {
+    function ConnectorComponent(_ConnectorService, location, _route, _r) {
+        var _this = this;
+        this._ConnectorService = _ConnectorService;
+        this.location = location;
+        this._route = _route;
+        this._r = _r;
+        this.logs = [];
+        this.cur_list = [];
+        this.currentUser = null;
+        this.curIndex = null;
+        this.pages = 0;
+        this.ready = {};
+        this._ConnectorService.user.subscribe(function (user) {
+            if (user) {
+                _this.currentUser = user;
+                var obj = {
+                    'email': user.email
+                };
+                console.log(new Date());
+                _this._ConnectorService.getEventLog(obj).then(function (res) {
+                    console.log(res);
+                    console.log(new Date());
+                    _this.orginizeList(res['body']);
+                }).catch(function (err) {
+                    console.log("ERROR =>", err);
+                });
+            }
+            if (user && !user.admin) {
+                _this._r.navigate(["/oops"]);
+            }
+        });
     }
     ConnectorComponent.prototype.ngOnInit = function () {
+    };
+    ConnectorComponent.prototype.orginizeList = function (list) {
+        var _this = this;
+        var counter = 1;
+        var array = [];
+        var _loop_1 = function (el) {
+            this_1.curIndex++;
+            this_1.logs[el] = {};
+            this_1.cur_list[el] = {};
+            this_1.logs[el].log_id = list[el]['log_id'];
+            if (this_1.curIndex < 100) {
+                this_1.cur_list[el].log_id = list[el]['log_id'];
+            }
+            this_1._ConnectorService.getEventLogByID(list[el]['log_id']).then(function (res) {
+                if (res && res['status'] == 'success') {
+                    // console.log(list[el]['log_id'])
+                    _this.logs[el] = res['body'][0];
+                    _this.logs[el]['log_event'] = unescape(_this.logs[el]['log_event']);
+                    _this.logs[el]['line_number'] = unescape(_this.logs[el]['line_number']);
+                    _this.ready[list[el]['log_id']] = true;
+                    // if(this.cur_list[Number(el)] && Number(el) < 100){
+                    //   console.log(el)
+                    //   this.cur_list[el] = this.logs[el];
+                    // }
+                }
+            });
+        };
+        var this_1 = this;
+        for (var el in list) {
+            _loop_1(el);
+        }
+        console.log(this.logs);
+        console.log(this.cur_list);
     };
     ConnectorComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
@@ -6031,7 +6171,7 @@ var ConnectorComponent = /** @class */ (function () {
             template: __webpack_require__(/*! ./connector.component.html */ "./src/app/connector/connector.component.html"),
             styles: [__webpack_require__(/*! ./connector.component.css */ "./src/app/connector/connector.component.css")]
         }),
-        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [])
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_connector_service__WEBPACK_IMPORTED_MODULE_3__["ConnectorService"], _angular_common__WEBPACK_IMPORTED_MODULE_4__["Location"], _angular_router__WEBPACK_IMPORTED_MODULE_2__["ActivatedRoute"], _angular_router__WEBPACK_IMPORTED_MODULE_2__["Router"]])
     ], ConnectorComponent);
     return ConnectorComponent;
 }());
@@ -6239,6 +6379,7 @@ var HomeComponent = /** @class */ (function () {
         }
         if (!eng_exists_bool) {
             this._r.navigateByUrl('/oops');
+            this._ConnectorService.logEvent("such engagement doesn\tt exist", "ERROR", "home.component", "getEngagementByEngId");
         }
     };
     HomeComponent.prototype.getAllCategoriesAndTopicsByProfileId = function (profile_id) {
@@ -6248,6 +6389,7 @@ var HomeComponent = /** @class */ (function () {
             _this.cats_n_tops_raw = data;
             _this.filter_categories_and_topics_by_eng_id(_this.cats_n_tops_raw);
         }).catch(function (error) {
+            this._ConnectorService.logEvent(error, "ERROR", "home.component", "getAllCategoriesAndTopicsByProfileId");
         });
     };
     HomeComponent.prototype.getEngagementByEngId = function (currentEng_id) {
@@ -6266,6 +6408,7 @@ var HomeComponent = /** @class */ (function () {
             }
             _this.current_eng = data[0];
         }).catch(function (error) {
+            this._ConnectorService.logEvent(error, "ERROR", "home.component", "getEngagementByEngId");
         });
     };
     HomeComponent.prototype.filter_categories_and_topics_by_eng_id = function (data) {
@@ -6574,8 +6717,8 @@ function log_event(logLevel, event, functionName, event_time) {
         stringEscaped = mysql_real_escape_string(event);
     } catch (error) {
         stringEscaped = event;
-        console.log('ERROR! CANNOT escape event string!');
-        console.log(error);
+        // console.log('ERROR! CANNOT escape event string!');
+        // console.log(error);
     }
 
     if (event_time == undefined) {
@@ -6596,7 +6739,7 @@ function log_event(logLevel, event, functionName, event_time) {
 
     let logValues = `'${logLevel}', '${stringEscaped}', 'Knowledge Assessment', '${functionName}', '${line_number}', ${event_time}`;
     dbLogWrite.log(logValues);
-    console.log(`${line_number} : ${event}`); // use non escaped string here in for log output. Otherwise string looks strange and hard to debug.
+    // console.log(`${line_number} : ${event}`); // use non escaped string here in for log output. Otherwise string looks strange and hard to debug.
 };
 
 function format_quiz_table(object) {
@@ -6953,7 +7096,7 @@ function building_dont_use(object) {
                     throw tryError;
                 }
                 results.push(questions);
-                console.log(results)
+                // console.log(results)
                 return results;
             } else {
                 //debugLog("object empty");
@@ -7080,8 +7223,8 @@ function joinUsersByTopicId(list) {
         for (let u in list) {
             // if (list[u]['profile_id']) {
             //     if (list[u]['profile_id'] == 727) {
-            //         console.log("==================list[u]['profile_id'] == 727===========================")
-            //         console.log(list[u])
+                    console.log("==================list[u]['profile_id'] == 727===========================")
+                    console.log(list[u])
             //     }
             // }
             if (typeof(list[u]) !== 'object' || list[u]['soft_delete']) {
@@ -7193,13 +7336,13 @@ function gradeValidate(body) {
             gradeValue = '0';
         }
         /*
-        console.log(`gradeValue >>>> ${gradeValue}`)
-        console.log(gradeValue)
-        console.log(typeof gradeValue)
-        console.log(`grade_input >>>> ${grade_input}`)
-        console.log(`escape(grade_input) >>>> ${escape(grade_input)}`)
-        console.log(`submission_id >>>> ${submission_id}`)
-        console.log(`keys[i] >>>> ${keys[i]}`)
+        // console.log(`gradeValue >>>> ${gradeValue}`)
+        // console.log(gradeValue)
+        // console.log(typeof gradeValue)
+        // console.log(`grade_input >>>> ${grade_input}`)
+        // console.log(`escape(grade_input) >>>> ${escape(grade_input)}`)
+        // console.log(`submission_id >>>> ${submission_id}`)
+        // console.log(`keys[i] >>>> ${keys[i]}`)
         */
         // sanitize everything and then add to the final array
         gradeValue = escape(gradeValue);
@@ -7603,11 +7746,13 @@ var QuizComponent = /** @class */ (function () {
     QuizComponent.prototype.ngOnInit = function () {
     };
     QuizComponent.prototype.loadScripts = function () {
+        var _this = this;
         // You can load multiple scripts by just providing the key as argument into load method of the service
         this.dynamicScriptLoader.load('quizQuestionRender').then(function (data) {
             // Script Loaded Successfully
         }).catch(function (error) {
-            return console.log(error);
+            _this._ConnectorService.logEvent(error, "ERROR", "QuizComponent", "loadScripts");
+            console.log(error);
         });
     };
     QuizComponent.prototype.takeQuiz = function () {
@@ -7632,6 +7777,7 @@ var QuizComponent = /** @class */ (function () {
                 _this.reformatQuestion();
             }
         }).catch(function (error) {
+            this._ConnectorService.logEvent(error, "ERROR", "QuizComponent", "takeQuiz");
             // console.log(error)
         });
     };
@@ -7671,6 +7817,7 @@ var QuizComponent = /** @class */ (function () {
             // console.log("this.current_index =>", this.current_index)
             // console.log("this.total_length =>", this.total_length)
         }).catch(function (err) {
+            this._ConnectorService.logEvent(err, "ERROR", "QuizComponent", "getQuizLength");
             console.log("ERROR =>", err);
         });
     };
@@ -7761,6 +7908,7 @@ var QuizComponent = /** @class */ (function () {
                     }
                 }).catch(function (error) {
                     console.log(error);
+                    this._ConnectorService.logEvent(error, "ERROR", "QuizComponent", "submitAnswer");
                 });
             }
             if (this.question.display_type == 2) {
@@ -7800,6 +7948,7 @@ var QuizComponent = /** @class */ (function () {
                         }
                     }).catch(function (error) {
                         console.log(error);
+                        this._ConnectorService.logEvent(error, "ERROR", "QuizComponent", "submitAnswer");
                     });
                 }
             }
@@ -7832,6 +7981,7 @@ var QuizComponent = /** @class */ (function () {
                     }
                 }).catch(function (error) {
                     console.log(error);
+                    this._ConnectorService.logEvent(error, "ERROR", "QuizComponent", "submitAnswer");
                 });
             }
             if (this.question.display_type == 4) {
@@ -7883,6 +8033,7 @@ var QuizComponent = /** @class */ (function () {
                     }
                 }).catch(function (error) {
                     console.log(error);
+                    this._ConnectorService.logEvent(error, "ERROR", "QuizComponent", "submitAnswer");
                 });
             }
         }
