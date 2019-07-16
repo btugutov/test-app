@@ -1721,6 +1721,10 @@ var AdminEditpermissionsComponent = /** @class */ (function () {
         this.closeModal();
         this._ConnectorService.saveQuizPermissions(users, this.currentUser.email).then(function (res) {
             console.log("RES =>", res);
+            // console.log("this.all_users =>",this.sorted_users.all_users)
+            // console.log("this.all_users_original =>",this.all_users_original)
+            _this.all_users_original = lodash_cloneDeep__WEBPACK_IMPORTED_MODULE_5__(_this.sorted_users.all_users);
+            console.log(_this);
             _this.openModal('message', 'success');
         }).catch(function (err) {
             console.log(err);

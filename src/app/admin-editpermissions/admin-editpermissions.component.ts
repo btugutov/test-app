@@ -257,6 +257,10 @@ export class AdminEditpermissionsComponent implements OnInit {
     this.closeModal();
     this._ConnectorService.saveQuizPermissions(users, this.currentUser.email).then(res =>{
       console.log("RES =>", res)
+      // console.log("this.all_users =>",this.sorted_users.all_users)
+      // console.log("this.all_users_original =>",this.all_users_original)
+      this.all_users_original = cloneDeep(this.sorted_users.all_users);
+      console.log(this)
       this.openModal('message', 'success')
     }).catch(function(err){
       console.log(err)
