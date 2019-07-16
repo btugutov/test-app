@@ -43,7 +43,7 @@
         <li class="page-item" (click)="changePage(current_page - 1)" [hidden]="current_page<2"><button
             class="btn btn-outline-secondary btn-action-borderless">{{current_page - 1}}</button></li>
         <li class="page-item active">
-          <button class="btn btn-secondary btn-action-borderless shadow">{{current_page}}</button>
+          <button class="btn btn-dark btn-action-borderless shadow">{{current_page}}</button>
         </li>
         <li class="page-item" (click)="changePage(current_page + 1)" [hidden]="current_page+1 > pages"><button
             class="btn btn-outline-secondary btn-action-borderless">{{current_page + 1}}</button></li>
@@ -117,7 +117,7 @@
           <li class="page-item" (click)="changePage(current_page - 1)" [hidden]="current_page<2"><button
               class="btn btn-outline-secondary btn-action-borderless">{{current_page - 1}}</button></li>
           <li class="page-item active">
-            <button class="btn btn-secondary btn-action-borderless shadow">{{current_page}}</button>
+            <button class="btn btn-dark btn-action-borderless shadow">{{current_page}}</button>
           </li>
           <li class="page-item" (click)="changePage(current_page + 1)" [hidden]="current_page+1 > pages"><button
               class="btn btn-outline-secondary btn-action-borderless">{{current_page + 1}}</button></li>
