@@ -7,7 +7,7 @@
     <h3 *ngIf="first_request_status">{{ids.length}} entries</h3>
   </div>
     <nav aria-label="..." *ngIf="first_request_status" style="margin: auto 0px">
-      <ul class="pagination text-monospace">
+      <ul class="pagination ">
         <li class="page-item" [ngClass]="{'disabled': current_page < 2}">
           <button class="btn btn-outline-secondary btn-action-borderless" (click)="changePage(1)" [disabled]="current_page < 2"> <<
              </button> </li> 
@@ -29,7 +29,7 @@
     </nav>
     <!-- {{cur_num}}/{{end_num}} -->
     <div class="progress" *ngIf="first_request_status" style="width: 100%; border-radius: 0px;">
-        <div class="progress-bar shadow text-monospace" role="progressbar" style="height: 35px;" [style.width.%]="( (cur_num/end_num) * 100)"  style="transition: width .1s ease; background-color: #4f91cd">{{cur_num}}/{{end_num}}</div>
+        <div class="progress-bar shadow " role="progressbar" style="height: 35px;" [style.width.%]="( (cur_num/end_num) * 100)"  style="transition: width .1s ease; background-color: #4f91cd">{{cur_num}}/{{end_num}}</div>
       </div>
     <table class="table table-borderless" *ngIf="first_request_status">
       <thead class="thead-dark shadow">
@@ -51,7 +51,7 @@
           <td *ngIf="!ready[el.log_id]" colspan="7">
             <div class="alert alert-warning text-center" style="height: 95px">Loading</div>
           </td>
-          <th scope="row" *ngIf="ready[el.log_id]" class="text-monospace">{{el.log_id}}</th>
+          <th scope="row" *ngIf="ready[el.log_id]" class="">{{el.log_id}}</th>
           <td *ngIf="ready[el.log_id]">
             <h4>
               <span class="badge badge-info" *ngIf="el.log_level == 'INFO' ">INFO</span>
@@ -79,7 +79,7 @@
       </tbody>
     </table>
     <nav aria-label="..." *ngIf="first_request_status" style="margin: auto 0px">
-        <ul class="pagination text-monospace">
+        <ul class="pagination ">
           <li class="page-item" [ngClass]="{'disabled': current_page < 2}">
             <button class="btn btn-outline-secondary btn-action-borderless" (click)="changePage(1)" [disabled]="current_page < 2"> <<
                </button> </li> 
