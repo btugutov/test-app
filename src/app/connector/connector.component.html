@@ -1,70 +1,12 @@
 <div class="logevent_main">
   <div class="text-center">
     <h1>Event Log Page</h1>
-    <h3 *ngIf="ids">{{ids.length}} entries</h3>
+    <div class="spinner-border" *ngIf="!first_request_status" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
+    <h3 *ngIf="first_request_status">{{ids.length}} entries</h3>
   </div>
-  <nav aria-label="..." style="margin: auto 0px">
-    <ul class="pagination text-monospace">
-      <li class="page-item" [ngClass]="{'disabled': current_page < 2}">
-        <button class="btn btn-outline-secondary btn-action-borderless" (click)="changePage(1)" [disabled]="current_page < 2"> <<
-           </button> </li> 
-      <li class="page-item" (click)="changePage(current_page - 2)" [hidden]="current_page-2<1">
-            <button class="btn btn-outline-secondary btn-action-borderless">{{current_page - 2}}</button></li>
-      <li class="page-item" (click)="changePage(current_page - 1)" [hidden]="current_page<2"><button
-          class="btn btn-outline-secondary btn-action-borderless">{{current_page - 1}}</button></li>
-      <li class="page-item active">
-        <button class="btn btn-secondary btn-action-borderless shadow">{{current_page}}</button>
-      </li>
-      <li class="page-item" (click)="changePage(current_page + 1)" [hidden]="current_page+1 > pages"><button
-          class="btn btn-outline-secondary btn-action-borderless">{{current_page + 1}}</button></li>
-      <li class="page-item" (click)="changePage(current_page + 2)" [hidden]="current_page+2  > pages"><button
-          class="btn btn-outline-secondary btn-action-borderless">{{current_page + 2}}</button></li>
-      <li class="page-item" [ngClass]="{'disabled': current_page == pages}">
-        <button class="btn btn-outline-secondary btn-action-borderless" (click)="changePage(pages)"> >> </button>
-      </li>
-    </ul>
-  </nav>
-  <table class="table table-borderless" *ngIf="logs.length>0">
-    <thead class="thead-dark ">
-      <tr>
-        <th>Event ID</th>
-        <th>Level</th>
-        <th>Content</th>
-        <th>Host</th>
-        <th>Line</th>
-        <th>User ID</th>
-        <th>Time</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let el of logs; let i = index" [ngClass]="{
-      'alert-warning': ready[el.log_id] && el.log_level == 'WARNING',
-      'alert-danger': ready[el.log_id] && el.log_level == 'ERROR'
-    }">
-        <td *ngIf="!ready[el.log_id]" colspan="7">
-          <div class="alert alert-warning text-center" style="height: 95px">Loading</div>
-        </td>
-        <th scope="row" *ngIf="ready[el.log_id]">{{el.log_id}}</th>
-        <td *ngIf="ready[el.log_id]">{{el.log_level}}</td>
-        <td *ngIf="ready[el.log_id] ">
-          <span *ngIf="!highlights[el.log_id]">
-            {{el.log_event}}
-          </span>
-          <span *ngIf="highlights[el.log_id] && highlights[el.log_id]['submit_id']" class=" alert-info">
-            {{highlights[el.log_id]['submit_id'][0]}}
-          </span>
-          <span *ngIf="highlights[el.log_id] && highlights[el.log_id]['submit_id']">
-            {{highlights[el.log_id]['submit_id'][1]}}
-          </span>
-          </td>
-        <td *ngIf="ready[el.log_id]">{{el.host}}</td>
-        <td *ngIf="ready[el.log_id]">{{el.line_number}}</td>
-        <td *ngIf="ready[el.log_id]">{{el.user_id}}</td>
-        <td *ngIf="ready[el.log_id]">{{el.event_time | date:'medium'}}</td>
-      </tr>
-    </tbody>
-  </table>
-  <nav aria-label="..." style="margin: auto 0px">
+    <nav aria-label="..." *ngIf="first_request_status" style="margin: auto 0px">
       <ul class="pagination text-monospace">
         <li class="page-item" [ngClass]="{'disabled': current_page < 2}">
           <button class="btn btn-outline-secondary btn-action-borderless" (click)="changePage(1)" [disabled]="current_page < 2"> <<
@@ -85,4 +27,76 @@
         </li>
       </ul>
     </nav>
+    <!-- {{cur_num}}/{{end_num}} -->
+    <div class="progress" *ngIf="first_request_status" style="width: 100%; border-radius: 0px;">
+        <div class="progress-bar shadow text-monospace" role="progressbar" style="height: 35px;" [style.width.%]="( (cur_num/end_num) * 100)"  style="transition: width .1s ease; background-color: #4f91cd">{{cur_num}}/{{end_num}}</div>
+      </div>
+    <table class="table table-borderless" *ngIf="first_request_status">
+      <thead class="thead-dark shadow">
+        <tr>
+          <th style="width: 120px;">Event ID</th>
+          <th style="width: 100px;">Level</th>
+          <th>Content</th>
+          <th>Host</th>
+          <th>Line</th>
+          <th>User ID</th>
+          <th>Time</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let el of logs; let i = index" [ngClass]="{
+        'alert-warning': ready[el.log_id] && el.log_level == 'WARNING',
+        'alert-danger': ready[el.log_id] && el.log_level == 'ERROR'
+      }">
+          <td *ngIf="!ready[el.log_id]" colspan="7">
+            <div class="alert alert-warning text-center" style="height: 95px">Loading</div>
+          </td>
+          <th scope="row" *ngIf="ready[el.log_id]" class="text-monospace">{{el.log_id}}</th>
+          <td *ngIf="ready[el.log_id]">
+            <h4>
+              <span class="badge badge-info" *ngIf="el.log_level == 'INFO' ">INFO</span>
+              <span class="badge badge-warning" *ngIf="el.log_level == 'WARNING' ">WARNING</span>
+              <span class="badge badge-danger" *ngIf="el.log_level == 'ERROR' ">ERROR</span>
+              <span class="badge badge-primary" *ngIf="el.log_level != 'ERROR' && el.log_level == 'WARNING'  && el.log_level == 'INFO' ">{{el.log_level}}</span>
+            </h4>
+            </td>
+          <td *ngIf="ready[el.log_id] ">
+            <span *ngIf="!highlights[el.log_id]">
+              {{el.log_event}}
+            </span>
+            <span *ngIf="highlights[el.log_id] && highlights[el.log_id]['submit_id']" class="alert-info">
+              {{highlights[el.log_id]['submit_id'][0]}}
+            </span>
+            <span *ngIf="highlights[el.log_id] && highlights[el.log_id]['submit_id']">
+              {{highlights[el.log_id]['submit_id'][1]}}
+            </span>
+            </td>
+          <td *ngIf="ready[el.log_id]">{{el.host}}</td>
+          <td *ngIf="ready[el.log_id]">{{el.line_number}}</td>
+          <td *ngIf="ready[el.log_id]">{{el.user_id}}</td>
+          <td *ngIf="ready[el.log_id]">{{el.event_time | date:'medium'}}</td>
+        </tr>
+      </tbody>
+    </table>
+    <nav aria-label="..." *ngIf="first_request_status" style="margin: auto 0px">
+        <ul class="pagination text-monospace">
+          <li class="page-item" [ngClass]="{'disabled': current_page < 2}">
+            <button class="btn btn-outline-secondary btn-action-borderless" (click)="changePage(1)" [disabled]="current_page < 2"> <<
+               </button> </li> 
+          <li class="page-item" (click)="changePage(current_page - 2)" [hidden]="current_page-2<1">
+                <button class="btn btn-outline-secondary btn-action-borderless">{{current_page - 2}}</button></li>
+          <li class="page-item" (click)="changePage(current_page - 1)" [hidden]="current_page<2"><button
+              class="btn btn-outline-secondary btn-action-borderless">{{current_page - 1}}</button></li>
+          <li class="page-item active">
+            <button class="btn btn-secondary btn-action-borderless shadow">{{current_page}}</button>
+          </li>
+          <li class="page-item" (click)="changePage(current_page + 1)" [hidden]="current_page+1 > pages"><button
+              class="btn btn-outline-secondary btn-action-borderless">{{current_page + 1}}</button></li>
+          <li class="page-item" (click)="changePage(current_page + 2)" [hidden]="current_page+2  > pages"><button
+              class="btn btn-outline-secondary btn-action-borderless">{{current_page + 2}}</button></li>
+          <li class="page-item" [ngClass]="{'disabled': current_page == pages}">
+            <button class="btn btn-outline-secondary btn-action-borderless" (click)="changePage(pages)"> >> </button>
+          </li>
+        </ul>
+      </nav>
 </div>

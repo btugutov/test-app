@@ -23,6 +23,9 @@ export class ConnectorComponent implements OnInit {
   ready = {};
   log_storage = {};
   highlights = {};
+  first_request_status = false;
+  cur_num = 0;
+  end_num = 0;
   constructor(private _ConnectorService: ConnectorService, private location: Location, private _route: ActivatedRoute, private _r: Router) {
     this._ConnectorService.user.subscribe(user => {
       if (user) {
@@ -31,6 +34,7 @@ export class ConnectorComponent implements OnInit {
           'email': user.email
         }
         this._ConnectorService.getEventLog(obj).then(res => {
+          this.first_request_status = true;
           this.pages = Math.ceil(res['body'].length/100)
           console.log(res)
           console.log(res['body'].length)
@@ -53,9 +57,10 @@ export class ConnectorComponent implements OnInit {
     this.logs = [];
     let start = (this.current_page - 1) * 100;
     let end = this.current_page * 100;
-    console.log("start =>", start, "; end =>", end)
-    let index = 0;
+    this.cur_num = 0;
+    this.end_num = 100;
     this.ready = {};
+    let counter = 0;
     while(start< end){
       if(!this.ids[start]){
         start++;
@@ -67,27 +72,35 @@ export class ConnectorComponent implements OnInit {
       })
       if(!this.log_storage[cur_target.log_id]){
         this._ConnectorService.getEventLogByID(cur_target.log_id).then(res =>{
-              if(res && res['status'] == 'success'){
-                this.bindLogObject( cur_target.log_id, res['body'][0]);
-                this.log_storage[cur_target.log_id] = res['body'][0];
-                if(res['body'][0]['log_event'].slice(0,9)=="Submit ID"){
-                  console.log("storing at highlights", res['body'][0]['log_event'].split(":")[0])
-                  if(!this.highlights[cur_target.log_id]){
-                    this.highlights[cur_target.log_id] = {};
-                  }
-                  if(!this.highlights[cur_target.log_id]['submit_id']){
-                    this.highlights[cur_target.log_id]['submit_id'] = [];
-                  }
-                  this.highlights[cur_target.log_id]['submit_id'][0] =  res['body'][0]['log_event'].split(":")[0]
-                  this.highlights[cur_target.log_id]['submit_id'][1] =  res['body'][0]['log_event'].split(":")[1]
-                }
+          if(res && res['status'] == 'success'){
+            if(this.cur_num<this.end_num){
+              this.cur_num++;
+            }
+            this.bindLogObject( cur_target.log_id, res['body'][0]);
+            this.log_storage[cur_target.log_id] = res['body'][0];
+            if(res['body'][0]['log_event'].slice(0,9)=="Submit ID"){
+              console.log("storing at highlights", res['body'][0]['log_event'].split(":")[0])
+              if(!this.highlights[cur_target.log_id]){
+                this.highlights[cur_target.log_id] = {};
               }
+              if(!this.highlights[cur_target.log_id]['submit_id']){
+                this.highlights[cur_target.log_id]['submit_id'] = [];
+              }
+              this.highlights[cur_target.log_id]['submit_id'][0] =  res['body'][0]['log_event'].split(":")[0]
+              this.highlights[cur_target.log_id]['submit_id'][1] =  res['body'][0]['log_event'].split(":")[1]
+            }
+          }
         });
       }else{
         this.bindLogObject( cur_target.log_id, this.log_storage[cur_target.log_id]);
+        if(this.cur_num<this.end_num){
+          this.cur_num++;
+        }
       }
       start++;
+      counter++;
     }
+    this.end_num = counter;
     
   }
   changePage(val){
