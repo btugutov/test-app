@@ -57,6 +57,10 @@ export class ConnectorComponent implements OnInit {
     let index = 0;
     this.ready = {};
     while(start< end){
+      if(!this.ids[start]){
+        start++;
+        continue;
+      }
       let cur_target = this.ids[start];
       this.logs.push({
         log_id: cur_target.log_id

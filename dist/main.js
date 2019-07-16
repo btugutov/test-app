@@ -6154,6 +6154,10 @@ var ConnectorComponent = /** @class */ (function () {
         var index = 0;
         this.ready = {};
         var _loop_1 = function () {
+            if (!this_1.ids[start]) {
+                start++;
+                return "continue";
+            }
             var cur_target = this_1.ids[start];
             this_1.logs.push({
                 log_id: cur_target.log_id
