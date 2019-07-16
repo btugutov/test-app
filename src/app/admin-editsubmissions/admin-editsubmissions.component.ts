@@ -500,4 +500,11 @@ export class AdminEditsubmissionsComponent implements OnInit {
       return;
     }
   }
+  regradeStuckedSubmissions(){
+    for (let u in this.sorted_users.all_users) {
+      if (this.sorted_users.all_users[u]['regrade_submission'] && this.all_users_original[u]['regrade_submission']) {
+        this.all_users_original[u]['regrade_submission'] = false;
+      } 
+    }
+  }
 }

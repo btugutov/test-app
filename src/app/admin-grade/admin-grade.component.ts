@@ -63,8 +63,8 @@ export class AdminGradeComponent implements OnInit {
                 }
                 // console.log("QUIZ =>", this.quiz)
               }else{
-                // console.log("error!")
-                // console.log(res)
+                console.log("error!")
+                console.log(res)
               }
             }).catch(function(error){
               // console.log(error)

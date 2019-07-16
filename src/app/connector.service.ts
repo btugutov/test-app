@@ -771,4 +771,20 @@ export class ConnectorService {
       );
     })
   }
+  // regradeStuckedSubmissions(email){
+  //   var that = this;
+  //   let obj = {
+  //     email: email,
+  //   }
+  //   return new Promise(function (resolve, reject) {
+  //     that.http.post('/api/regradeStuckedSubmissions', obj).subscribe(
+  //       res => {
+  //         resolve(res)
+  //       },
+  //       err => {
+  //         reject(err)
+  //       }
+  //     );
+  //   })
+  // }
 }

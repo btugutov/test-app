@@ -146,11 +146,7 @@ function logEventParser(log_level, log_event, host, line, user_id){
         user_id: user_id,
         event_time: new Date()
       }
-    logEvent(obj).then(res =>{
-        console.log("Event log was stored")
-    }).catch(function(err){
-        console.log("logEvent err =>", err)
-    })
+    logEvent(obj)
 }
 
 //==================================
@@ -693,10 +689,13 @@ module.exports = function (app) {
                 // check to see if user is an admin
                 // If they are, update the database to show that they have started grading a quiz
                 if (currentUser.admin_grader || currentUser.admin_owner) {
+                    console.log("let's request topic =>", topic_id)
                     check_current_quizzes(currentUser.profile_id, topic_id).then(cur_quizzes => {
+                        console.log("cur_quizzes =>", cur_quizzes)
                         if (cur_quizzes.length > 0) {
                             for (let el in cur_quizzes) {
                                 if (!cur_quizzes[el]['graded']) {
+                                    console.log("cur_quizzes[el]['submit_id'] =>>>",cur_quizzes[el]['submit_id'])
                                     /* UNCOMMENT IT !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                                         response_message.message = "continue";
                                         response_message.continue = cur_quizzes[el]['submit_id'];
@@ -737,6 +736,7 @@ module.exports = function (app) {
                                 console.log("submit_id =>>>>>", submit_id)
                                 response_message.message = "No such topics left to grade"
                                 logEventParser("ERROR", "No such topics left to grade", "routes.js", "/api/getQuizForGrading: start_grading_quiz", currentUser.profile_id);
+                                console.log("return nothing here")
                                 res.json(response_message);
                                 return;
                             } else { // If there are quizzes left, render the grading page
@@ -1893,6 +1893,43 @@ module.exports = function (app) {
             res.json(response_message)
         })
     });
+    // app.post('/api/regradeStuckedSubmissions', (req, res, next) => {
+    //     let api_call_name = '/api/regradeStuckedSubmissions';
+    //     let response_message = {
+    //         'status': 'failed',
+    //         'message': ''
+    //     }
+    //     preload_block(res, req.body['email'], undefined, req.body['eng_id'])
+    //         .catch(function (error) {
+    //             debugLog("ERROR HERE" + error);
+    //             response_message.message = error;
+    //             logEventParser("ERROR", error, "routes.js", `${api_call_name}: preload_block`, req.body['email']);
+    //             res.json(response_message)
+    //         })
+    //         .then(returnObj => {
+    //             let currentUser = returnObj['currentUser']
+    //             if (currentUser.title == "Web Developer") {
+    //                 regradeStuckedSubmissions().then(result =>{
+    //                     console.log("regradeStuckedSubmissions().then => result.length", result)
+    //                     response_message.status = 'success';
+    //                     response_message.body = result;
+    //                     res.json(response_message)
+    //                 }).catch(function(error){
+    //                     debugLog("ERROR HERE" + error);
+    //                     response_message.message = error;
+    //                     logEventParser("ERROR", error, "routes.js", `${api_call_name}: getEventLog`, currentUser.profile_id);
+    //                     res.json(response_message)
+    //                 })
+    //             }
+    //             // if not admin with editing permissions, redirect to error page
+    //             else {
+    //                 response_message.message = 'No permission.';
+    //                 logEventParser("WARNING", 'No permission.', "routes.js", `${api_call_name}`, currentUser.profile_id);
+    //                 res.json(response_message)
+    //             }
+    //         })
+    // });
+    
     
 
     // =================== END OF LOGEVENT FUNCTIONS ==================
