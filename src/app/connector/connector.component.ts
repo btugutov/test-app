@@ -26,6 +26,13 @@ export class ConnectorComponent implements OnInit {
   first_request_status = false;
   cur_num = 0;
   end_num = 0;
+  levels_counter = {
+    DEBUG: {length: 0, list: {}},
+    ERROR: {length: 0, list: {}},
+    INFO: {length: 0, list: {}},
+    TESTING: {length: 0, list: {}},
+    WARNING: {length: 0, list: {}},
+  }
   constructor(private _ConnectorService: ConnectorService, private location: Location, private _route: ActivatedRoute, private _r: Router) {
     this._ConnectorService.user.subscribe(user => {
       if (user) {
@@ -40,6 +47,7 @@ export class ConnectorComponent implements OnInit {
           console.log(res['body'].length)
           console.log(this.pages)
           this.ids = res['body'];
+          this.getLevelData();
           this.orginizeList()
         }).catch(function (err) {
           console.log("ERROR =>", err)
@@ -120,7 +128,24 @@ export class ConnectorComponent implements OnInit {
       }
     }
   }
-  getCurrentList(){
-    
+  getLevelData(){
+    /*
+'INFO': {
+      length: 0,
+      list: {}
+    },
+    */
+    for(let el in this.ids ){
+      if( !this.levels_counter[this.ids[el]['log_level']]){
+        this.levels_counter[this.ids[el]['log_level']] = {
+          length: 0,
+          list:{}
+        }
+      }
+      let that = this;
+      this.levels_counter[this.ids[el]['log_level']].length++;
+      this.levels_counter[this.ids[el]['log_level']].list[this.ids[el]['log_id']] = this.ids[el]['log_id'];
+    }
+    console.log(this.levels_counter)
   }
 }

@@ -367,7 +367,7 @@ function logEvent(obj){
 }
 function getEventLog(){
     return new Promise(function(resolve, reject) {
-        let insert = `SELECT log_id FROM [dbo].[KA_log] Order By log_id DESC`;
+        let insert = `SELECT log_id, log_level FROM [dbo].[KA_log] Order By log_id DESC`;
         dbQueryMethod.query(insert).then(result => {
             console.log("we got result!", result.length)
             resolve(result);
