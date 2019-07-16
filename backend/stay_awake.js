@@ -73,7 +73,9 @@ async function stay_awake(developer){
             stay_awake_loop(KA_setting_id)
             await sleep(sleep_timer)
             if(awake_toggle === true){
-                if(log_sleep === true){log_event('INFO', `sleep time is done. calling myself and ending loop : timer set at : ${sleep_timer}`, functionName);}
+                if(log_sleep === true){
+                    // log_event('INFO', `sleep time is done. calling myself and ending loop : timer set at : ${sleep_timer}`, functionName);
+                }
                 sleep_error_counter = 0;
                 _stop = false; // allowing the restart of self
                 stay_awake();

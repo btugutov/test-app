@@ -1,5 +1,5 @@
 const Promise = require('promise');
-const { debugLog, getLineNumber, log_event, dbQueryMethod } = require('./classes.js');
+const { debugLog, getLineNumber, log_event, dbQueryMethod, logEvent } = require('./classes.js');
 //const dbQueryMethod = new classModule.DatabaseQuery();
 
 //const profileTable = "KA_profile";
@@ -7,6 +7,7 @@ const { debugLog, getLineNumber, log_event, dbQueryMethod } = require('./classes
 function call_stored_proc_grading() {
     let functionName = 'call_stored_proc_grading';
     console.log("call_stored_proc_grading")
+    console.log("++++++++++++++THIS SHOULD NOT BE CALLED!!!!++++++++++++++")
     return new Promise(function(resolve, reject) {
         let query_quiz = `EXEC sp_calculate_scores`;
         return dbQueryMethod.queryRaw(query_quiz).then(result => {
@@ -465,6 +466,15 @@ function quizEndChecks(submit_id) {
                     finish_gradable_quiz_session_by_id(submit_id).then(wait => {
                         // kick of grade calculation stored procedure 
                         // console.log(`finish_gradable_quiz_session_by_id(submit_id).then(wait => `, wait)
+                        let obj = {
+                            log_event: `call_stored_proc_grading_for_one for submit_id => ${submit_id}`,
+                            log_level: 'INFO',
+                            host: 'grade_quiz.js/quizEndChecks/call_stored_proc_grading_for_one()',
+                            line: getLineNumber(),
+                            user_id: null,
+                            event_time: new Date()
+                          }
+                        logEvent(obj)
                         call_stored_proc_grading_for_one(submit_id).then(res_gradings =>{
                             resolve(result)
                         }).catch(function(error){

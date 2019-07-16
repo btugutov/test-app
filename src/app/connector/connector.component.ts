@@ -21,6 +21,8 @@ export class ConnectorComponent implements OnInit {
   pages = 0;
   current_page = 1;
   ready = {};
+  log_storage = {};
+  highlights = {};
   constructor(private _ConnectorService: ConnectorService, private location: Location, private _route: ActivatedRoute, private _r: Router) {
     this._ConnectorService.user.subscribe(user => {
       if (user) {
@@ -38,8 +40,6 @@ export class ConnectorComponent implements OnInit {
         }).catch(function (err) {
           console.log("ERROR =>", err)
         })
-
-
       }
       if (user && !user.admin) {
         this._r.navigate([`/oops`]);
@@ -61,39 +61,30 @@ export class ConnectorComponent implements OnInit {
       this.logs.push({
         log_id: cur_target.log_id
       })
-      this._ConnectorService.getEventLogByID(cur_target.log_id).then(res =>{
-            console.log("res =>",res)
-            if(res && res['status'] == 'success'){
-              this.bindLogObject( cur_target.log_id, res['body'][0]);
-            }
-      });
+      if(!this.log_storage[cur_target.log_id]){
+        this._ConnectorService.getEventLogByID(cur_target.log_id).then(res =>{
+              if(res && res['status'] == 'success'){
+                this.bindLogObject( cur_target.log_id, res['body'][0]);
+                this.log_storage[cur_target.log_id] = res['body'][0];
+                if(res['body'][0]['log_event'].slice(0,9)=="Submit ID"){
+                  console.log("storing at highlights", res['body'][0]['log_event'].split(":")[0])
+                  if(!this.highlights[cur_target.log_id]){
+                    this.highlights[cur_target.log_id] = {};
+                  }
+                  if(!this.highlights[cur_target.log_id]['submit_id']){
+                    this.highlights[cur_target.log_id]['submit_id'] = [];
+                  }
+                  this.highlights[cur_target.log_id]['submit_id'][0] =  res['body'][0]['log_event'].split(":")[0]
+                  this.highlights[cur_target.log_id]['submit_id'][1] =  res['body'][0]['log_event'].split(":")[1]
+                }
+              }
+        });
+      }else{
+        this.bindLogObject( cur_target.log_id, this.log_storage[cur_target.log_id]);
+      }
       start++;
     }
-    // for(let el in this.ids){
-    //   this.curIndex++;
-    //   this.logs[el] = {};
-    //   this.cur_list[el] = {};
-    //   this.logs[el].log_id = this.ids[el]['log_id'];
-    //   if(this.curIndex<100){
-    //     this.cur_list[el].log_id = this.ids[el]['log_id'];
-    //   }
-    //   this._ConnectorService.getEventLogByID(this.ids[el]['log_id']).then(res =>{
-    //     if(res && res['status'] == 'success'){
-    //       this.ready = {};
-    //       // console.log(list[el]['log_id'])
-    //       this.logs[el] = res['body'][0];
-    //       this.logs[el]['log_event'] = unescape(this.logs[el]['log_event']);
-    //       this.logs[el]['line_number'] = unescape(this.logs[el]['line_number']);
-    //       this.ready[this.ids[el]['log_id']] = true;
-    //       // if(this.cur_list[Number(el)] && Number(el) < 100){
-    //       //   console.log(el)
-    //       //   this.cur_list[el] = this.logs[el];
-    //       // }
-    //     }
-    //   })
-    // }
-    console.log(this.logs)
-    console.log(this.cur_list)
+    
   }
   changePage(val){
     console.log("val =>", val)
