@@ -82,18 +82,18 @@
           <th scope="row" *ngIf="ready[el.log_id]" class="">{{el.log_id}}</th>
           <td *ngIf="ready[el.log_id]">
             <h4>
-              <span class="badge badge-info" *ngIf="el.log_level == 'INFO' ">INFO</span>
-              <span class="badge badge-warning" *ngIf="el.log_level == 'WARNING' ">WARNING</span>
-              <span class="badge badge-danger" *ngIf="el.log_level == 'ERROR' ">ERROR</span>
-              <span class="badge badge-secondary" *ngIf="el.log_level == 'DEBUG' ">DEBUG</span>
-              <span class="badge badge-primary" *ngIf="el.log_level != 'ERROR' && el.log_level == 'WARNING'  && el.log_level == 'INFO'  && el.log_level == 'DEBUG'">{{el.log_level}}</span>
+              <span class="badge badge-info shadow" *ngIf="el.log_level == 'INFO' ">INFO</span>
+              <span class="badge badge-warning shadow" *ngIf="el.log_level == 'WARNING' ">WARNING</span>
+              <span class="badge badge-danger shadow" *ngIf="el.log_level == 'ERROR' ">ERROR</span>
+              <span class="badge badge-secondary shadow" *ngIf="el.log_level == 'DEBUG' ">DEBUG</span>
+              <span class="badge badge-primary shadow" *ngIf="el.log_level != 'ERROR' && el.log_level == 'WARNING'  && el.log_level == 'INFO'  && el.log_level == 'DEBUG'">{{el.log_level}}</span>
             </h4>
             </td>
           <td *ngIf="ready[el.log_id] ">
             <span *ngIf="!highlights[el.log_id]">
               {{el.log_event}}
             </span>
-            <span *ngIf="highlights[el.log_id] && highlights[el.log_id]['submit_id']" class="alert-info">
+            <span *ngIf="highlights[el.log_id] && highlights[el.log_id]['submit_id']" class="alert-info shadow">
               {{highlights[el.log_id]['submit_id'][0]}}
             </span>
             <span *ngIf="highlights[el.log_id] && highlights[el.log_id]['submit_id']">
