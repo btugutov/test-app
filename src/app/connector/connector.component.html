@@ -2,16 +2,37 @@
   <div class="text-center">
     <h1>Event Log Page</h1>
     <div class="spinner-border" *ngIf="!first_request_status" role="status">
-        <span class="sr-only">Loading...</span>
-      </div>
+      <span class="sr-only">Loading...</span>
+    </div>
     <h3 *ngIf="first_request_status">{{ids.length}} entries</h3>
-    <div>
-     <span *ngFor="let el of levels_counter | keyvalue">
-        <button class="btn">{{el.key}}: {{el.value.length}}</button>
+    <!-- <div *ngIf="first_request_status" class="progress" style="width: 95%; border-radius: 0px;">
+        <div *ngFor="let el of levels_counter | keyvalue" class="progress-bar level_counter_get_class()" [ngClass]="{
+            'bg-info': el.key =='INFO',
+            'bg-warning': el.key == 'WARNING',
+            'bg-danger': el.key == 'ERROR',
+            'bg-secondary': el.key == 'DEBUG',
+            'bg-success': el.key == 'TESTING'
+          }" [style.width.%]="el.value.percentage" role="progressbar" aria-valuenow="15" aria-valuemin="0"
+          aria-valuemax="100"> {{el.key}}</div>
+  
+    </div> -->
+    <div *ngIf="first_request_status">
+      <span *ngFor="let el of levels_counter | keyvalue">
+        <button class="btn">{{el.key}}: {{el.value.length}} (~{{el.value.percentage}}%)</button>
       </span>
-      
     </div>
   </div>
+  <!-- <div *ngIf="first_request_status" class="progress" style="width: 95%; border-radius: 0px;">
+      <div *ngFor="let el of levels_counter | keyvalue" class="progress-bar level_counter_get_class()" [ngClass]="{
+          'bg-info': el.key =='INFO',
+          'bg-warning': el.key == 'WARNING',
+          'bg-danger': el.key == 'ERROR',
+          'bg-secondary': el.key == 'DEBUG',
+          'bg-success': el.key == 'TESTING'
+        }" [style.width.%]="el.value.percentage" role="progressbar" aria-valuenow="15" aria-valuemin="0"
+        aria-valuemax="100"> {{el.key}}</div>
+
+  </div> -->
     <nav aria-label="..." *ngIf="first_request_status" style="margin: auto 0px">
       <ul class="pagination ">
         <li class="page-item" [ngClass]="{'disabled': current_page < 2}">
