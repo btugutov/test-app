@@ -1,10 +1,11 @@
 const Promise = require('promise');
 const os = require('os');
 const classModule = require('./classes.js');
-const { debugLog, getLineNumber, log_event, dbQueryMethod } = require('./classes.js');
+const { debugLog, getLineNumber, log_event, dbQueryMethod, log_event_detailed } = require('./classes.js');
 
 function add_engagement_table_MSSQL(engagement_name) {
     let functionName = 'add_engagement_table_MSSQL';
+    let target_info = `function: ${functionName}; engagement_name: ${engagement_name}`;
     return new Promise(function(resolve, reject) {
         //let insert = `INSERT INTO KA_engagement (engagement_name) VALUES ('${engagement_name}')`
         let insert = ``
@@ -16,13 +17,14 @@ function add_engagement_table_MSSQL(engagement_name) {
             return result;
         }).catch(function(error) { reject(error); throw (error); })
     }).catch(function(error) {
-        log_event('WARNING', error, functionName);
+        log_event('ERROR', error, target_info);
         throw (error);
     })
 }
 
 function create_new_engagement_row_MSSQL(engagement) {
     let functionName = 'create_new_engagement_row_MSSQL';
+    let target_info = `function: ${functionName}; engagement: ${JSON.stringify(engagement)}`;
     return new Promise(function(resolve, reject) {
         //let insert = `INSERT INTO KA_engagement (engagement_name) VALUES ('${engagement_name}')`
         let insert = `INSERT INTO KA_engagement 
@@ -34,7 +36,7 @@ function create_new_engagement_row_MSSQL(engagement) {
             return result;
         }).catch(function(error) { reject(error); throw (error); })
     }).catch(function(error) {
-        log_event('WARNING', error, functionName);
+        log_event('ERROR', error, target_info);
         throw (error);
     })
 }
@@ -72,7 +74,7 @@ function get_all_engagemets() {
             reject(error); throw (error); })
     }).catch(function (error) {
         console.log("ERROR =>", error)
-        log_event('WARNING', error, functionName);
+        log_event('ERROR', error, functionName);
         throw (error);
     })
 }
@@ -80,6 +82,7 @@ function get_all_engagemets() {
 
 function edit_engagement_table_MSSQL(object) {
     let functionName = 'edit_engagement_table_MSSQL';
+    let target_info = `function: ${functionName}; object: ${JSON.stringify(object)}`;
     if(object.soft_delete){
         object.soft_delete = 1;
     }else{
@@ -94,13 +97,14 @@ function edit_engagement_table_MSSQL(object) {
             return result;
         }).catch(function(error) { reject(error); throw (error); })
     }).catch(function(error) {
-        log_event('WARNING', error, functionName);
+        log_event('ERROR', error, target_info);
         throw (error);
     })
 }
 
 function get_engagement_table_MSSQL(engagement_id) {
     let functionName = 'get_engagement_table_MSSQL';
+    let target_info = `function: ${functionName}; engagement_id: ${engagement_id}`;
     return new Promise(function(resolve, reject) {
         let select = `SELECT * FROM KA_engagement WHERE engagement_id = '${engagement_id}'`
         dbQueryMethod.query(select).then(result => {
@@ -108,7 +112,7 @@ function get_engagement_table_MSSQL(engagement_id) {
             return result;
         }).catch(function(error) { reject(error); throw (error); })
     }).catch(function(error) {
-        log_event('WARNING', error, functionName);
+        log_event('ERROR', error, target_info);
         throw (error);
     })
 }
@@ -123,6 +127,12 @@ function update_engagement_main_LOOP(object, indexKey, edit_by) {
     // update enagement loop
     // This is where the each part of
     let functionName = 'update_topic_main_LOOP';
+    let details = {
+        object: object,
+        indexKey: indexKey,
+        edit_by: edit_by
+    }
+    let target_info = `function: ${functionName}; object: ${JSON.stringify(object)}`;
     return new Promise(function(resolve, reject) {
         try {
             console.log("ENGAGEMENT ID =>",object['engagement_id'])
@@ -149,11 +159,13 @@ function update_engagement_main_LOOP(object, indexKey, edit_by) {
                             return 'COMPLETE'
                         }).catch(function(error) {
                             //debugLog('error');
+                            log_event_detailed("ERROR", error, functionName, edit_by, JSON.stringify(details))
                             reject(error);
                             throw (error);
                         })
                     } catch (tryError) {
-                        log_event('ERROR', tryError, functionName);
+                        // log_event('ERROR', tryError, target_info);
+                        log_event_detailed("ERROR", tryError, functionName, edit_by, JSON.stringify(details))
                         reject(tryError);
                         throw (tryError);
                     }
@@ -204,18 +216,21 @@ function update_engagement_main_LOOP(object, indexKey, edit_by) {
                     //     throw (error);
                     // })
                 } catch (tryError) {
-                    log_event('ERROR', tryError, functionName);
+                    log_event_detailed("ERROR", tryError, functionName, edit_by, JSON.stringify(details))
+                    // log_event('ERROR', tryError, target_info);
                     reject(tryError);
                     //console.log(tryError)
                 }
             }
         } catch (tryError) {
-            log_event('ERROR', tryError, functionName);
+            log_event_detailed("ERROR", tryError, functionName, edit_by, JSON.stringify(details))
+            // log_event('ERROR', tryError, target_info);
             reject(tryError);
             //console.log(tryError)
         }
     }).catch(function(error) {
-        log_event('WARNING', error, functionName);
+        log_event_detailed("ERROR", tryError, functionName, edit_by, JSON.stringify(details))
+        // log_event('ERROR', error, target_info);
         throw (error);
     })
 }
@@ -223,6 +238,12 @@ function update_engagement_main_LOOP(object, indexKey, edit_by) {
 
 function recusive_object_hanlder(object, current_index, edit_by) {
     let functionName = 'recusive_object_hanlder';
+    let details = {
+        object: object,
+        current_index: current_index,
+        edit_by: edit_by
+    }
+    let target_info = `function: ${functionName}; object: ${JSON.stringify(object)}; `;
     if (current_index == undefined) { current_index = 0 }
     return new Promise(function(resolve, reject) {
         let max = Object.keys(object).length;
@@ -250,8 +271,9 @@ function recusive_object_hanlder(object, current_index, edit_by) {
                     }).catch(function(error) {reject(error);})
                 }).catch(function(error) {
                     console.log('catch for recusive ', error)
+                    log_event_detailed("ERROR", error, functionName, edit_by, JSON.stringify(details))
                     reject(error);
-                    throw (error);
+                    // throw (error);
                 })
             } else {
                 current_index += 1;
@@ -259,17 +281,22 @@ function recusive_object_hanlder(object, current_index, edit_by) {
                     //console.log('testing2')
                     //console.log(revolt)
                     resolve('Complete')
-                }).catch(function(error) {reject(error);})
+                }).catch(function(error) {log_event_detailed("ERROR", error, functionName, edit_by, JSON.stringify(details));reject(error);})
             }
         }
     }).catch(function(error) {
-        log_event('WARNING', error, functionName);
-        throw (error);
+        // log_event('ERROR', error, functionName);
+        log_event_detailed("ERROR", error, functionName, edit_by, JSON.stringify(details))
+        reject(error);
     })
 }
 
 function update_engagement_main(object, edit_by) {
     let functionName = 'update_engagement_main';
+    let details = {
+        object: object,
+        edit_by: edit_by
+    }
     debugLog('======= - update_engagement_main - =======')
     // console.log(object)
     debugLog('======= - update_engagement_main - =======')
@@ -278,20 +305,25 @@ function update_engagement_main(object, edit_by) {
             recusive_object_hanlder(object, 0, edit_by).then(wait2 => {
                 console.log(wait2)
                 console.log('Update Complete')
-                resolve(`Update Complete`);
-                return `Update Complete`
+                resolve(wait2);
+                return wait2
             }).catch(function(error) {
-                log_event('ERROR', error, functionName);
-                reject('Update Failed');
-                throw ('Update Failed');
+                log_event_detailed("ERROR", error, functionName, edit_by, JSON.stringify(details))
+                // log_event('ERROR', error, functionName);
+                reject(error);
+                throw (error);
             })
         } catch (tryError) {
             console.log('catch main')
-            log_event('ERROR', tryError, functionName);
+            log_event_detailed("ERROR", tryError, functionName, edit_by, JSON.stringify(details))
+            reject(tryError);
+            throw (tryError);
+            // log_event('ERROR', tryError, functionName);
         }
     }).catch(function(error) {
-        log_event('WARNING', error, functionName);
-        throw (error);
+        log_event_detailed("ERROR", error, functionName, edit_by, JSON.stringify(details))
+        reject(tryError);
+        throw (tryError);
     })
 }
 

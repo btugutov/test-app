@@ -1,5 +1,5 @@
 const Promise = require('promise');
-const { debugLog, getLineNumber, log_event, dbQueryMethod, logEvent } = require('./classes.js');
+const { debugLog, getLineNumber, log_event, dbQueryMethod, logEvent, log_event_detailed } = require('./classes.js');
 //const dbQueryMethod = new classModule.DatabaseQuery();
 
 //const profileTable = "KA_profile";
@@ -417,6 +417,9 @@ function update_grade_input_response(question_id, submit_id, grade_scale, grade_
     let gradeValue = (grade_scale * 5)
     let functionName = 'update_grade_input_response';
     console.log(`****** ${functionName} ******`)
+    let details = {
+        question_id: question_id, submit_id:submit_id, grade_scale:grade_scale, grade_input:grade_input, reviewer_id:reviewer_id, grade_value:grade_value
+    }
     return new Promise(function(resolve, reject) {
         let query = `UPDATE [KA_input_response] 
         SET grade = '${gradeValue}', grade_input = '${grade_input}', reviewer_id = '${reviewer_id}' , grade_value = '${grade_value}', grade_scale = '${grade_scale}' 
@@ -426,7 +429,8 @@ function update_grade_input_response(question_id, submit_id, grade_scale, grade_
             return result;
         }).catch(function(error) { reject(error); throw error; })
     }).catch(function(error) {
-        log_event('WARNING', error, functionName);
+        log_event_detailed("ERROR", error, functionName, null, JSON.stringify(details)) 
+        // log_event('WARNING', error, functionName);
         throw error;
     })
 };

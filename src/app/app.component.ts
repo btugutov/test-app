@@ -23,7 +23,7 @@ export class AppComponent implements OnInit {
   requestObj = null;
   graphConfig = null;
   msalConfig = null;
-  popup_error_message = false;
+  popup_error_message = '';
   engagements;
   currentEng;
   cur_url = {};
@@ -119,7 +119,7 @@ export class AppComponent implements OnInit {
       that.acquireTokenPopupAndCallMSGraph();
     }).catch(function (error) {
       this.popup_error_message = error;
-      // console.log(error);
+      console.log(error);
       
       let obj = {
 

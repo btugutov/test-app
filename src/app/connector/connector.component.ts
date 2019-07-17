@@ -34,6 +34,11 @@ export class ConnectorComponent implements OnInit {
     WARNING: {length: 0, list: {}, percentage: 0},
   }
   levels_counter_class_idx = 0;
+  modal_mesage_bool = false;
+  modal_message = {
+    'title': '',
+    'body': ''
+  }
   constructor(private _ConnectorService: ConnectorService, private location: Location, private _route: ActivatedRoute, private _r: Router) {
     this._ConnectorService.user.subscribe(user => {
       if (user) {
@@ -124,6 +129,7 @@ export class ConnectorComponent implements OnInit {
         this.logs[el] = obj;
         this.logs[el]['log_event'] = unescape(this.logs[el]['log_event']);
         this.logs[el]['line_number'] = unescape(this.logs[el]['line_number']);
+        this.logs[el]['details'] = unescape(this.logs[el]['details']);
         this.ready[log_id] = true;
         break;
       }
@@ -156,5 +162,13 @@ export class ConnectorComponent implements OnInit {
     
     this.levels_counter_class_idx++;
     return res;
+  }
+  openModal(action, target_id){
+    this.modal_mesage_bool = true;
+    this.modal_message.title = action;
+    this.modal_message.body = target_id;
+  }
+  closeModal(){
+    this.modal_mesage_bool = false;
   }
 }

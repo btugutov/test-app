@@ -137,20 +137,27 @@ function get_all_users_quiz_permission_MSSQL() {
 // monoliths // 
 function update_permission_quiz_LOOP(obj, edit_by) {
     let functionName = 'update_permission_quiz_LOOP';
+        let details = {
+            obj: obj,
+            edit_by: edit_by
+        }
+        // log_event_detailed("ERROR", err, functionName, null, JSON.stringify(details));
     // return new Promise(function (resolve, reject) {
     for(let topic_id in obj['added_list']){
         add_profile_permissions_table_MSSQL(obj['profile_id'], obj['added_list'][topic_id], edit_by).then(placeholder => {
             console.log(placeholder)
             let event = `Adding quiz permissions for profile_id : '${obj['profile_id']}' for topic_id : '${ obj['added_list'][topic_id]}' authorized by profile_id : '${edit_by}'`
-            log_event('INFO', event, functionName);
-        }).catch(function (error) { reject(error); throw (error); })
+            // log_event('INFO', event, functionName);
+            log_event_detailed("INFO", event, functionName, edit_by, JSON.stringify(details));
+        }).catch(function (error) { log_event_detailed("ERROR", error, functionName, edit_by, JSON.stringify(details));reject(error); throw (error); })
     }
     for(let topic_id in obj['removed_list']){
         update_profile_permissions_table_MSSQL(obj['profile_id'], obj['removed_list'][topic_id], edit_by).then(placeholder => {
             console.log(placeholder)
             let event = `Removing quiz permissions for profile_id : '${obj['profile_id']}' for topic_id : '${obj['removed_list'][topic_id]}' authorized by profile_id : '${edit_by}'`
-            log_event('INFO', event, functionName);
-        }).catch(function (error) { reject(error); throw (error); })
+            // log_event('INFO', event, functionName);
+            log_event_detailed("INFO", event, functionName, edit_by, JSON.stringify(details))
+        }).catch(function (error) { log_event_detailed("ERROR", error, functionName, edit_by, JSON.stringify(details)); reject(error); throw (error); })
     }
         
         // try {
@@ -238,12 +245,19 @@ function update_permission_quiz_LOOP(obj, edit_by) {
 
 function update_permission_admins_LOOP(obj, edit_by, ownerCheck) {
     let functionName = 'update_permission_admins_LOOP';
+        let details = {
+            obj: obj,
+            edit_by: edit_by,
+            ownerCheck: ownerCheck
+        }
+        // log_event_detailed("INFO", event, functionName, edit_by, JSON.stringify(details));
     return new Promise(function (resolve, reject) {
         try {
             //console.log('-=-=-=-=-=-=-=-=-=-=--=--=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-==-=-=-=-=-=-=-')
             //console.log(obj)
             //console.log(obj['profile_id'])
             get_users_admin_permission_by_profile_id_MSSQL(obj['profile_id']).then(confirm => {
+                details.confirm = confirm;
                 let admin_owner = confirm[0]['admin_owner'];
                 if (ownerCheck === true) {
                     debugLog('ownerCheck === true')
@@ -260,15 +274,17 @@ function update_permission_admins_LOOP(obj, edit_by, ownerCheck) {
                         , admin_permissions : '${obj['admin_permissions']}'
                         , admin_editor : ${obj['admin_editor']}
                         , authorized by profile_id : ${edit_by}`
-                    log_event('INFO', event, functionName);
+                    log_event_detailed("INFO", event, functionName, edit_by, JSON.stringify(details));
+                    // log_event('INFO', event, functionName);
 
                     resolve('complete')
                     return 'complete';
-                }).catch(function (error) { reject(error); throw (error); })
+                }).catch(function (error) {log_event_detailed("ERROR", error, functionName, edit_by, JSON.stringify(details)); reject(error); throw (error); })
             }).catch(function (error) { reject(error); throw (error); })
-        } catch (tryError) { log_event('ERROR', tryError, functionName); reject(tryError); throw tryError; }
+        } catch (tryError) { log_event_detailed("ERROR", tryError, functionName, edit_by, JSON.stringify(details)); reject(tryError); throw tryError; }
     }).catch(function (error) {
-        log_event('WARNING', error, functionName);
+        log_event_detailed("ERROR", error, functionName, edit_by, JSON.stringify(details));
+        // log_event('WARNING', error, functionName);
         throw (error);
     })
 }
@@ -277,6 +293,11 @@ function update_permission_admins_LOOP(obj, edit_by, ownerCheck) {
 function update_permission_quiz_main(object, edit_by) {
     let functionName = 'update_permission_quiz_main';
     //console.log(object)
+        let details = {
+            'object': object,
+            'edit_by': edit_by
+        }
+        // log_event_detailed("ERROR", err, functionName, null, JSON.stringify(details));
     let objKeys = Object.keys(object)
     try {
         let result_arr = []
@@ -284,11 +305,16 @@ function update_permission_quiz_main(object, edit_by) {
             let i = objKeys[a]
             update_permission_quiz_LOOP(object[i], edit_by)
         }
-    } catch (tryError) { log_event('ERROR', tryError, functionName); throw tryError; }
+    } catch (tryError) {  log_event_detailed("ERROR", tryError, functionName, edit_by, JSON.stringify(details)); throw tryError; }
 }
 
 function update_permission_admins_main(object, edit_by) {
     let functionName = 'update_permission_admins_main';
+        let details = {
+            obj: obj,
+            edit_by: edit_by,
+        }
+        // log_event_detailed("INFO", event, functionName, edit_by, JSON.stringify(details));
     get_users_admin_permission_by_profile_id_MSSQL(edit_by).then(result => {
         //console.log(result[0]['admin_owner'])
         let objKeys = Object.keys(object)
@@ -298,14 +324,17 @@ function update_permission_admins_main(object, edit_by) {
                 update_permission_admins_LOOP(object[i], edit_by, result[0]['admin_owner']).then(result => {
                     //debugLog(result);
                 }).catch(function (error) {
-                    log_event('WARNING', error, functionName);
+                    log_event_detailed("ERROR", error, functionName, edit_by, JSON.stringify(details))
+                    // log_event('WARNING', error, functionName);
                     reject(error);
                     throw (error);
                 })
             }
-        } catch (tryError) { log_event('ERROR', tryError, functionName); reject(tryError); throw tryError; }
+        } catch (tryError) { 
+            log_event_detailed("ERROR", tryError, functionName, edit_by, JSON.stringify(details))
+            reject(tryError); throw tryError; }
     }).catch(function (error) {
-        log_event('WARNING', error, functionName);
+        log_event_detailed("ERROR", error, functionName, edit_by, JSON.stringify(details))
         throw (error);
     })
 }
@@ -314,6 +343,10 @@ function update_permission_admins_main(object, edit_by) {
 function get_all_users_admin_permission_edit(try_num) {
     let functionName = 'get_all_users_admin_permission_edit';
     let null_counter = 0;
+        let details = {
+            try_num: try_num
+        }
+        // log_event_detailed("INFO", event, functionName, edit_by, JSON.stringify(details));
     return new Promise(function (resolve, reject) {
         try {
             get_all_users_admin_permission_edit_MSSQL().then(result => {
@@ -334,10 +367,11 @@ function get_all_users_admin_permission_edit(try_num) {
                 //     resolve(result);
                 //     return result;
                 // }
-            }).catch(function (error) { reject(error); throw error; })
-        } catch (tryError) { log_event('ERROR', tryError, functionName); reject(tryError); throw tryError; }
+            }).catch(function (error) { log_event_detailed("ERROR", error, functionName, edit_by, JSON.stringify(details));reject(error); throw error; })
+        } catch (tryError) { log_event_detailed("ERROR", tryError, functionName, edit_by, JSON.stringify(details)); reject(tryError); throw tryError; }
     }).catch(function (error) {
-        log_event('WARNING', error, functionName);
+        log_event_detailed("ERROR", error, functionName, edit_by, JSON.stringify(details))
+        // log_event('WARNING', error, functionName);
         throw error;
     })
 };
@@ -346,6 +380,10 @@ function get_all_users_admin_permission_edit(try_num) {
 function get_all_users_quiz_permission_edit(try_num) {
     let functionName = 'get_all_users_quiz_permission_edit';
     let null_counter = 0;
+        let details = {
+            try_num: try_num
+        }
+        // log_event_detailed("INFO", event, functionName, edit_by, JSON.stringify(details));
     return new Promise(function (resolve, reject) {
         try {
             get_all_users_quiz_permission_MSSQL().then(result => {
@@ -366,10 +404,11 @@ function get_all_users_quiz_permission_edit(try_num) {
                 //     resolve(result);
                 //     return result;
                 // }
-            }).catch(function (error) { reject(error); throw error; })
-        } catch (tryError) { log_event('ERROR', tryError, functionName); reject(tryError); throw tryError; }
+            }).catch(function (error) {  reject(error); throw error; })
+        } catch (tryError) { log_event_detailed("ERROR", tryError, functionName, edit_by, JSON.stringify(details)); reject(tryError); throw tryError; }
     }).catch(function (error) {
-        log_event('WARNING', error, functionName);
+        log_event_detailed("ERROR", error, functionName, edit_by, JSON.stringify(details));
+        // log_event('WARNING', error, functionName);
         throw error;
     })
 };

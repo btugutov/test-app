@@ -1,4 +1,24 @@
 <div class="logevent_main">
+    <div [hidden]="!modal_mesage_bool" class="modal_message_box">
+        <div class="modal-dialog modal-dialog-centered modal_message" role="document">
+            <div class="modal-content modal-dialog-scrollable" *ngIf="modal_message.title == 'Details'">
+                <div class="modal-header">
+                    <h3 class="modal-title text-monospace text-center" id="exampleModalCenteredLabel" style="margin: 0px auto;">Details for {{modal_message.body.log_id}}</h3>
+                    <button type="button" class="close" (click)="closeModal()" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                </div>
+                <div style="height: 50vh !important; overflow-y: scroll;">
+                    {{ modal_message.body | json}}
+                  </div>
+                  <div class="team_control_panel">
+                      <div style="height: 50px; margin-top: 25px;">
+                        <button type="button" (click)="closeModal()"  class="btn btn-warning text-monospace btn-action-borderless shadow"  style="margin: 0px 20px">Close</button>
+                      </div>
+                  </div>
+            </div>
+        </div>
+    </div>
   <div class="text-center">
     <h1>Event Log Page</h1>
     <div class="spinner-border" *ngIf="!first_request_status" role="status">
@@ -67,7 +87,8 @@
           <th>Content</th>
           <th>Host</th>
           <th>Line</th>
-          <th>User ID</th>
+          <th>Details</th>
+          <th>Submit by</th>
           <th>Time</th>
         </tr>
       </thead>
@@ -86,7 +107,7 @@
               <span class="badge badge-warning shadow" *ngIf="el.log_level == 'WARNING' ">WARNING</span>
               <span class="badge badge-danger shadow" *ngIf="el.log_level == 'ERROR' ">ERROR</span>
               <span class="badge badge-secondary shadow" *ngIf="el.log_level == 'DEBUG' ">DEBUG</span>
-              <span class="badge badge-primary shadow" *ngIf="el.log_level != 'ERROR' && el.log_level == 'WARNING'  && el.log_level == 'INFO'  && el.log_level == 'DEBUG'">{{el.log_level}}</span>
+              <span class="badge badge-primary shadow" *ngIf="el.log_level != 'ERROR' && el.log_level != 'WARNING'  && el.log_level != 'INFO'  && el.log_level != 'DEBUG'">{{el.log_level}}</span>
             </h4>
             </td>
           <td *ngIf="ready[el.log_id] ">
@@ -102,8 +123,9 @@
             </td>
           <td *ngIf="ready[el.log_id]">{{el.host}}</td>
           <td *ngIf="ready[el.log_id]">{{el.line_number}}</td>
-          <td *ngIf="ready[el.log_id]">{{el.user_id}}</td>
-          <td *ngIf="ready[el.log_id]">{{el.event_time | date:'medium'}}</td>
+          <td *ngIf="ready[el.log_id]"><button class="btn btn-secondary btn-action-borderless shadow" (click)="openModal('Details', el)">Check details</button></td>
+          <td *ngIf="ready[el.log_id]" class="text-break">{{el.user_id}}</td>
+          <td *ngIf="ready[el.log_id]" class="text-break">{{el.event_time | date:'medium'}}</td>
         </tr>
       </tbody>
     </table>

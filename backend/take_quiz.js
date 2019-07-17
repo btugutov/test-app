@@ -1,5 +1,5 @@
 const Promise = require('promise');
-const { debugLog, getLineNumber, log_event, dbQueryMethod } = require('./classes.js');
+const { debugLog, getLineNumber, log_event, dbQueryMethod, logEvent, log_event_detailed } = require('./classes.js');
 //const dbQueryMethod = new classModule.DatabaseQuery();
 
 //const profileTable = "KA_profile";
@@ -7,6 +7,9 @@ const { debugLog, getLineNumber, log_event, dbQueryMethod } = require('./classes
 // get list of topics based on engagement_id 
 function get_topic_table_by_engagement(engagement_id) {
     let functionName = 'get_topic_table_by_engagement';
+    let target_info = {
+        engagement_id: engagement_id
+    }
     return new Promise(function(resolve, reject) {
         let image_query = `SELECT * 
             FROM [dbo].[KA_test_topic] 
@@ -16,7 +19,8 @@ function get_topic_table_by_engagement(engagement_id) {
             return result;
         }).catch(function(error) { reject(error); throw error; })
     }).catch(function(error) {
-        log_event('WARNING', error, functionName);
+        log_event_detailed("ERROR", error, functionName, null, JSON.stringify(details))
+        // log_event('ERROR', error, functionName);
         reject(error)
         throw error;
     })
@@ -35,7 +39,7 @@ function finish_quiz_session(submit_id) {
             return result;
         }).catch(function(error) { reject(error); throw error; })
     }).catch(function(error) {
-        log_event('WARNING', error, functionName);
+        log_event('ERROR', error, functionName);
         reject(error)
         throw error;
     })
@@ -55,7 +59,7 @@ function finish_response_choice(answer_id, profile_id, submit_id, question_id) {
             return result;
         }).catch(function(error) { reject(error); throw error; })
     }).catch(function(error) {
-        log_event('WARNING', error, functionName);
+        log_event('ERROR', error, functionName);
         reject(error)
         throw error;
     })
@@ -74,7 +78,7 @@ function finish_response_input(answer_id, input_value, profile_id, submit_id, qu
             return result;
         }).catch(function(error) { reject(error); throw error; })
     }).catch(function(error) {
-        log_event('WARNING', error, functionName);
+        log_event('ERROR', error, functionName);
         reject(error)
         throw error;
     })
@@ -93,7 +97,7 @@ function get_image_by_questionID_MSSQL(question_id) {
             return result;
         }).catch(function(error) { reject(error); throw error; })
     }).catch(function(error) {
-        log_event('WARNING', error, functionName);
+        log_event('ERROR', error, functionName);
         reject(error)
         throw error;
     })
@@ -113,7 +117,7 @@ function get_specific_submission(question_id, profile_id, submit_id, table) {
             return result;
         }).catch(function(error) { reject(error); throw error; })
     }).catch(function(error) {
-        log_event('WARNING', error, functionName);
+        log_event('ERROR', error, functionName);
         reject(error)
         throw error;
     })
@@ -133,7 +137,7 @@ function get_topic_id_by_submit_id(submit_id) {
             return result;
         }).catch(function(error) { reject(error); throw error; })
     }).catch(function(error) {
-        log_event('WARNING', error, functionName);
+        log_event('ERROR', error, functionName);
         reject(error)
         throw error;
     })
@@ -141,6 +145,7 @@ function get_topic_id_by_submit_id(submit_id) {
 
 function start_response_choice(question_id, submit_id, profile_id) {
     let functionName = 'start_response_choice';
+    let target_info = `functionName: ${functionName}; question_id: ${question_id}; submit_id: ${submit_id}; profile_id: ${profile_id}`
     return new Promise(function(resolve, reject) {
         let insert = `INSERT INTO dbo.[KA_choice_response] 
         ([question_id],[time_start],[submit_id],[profile_id]) 
@@ -151,7 +156,8 @@ function start_response_choice(question_id, submit_id, profile_id) {
             return result;
         }).catch(function(error) { reject(error); throw error; })
     }).catch(function(error) {
-        log_event('WARNING', error, functionName);
+
+        log_event('ERROR', error, target_info);
         reject(error)
         throw error;
     })
@@ -159,6 +165,7 @@ function start_response_choice(question_id, submit_id, profile_id) {
 
 function start_response_input(question_id, submit_id, profile_id) {
     let functionName = 'start_response_input';
+    let target_info = `functionName: ${functionName}; question_id: ${question_id}; submit_id: ${submit_id}; profile_id: ${profile_id}`
     return new Promise(function(resolve, reject) {
         let insert = `INSERT INTO dbo.[KA_input_response] 
         ([question_id],[time_start],[submit_id],[profile_id]) 
@@ -168,7 +175,7 @@ function start_response_input(question_id, submit_id, profile_id) {
             return result;
         }).catch(function(error) { reject(error); throw error; })
     }).catch(function(error) {
-        log_event('WARNING', error, functionName);
+        log_event('ERROR', error, target_info);
         reject(error)
         throw error;
     })
@@ -180,6 +187,7 @@ function start_response_input(question_id, submit_id, profile_id) {
 function finish_response(answer_id, input_value, profile_id, submit_id, question_id) {
     //console.log(answer_id,input_value,profile_id,submit_id,question_id)
     let functionName = 'finish_response';
+    let target_info = `functionName: ${functionName}; answer_id: ${answer_id}; input_value: ${input_value}; profile_id: ${profile_id}; submit_id: ${submit_id}; question_id: ${question_id}`
     return new Promise(function(resolve, reject) {
         // there are 3 conditions at the moment that we need to check for
         // answer_id === undefined  >> unescaped input
@@ -212,7 +220,7 @@ function finish_response(answer_id, input_value, profile_id, submit_id, question
             }).catch(function(error) { reject(error); throw (error); })
         }
     }).catch(function(error) {
-        log_event('WARNING', error, functionName);
+        log_event('ERROR', error, target_info);
         reject(error);
         throw (error);
     })
