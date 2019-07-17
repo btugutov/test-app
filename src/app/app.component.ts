@@ -51,6 +51,8 @@ export class AppComponent implements OnInit {
         clientId: "a1cbc100-5eed-4d33-b6fd-68856bb28b34",
         authority: "https://login.microsoftonline.com/12e2dd65-5024-44c2-83b5-3ca21c04ef0e"
       };
+    console.log(`window.location.hostname.split("//") =>`, window.location.hostname.split("//"))
+    console.log(`window.location.hostname.split("//")[1].slice(0,14)`)
     if(window.location.hostname.split("//").length>1 && window.location.hostname.split("//")[1].slice(0,14) == "blueprintkadev"){
       console.log("DEV version detected")
       auth = {
