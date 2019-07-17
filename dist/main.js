@@ -4951,7 +4951,7 @@ module.exports = "#singIngBox {\n    background: currentColor !important;\n    h
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<!--The content below is only a placeholder and can be replaced.-->\n<div *ngIf='popup_error_message'>\n    {{popup_error_message | json}}\n</div>\n<div id=\"singIngBox\" *ngIf=\"!user_obj\">\n    <div id=\"signIngBoxButtons\">\n        <h1>Welcome to Skill Assessment Portal</h1>\n        <button id=\"SignIn\" class='btn btn-lg btn-index dropbtn' type=\"button\" (click)=\"signIn()\">Sign In</button>\n    </div>\n</div>\n<nav *ngIf=\"user_obj\" class=\"navbar text-center navbar-dark\" id=\"navigation\" style=\"background: white !important;\">\n    <div class=\"navbar-left-half\">\n        <a class=\"nav-link btn\" routerLink=\"/\" id=\"bpLogo\">\n            <img class=\"logo\" src=\"assets/bplogo.png\" />\n        </a>\n        <button *ngIf='user_obj && user_obj.admin' class=\"btn dropbtn btn-lg btn-outline-secondary btn-home2\" type=\"button\" onclick=\"window.open('https://blueprintconsultingservices.atlassian.net/wiki/spaces/VETECHDOC/pages/839974989/How-to+Knowledge+Assessment+WebApp')\"\n            formtarget=\"_blank\" id=\"confluence_button\">Confluence</button>\n        <button *ngIf='user_obj && user_obj.admin' class=\"btn dropbtn btn-lg btn-outline-secondary btn-home2\" type=\"button\" onclick=\"window.open('https://app.powerbi.com/groups/me/reports/e7c1bd81-a473-44fd-903b-e5a6bae657f7')\" formtarget=\"_blank\" id=\"bi_report_button\">BI Report</button>\n        <a *ngIf='currentEng' class='btn dropbtn btn-lg btn-outline-secondary btn-home2' id=\"engBtn\" [routerLink]=\"[currentEng['engagement_id'],'home']\"> {{currentEng.engagement_name}} </a>\n    </div>\n    <div class=\"navbar-right-half\">\n        <a *ngIf='user_obj && user_obj.admin && currentEng' class='btn dropbtn btn-lg btn-outline-secondary btn-home2' id=\"engBtn\" [routerLink]=\"[currentEng.engagement_id,'admin']\"> Admin Portal</a>\n        <select class=\"custom-select\" id=\"eng_selector\" (change)=\"switchEng($event.target.value)\" style=\"max-width: 250px; color: #4f91cd; \" *ngIf=\"engagements!=null && currentEng \">\n            <option value=\" \" selected=\"selected \" disabled=\"disabled \" hidden=\"hidden \">Select Engagement</option>\n            <option *ngFor=\"let e of engagements \" [value]=\"e.engagement_id \"\n                [attr.selected]=\"currentEng.engagement_id==e.engagement_id ? true : null \">\n                {{e.engagement_name}}\n            </option>\n        </select>\n        <button class=\"btn btn-home2\" *ngIf=\"user_obj!=null \">{{ user_obj.email }}</button>\n        <button class=\"btn btn-home2 \" type=\"button \" (click)=\"signOut() \">Logout</button>\n        <button (click)='getOSInfo()' class='btn btn-outline-primary' type=\"button \" *ngIf='user_obj.developer'>Get System Info</button>\n    </div>\n</nav>\n<router-outlet *ngIf=\"user_obj \"></router-outlet>"
+module.exports = "<!--The content below is only a placeholder and can be replaced.-->\n{{cur_url | json}}\n<div *ngIf='popup_error_message'>\n    {{popup_error_message | json}}\n</div>\n<div id=\"singIngBox\" *ngIf=\"!user_obj\">\n    <div id=\"signIngBoxButtons\">\n        <h1>Welcome to Skill Assessment Portal</h1>\n        <button id=\"SignIn\" class='btn btn-lg btn-index dropbtn' type=\"button\" (click)=\"signIn()\">Sign In</button>\n    </div>\n</div>\n<nav *ngIf=\"user_obj\" class=\"navbar text-center navbar-dark\" id=\"navigation\" style=\"background: white !important;\">\n    <div class=\"navbar-left-half\">\n        <a class=\"nav-link btn\" routerLink=\"/\" id=\"bpLogo\">\n            <img class=\"logo\" src=\"assets/bplogo.png\" />\n        </a>\n        <button *ngIf='user_obj && user_obj.admin' class=\"btn dropbtn btn-lg btn-outline-secondary btn-home2\" type=\"button\" onclick=\"window.open('https://blueprintconsultingservices.atlassian.net/wiki/spaces/VETECHDOC/pages/839974989/How-to+Knowledge+Assessment+WebApp')\"\n            formtarget=\"_blank\" id=\"confluence_button\">Confluence</button>\n        <button *ngIf='user_obj && user_obj.admin' class=\"btn dropbtn btn-lg btn-outline-secondary btn-home2\" type=\"button\" onclick=\"window.open('https://app.powerbi.com/groups/me/reports/e7c1bd81-a473-44fd-903b-e5a6bae657f7')\" formtarget=\"_blank\" id=\"bi_report_button\">BI Report</button>\n        <a *ngIf='currentEng' class='btn dropbtn btn-lg btn-outline-secondary btn-home2' id=\"engBtn\" [routerLink]=\"[currentEng['engagement_id'],'home']\"> {{currentEng.engagement_name}} </a>\n    </div>\n    <div class=\"navbar-right-half\">\n        <a *ngIf='user_obj && user_obj.admin && currentEng' class='btn dropbtn btn-lg btn-outline-secondary btn-home2' id=\"engBtn\" [routerLink]=\"[currentEng.engagement_id,'admin']\"> Admin Portal</a>\n        <select class=\"custom-select\" id=\"eng_selector\" (change)=\"switchEng($event.target.value)\" style=\"max-width: 250px; color: #4f91cd; \" *ngIf=\"engagements!=null && currentEng \">\n            <option value=\" \" selected=\"selected \" disabled=\"disabled \" hidden=\"hidden \">Select Engagement</option>\n            <option *ngFor=\"let e of engagements \" [value]=\"e.engagement_id \"\n                [attr.selected]=\"currentEng.engagement_id==e.engagement_id ? true : null \">\n                {{e.engagement_name}}\n            </option>\n        </select>\n        <button class=\"btn btn-home2\" *ngIf=\"user_obj!=null \">{{ user_obj.email }}</button>\n        <button class=\"btn btn-home2 \" type=\"button \" (click)=\"signOut() \">Logout</button>\n        <button (click)='getOSInfo()' class='btn btn-outline-primary' type=\"button \" *ngIf='user_obj.developer'>Get System Info</button>\n    </div>\n</nav>\n<router-outlet *ngIf=\"user_obj \"></router-outlet>"
 
 /***/ }),
 
@@ -4995,6 +4995,7 @@ var AppComponent = /** @class */ (function () {
         this.graphConfig = null;
         this.msalConfig = null;
         this.popup_error_message = false;
+        this.cur_url = {};
         this._c.user.subscribe(function (user) {
             if (user) {
                 _this.user_obj = user;
@@ -5013,16 +5014,29 @@ var AppComponent = /** @class */ (function () {
                 _this.engagements = engagements;
             }
         });
-        this.msalConfig = {
-            auth: {
-                clientId: "a1cbc100-5eed-4d33-b6fd-68856bb28b34",
+        var auth = {
+            clientId: "a1cbc100-5eed-4d33-b6fd-68856bb28b34",
+            authority: "https://login.microsoftonline.com/12e2dd65-5024-44c2-83b5-3ca21c04ef0e"
+        };
+        if (window.location.hostname.split("//").length > 1 && window.location.hostname.split("//")[1].slice(0, 14) == "blueprintkadev") {
+            console.log("DEV version detected");
+            auth = {
+                clientId: "bdb30407-5d2e-47e0-a40e-41aead5bc297",
                 authority: "https://login.microsoftonline.com/12e2dd65-5024-44c2-83b5-3ca21c04ef0e"
-            },
+            };
+        }
+        else {
+            console.log("non-DEV version detected");
+        }
+        this.cur_url = auth;
+        this.msalConfig = {
+            auth: auth,
             cache: {
                 cacheLocation: "localStorage",
                 storeAuthStateInCookie: true
             }
         };
+        // 
         // this.msalConfig = { // OLD VERSION
         //   auth: {
         //     clientId: "5f40551b-4ad5-4327-aead-858301bb6d90",

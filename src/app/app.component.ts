@@ -26,6 +26,7 @@ export class AppComponent implements OnInit {
   popup_error_message = false;
   engagements;
   currentEng;
+  cur_url = {};
   constructor(private location: Location, private _r: Router, private _route: ActivatedRoute,private _c: ConnectorService) {
     
     this._c.user.subscribe(user => {
@@ -50,7 +51,7 @@ export class AppComponent implements OnInit {
         clientId: "a1cbc100-5eed-4d33-b6fd-68856bb28b34",
         authority: "https://login.microsoftonline.com/12e2dd65-5024-44c2-83b5-3ca21c04ef0e"
       };
-    if(window.location.hostname.split("//")[1].slice(0,14) == "blueprintkadev"){
+    if(window.location.hostname.split("//").length>1 && window.location.hostname.split("//")[1].slice(0,14) == "blueprintkadev"){
       console.log("DEV version detected")
       auth = {
         clientId: "bdb30407-5d2e-47e0-a40e-41aead5bc297",
@@ -59,6 +60,7 @@ export class AppComponent implements OnInit {
     }else{
       console.log("non-DEV version detected")
     }
+    this.cur_url = auth;
     this.msalConfig = {
       auth: auth,
       cache: {
