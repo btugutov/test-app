@@ -27,6 +27,7 @@ export class AppComponent implements OnInit {
   engagements;
   currentEng;
   constructor(private location: Location, private _r: Router, private _route: ActivatedRoute,private _c: ConnectorService) {
+    
     this._c.user.subscribe(user => {
       if (user) {
         this.user_obj = user;
@@ -45,16 +46,27 @@ export class AppComponent implements OnInit {
         this.engagements = engagements;
       }
     })
-    this.msalConfig = {
-      auth: {
+    let auth = {
         clientId: "a1cbc100-5eed-4d33-b6fd-68856bb28b34",
         authority: "https://login.microsoftonline.com/12e2dd65-5024-44c2-83b5-3ca21c04ef0e"
-    },
-    cache: {
+      };
+    if(window.location.hostname.split("//")[1].slice(0,14) == "blueprintkadev"){
+      console.log("DEV version detected")
+      auth = {
+        clientId: "bdb30407-5d2e-47e0-a40e-41aead5bc297",
+        authority: "https://login.microsoftonline.com/12e2dd65-5024-44c2-83b5-3ca21c04ef0e"
+      }
+    }else{
+      console.log("non-DEV version detected")
+    }
+    this.msalConfig = {
+      auth: auth,
+      cache: {
         cacheLocation: "localStorage",
         storeAuthStateInCookie: true
-    }
+      }
     };
+                // 
     // this.msalConfig = { // OLD VERSION
     //   auth: {
     //     clientId: "5f40551b-4ad5-4327-aead-858301bb6d90",
