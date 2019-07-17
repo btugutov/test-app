@@ -53,7 +53,7 @@ export class AppComponent implements OnInit {
       };
     console.log(`window.location.hostname.split("//") =>`, window.location.hostname.split("//"))
     console.log(`window.location.hostname.split("//")[1].slice(0,14)`)
-    if(window.location.hostname.split("//").length>1 && window.location.hostname.split("//")[1].slice(0,14) == "blueprintkadev"){
+    if(window.location.hostname.split("//").length>1 && window.location.hostname.split("//")[0].slice(0,14) == "blueprintkadev"){
       console.log("DEV version detected")
       auth = {
         clientId: "bdb30407-5d2e-47e0-a40e-41aead5bc297",
