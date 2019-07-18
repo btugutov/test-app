@@ -1,12 +1,17 @@
 <!--The content below is only a placeholder and can be replaced.-->
 <!-- {{cur_url | json}} -->
-<div *ngIf='popup_error_message'>
+<!-- <div *ngIf='popup_error_message'>
     {{popup_error_message | json}}
-</div>
+</div> -->
 <div id="singIngBox" *ngIf="!user_obj">
     <div id="signIngBoxButtons">
         <h1>Welcome to Skill Assessment Portal</h1>
-        <button id="SignIn" class='btn btn-lg btn-index dropbtn' type="button" (click)="signIn()">Sign In</button>
+        <a (click)="signIn()" class="footer__btn" data-footer-link="2" style="width: 250px; font-size: 25px;">
+            <span>Sign In</span>
+            <div class="footer__btn-line">
+                <div class="footer__btn-line-inner"></div>
+            </div>
+        </a>
     </div>
 </div>
 <nav *ngIf="user_obj" class="navbar text-center navbar-dark" id="navigation" style="background: white !important;">

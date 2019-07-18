@@ -110,7 +110,7 @@
               <span class="badge badge-primary shadow" *ngIf="el.log_level != 'ERROR' && el.log_level != 'WARNING'  && el.log_level != 'INFO'  && el.log_level != 'DEBUG'">{{el.log_level}}</span>
             </h4>
             </td>
-          <td *ngIf="ready[el.log_id] ">
+          <td *ngIf="ready[el.log_id] " class="text-break">
             <span *ngIf="!highlights[el.log_id]">
               {{el.log_event}}
             </span>

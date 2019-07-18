@@ -119,13 +119,13 @@ export class AppComponent implements OnInit {
     this.myMSALObj.loginPopup(this.requestObj).then(function (loginResponse) {
       that.acquireTokenPopupAndCallMSGraph();
     }).catch(function (error) {
-      this.popup_error_message = error;
-      console.log(error);
+      that.popup_error_message = error;
+      // console.log(error);
       
       let obj = {
 
       }
-      this._c.logEvent(error, "ERROR", "app.component", "signIn")
+      that._c.logEvent(error, "ERROR", "app.component", "signIn")
     });
   }
 
