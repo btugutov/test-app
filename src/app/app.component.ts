@@ -115,6 +115,7 @@ export class AppComponent implements OnInit {
   // ========================= AUTH FUNCTIONS ======================================
   signIn() {
     let that = this;
+    this._r.navigateByUrl('/')
     this.myMSALObj.loginPopup(this.requestObj).then(function (loginResponse) {
       that.acquireTokenPopupAndCallMSGraph();
     }).catch(function (error) {
@@ -277,7 +278,7 @@ export class AppComponent implements OnInit {
     let loc = location.href.split('/');
     // console.log("THIS LOCATION =>", loc)
     if(loc[3]){
-      if(localStorage['cur_eng']){
+      if(localStorage['cur_eng'] && this.user_obj){
         if(localStorage['cur_eng']['engagement_id'] != loc[3]){
           this._c.getAvailableEngagements(this.user_obj.profile_id).then(res => {
             for(let el in res){

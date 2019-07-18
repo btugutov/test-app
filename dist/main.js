@@ -5079,6 +5079,7 @@ var AppComponent = /** @class */ (function () {
     // ========================= AUTH FUNCTIONS ======================================
     AppComponent.prototype.signIn = function () {
         var that = this;
+        this._r.navigateByUrl('/');
         this.myMSALObj.loginPopup(this.requestObj).then(function (loginResponse) {
             that.acquireTokenPopupAndCallMSGraph();
         }).catch(function (error) {
@@ -5226,7 +5227,7 @@ var AppComponent = /** @class */ (function () {
         var loc = location.href.split('/');
         // console.log("THIS LOCATION =>", loc)
         if (loc[3]) {
-            if (localStorage['cur_eng']) {
+            if (localStorage['cur_eng'] && this.user_obj) {
                 if (localStorage['cur_eng']['engagement_id'] != loc[3]) {
                     this._c.getAvailableEngagements(this.user_obj.profile_id).then(function (res) {
                         for (var el in res) {
@@ -5479,6 +5480,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var rxjs_add_observable_merge__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! rxjs/add/observable/merge */ "./node_modules/rxjs-compat/_esm5/add/observable/merge.js");
 /* harmony import */ var rxjs_add_operator_map__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! rxjs/add/operator/map */ "./node_modules/rxjs-compat/_esm5/add/operator/map.js");
 /* harmony import */ var rxjs_Rx__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! rxjs/Rx */ "./node_modules/rxjs-compat/_esm5/Rx.js");
+/* harmony import */ var q__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! q */ "./node_modules/q/q.js");
+/* harmony import */ var q__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(q__WEBPACK_IMPORTED_MODULE_7__);
+
 
 
 
@@ -5515,6 +5519,19 @@ var ConnectorService = /** @class */ (function () {
                     that.cur_user.next(res);
                     resolve(res);
                 });
+            }, function (err) {
+                reject(err);
+            });
+        });
+    };
+    ConnectorService.prototype.update_user_session = function (user) {
+        if (!user) {
+            Object(q__WEBPACK_IMPORTED_MODULE_7__["reject"])(false);
+        }
+        var that = this;
+        return new Promise(function (resolve, reject) {
+            that.http.post('/api/store_user', user).subscribe(function (res) {
+                resolve(res);
             }, function (err) {
                 reject(err);
             });
@@ -7852,9 +7869,10 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var QuizComponent = /** @class */ (function () {
-    function QuizComponent(_ConnectorService, location, _route, dynamicScriptLoader) {
+    function QuizComponent(_ConnectorService, _r, location, _route, dynamicScriptLoader) {
         var _this = this;
         this._ConnectorService = _ConnectorService;
+        this._r = _r;
         this.location = location;
         this._route = _route;
         this.dynamicScriptLoader = dynamicScriptLoader;
@@ -7918,6 +7936,20 @@ var QuizComponent = /** @class */ (function () {
             return;
         }
         this._ConnectorService.takeQuiz(this.currentEng_id, this.currentUser.email, this.topic_id, this.quiz_id).then(function (data) {
+            if (data['status'] == "failed") {
+                console.log("data['status'] == \"failed\"");
+                if (localStorage['user']) {
+                    _this._ConnectorService.update_user_session(localStorage['user']).then(function (res) {
+                        _this.takeQuiz();
+                    }).catch(function (error) {
+                        this._r.navigateByUrl('/');
+                    });
+                }
+                else {
+                    _this._r.navigateByUrl('/');
+                }
+                return;
+            }
             // console.log(data)
             _this.question = data;
             if (data) {
@@ -8204,7 +8236,7 @@ var QuizComponent = /** @class */ (function () {
             template: __webpack_require__(/*! ./quiz.component.html */ "./src/app/quiz/quiz.component.html"),
             styles: [__webpack_require__(/*! ./quiz.component.css */ "./src/app/quiz/quiz.component.css")]
         }),
-        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_connector_service__WEBPACK_IMPORTED_MODULE_3__["ConnectorService"], _angular_common__WEBPACK_IMPORTED_MODULE_4__["Location"], _angular_router__WEBPACK_IMPORTED_MODULE_2__["ActivatedRoute"], _dynamic_script_loader_service_service__WEBPACK_IMPORTED_MODULE_5__["DynamicScriptLoaderServiceService"]])
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_connector_service__WEBPACK_IMPORTED_MODULE_3__["ConnectorService"], _angular_router__WEBPACK_IMPORTED_MODULE_2__["Router"], _angular_common__WEBPACK_IMPORTED_MODULE_4__["Location"], _angular_router__WEBPACK_IMPORTED_MODULE_2__["ActivatedRoute"], _dynamic_script_loader_service_service__WEBPACK_IMPORTED_MODULE_5__["DynamicScriptLoaderServiceService"]])
     ], QuizComponent);
     return QuizComponent;
 }());

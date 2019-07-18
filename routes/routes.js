@@ -252,13 +252,20 @@ module.exports = function (app) {
             'body': {},
             'message': ''
         }
-        let functionName = '/api/:eng/topic/:topicID/user/:userID/quiz/:quizID/question/:questionID'
+        let functionName = 'Take Quiz'
         let details = {
             "engId": req.params['eng'],
             "topic_id": req.params['topicID'],
             "userID": req.params['userID'],
             "quizID": req.params['quizID'],
             "questionID": req.params['questionID']
+        }
+        
+        if(!req.session['user'] ||  (req.session['user'] && !req.session['user']['email'])){
+            log_event_detailed("WARNING", response_message.message, functionName, req.params['userID'], JSON.stringify(details));
+            response_message.message = "current_user_session_fail";
+            res.json(response_message)
+            return;
         }
         preload_block(res, req.session['user']['email'], req.params['topicID'], req.params['eng'])
             .then(returnObj => {
@@ -349,8 +356,8 @@ module.exports = function (app) {
                             const cPage = {
                                 topicID: anstest['quiz_params']['topic_id'],
                                 userID: currentUser.email,
-                                quizID: anstest['quiz_params']['quiz_id'],
-                                questionID: question_id.toString()
+                                // quizID: anstest['quiz_params']['quiz_id'],
+                                // questionID: question_id.toString()
                             };
                             let params = create_params_object(currentUser);
                             params['current_eng'] = req.session['eng'];
@@ -361,6 +368,10 @@ module.exports = function (app) {
                                 // If the values don't match up, re-direct the user to the correct URL
                                 if (cPage[keys[i]].toString() !== req.params[keys[i]].toString()) {
                                     console.log('==================SOMETHING WENT WRONG======================')
+                                    console.log("mismatch on", keys[i])
+                                    console.log(`cPage[keys[i]] => ${cPage[keys[i]]}; cPage[keys[i]].toString() => ${cPage[keys[i]].toString()}; req.params[keys[i]] => ${req.params[keys[i]]}; req.params[keys[i]].toString() => ${req.params[keys[i]].toString()}`)
+                                    details.cPage = cPage;
+                                    log_event_detailed("WARNING", `Email ${req.session['user']['email']}: Take Quiz data mismatch`, functionName, req.params['userID'], JSON.stringify(details))
                                     console.log('=====================REDIRECTING=======================')
                                     console.log(`/${req.params['eng']}/topic/${cPage['topicID']}/user/${cPage['userID']}/quiz/${cPage['quizID']}/question/${cPage['questionID']}`)
                                     console.log('=============================================================')

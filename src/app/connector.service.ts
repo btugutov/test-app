@@ -6,6 +6,7 @@ import 'rxjs/add/observable/merge';
 import 'rxjs/add/operator/map';
 import 'rxjs/Rx';
 import { log } from 'util';
+import { reject } from 'q';
 @Injectable({
   providedIn: 'root'
 })
@@ -45,6 +46,22 @@ export class ConnectorService {
             that.cur_user.next(res);
             resolve(res)
           })
+        },
+        err => {
+          reject(err)
+        }
+      );
+    })
+  }
+  update_user_session(user){
+    if (!user) {
+      reject(false);
+    }
+    var that = this;
+    return new Promise(function (resolve, reject) {
+      that.http.post('/api/store_user', user).subscribe(
+        res => {
+            resolve(res)
         },
         err => {
           reject(err)

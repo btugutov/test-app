@@ -28,7 +28,7 @@ export class QuizComponent implements OnInit {
   expired_bool = false;
   submitting_bool = false;
   math = Math;
-  constructor(private _ConnectorService: ConnectorService, private location: Location, private _route: ActivatedRoute, private dynamicScriptLoader: DynamicScriptLoaderServiceService) {
+  constructor(private _ConnectorService: ConnectorService, private _r: Router, private location: Location, private _route: ActivatedRoute, private dynamicScriptLoader: DynamicScriptLoaderServiceService) {
     this._route.paramMap.subscribe(params => {
       this.currentEng_id = params.get('eng');
       this.topic_id = params.get('topic_id');
@@ -81,6 +81,19 @@ export class QuizComponent implements OnInit {
       return;
     }
     this._ConnectorService.takeQuiz(this.currentEng_id, this.currentUser.email, this.topic_id, this.quiz_id).then(data => {
+      if(data['status'] == "failed"){
+        console.log(`data['status'] == "failed"`)
+        if(localStorage['user']){
+          this._ConnectorService.update_user_session(localStorage['user']).then(res =>{
+            this.takeQuiz();
+          }).catch(function(error){
+            this._r.navigateByUrl('/');
+          });
+        }else{
+          this._r.navigateByUrl('/');
+        }
+        return;
+      }
       // console.log(data)
       this.question = data;
       if (data) {
