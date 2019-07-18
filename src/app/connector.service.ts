@@ -54,10 +54,12 @@ export class ConnectorService {
     })
   }
   update_user_session(user){
-    if (!user) {
+    if (!user || user == null) {
       reject(false);
     }
     var that = this;
+    user = JSON.parse(user)
+    console.log("update_user_session =>", user)
     return new Promise(function (resolve, reject) {
       that.http.post('/api/store_user', user).subscribe(
         res => {
@@ -670,12 +672,13 @@ export class ConnectorService {
     return result
   };
   setMainInfo(obj) {
+    console.log("setMainInfo(obj) =>", obj)
     if (obj.currentUser) {
       this.cur_user.next(obj.currentUser);
     }
     if (obj.currentEng) {
       this.curEng.next(obj.currentEng);
-      // console.log('The curEng is updated =>', this.curEng)
+      console.log('The curEng is updated =>', this.curEng)
     }
     if (obj.engagements) {
       this.engs.next(obj.engagements);

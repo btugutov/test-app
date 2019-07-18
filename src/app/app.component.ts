@@ -121,10 +121,6 @@ export class AppComponent implements OnInit {
     }).catch(function (error) {
       that.popup_error_message = error;
       // console.log(error);
-      
-      let obj = {
-
-      }
       that._c.logEvent(error, "ERROR", "app.component", "signIn")
     });
   }

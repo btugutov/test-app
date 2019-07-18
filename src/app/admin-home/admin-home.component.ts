@@ -19,6 +19,7 @@ export class AdminHomeComponent implements OnInit {
       this.currentEng_id = params.get('eng');
     });
     this._ConnectorService.user.subscribe(user => {
+      console.log("admin-home: got the current user from connector service", user)
       this.currentUser = user;
       if(user && !user.admin){
         this._r.navigate([`/${this.currentEng_id}/home`]);
@@ -31,11 +32,20 @@ export class AdminHomeComponent implements OnInit {
       }
     });
     this._ConnectorService.currentEng.subscribe(eng => {
+      
+      if(eng == null){
+        console.log('no engamement!')
+      }else if (eng){
+        console.log("admin-home: got the current engagement from connector service", eng)
+      }
       this.currentEng = eng;
     })
   }
 
   ngOnInit() {
+    console.log("welcome to the admin portal")
+    console.log("admin-home: current user =>", this.currentUser)
+    console.log("admin-home: current engagement =>", this.currentEng)
   }
   test(){
     console.log("currentEng_id =>", this.currentEng_id, "; currentUser =>", this.currentUser)

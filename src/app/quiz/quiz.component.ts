@@ -86,6 +86,7 @@ export class QuizComponent implements OnInit {
         if(localStorage['user']){
           this._ConnectorService.update_user_session(localStorage['user']).then(res =>{
             this.takeQuiz();
+            console.log("update_user_session RES =>", res)
           }).catch(function(error){
             this._r.navigateByUrl('/');
           });
@@ -97,7 +98,7 @@ export class QuizComponent implements OnInit {
       // console.log(data)
       this.question = data;
       if (data) {
-        console.log(data)
+        // console.log(data)
         this.getQuizLength(this.topic_id);
         if (data['completed']) {
           this.completed = true;
@@ -141,7 +142,7 @@ export class QuizComponent implements OnInit {
       let counter = 0;
       for(let el in res){
         if(res[el]['question_id']  ==  this.question.question_id){
-          console.log("found!")
+          // console.log("found!")
           this.current_index = counter;
           this.total_length = Object.keys(res).length;
           break;
@@ -310,7 +311,7 @@ export class QuizComponent implements OnInit {
             this.reformatQuestion();
           }
         }).catch(function (error) {
-          console.log(error)
+          console.log("ERROR =>",error)
           this._ConnectorService.logEvent(error, "ERROR", "QuizComponent", "submitAnswer")
         })
       }
@@ -364,7 +365,7 @@ export class QuizComponent implements OnInit {
             this.reformatQuestion();
           }
         }).catch(function (error) {
-          console.log(error)
+          console.log("ERROR =>",error)
           this._ConnectorService.logEvent(error, "ERROR", "QuizComponent", "submitAnswer")
         })
 

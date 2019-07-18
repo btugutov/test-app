@@ -260,8 +260,9 @@ module.exports = function (app) {
             "quizID": req.params['quizID'],
             "questionID": req.params['questionID']
         }
-        
         if(!req.session['user'] ||  (req.session['user'] && !req.session['user']['email'])){
+            console.log("==========================NO USER IN SESSION==========================")
+
             response_message.message = "current_user_session_fail";
             log_event_detailed("WARNING", response_message.message, functionName, req.params['userID'], JSON.stringify(details));
             res.json(response_message)

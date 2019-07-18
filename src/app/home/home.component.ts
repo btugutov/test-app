@@ -27,7 +27,7 @@ export class HomeComponent implements OnInit {
   constructor(private _ConnectorService: ConnectorService, private location: Location, private _route: ActivatedRoute,private _r: Router) { 
     this._route.paramMap.subscribe(params => {
       if(this.currentEng_id  != params.get('eng')){
-        console.log("Switching")
+        // console.log("Switching")
         this.currentEng_id = params.get('eng');
         // console.log("current engagement =>", this.currentEng_id)
         this.getEngagementByEngId(this.currentEng_id);
@@ -77,7 +77,7 @@ export class HomeComponent implements OnInit {
   }
   getAllCategoriesAndTopicsByProfileId(profile_id){
     this._ConnectorService.getAllCategoriesAndTopicsByProfileId(profile_id).then(data =>{
-      console.log("getAllCategoriesAndTopicsByProfileId DATA =>", data)
+      // console.log("getAllCategoriesAndTopicsByProfileId DATA =>", data)
       this.cats_n_tops_raw = data;
       this.filter_categories_and_topics_by_eng_id(this.cats_n_tops_raw);
 
@@ -87,14 +87,14 @@ export class HomeComponent implements OnInit {
   }
   getEngagementByEngId(currentEng_id){
     this._ConnectorService.getEngagementByEngId(currentEng_id).then(data =>{
-      console.log("getEngagementByEngId: data =>", data)
+      // console.log("getEngagementByEngId: data =>", data)
       if(data){
         if(data[0]['background']){
-          console.log("background!!!")
-          console.log()
+          // console.log("background!!!")
+          // console.log()
           document.getElementById('quiz_selection').style.background = null;
         }else{
-          console.log("no background!")
+          // console.log("no background!")
         }
       }
       this.current_eng = data[0];
@@ -124,7 +124,7 @@ export class HomeComponent implements OnInit {
       }else{
         this.cats_n_tops_bool = true;
       }
-      console.log(this.cats_n_tops)
+      // console.log(this.cats_n_tops)
       this.cats_n_tops = groupByKey(unescapingObj(this.cats_n_tops), 'category', 'topic_id')
       for(let c in this.cats_n_tops){
         this.cats_n_tops_array[c] = [];

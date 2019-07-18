@@ -12,7 +12,7 @@ export class IndexComponent implements OnInit {
     this._c.user.subscribe(user => this.currentUser = user);
     this._c.engagements.subscribe(engs => {
         this.engagements = engs;
-        console.log(engs)
+        // console.log(engs)
       });
   }
   // getAvailableEngagements(profile_id){
@@ -28,7 +28,7 @@ export class IndexComponent implements OnInit {
   //   });
   // }
   ngOnInit() {
-    console.log("current user at index.comp =>", this.currentUser)
+    // console.log("current user at index.comp =>", this.currentUser)
     if(!this.currentUser){
       // console.log("Seems like the Coonector")
       if(localStorage['user']){
@@ -39,7 +39,7 @@ export class IndexComponent implements OnInit {
         // }).catch(function(error){
         //   console.log("error =>", error)
         // })
-        console.log(this.engagements)
+        // console.log(this.engagements)
       }
     }else{
 

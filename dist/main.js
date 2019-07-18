@@ -4807,6 +4807,7 @@ var AdminHomeComponent = /** @class */ (function () {
             _this.currentEng_id = params.get('eng');
         });
         this._ConnectorService.user.subscribe(function (user) {
+            console.log("admin-home: got the current user from connector service", user);
             _this.currentUser = user;
             if (user && !user.admin) {
                 _this._r.navigate(["/" + _this.currentEng_id + "/home"]);
@@ -4819,10 +4820,19 @@ var AdminHomeComponent = /** @class */ (function () {
             }
         });
         this._ConnectorService.currentEng.subscribe(function (eng) {
+            if (eng == null) {
+                console.log('no engamement!');
+            }
+            else if (eng) {
+                console.log("admin-home: got the current engagement from connector service", eng);
+            }
             _this.currentEng = eng;
         });
     }
     AdminHomeComponent.prototype.ngOnInit = function () {
+        console.log("welcome to the admin portal");
+        console.log("admin-home: current user =>", this.currentUser);
+        console.log("admin-home: current engagement =>", this.currentEng);
     };
     AdminHomeComponent.prototype.test = function () {
         console.log("currentEng_id =>", this.currentEng_id, "; currentUser =>", this.currentUser);
@@ -5085,7 +5095,6 @@ var AppComponent = /** @class */ (function () {
         }).catch(function (error) {
             that.popup_error_message = error;
             // console.log(error);
-            var obj = {};
             that._c.logEvent(error, "ERROR", "app.component", "signIn");
         });
     };
@@ -5525,10 +5534,12 @@ var ConnectorService = /** @class */ (function () {
         });
     };
     ConnectorService.prototype.update_user_session = function (user) {
-        if (!user) {
+        if (!user || user == null) {
             Object(q__WEBPACK_IMPORTED_MODULE_7__["reject"])(false);
         }
         var that = this;
+        user = JSON.parse(user);
+        console.log("update_user_session =>", user);
         return new Promise(function (resolve, reject) {
             that.http.post('/api/store_user', user).subscribe(function (res) {
                 resolve(res);
@@ -6017,12 +6028,13 @@ var ConnectorService = /** @class */ (function () {
     };
     ;
     ConnectorService.prototype.setMainInfo = function (obj) {
+        console.log("setMainInfo(obj) =>", obj);
         if (obj.currentUser) {
             this.cur_user.next(obj.currentUser);
         }
         if (obj.currentEng) {
             this.curEng.next(obj.currentEng);
-            // console.log('The curEng is updated =>', this.curEng)
+            console.log('The curEng is updated =>', this.curEng);
         }
         if (obj.engagements) {
             this.engs.next(obj.engagements);
@@ -6511,7 +6523,7 @@ var HomeComponent = /** @class */ (function () {
         this.cats_n_tops_array = [];
         this._route.paramMap.subscribe(function (params) {
             if (_this.currentEng_id != params.get('eng')) {
-                console.log("Switching");
+                // console.log("Switching")
                 _this.currentEng_id = params.get('eng');
                 // console.log("current engagement =>", this.currentEng_id)
                 _this.getEngagementByEngId(_this.currentEng_id);
@@ -6559,7 +6571,7 @@ var HomeComponent = /** @class */ (function () {
     HomeComponent.prototype.getAllCategoriesAndTopicsByProfileId = function (profile_id) {
         var _this = this;
         this._ConnectorService.getAllCategoriesAndTopicsByProfileId(profile_id).then(function (data) {
-            console.log("getAllCategoriesAndTopicsByProfileId DATA =>", data);
+            // console.log("getAllCategoriesAndTopicsByProfileId DATA =>", data)
             _this.cats_n_tops_raw = data;
             _this.filter_categories_and_topics_by_eng_id(_this.cats_n_tops_raw);
         }).catch(function (error) {
@@ -6569,15 +6581,15 @@ var HomeComponent = /** @class */ (function () {
     HomeComponent.prototype.getEngagementByEngId = function (currentEng_id) {
         var _this = this;
         this._ConnectorService.getEngagementByEngId(currentEng_id).then(function (data) {
-            console.log("getEngagementByEngId: data =>", data);
+            // console.log("getEngagementByEngId: data =>", data)
             if (data) {
                 if (data[0]['background']) {
-                    console.log("background!!!");
-                    console.log();
+                    // console.log("background!!!")
+                    // console.log()
                     document.getElementById('quiz_selection').style.background = null;
                 }
                 else {
-                    console.log("no background!");
+                    // console.log("no background!")
                 }
             }
             _this.current_eng = data[0];
@@ -6610,7 +6622,7 @@ var HomeComponent = /** @class */ (function () {
         else {
             this.cats_n_tops_bool = true;
         }
-        console.log(this.cats_n_tops);
+        // console.log(this.cats_n_tops)
         this.cats_n_tops = Object(_object_validation_js__WEBPACK_IMPORTED_MODULE_5__["groupByKey"])(Object(_object_validation_js__WEBPACK_IMPORTED_MODULE_5__["unescapingObj"])(this.cats_n_tops), 'category', 'topic_id');
         for (var c in this.cats_n_tops) {
             this.cats_n_tops_array[c] = [];
@@ -6682,7 +6694,7 @@ var IndexComponent = /** @class */ (function () {
         this._c.user.subscribe(function (user) { return _this.currentUser = user; });
         this._c.engagements.subscribe(function (engs) {
             _this.engagements = engs;
-            console.log(engs);
+            // console.log(engs)
         });
     }
     // getAvailableEngagements(profile_id){
@@ -6698,7 +6710,7 @@ var IndexComponent = /** @class */ (function () {
     //   });
     // }
     IndexComponent.prototype.ngOnInit = function () {
-        console.log("current user at index.comp =>", this.currentUser);
+        // console.log("current user at index.comp =>", this.currentUser)
         if (!this.currentUser) {
             // console.log("Seems like the Coonector")
             if (localStorage['user']) {
@@ -6709,7 +6721,7 @@ var IndexComponent = /** @class */ (function () {
                 // }).catch(function(error){
                 //   console.log("error =>", error)
                 // })
-                console.log(this.engagements);
+                // console.log(this.engagements)
             }
         }
         else {
@@ -7941,6 +7953,7 @@ var QuizComponent = /** @class */ (function () {
                 if (localStorage['user']) {
                     _this._ConnectorService.update_user_session(localStorage['user']).then(function (res) {
                         _this.takeQuiz();
+                        console.log("update_user_session RES =>", res);
                     }).catch(function (error) {
                         this._r.navigateByUrl('/');
                     });
@@ -7953,7 +7966,7 @@ var QuizComponent = /** @class */ (function () {
             // console.log(data)
             _this.question = data;
             if (data) {
-                console.log(data);
+                // console.log(data)
                 _this.getQuizLength(_this.topic_id);
                 if (data['completed']) {
                     _this.completed = true;
@@ -7996,7 +8009,7 @@ var QuizComponent = /** @class */ (function () {
             var counter = 0;
             for (var el in res) {
                 if (res[el]['question_id'] == _this.question.question_id) {
-                    console.log("found!");
+                    // console.log("found!")
                     _this.current_index = counter;
                     _this.total_length = Object.keys(res).length;
                     break;
@@ -8169,7 +8182,7 @@ var QuizComponent = /** @class */ (function () {
                         _this.reformatQuestion();
                     }
                 }).catch(function (error) {
-                    console.log(error);
+                    console.log("ERROR =>", error);
                     this._ConnectorService.logEvent(error, "ERROR", "QuizComponent", "submitAnswer");
                 });
             }
@@ -8221,7 +8234,7 @@ var QuizComponent = /** @class */ (function () {
                         _this.reformatQuestion();
                     }
                 }).catch(function (error) {
-                    console.log(error);
+                    console.log("ERROR =>", error);
                     this._ConnectorService.logEvent(error, "ERROR", "QuizComponent", "submitAnswer");
                 });
             }
