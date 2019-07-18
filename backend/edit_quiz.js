@@ -745,7 +745,7 @@ function get_topic_info_for_editQuizHome(engagement_id) {
             ,COUNT([KA_quiz_questions].[question_id]) as question_count
         FROM [dbo].[KA_test_topic]
         FULL OUTER JOIN KA_quiz_questions on KA_quiz_questions.quiz_id = [KA_test_topic].topic_id
-        where engagement_id = ${engagement_id}
+        where engagement_id = ${engagement_id} AND [KA_test_topic].hard_delete = 0
         group by [KA_test_topic].[topic],[KA_test_topic].[topic_id]
             ,[KA_test_topic].[category]
             ,[KA_test_topic].[soft_delete]
@@ -1946,31 +1946,31 @@ function deleteQuiz(quiz, email){
     let details = {
         'quiz': quiz
     }
-    for(let el in quiz.questions){
-        details.el = el
-        delete_answers_by_question_id(el).then(res =>{
-            log_event_detailed("INFO", `Question ID ${el}: all answers with this question ID are deleted`, "delete_answers_by_question_id", email, JSON.stringify(details));
-        }).catch(function(error){
-            details.el = el;
-            log_event_detailed("ERROR", error, "delete_answers_by_question_id", email, JSON.stringify(details));
-        })
-        delete_question(el).then(res => {
-            log_event_detailed("INFO", `Question ID ${el}: is deleted`, "delete_question", email, JSON.stringify(details));
-        }).catch(function(error){
-            log_event_detailed("ERROR", error, "delete_question", email, JSON.stringify(details));
-        })
-    }
     delete_topic_by_id(quiz.topic_id).then(res => {
         log_event_detailed("INFO", `Quiz ID ${quiz.topic_id}: is deleted`, "delete_topic_by_id", email, JSON.stringify(details));
+        // delete_buckets_by_topic_id(quiz.topic_id).then(res => {
+        //     log_event_detailed("INFO", `Quiz ID ${quiz.topic_id}: is deleted`, "delete_buckets_by_topic_id", email, JSON.stringify(details));
+        //     for(let el in quiz.questions){
+        //         details.el = el
+        //         delete_answers_by_question_id(el).then(res =>{
+        //             log_event_detailed("INFO", `Question ID ${el}: all answers with this question ID are deleted`, "delete_answers_by_question_id", email, JSON.stringify(details));
+        //         }).catch(function(error){
+        //             details.el = el;
+        //             log_event_detailed("ERROR", error, "delete_answers_by_question_id", email, JSON.stringify(details));
+        //         })
+        //         delete_question(el).then(res => {
+        //             log_event_detailed("INFO", `Question ID ${el}: is deleted`, "delete_question", email, JSON.stringify(details));
+        //         }).catch(function(error){
+        //             log_event_detailed("ERROR", error, "delete_question", email, JSON.stringify(details));
+        //         })
+        //     }
+        // }).catch(function(error){
+        //     log_event_detailed("ERROR", error, "delete_buckets_by_topic_id", email, JSON.stringify(details));
+        // })
     }).catch(function(error){
         log_event_detailed("ERROR", error, "delete_topic_by_id", email, JSON.stringify(details));
     })
-
-    delete_buckets_by_topic_id(quiz.topic_id).then(res => {
-        log_event_detailed("INFO", `Quiz ID ${quiz.topic_id}: is deleted`, "delete_buckets_by_topic_id", email, JSON.stringify(details));
-    }).catch(function(error){
-        log_event_detailed("ERROR", error, "delete_buckets_by_topic_id", email, JSON.stringify(details));
-    })
+    
 }
 function disableQuiz(topic_id){
     let functionName = 'disableQuiz';
@@ -1999,15 +1999,15 @@ function disableQuiz(topic_id){
 function delete_topic_by_id(topic_id){
     let functionName = 'delete_topic_by_id';
     return new Promise(function(resolve, reject) {
-        let delete_topic_by_id = `DELETE FROM KA_test_topic 
-        WHERE topic_id = ${topic_id}`;
-        let delete_topic_question_connection = `DELETE FROM KA_quiz_questions
-        WHERE quiz_id = ${topic_id}`;
-        dbQueryMethod.queryRaw(delete_topic_question_connection).then(result => {
-            dbQueryMethod.queryRaw(delete_topic_by_id).then(result2 =>{
-                resolve(result2)
-                return result2;
-            }).catch(function(error) { reject(error); throw (error); })
+        // let delete_topic_by_id = `DELETE FROM KA_test_topic 
+        // WHERE topic_id = ${topic_id}`;
+        // let delete_topic_question_connection = `DELETE FROM KA_quiz_questions
+        // WHERE quiz_id = ${topic_id}`;
+        let hard_delete_query = `UPDATE KA_test_topic SET hard_delete = 1 where topic_id = ${topic_id}`
+        dbQueryMethod.queryRaw(hard_delete_query).then(result => {
+            // log_event_detailed("INFO", "Quiz ID ${topic_id}: is deleted.", "delete_topic_by_id", null, null);
+            resolve(result)
+            return result;
         }).catch(function(error) { reject(error); throw (error); })
     }).catch(function(error) {
         // logEventParser("ERROR", error, "edit_quiz.js", "delete_topic_by_id", null)
@@ -2053,7 +2053,6 @@ function delete_quiz_question_connection(question_id){
     })
 }
 function delete_question(question_id){
-    // NOT READY
     let functionName = 'delete_question';
     return new Promise(function(resolve, reject) {
         let query = `DELETE FROM KA_questions 

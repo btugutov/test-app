@@ -165,6 +165,7 @@ function get_testable_topics_by_profile_id(profile_id) {
         )
         AND KA_profile_permissions.profile_id = ${profile_id}
         AND [KA_test_topic].[soft_delete] = 0
+        AND [KA_test_topic].[hard_delete] = 0
         ORDER by [KA_test_topic].[topic_id] asc`
         return dbQueryMethod.query(query).then(result => {
             resolve(result)
@@ -221,6 +222,20 @@ function getEngagementByEngId(id){
         throw error;
     })
 }
+function get_all_topics(){
+    let functionName = 'get_all_topics';
+    return new Promise(function(resolve, reject) {
+        let query = `SELECT * from KA_test_topic WHERE hard_delete = 0`;
+        return dbQueryMethod.query(query).then(result => {
+            resolve(result)
+            return result;
+        }).catch(function(error) { reject(error); throw error; })
+    }).catch(function(error) {
+        log_event('WARNING', error, functionName);
+        reject(error)
+        throw error;
+    })
+}
 
 function time_now_MSSQL() {
     let date = new Date();
@@ -262,7 +277,8 @@ module.exports = {
     get_testable_topics_by_profile_id: get_testable_topics_by_profile_id,
     get_available_engagements_by_profile_id: get_available_engagements_by_profile_id,
     get_all_categories_and_topics_by_engagement_id_and_profile_id: get_all_categories_and_topics_by_engagement_id_and_profile_id,
-    getEngagementByEngId: getEngagementByEngId
+    getEngagementByEngId: getEngagementByEngId,
+    get_all_topics: get_all_topics
 };
 
 // create a one liner here that is what another file will need to import everything from this file. 

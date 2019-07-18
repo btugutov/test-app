@@ -8,7 +8,7 @@ const { register_user } = require('../backend/user_register.js');
 // classes
 const { debugLog, getLineNumber, log_event, log_object_parser, dbQueryMethod, logEvent, getEventLog, getEventLogByID, log_event_detailed } = require('../backend/classes.js');
 // methods
-const { get_available_quiz_for_profile_id_MSSQL, get_completed_quiz_categorized_submissions, get_gradable_quiz_submit_id_by_profile_and_topic, get_gradable_quiz_session_by_id, get_table_complete, get_submit_id_from_graded_by, time_now_MSSQL, update_image_base64_MSSQL, get_testable_topics_by_profile_id, get_available_engagements_by_profile_id, get_all_categories_and_topics_by_engagement_id_and_profile_id, getEngagementByEngId } = require('../backend/methods.js');
+const { get_available_quiz_for_profile_id_MSSQL, get_completed_quiz_categorized_submissions, get_gradable_quiz_submit_id_by_profile_and_topic, get_gradable_quiz_session_by_id, get_table_complete, get_submit_id_from_graded_by, time_now_MSSQL, update_image_base64_MSSQL, get_testable_topics_by_profile_id, get_available_engagements_by_profile_id, get_all_categories_and_topics_by_engagement_id_and_profile_id, getEngagementByEngId, get_all_topics } = require('../backend/methods.js');
 // edit_quiz.js
 const { get_topic_to_edit_MSSQL, get_topic_info_for_editQuizHome, update_topic_main, delete_topic_by_id, get_buckets_by_topic_id, saveOneBucket, create_topic_main, deleteQuiz, disableQuiz } = require('../backend/edit_quiz.js');
 // get_User
@@ -1148,7 +1148,7 @@ module.exports = function (app) {
                     if (currentUser.admin_editor || currentUser.admin_owner) {
                         get_table_complete('KA_engagement').then(res_engs => {
                             response_message.engs = res_engs;
-                            get_table_complete('KA_test_topic').then(function (catResult) {
+                            get_all_topics().then(function (catResult) {
                                 response_message.categories = groupByKey(catResult, 'category', 'topic_id');
                                 get_table_complete('KA_bucket').then(bl => {
                                     response_message.bucket_list = bl;
@@ -1264,7 +1264,7 @@ module.exports = function (app) {
                     let currentUser = returnObj['currentUser']
                     // check to make sure that user has grading permissions before accepting data from the post
                     if (currentUser.admin_editor || currentUser.admin_owner) {
-                        get_table_complete('KA_test_topic').then(function (catResult) {
+                        get_all_topics().then(function (catResult) {
                             categories = groupByKey(unescapingObj(catResult), 'category', 'topic_id');
                             console.log("let's get topic for engagement id =>", req.body['eng_id'])
                             get_topic_info_for_editQuizHome(req.body['eng_id']).then(result => {
