@@ -262,8 +262,8 @@ module.exports = function (app) {
         }
         
         if(!req.session['user'] ||  (req.session['user'] && !req.session['user']['email'])){
-            log_event_detailed("WARNING", response_message.message, functionName, req.params['userID'], JSON.stringify(details));
             response_message.message = "current_user_session_fail";
+            log_event_detailed("WARNING", response_message.message, functionName, req.params['userID'], JSON.stringify(details));
             res.json(response_message)
             return;
         }
