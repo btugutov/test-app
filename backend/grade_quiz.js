@@ -23,15 +23,21 @@ function call_stored_proc_grading() {
 function call_stored_proc_grading_for_one(submit_id) {
     let functionName = 'call_stored_proc_grading_for_one';
     console.log("call_stored_proc_grading_for_one", submit_id)
+    let details = {
+        submit_id: submit_id
+    }
     return new Promise(function(resolve, reject) {
         let query_quiz = `EXEC sp_calculate_scores_test ${submit_id}`;
         return dbQueryMethod.queryRaw(query_quiz).then(result => {
             // console.log(`call_stored_proc_grading_for_one() result =>`, result)
+            details.result = result;
+            log_event_detailed("INFO", `Submit ID ${submit_id} is calculated successfully`, functionName, null, JSON.stringify(details))
             resolve(result)
             return result;
         }).catch(function(error) { reject(error); throw (error); })
     }).catch(function(error) {
-        log_event('WARNING', error, functionName);
+        reject(error);
+        // log_event('WARNING', error, functionName);
         throw (error);
     })
 }
@@ -478,7 +484,7 @@ function quizEndChecks(submit_id) {
                             user_id: null,
                             event_time: new Date()
                           }
-                        logEvent(obj)
+                        // logEvent(obj)
                         call_stored_proc_grading_for_one(submit_id).then(res_gradings =>{
                             resolve(result)
                         }).catch(function(error){

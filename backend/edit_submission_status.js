@@ -1,5 +1,5 @@
 const Promise = require('promise');
-const { debugLog, getLineNumber, log_event, dbQueryMethod } = require('./classes.js');
+const { debugLog, getLineNumber, log_event, dbQueryMethod, log_event_detailed } = require('./classes.js');
 
 // grade_quiz
 const { get_completed_quiz_submissions, get_completed_quiz_by_submissions, finish_gradable_quiz_session_by_id, release_grade_hold, start_grading_quiz, update_grade_input_response, quizEndChecks } = require('../backend/grade_quiz.js');
@@ -160,43 +160,69 @@ function update_KA_quiz_submission_by_submit_id(submit_id, invalidate_submission
 // Accept object and break it into pieces
 function edit_submissions_main_LOOP(obj, submit_id, edit_by) {
     let functionName = 'edit_submissions_main_LOOP';
+    let details = {
+        obj: obj,
+        submit_id: submit_id,
+        edit_by: edit_by
+    }
+    
     // get
     //for(let a in Object.keys(objKeys)){
     return new Promise(function (resolve, reject) {
         try {
             console.log(`obj['invalidate_submission'], obj['retake_topic'], obj['regrade_submission'] =>`, obj['invalidate_submission'], obj['retake_topic'], obj['regrade_submission'])
             if (obj['regrade_submission']) {
-                call_stored_proc_grading_for_one(submit_id).then(res => {
-                    update_KA_quiz_submission_by_submit_id(submit_id, obj['invalidate_submission'], obj['retake_topic'], false).then(result => {
-                        console.log("call_stored_proc_grading_for_one and update_KA_quiz_submission_by_submit_id are done", submit_id)
-                        resolve(result)
-                    }).catch(function (error) { reject(error); })
-                }).catch(function (error) { reject(error); })
+                // call_stored_proc_grading_for_one(submit_id).then(res => {
+                //     update_KA_quiz_submission_by_submit_id(submit_id, obj['invalidate_submission'], obj['retake_topic'], false).then(result => {
+                //         console.log("call_stored_proc_grading_for_one and update_KA_quiz_submission_by_submit_id are done", submit_id)
+                //         resolve(result)
+                //     }).catch(function (error) { 
+                //         console.log("we got error here", getLineNumber())
+                //         reject(error); 
+                //         throw error
+                //     })
+                // }).catch(error => {
+                //     log_event_detailed("ERROR", error, functionName, null, JSON.stringify(details)); 
+                //     console.log("we got error here", getLineNumber())
+                //     reject(error); 
+                //     throw error
+                // })
+                call_stored_proc_grading_for_one(submit_id).then(
+                    function(result) { /* handle a successful result */ 
+                        console.log("SUCCESS")
+                        resolve(true)
+                    },
+                    function(error) { /* handle an error */ 
+                        console.log("ERROR")
+                        reject(error)
+                        throw error
+                    }
+                )
+                    
             }else{
                 //update_KA_quiz_submission_by_submit_id(submit_id, invalidate_submission, retake_topic, regrade_submission)
                 update_KA_quiz_submission_by_submit_id(submit_id, obj['invalidate_submission'], obj['retake_topic'], obj['regrade_submission']).then(result => {
                     console.log('update_KA_quiz_submission_by_submit_id is done', submit_id)
                     resolve(result)
-                    // if(obj['retake_topic'] == 1){
-                    //     quizEndChecks(submit_id).then(report => {
-                    //         console.log('***********************************************')
-                    //         console.log('***********************update_KA_quiz_submission_by_submit_id************************')
-                    //         console.log(report)
-                    //         console.log('***********************************************')
-                    //     })
-                    // }
-                }).catch(function (error) { reject(error); })
+                }).catch(function (error) { 
+                    log_event_detailed("ERROR", error, functionName, null, JSON.stringify(details)); 
+                    reject(error);
+                    console.log("we got error here", getLineNumber())
+                    throw error
+                 })
             }
         } catch (err) {
             console.log('calling promise object to write updates to KA_quiz_submissions table.')
-            console.log(err)
-            log_event('WARNING', err, functionName);
-            reject(error);
+            // log_event('WARNING', err, functionName);
+            console.log("we got error here", getLineNumber())
+            reject(err);
+            throw err;
         }
     }).catch(function (error) {
-        log_event('WARNING', error, functionName);
-        // throw (error);
+        console.log("we got error here", getLineNumber())
+        // log_event('WARNING', error, functionName);
         reject(error);
+        throw error
     })
 }
 
@@ -223,6 +249,7 @@ function edit_submissions_main(object, edit_by) {
                         for (let el in object) {
                             // let i = objKeys[a]
                             //console.log(object[i])
+                            console.log("+++CALLING edit_submissions_main_LOOP++")
                             edit_submissions_main_LOOP(object[el], el, edit_by).then(res => {
                                 results[el] = res;
                                 console.log(`${Object.keys(results).length}/${length}: incoming res => ${el}`)
@@ -271,16 +298,25 @@ function edit_submissions_main(object, edit_by) {
 
 function call_stored_proc_grading_for_one(submit_id) {
     let functionName = 'call_stored_proc_grading_for_one';
+    let details = {
+        submit_id: submit_id
+    }
     console.log("call_stored_proc_grading_for_one", submit_id)
     return new Promise(function(resolve, reject) {
         let query_quiz = `EXEC sp_calculate_scores_test ${submit_id}`;
         return dbQueryMethod.queryRaw(query_quiz).then(result => {
+            console.log("SUCCESSFULLY GRADED!")
+            log_event_detailed("INFO", `Submit ID ${submit_id} is calculated successfully`, functionName, null, JSON.stringify(details))
             // console.log(`call_stored_proc_grading_for_one() result =>`, result)
             resolve(result)
             return result;
-        }).catch(function(error) { reject(error); throw (error); })
+        }).catch(function(error) {
+            console.log("GRADING FAILED!", getLineNumber())
+            reject(error); 
+            throw (error); })
     }).catch(function(error) {
-        log_event('WARNING', error, functionName);
+        console.log("GRADING FAILED!",getLineNumber())
+        reject(error)
         throw (error);
     })
 }

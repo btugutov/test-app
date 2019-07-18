@@ -8,7 +8,7 @@
                           <span aria-hidden="true">&times;</span>
                         </button>
                 </div>
-                <div style="height: 50vh !important; overflow-y: scroll;">
+                <div style="height: 50vh !important; overflow-y: scroll;" class="text-break">
                     {{ modal_message.body | json}}
                   </div>
                   <div class="team_control_panel">
@@ -121,8 +121,8 @@
               {{highlights[el.log_id]['submit_id'][1]}}
             </span>
             </td>
-          <td *ngIf="ready[el.log_id]">{{el.host}}</td>
-          <td *ngIf="ready[el.log_id]">{{el.line_number}}</td>
+          <td *ngIf="ready[el.log_id]" class="text-break">{{el.host}}</td>
+          <td *ngIf="ready[el.log_id]" class="text-break">{{el.line_number}}</td>
           <td *ngIf="ready[el.log_id]"><button class="btn btn-secondary btn-action-borderless shadow" (click)="openModal('Details', el)">Check details</button></td>
           <td *ngIf="ready[el.log_id]" class="text-break">{{el.user_id}}</td>
           <td *ngIf="ready[el.log_id]" class="text-break">{{el.event_time | date:'medium'}}</td>
