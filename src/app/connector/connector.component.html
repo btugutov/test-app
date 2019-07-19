@@ -3,7 +3,7 @@
         <div class="modal-dialog modal-dialog-centered modal_message" role="document">
             <div class="modal-content modal-dialog-scrollable" *ngIf="modal_message.title == 'Details'">
                 <div class="modal-header">
-                    <h3 class="modal-title text-monospace text-center" id="exampleModalCenteredLabel" style="margin: 0px auto;">Details for {{modal_message.body.log_id}}</h3>
+                    <h3 class="modal-title  text-center" id="exampleModalCenteredLabel" style="margin: 0px auto;">Details for {{modal_message.body.log_id}}</h3>
                     <button type="button" class="close" (click)="closeModal()" data-dismiss="modal" aria-label="Close">
                           <span aria-hidden="true">&times;</span>
                         </button>
@@ -13,7 +13,7 @@
                   </div>
                   <div class="team_control_panel">
                       <div style="height: 50px; margin-top: 25px;">
-                        <button type="button" (click)="closeModal()"  class="btn btn-warning text-monospace btn-action-borderless shadow"  style="margin: 0px 20px">Close</button>
+                        <button type="button" (click)="closeModal()"  class="btn btn-warning  btn-action-borderless shadow"  style="margin: 0px 20px">Close</button>
                       </div>
                   </div>
             </div>

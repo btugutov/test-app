@@ -7,7 +7,7 @@
             <!-- EDIT/REMOVE BUCKET LIST -->
             <div class="modal-content " *ngIf="modal_message.title == 'list_control'">
                 <div class="modal-header">
-                    <h3 class="modal-title text-monospace text-center" id="exampleModalCenteredLabel" style="margin: 0px auto;">Grant multiple permissions for <span class="font-weight-bolder">{{modal_message.body}}</span></h3>
+                    <h3 class="modal-title  text-center" id="exampleModalCenteredLabel" style="margin: 0px auto;">Grant multiple permissions for <span class="font-weight-bolder">{{modal_message.body}}</span></h3>
                     <button type="button" class="close" (click)="closeModal()" data-dismiss="modal" aria-label="Close">
                           <span aria-hidden="true">&times;</span>
                         </button>
@@ -17,24 +17,24 @@
                       <h4  style='width: 100%' align='center'>{{cat.key}}</h4>
                       <div class="shadow" style="display: flex; flex-direction: column; flex-wrap: nowrap; justify-content: flex-start; align-items: center; align-content: flex-start;">
                           <div class="btn-group btn-group-sm control-list-btn-group" *ngFor="let topic of cat.value | keyvalue">
-                              <button type="button" (click)="listControlChanger(topic.value.topic_id, 'all')" class="btn btn-xs text-monospace btn-action-borderlesss btn-outline-success-hover-side-shadow" [ngClass]="{'btn-success': list_control[topic.value.topic_id] === true , 'btn-secondary': list_control[topic.value.topic_id] !== true}" style="border-radius: 0px" > &ensp; &ensp;  All  &ensp; &ensp; </button>
+                              <button type="button" (click)="listControlChanger(topic.value.topic_id, 'all')" class="btn btn-xs  btn-action-borderlesss " [ngClass]="{'btn-success': list_control[topic.value.topic_id] === true , 'btn-secondary': list_control[topic.value.topic_id] !== true}" style="border-radius: 0px" > &ensp; &ensp;  All  &ensp; &ensp; </button>
                               <input type="text" class="control-list-btn-group-children" placeholder="{{topic.value.topic}}" readonly disabled>
-                              <button type="button" (click)="listControlChanger(topic.value.topic_id, 'no_one')"  class="btn btn-xs text-monospace btn-action-borderlesss btn-outline-danger-hover-side-shadow" [ngClass]="{'btn-danger': !list_control[topic.value.topic_id] || list_control[topic.value.topic_id] == 0, 'btn-secondary': list_control[topic.value.topic_id] && list_control[topic.value.topic_id] > 0}" style="border-radius: 0px">No one</button>
+                              <button type="button" (click)="listControlChanger(topic.value.topic_id, 'no_one')"  class="btn btn-xs  btn-action-borderlesss " [ngClass]="{'btn-danger': !list_control[topic.value.topic_id] || list_control[topic.value.topic_id] == 0, 'btn-secondary': list_control[topic.value.topic_id] && list_control[topic.value.topic_id] > 0}" style="border-radius: 0px">No one</button>
                           </div> 
                       </div>
                   </div>
                 </div>
                 <div class="team_control_panel">
                     <div style="height: 50px; margin-top: 25px;">
-                      <button type="button" (click)="listControlSubmit()" [disabled]="!list_control_changed_bool" class="btn btn-success text-monospace btn-action-borderless shadow" style="margin: 0px 20px">Apply</button>
-                      <button type="button" (click)="generateListControl()" [hidden]="!list_control_changed_bool" class="btn btn-danger text-monospace btn-action-borderless shadow" style="margin: 0px 20px">Cancel</button>
-                      <button type="button" (click)="closeModal()" [hidden]="list_control_changed_bool" class="btn btn-warning text-monospace btn-action-borderless shadow"  style="margin: 0px 20px">Close</button>
+                      <button type="button" (click)="listControlSubmit()" [disabled]="!list_control_changed_bool" class="btn btn-success  btn-action-borderless shadow" style="margin: 0px 20px">Apply</button>
+                      <button type="button" (click)="generateListControl()" [hidden]="!list_control_changed_bool" class="btn btn-danger  btn-action-borderless shadow" style="margin: 0px 20px">Cancel</button>
+                      <button type="button" (click)="closeModal()" [hidden]="list_control_changed_bool" class="btn btn-warning  btn-action-borderless shadow"  style="margin: 0px 20px">Close</button>
                     </div>
                 </div>
             </div>
             <div class="modal-content modal-dialog-scrollable" *ngIf="modal_message.title == 'changes_list'">
                 <div class="modal-header">
-                    <h3 class="modal-title text-monospace text-center" id="exampleModalCenteredLabel" style="margin: 0px auto;">List of changes</h3>
+                    <h3 class="modal-title  text-center" id="exampleModalCenteredLabel" style="margin: 0px auto;">List of changes</h3>
                     <button type="button" class="close" (click)="closeModal()" data-dismiss="modal" aria-label="Close">
                           <span aria-hidden="true">&times;</span>
                         </button>
@@ -51,16 +51,16 @@
                         </thead>
                         <tbody>
                           <tr *ngFor="let user of modal_message.body | keyvalue">
-                            <th scope="row" class="text-monospace">{{user.key}}</th>
+                            <th scope="row" class="">{{user.key}}</th>
                             <td>{{sorted_users.all_users[user.key]['first_name']}} {{sorted_users.all_users[user.key]['last_name']}}</td>
                             <td [ngClass]="{'alert alert-success': user.value.added.length > 0}">
                                 <p class="card-text" *ngFor="let added_topic of user.value.added">
-                                  {{categories_unsorted[added_topic]['topic']}} <button class="btn-sm btn-xs btn-danger shadow text-monospace" (click)="undoChange(user.key, added_topic)">Undo</button>
+                                  {{categories_unsorted[added_topic]['topic']}} <button class="btn-sm btn-xs btn-danger shadow " (click)="undoChange(user.key, added_topic)">Undo</button>
                                 </p>
                             </td>
                             <td [ngClass]="{'alert alert-danger': user.value.removed.length > 0}">
                                 <p class="card-text" *ngFor="let removed_topic of user.value.removed">
-                                    {{categories_unsorted[removed_topic]['topic']}} <button class="btn-sm btn-xs btn-danger shadow text-monospace" (click)="undoChange(user.key, removed_topic)">Undo</button>
+                                    {{categories_unsorted[removed_topic]['topic']}} <button class="btn-sm btn-xs btn-danger shadow " (click)="undoChange(user.key, removed_topic)">Undo</button>
                                   </p>
                             </td>
                           </tr>
@@ -70,9 +70,9 @@
                   </div>
                   <div class="team_control_panel">
                       <div style="height: 50px; margin-top: 25px;">
-                        <button type="button" (click)="submitChanges()" class="btn btn-success text-monospace btn-action-borderless shadow" style="margin: 0px 20px">Submit changes</button>
-                        <button type="button" (click)="undoChangeAll()" class="btn btn-danger text-monospace btn-action-borderless shadow" style="margin: 0px 20px">Cancel</button>
-                        <button type="button" (click)="closeModal()"  class="btn btn-warning text-monospace btn-action-borderless shadow"  style="margin: 0px 20px">Close</button>
+                        <button type="button" (click)="submitChanges()" class="btn btn-success  btn-action-borderless shadow" style="margin: 0px 20px">Submit changes</button>
+                        <button type="button" (click)="undoChangeAll()" class="btn btn-danger  btn-action-borderless shadow" style="margin: 0px 20px">Cancel</button>
+                        <button type="button" (click)="closeModal()"  class="btn btn-warning  btn-action-borderless shadow"  style="margin: 0px 20px">Close</button>
                       </div>
                   </div>
             </div>
@@ -83,7 +83,7 @@
                         <span aria-hidden="true">&times;</span>
                       </button>
                     <p>Your changes have been saved!</p>
-                    <button class="btn btn-primary btn-action-borderless text-monospace shadow" [routerLink]="['/',currentEng_id, 'admin']">Click here to go back to the admin portal</button>
+                    <button class="btn btn-primary btn-action-borderless  shadow" [routerLink]="['/',currentEng_id, 'admin']">Click here to go back to the admin portal</button>
                   </div>
                 <div class="alert alert-danger" style="margin-bottom: 0px" role="alert" *ngIf="modal_message.body == 'fail'">
                     <h4 class="alert-heading">Oops!</h4>
@@ -91,7 +91,7 @@
                         <span aria-hidden="true">&times;</span>
                       </button>
                     <p>Something went wrong. Please try again later or contact developers.</p>
-                    <button class="btn btn-primary btn-outline-primary-hover-side-shadow-sm btn-action-borderless text-monospace" [routerLink]="['/',currentEng_id, 'admin']">Click here to go back to the admin portal</button>
+                    <button class="btn btn-primary btn-action-borderless " [routerLink]="['/',currentEng_id, 'admin']">Click here to go back to the admin portal</button>
                   </div>
             </div>
         </div>
@@ -105,18 +105,18 @@
     <div class="admin-quiz-permission-by_teams">
       <h3 [ngClass]="{'bp-color': current_list_target == 'by_teams' }">Teams</h3>
       <div class="admin-quiz-permission-list_buttons"  role="group">
-          <button class="btn btn-outline-secondary btn-action-borderless btn-outline-secondary-hover-side-shadow-sm" [ngClass]="{'active': current_list_target == 'by_teams' && current_list_key == team }" *ngFor="let team of by_teams" (click)="selectList('by_teams',team)">{{team}}</button>
+          <button class="btn btn-outline-secondary btn-action-borderless " [ngClass]="{'active shadow': current_list_target == 'by_teams' && current_list_key == team }" *ngFor="let team of by_teams" (click)="selectList('by_teams',team)">{{team}}</button>
       </div>
     </div>
     <div class="admin-quiz-permission-by_teams">
       <h3 [ngClass]="{'bp-color': current_list_target == 'by_title' }">Titles</h3>
       <div class="admin-quiz-permission-list_buttons"  role="group">
-        <button class="btn btn-outline-secondary btn-action-borderless btn-outline-secondary-hover-side-shadow-sm" [ngClass]="{'active': current_list_target == 'by_title' && current_list_key == title }" *ngFor="let title of by_title" (click)="selectList('by_title',title)">{{title}}</button>
+        <button class="btn btn-outline-secondary btn-action-borderless " [ngClass]="{'active shadow': current_list_target == 'by_title' && current_list_key == title }" *ngFor="let title of by_title" (click)="selectList('by_title',title)">{{title}}</button>
       </div>
     </div>
     <div class="admin-quiz-permission-by_teams">
         <div class="admin-quiz-permission-list_buttons"  role="group">
-            <button class="btn btn-outline-secondary btn-lg btn-action-borderless btn-outline-secondary-hover-side-shadow-sm" [ngClass]="{'bp-button-important': current_list_target == 'all_users' }" (click)="selectList('all_users', null)">All employees</button>
+            <button class="btn btn-outline-secondary btn-lg btn-action-borderless " [ngClass]="{'bp-button-important shadow': current_list_target == 'all_users' }" (click)="selectList('all_users', null)">All employees</button>
           </div>
     </div>
     <div class="admin-quiz-permission-by_teams">
@@ -156,11 +156,11 @@
             </thead>
             <tbody id="table_body_target">
               <tr *ngFor="let user of current_list | keyvalue ">
-                <th scope="row" class="font-weight-bold  text-center text-monospace tr_string">{{user.key}}</th>
+                <th scope="row" class="font-weight-bold  text-center  tr_string">{{user.key}}</th>
                 <td class="tr_string">{{user.value.email}}</td>
                 <td class="tr_string">{{user.value.first_name}} {{user.value.last_name}}</td>
                 <td class="tr_string">{{user.value.team}}</td>
-                <td class="font-weight-bold  text-monospace tr_string">{{user.value.title}}</td>
+                <td class="font-weight-bold   tr_string">{{user.value.title}}</td>
                 <td class="display_column_align_baseline tr_string">
                   {{user.value.specialization}}
                   {{user.value.specialization2}}
@@ -170,7 +170,7 @@
                     <div class="card-columns">
                         <div class="card hover-shadow" *ngFor="let cat of categories | keyvalue">
                           <div class="EditQuizPermissions_categoryBox ">
-                            <p class="font-weight-bold text-monospace" align="center">{{cat.key}}</p>
+                            <p class="font-weight-bold " align="center">{{cat.key}}</p>
                             <span *ngFor="let topic of cat.value | keyvalue">
                               <input type="checkbox" class="font-weight-light checkTopic" id='checkTopic{{cat.value}}' [checked]="user.value.topic_id.indexOf(topic.value.topic_id) >= 0" (click)="checkTopic(user.key, topic.value.topic_id)">  {{topic.value.topic}}  {{topic.value.topic_id}} 
                             </span>

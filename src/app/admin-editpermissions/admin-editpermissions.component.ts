@@ -317,13 +317,13 @@ export class AdminEditpermissionsComponent implements OnInit {
     this.list_control_copy = cloneDeep(list);
   }
   listControlChanger(topic_id, action){
-    console.log(`BEFORE CHANGE => ${this.list_control[topic_id] }; LIST_COPY => ${this.list_control_copy[topic_id]}`)
+    // console.log(`BEFORE CHANGE => ${this.list_control[topic_id] }; LIST_COPY => ${this.list_control_copy[topic_id]}`)
     if(action == 'all'){
       this.list_control[topic_id] = true; 
     }else{
       this.list_control[topic_id] = 0; 
     }
-    console.log(`AFTER CHANGE => ${this.list_control[topic_id] } ; LIST_COPY => ${this.list_control_copy[topic_id]}`)
+    // console.log(`AFTER CHANGE => ${this.list_control[topic_id] } ; LIST_COPY => ${this.list_control_copy[topic_id]}`)
     let changes_bool = false;
     for(let el in this.list_control){
       // console.log("this.list_control[el] != this.list_control_copy[el]", JSON.stringify(this.list_control[el]), JSON.stringify(this.list_control_copy[el]), JSON.stringify(this.list_control[el]) !== JSON.stringify(this.list_control_copy[el]))

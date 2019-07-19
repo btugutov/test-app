@@ -25,7 +25,7 @@
                                     <tr *ngFor="let b of bucket_list | keyvalue" [ngClass]="{
                                         'alert-danger': b.value.soft_delete
                                     }">
-                                        <th class="text-monospace" scope="row">{{b.value.bucket_id}}</th>
+                                        <th class="" scope="row">{{b.value.bucket_id}}</th>
                                         <td>
                                             <input type="text"  [disabled]="b.value.soft_delete" class="form-control openBucketListSettings_inputs create_form_input_shadow"
                                                 (change)="bucketListEditor( b.key,  'bucket_name',$event.target.value)" value={{b.value.bucket_name}}>
@@ -439,7 +439,7 @@
                             <button type="button" class="close" (click)="errorRemoveById(q.key)">
                                 <span aria-hidden="true">&times;</span>
                             </button>
-                            <p class="text-center text-monospace"><strong>{{q.value['target']}} error(s):</strong></p>
+                            <p class="text-center "><strong>{{q.value['target']}} error(s):</strong></p>
                            <p *ngFor="let error of q.value['errors'] | keyvalue" class="text-center" style="margin-bottom: 0px !important">{{error.value}}</p>
                         </div>
                     </td>
@@ -462,7 +462,7 @@
         </div>
         <div class="d-flex justify-content-center" *ngIf="!submit_status.display" style="margin-top: 50px">
             <button [hidden]="submit_ready" class="btn btn-lg btn-info btn-action-borderless shadow" (click)="validateQuiz()">Validate</button>
-            <div [hidden]="!submit_ready" class="shadow btn-group btn-group-lg text-monospace" role="group">
+            <div [hidden]="!submit_ready" class="shadow btn-group btn-group-lg " role="group">
                 <button  class="btn btn-lg btn-success" (click)="submitQuiz()">Submit</button>
                 <button  class="btn btn-lg btn-warning" (click)="cancelSubmitQuiz()">Cancel</button>
             </div>
@@ -473,7 +473,7 @@
                 <h4 class="alert-heading">Well done!</h4>
                 You successfully created a new quiz.
                 <br>
-                <a [hidden]="submit_ready" class="btn btn-outline-light btn-action-borderless text-monospace" (click)="goBack()">Click here to go back to the admin portal</a>
+                <a [hidden]="submit_ready" class="btn btn-outline-light btn-action-borderless " (click)="goBack()">Click here to go back to the admin portal</a>
             </div>
         </div>
 
@@ -482,7 +482,7 @@
                 <h4 class="alert-heading">New quiz failed</h4>
                 Something went wrong on the backend.
                 {{submit_status.message}}
-                <a [hidden]="submit_ready" class="btn btn-link btn-action-borderless text-monospace" (click)="goBack()">Click here to go back to the admin portal</a>
+                <a [hidden]="submit_ready" class="btn btn-link btn-action-borderless " (click)="goBack()">Click here to go back to the admin portal</a>
             </div>
         </div>
         

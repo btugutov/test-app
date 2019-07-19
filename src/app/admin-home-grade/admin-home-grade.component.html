@@ -42,15 +42,15 @@
                     <h3>{{c.key}}</h3>
                   </div>
                   <div *ngFor="let t of c.value | keyvalue " class="home-category-element ">
-                        <div *ngIf="your_list[links[t.key][ 'topic_id']] " class="alert-warning" style="width:100%" align='center'>
-                                <span> <span unselectable="on " class="font-weight-bolder "> {{t.key}}</span> <span class="text-black-10  ">  #{{your_list[links[t.key]['topic_id']]['submit_id']}}</span></span>
+                        <div *ngIf="your_list[links[t.key][ 'topic_id']] " class="alert-warning " style="width:100%" align='center'>
+                                <span> <span unselectable="on" class="font-weight-bolder "> {{t.key}}</span> <span class="text-black-10  ">  #{{your_list[links[t.key]['topic_id']]['submit_id']}}</span></span>
                                 <div class="home-category-element-inner-box ">
                                     <button class="btn btn-outline-info btn-sm " style="border: none " [routerLink]="[your_list[links[t.key][ 'topic_id']][ 'continue_link']] ">Continue</button>
                                     <button class="btn btn-outline-secondary btn-sm "  style="border: none " (click)="releaseQuiz(your_list[links[t.key][ 'topic_id']][ 'submit_id'], links[t.key][ 'topic_id']) ">Release</button>
                                 </div>
                             </div>
                             <a *ngIf="your_list[links[t.key][ 'topic_id']]==n ull " [routerLink]="[links[t.key][ 'topic_link']] ">
-                                <button type="button " class="btn btn-outline-secondary">{{t.key}}
+                                <button type="button " class="btn btn-lg btn-outline-secondary">{{t.key}}
                                     ({{  quizzes_counter[links[t.key]['topic_id']] }})
                                     {{your_list[links[t.key]['topic_id']]}}</button>
                             </a>

@@ -2094,7 +2094,7 @@ a.disabled {
 }
 .hover-shadow:hover{
     z-index: 1;
-    box-shadow: 5px 10px 18px #888888;
+    box-shadow: 8px 8px 15px rgba(4, 0, 0, 0.2);
     background: white
 }
 .grab {cursor: -webkit-grab; cursor: grab;}
@@ -2110,4 +2110,7 @@ a.disabled {
 
   .btn.focus, .btn:focus {
     box-shadow: none !important;
+}
+.card-category{
+    border: none !important
 }

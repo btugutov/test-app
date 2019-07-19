@@ -5,13 +5,13 @@
         </div>
     </div>
     <div class="row align-items-center" *ngIf="current_index != null && total_length">
-        <div class=" progress text-monospace shadow"  style="width: 350px; margin:10px auto; color: black;">
+        <div class=" progress shadow"  style="width: 350px; margin:10px auto; color: black;">
             <div  class="progress-bar " role="progressbar" [style.width.%]="( (current_index/total_length) * 100)" aria-valuenow="41" aria-valuemin="0" aria-valuemax="100" ></div>
             {{current_index+1}}/{{total_length}}
         </div>
     </div>
     <div [hidden]="!question.time_limit && !expired_bool" class="row align-items-center" *ngIf="current_index != null && total_length">
-        <div class="text-monospace text-center"  style="width: 350px; margin:10px auto; color: black;"
+        <div class="text-center"  style="width: 350px; margin:10px auto; color: black;"
             [ngClass]="{
                 'text-warning': math.floor(expiration_time/60) == 2 || math.floor(expiration_time/60) == 1 ,
                 'text-danger': math.floor(expiration_time/60) < 1
@@ -79,7 +79,7 @@
                     <div style="width:100%;display: flex; flex-direction: column; flex-wrap: nowrap; justify-content: space-around; align-items: center; align-content: center;" id="dragAndDropContent">
                         Please drag and drop items to the right buckets.
                         <ul data-draggable="target" class="shadow" style="width: 550px; height: 350px;">
-                            <li *ngFor="let c of question.answer_keys; let idx = index" data-draggable="item" class="bucket_question_element bucket_question_choice list-group-item grab text-monospace text-center" style="font-size: 24px;" id="{{c}}">
+                            <li *ngFor="let c of question.answer_keys; let idx = index" data-draggable="item" class="bucket_question_element bucket_question_choice list-group-item grab text-center" style="font-size: 24px;" id="{{c}}">
                                 {{question.answer_prompt[idx]}}</li>
                             </ul>
 

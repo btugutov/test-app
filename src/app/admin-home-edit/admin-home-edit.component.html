@@ -53,11 +53,8 @@
                     <button type="button " class="btn btn-lg" 
                         [ngClass]="{
                             'btn-outline-secondary': t.value.question_count > 5 && !t.value.topic_soft_delete, 
-                            'btn-outline-secondary-hover-side-shadow': t.value.question_count > 5 && !t.value.topic_soft_delete, 
                             'btn-outline-warning': t.value.question_count <= 5 && !t.value.topic_soft_delete, 
-                            'btn-outline-warning-hover-side-shadow':t.value.question_count <= 5 && !t.value.topic_soft_delete,  
-                            'btn-outline-danger': t.value.topic_soft_delete, 
-                            'btn-outline-danger-hover-side-shadow': t.value.topic_soft_delete
+                            'btn-outline-danger': t.value.topic_soft_delete
                         }">
                             {{t.value.topic}} ({{t.value.question_count}})</button>
                 </a>

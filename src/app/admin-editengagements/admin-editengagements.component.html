@@ -8,7 +8,7 @@
             <!-- CHANGE LIST -->
             <div class="modal-content modal-dialog-scrollable" *ngIf="modal_message.title == 'list_changes'">
                 <div class="modal-header">
-                    <h3 class="modal-title text-monospace text-center" id="exampleModalCenteredLabel" style="margin: 0px auto;">List of changes</h3>
+                    <h3 class="modal-title  text-center" id="exampleModalCenteredLabel" style="margin: 0px auto;">List of changes</h3>
                     <button type="button" class="close" (click)="closeModal()" data-dismiss="modal" aria-label="Close">
                           <span aria-hidden="true">&times;</span>
                         </button>
@@ -27,7 +27,7 @@
                           <tr *ngFor="let eng of list_changes | keyvalue" [ngClass]="{
                             'alert-success': eng.value.status=='new'
                           }">
-                            <th scope="row" class="text-monospace">
+                            <th scope="row" class="">
                               <div style="display: flex;
                               flex-direction: column;
                               flex-wrap: nowrap;
@@ -35,14 +35,14 @@
                               align-items: center;
                               align-content: stretch;">
                                 {{eng.key}}
-                                <button class="btn-sm btn-xs btn-danger shadow text-monospace" (click)="undoChanges(eng.key, 'remove')">Cancel</button>
+                                <button class="btn-sm btn-xs btn-danger shadow " (click)="undoChanges(eng.key, 'remove')">Cancel</button>
                               </div>
                             </th>
                             <!-- ENGAGEMENT NAME -->
                             <td [ngClass]="{
                               'alert alert-warning': (eng.value.status=='existed' && (engagements_original[eng.key].engagement_name != eng.value['engagement_name']))
                             }">
-                              <span *ngIf="eng.value.status=='existed' && eng.value.engagement_name != engagements_original[eng.key].engagement_name">{{engagements_original[eng.key].engagement_name}} changed to </span>  <span class="text-monospace font-weight-bold">{{eng.value.engagement_name}}</span> <button *ngIf="eng.value.status=='existed' && eng.value.engagement_name != engagements_original[eng.key].engagement_name" class="btn-sm btn-xs btn-danger shadow text-monospace" (click)="undoChanges(eng.key, 'soft_delete')">Undo</button>
+                              <span *ngIf="eng.value.status=='existed' && eng.value.engagement_name != engagements_original[eng.key].engagement_name">{{engagements_original[eng.key].engagement_name}} changed to </span>  <span class=" font-weight-bold">{{eng.value.engagement_name}}</span> <button *ngIf="eng.value.status=='existed' && eng.value.engagement_name != engagements_original[eng.key].engagement_name" class="btn-sm btn-xs btn-danger shadow " (click)="undoChanges(eng.key, 'soft_delete')">Undo</button>
                             </td>
                             <!-- BACKGROUND -->
                             <td [ngClass]="{
@@ -66,9 +66,9 @@
                             <td [ngClass]="{
                               'alert alert-warning': (eng.value.status=='existed' && (engagements_original[eng.key].soft_delete != eng.value.soft_delete))
                             }">
-                                <p class="text-monospace font-weight-bold">
-                                  <span *ngIf="eng.value.status=='existed' && !eng.value.soft_delete && engagements_original[eng.key].soft_delete">Enabled  <button class="btn-sm btn-xs btn-danger shadow text-monospace" (click)="undoChanges(eng.key, 'soft_delete')">Undo</button></span>
-                                  <span *ngIf="eng.value.status=='existed' && eng.value.soft_delete && !engagements_original[eng.key].soft_delete">Disabled  <button class="btn-sm btn-xs btn-danger shadow text-monospace" (click)="undoChanges(eng.key, 'soft_delete')">Undo</button></span>
+                                <p class=" font-weight-bold">
+                                  <span *ngIf="eng.value.status=='existed' && !eng.value.soft_delete && engagements_original[eng.key].soft_delete">Enabled  <button class="btn-sm btn-xs btn-danger shadow " (click)="undoChanges(eng.key, 'soft_delete')">Undo</button></span>
+                                  <span *ngIf="eng.value.status=='existed' && eng.value.soft_delete && !engagements_original[eng.key].soft_delete">Disabled  <button class="btn-sm btn-xs btn-danger shadow " (click)="undoChanges(eng.key, 'soft_delete')">Undo</button></span>
                                   <span *ngIf="eng.value.status=='new'">New </span>
                                 </p>
                             </td>
@@ -80,9 +80,9 @@
                   </div>
                   <div class="team_control_panel">
                       <div style="height: 50px; margin-top: 25px;">
-                        <button type="button" (click)="submitChanges()" class="btn btn-success text-monospace btn-action-borderless shadow" style="margin: 0px 20px">Submit changes</button>
-                        <button type="button" (click)="undoChangesAll()" class="btn btn-danger text-monospace btn-action-borderless shadow" style="margin: 0px 20px">Cancel All</button>
-                        <button type="button" (click)="closeModal()"  class="btn btn-warning text-monospace btn-action-borderless shadow"  style="margin: 0px 20px">Close</button>
+                        <button type="button" (click)="submitChanges()" class="btn btn-success  btn-action-borderless shadow" style="margin: 0px 20px">Submit changes</button>
+                        <button type="button" (click)="undoChangesAll()" class="btn btn-danger  btn-action-borderless shadow" style="margin: 0px 20px">Cancel All</button>
+                        <button type="button" (click)="closeModal()"  class="btn btn-warning  btn-action-borderless shadow"  style="margin: 0px 20px">Close</button>
                       </div>
                   </div>
             </div>
@@ -94,7 +94,7 @@
                         <span aria-hidden="true">&times;</span>
                       </button>
                     <p>Your changes have been saved!</p>
-                    <button class="btn btn-primary btn-action-borderless text-monospace shadow" [routerLink]="['/',currentEng_id, 'admin']">Click here to go back to the admin portal</button>
+                    <button class="btn btn-primary btn-action-borderless shadow" [routerLink]="['/',currentEng_id, 'admin']">Click here to go back to the admin portal</button>
                   </div>
                 <div class="alert alert-danger text-center" style="margin-bottom: 0px" role="alert" *ngIf="modal_message.body == 'fail'">
                     <h4 class="alert-heading text-center">Oops!</h4>
@@ -102,7 +102,7 @@
                         <span aria-hidden="true">&times;</span>
                       </button>
                       <p>Something went wrong. Please try again later or contact developers.</p>
-                    <button class="btn btn-primary btn-action-borderless text-monospace shadow" [routerLink]="['/',currentEng_id, 'admin']">Click here to go back to the admin portal</button>
+                    <button class="btn btn-primary btn-action-borderless shadow" [routerLink]="['/',currentEng_id, 'admin']">Click here to go back to the admin portal</button>
                   </div>
             </div>
             <div class="modal-content modal-dialog-scrollable shadow"  *ngIf="modal_message.title == 'counter'">
@@ -144,7 +144,7 @@
                 'alert-info': eng.key == 'new' && eng.value.status == 'new',
                 'alert-success': eng.key != 'new' && eng.value.status == 'new'
               }">
-                <th *ngIf="!eng.value['error_bool']"  scope="row" class="font-weight-bold  text-center text-monospace tr_string">{{eng.key}}</th>
+                <th *ngIf="!eng.value['error_bool']"  scope="row" class="font-weight-bold  text-center  tr_string">{{eng.key}}</th>
                 <td *ngIf="!eng.value['error_bool']" class="tr_string">
                     <input class="form-control" type="text" [disabled]="eng.value.soft_delete" placeholder="" minlength="2" (change)="inputChanger(eng.key, 'engagement_name', $event.target)" value='{{eng.value.engagement_name}}'>
                 </td>
@@ -160,7 +160,7 @@
                                   <label for="collapsible_{{eng.value.engagement_name}}_{{cat.key}}" class="lbl-toggle">{{cat.key}} ({{cat.value.topic_length}} topics)</label>
                                   <div class="collapsible-content shadow">
                                     <div class="content-inner ">
-                                        <p class="text-monospace small" [ngClass]="{
+                                        <p class=" small" [ngClass]="{
                                           'alert-danger': topic.value.topic_soft_delete
                                         }" style="margin-bottom: 0px;" *ngFor="let topic of cat.value.topics | keyvalue"><a target="_blank" [routerLink]="topic.value.link"> #{{topic.key}} {{topic.value.topic}} ({{topic.value.users_length}} users have access)</a></p>
                                     </div>
@@ -205,7 +205,7 @@
                 </td>
                 <td colspan="7" *ngIf="eng.value['error_bool']" style="padding: 10px 10px !important">
                     <div class="alert alert-warning shadow" role="alert" style="width: 500px; margin: 0px auto;">
-                        <p class="text-center text-monospace"><strong>#{{eng.value['target']}} has error(s):</strong></p>
+                        <p class="text-center "><strong>#{{eng.value['target']}} has error(s):</strong></p>
                        <p *ngFor="let error of eng.value['errors'] | keyvalue" class="text-center" style="margin-bottom: 0px !important">{{error.value}}</p>
                     </div>
                 </td>   

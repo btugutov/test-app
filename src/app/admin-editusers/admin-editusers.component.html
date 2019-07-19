@@ -8,7 +8,7 @@
             <!-- CHANGE LIST -->
             <div class="modal-content modal-dialog-scrollable" *ngIf="modal_message.title == 'changes_list'">
                 <div class="modal-header">
-                    <h3 class="modal-title text-monospace text-center" id="exampleModalCenteredLabel" style="margin: 0px auto;">List of changes</h3>
+                    <h3 class="modal-title  text-center" id="exampleModalCenteredLabel" style="margin: 0px auto;">List of changes</h3>
                     <button type="button" class="close" (click)="closeModal()" data-dismiss="modal" aria-label="Close">
                           <span aria-hidden="true">&times;</span>
                         </button>
@@ -26,39 +26,39 @@
                         </thead>
                         <tbody>
                           <tr *ngFor="let user of list_changes | keyvalue">
-                            <th scope="row" class="text-monospace">{{user.key}}</th>
+                            <th scope="row" class="">{{user.key}}</th>
                             <td>{{user.value.first_name}} {{user.value.last_name}}</td>
-                            <td class="font-weight-bold  text-monospace tr_string">{{ user.value.team }}, {{user.value.title}}</td>
+                            <td class="font-weight-bold   tr_string">{{ user.value.team }}, {{user.value.title}}</td>
                             <td [ngClass]="{
                               'alert-danger': (!user.value.admin_grader && all_users_original[user.key]['admin_grader']) || !user.value.admin_editor && all_users_original[user.key]['admin_editor'] || !user.value.admin_permissions && all_users_original[user.key]['admin_permissions'] || !user.value.admin_owner && all_users_original[user.key]['admin_owner']
                             }">
                                 <p *ngIf="!user.value.admin_grader && all_users_original[user.key]['admin_grader']">
-                                  Grader  <button class="btn-sm btn-xs btn-danger shadow text-monospace" (click)="undoChange(user.key, 'admin_grader')">Undo</button>
+                                  Grader  <button class="btn-sm btn-xs btn-danger shadow " (click)="undoChange(user.key, 'admin_grader')">Undo</button>
                                 </p>
                                 <p *ngIf="!user.value.admin_editor && all_users_original[user.key]['admin_editor']">
-                                  Editor <button class="btn-sm btn-xs btn-danger shadow text-monospace" (click)="undoChange(user.key, 'admin_editor')">Undo</button>
+                                  Editor <button class="btn-sm btn-xs btn-danger shadow " (click)="undoChange(user.key, 'admin_editor')">Undo</button>
                                 </p>
                                 <p *ngIf="!user.value.admin_permissions && all_users_original[user.key]['admin_permissions']">
-                                  Admin<button class="btn-sm btn-xs btn-danger shadow text-monospace" (click)="undoChange(user.key, 'admin_permissions')">Undo</button>
+                                  Admin<button class="btn-sm btn-xs btn-danger shadow " (click)="undoChange(user.key, 'admin_permissions')">Undo</button>
                                 </p>
                                 <p *ngIf="!user.value.admin_owner && all_users_original[user.key]['admin_owner']">
-                                  Owner permissions <button class="btn-sm btn-xs btn-danger shadow text-monospace" (click)="undoChange(user.key, 'admin_owner')">Undo</button>
+                                  Owner permissions <button class="btn-sm btn-xs btn-danger shadow " (click)="undoChange(user.key, 'admin_owner')">Undo</button>
                                 </p>
                             </td>
                             <td [ngClass]="{
                               'alert-success': (user.value.admin_grader && !all_users_original[user.key]['admin_grader']) || user.value.admin_editor && !all_users_original[user.key]['admin_editor'] || user.value.admin_permissions && !all_users_original[user.key]['admin_permissions'] || user.value.admin_owner && !all_users_original[user.key]['admin_owner']
                             }">
                                 <p *ngIf="user.value.admin_grader && !all_users_original[user.key]['admin_grader']">
-                                  Grader  <button class="btn-sm btn-xs btn-danger shadow text-monospace" (click)="undoChange(user.key, 'admin_grader')">Undo</button>
+                                  Grader  <button class="btn-sm btn-xs btn-danger shadow " (click)="undoChange(user.key, 'admin_grader')">Undo</button>
                                 </p>
                                 <p *ngIf="user.value.admin_editor && !all_users_original[user.key]['admin_editor']">
-                                  Editor <button class="btn-sm btn-xs btn-danger shadow text-monospace" (click)="undoChange(user.key, 'admin_editor')">Undo</button>
+                                  Editor <button class="btn-sm btn-xs btn-danger shadow " (click)="undoChange(user.key, 'admin_editor')">Undo</button>
                                 </p>
                                 <p *ngIf="user.value.admin_permissions && !all_users_original[user.key]['admin_permissions']">
-                                  Admin<button class="btn-sm btn-xs btn-danger shadow text-monospace" (click)="undoChange(user.key, 'admin_permissions')">Undo</button>
+                                  Admin<button class="btn-sm btn-xs btn-danger shadow " (click)="undoChange(user.key, 'admin_permissions')">Undo</button>
                                 </p>
                                 <p *ngIf="user.value.admin_owner && !all_users_original[user.key]['admin_owner']">
-                                  Owner permissions <button class="btn-sm btn-xs btn-danger shadow text-monospace" (click)="undoChange(user.key, 'admin_owner')">Undo</button>
+                                  Owner permissions <button class="btn-sm btn-xs btn-danger shadow " (click)="undoChange(user.key, 'admin_owner')">Undo</button>
                                 </p>
                             </td>
                           </tr>
@@ -68,9 +68,9 @@
                   </div>
                   <div class="team_control_panel">
                       <div style="height: 50px; margin-top: 25px;">
-                        <button type="button" (click)="submitChanges()" class="btn btn-success text-monospace btn-action-borderless shadow" style="margin: 0px 20px">Submit changes</button>
-                        <button type="button" (click)="undoChangeAll()" class="btn btn-danger text-monospace btn-action-borderless shadow" style="margin: 0px 20px">Cancel All</button>
-                        <button type="button" (click)="closeModal()"  class="btn btn-warning text-monospace btn-action-borderless shadow"  style="margin: 0px 20px">Close</button>
+                        <button type="button" (click)="submitChanges()" class="btn btn-success  btn-action-borderless shadow" style="margin: 0px 20px">Submit changes</button>
+                        <button type="button" (click)="undoChangeAll()" class="btn btn-danger  btn-action-borderless shadow" style="margin: 0px 20px">Cancel All</button>
+                        <button type="button" (click)="closeModal()"  class="btn btn-warning  btn-action-borderless shadow"  style="margin: 0px 20px">Close</button>
                       </div>
                   </div>
             </div>
@@ -81,7 +81,7 @@
                         <span aria-hidden="true">&times;</span>
                       </button>
                     <p>Your changes have been saved!</p>
-                    <button class="btn btn-primary btn-action-borderless text-monospace shadow" [routerLink]="['/',currentEng_id, 'admin']">Click here to go back to the admin portal</button>
+                    <button class="btn btn-primary btn-action-borderless  shadow" [routerLink]="['/',currentEng_id, 'admin']">Click here to go back to the admin portal</button>
                   </div>
                 <div class="alert alert-danger text-center" style="margin-bottom: 0px" role="alert" *ngIf="modal_message.body == 'fail'">
                     <h4 class="alert-heading text-center">Oops!</h4>
@@ -89,7 +89,7 @@
                         <span aria-hidden="true">&times;</span>
                       </button>
                       <p>Something went wrong. Please try again later or contact developers.</p>
-                    <button class="btn btn-primary btn-action-borderless text-monospace shadow" [routerLink]="['/',currentEng_id, 'admin']">Click here to go back to the admin portal</button>
+                    <button class="btn btn-primary btn-action-borderless  shadow" [routerLink]="['/',currentEng_id, 'admin']">Click here to go back to the admin portal</button>
                   </div>
             </div>
             <div class="modal-content modal-dialog-scrollable shadow"  *ngIf="modal_message.title == 'counter'">
@@ -111,22 +111,22 @@
     <div class="admin-quiz-permission-by_teams">
       <h3 [ngClass]="{'bp-color': current_list_target == 'by_teams' }">Teams</h3>
       <div class="admin-quiz-permission-list_buttons"  role="group">
-          <button class="btn btn-outline-secondary btn-action-borderless btn-outline-secondary-hover-side-shadow-sm" [ngClass]="{'active': current_list_target == 'by_teams' && current_list_key == team }" *ngFor="let team of by_teams" (click)="selectList('by_teams',team)">{{team}}</button>
+          <button class="btn btn-outline-secondary btn-action-borderless " [ngClass]="{'active': current_list_target == 'by_teams' && current_list_key == team }" *ngFor="let team of by_teams" (click)="selectList('by_teams',team)">{{team}}</button>
       </div>
     </div>
     <div class="admin-quiz-permission-by_teams">
       <h3 [ngClass]="{'bp-color': current_list_target == 'by_title' }">Titles</h3>
       <div class="admin-quiz-permission-list_buttons"  role="group">
-        <button class="btn btn-outline-secondary btn-action-borderless btn-outline-secondary-hover-side-shadow-sm" [ngClass]="{'active': current_list_target == 'by_title' && current_list_key == title }" *ngFor="let title of by_title" (click)="selectList('by_title',title)">{{title}}</button>
+        <button class="btn btn-outline-secondary btn-action-borderless " [ngClass]="{'active': current_list_target == 'by_title' && current_list_key == title }" *ngFor="let title of by_title" (click)="selectList('by_title',title)">{{title}}</button>
       </div>
     </div>
     <div class="admin-quiz-permission-by_teams">
         <div class="admin-quiz-permission-list_buttons"  role="group">
-            <button class="btn btn-outline-secondary btn-lg btn-action-borderless btn-outline-secondary-hover-side-shadow" [ngClass]="{'bp-button-important': current_list_target == 'all_users' }" (click)="selectList('all_users', 'admin')">All employees</button>
-            <button class="btn btn-outline-success btn-lg btn-action-borderless btn-outline-success-hover-side-shadow" [ngClass]="{'bp-button-important': current_list_target == 'admin_grader' }" (click)="selectList('admin_grader', 'admin')">Graders</button>
-            <button class="btn btn-outline-info btn-lg btn-action-borderless btn-outline-info-hover-side-shadow" [ngClass]="{'bp-button-important': current_list_target == 'admin_editor' }" (click)="selectList('admin_editor', 'admin')">Editors</button>
-            <button class="btn btn-outline-secondary btn-lg btn-action-borderless btn-outline-secondary-hover-side-shadow" [ngClass]="{'bp-button-important': current_list_target == 'admin_permissions' }" (click)="selectList('admin_permissions', 'admin')">Admins</button>
-            <button class="btn btn-outline-warning btn-lg btn-action-borderless btn-outline-warning-hover-side-shadow" [ngClass]="{'bp-button-important': current_list_target == 'admin_owner' }" (click)="selectList('admin_owner', 'admin')">Owners</button>
+            <button class="btn btn-outline-secondary btn-lg btn-action-borderless " [ngClass]="{'bp-button-important': current_list_target == 'all_users' }" (click)="selectList('all_users', 'admin')">All employees</button>
+            <button class="btn btn-outline-success btn-lg btn-action-borderless " [ngClass]="{'bp-button-important': current_list_target == 'admin_grader' }" (click)="selectList('admin_grader', 'admin')">Graders</button>
+            <button class="btn btn-outline-info btn-lg btn-action-borderless " [ngClass]="{'bp-button-important': current_list_target == 'admin_editor' }" (click)="selectList('admin_editor', 'admin')">Editors</button>
+            <button class="btn btn-outline-secondary btn-lg btn-action-borderless " [ngClass]="{'bp-button-important': current_list_target == 'admin_permissions' }" (click)="selectList('admin_permissions', 'admin')">Admins</button>
+            <button class="btn btn-outline-warning btn-lg btn-action-borderless " [ngClass]="{'bp-button-important': current_list_target == 'admin_owner' }" (click)="selectList('admin_owner', 'admin')">Owners</button>
           </div>
     </div>
     <div class="admin-quiz-permission-by_teams">
@@ -170,7 +170,7 @@
             </thead>
             <tbody id="table_body_target">
               <tr *ngFor="let user of current_list | keyvalue " [ngClass]="getClassForUserStatus(user.key)">
-                <th scope="row" class="font-weight-bold  text-center text-monospace tr_string">{{user.key}}</th>
+                <th scope="row" class="font-weight-bold  text-center  tr_string">{{user.key}}</th>
                 <td class="tr_string">{{user.value.email}}</td>
                 <td class="tr_string">{{user.value.first_name}} {{user.value.last_name}}</td>
                 <td class="tr_string">{{user.value.team}}</td>

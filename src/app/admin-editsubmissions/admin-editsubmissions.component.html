@@ -8,7 +8,7 @@
             <!-- CHANGE LIST -->
             <div class="modal-content modal-dialog-scrollable" *ngIf="modal_message.title == 'changes_list'">
                 <div class="modal-header">
-                    <h3 class="modal-title text-monospace text-center" id="exampleModalCenteredLabel" style="margin: 0px auto;">List of changes</h3>
+                    <h3 class="modal-title  text-center" id="exampleModalCenteredLabel" style="margin: 0px auto;">List of changes</h3>
                     <button type="button" class="close" (click)="closeModal()" data-dismiss="modal" aria-label="Close">
                           <span aria-hidden="true">&times;</span>
                         </button>
@@ -25,22 +25,22 @@
                         </thead>
                         <tbody>
                           <tr *ngFor="let user of list_changes | keyvalue">
-                            <th scope="row" class="text-monospace">{{user.key}}</th>
+                            <th scope="row" class="">{{user.key}}</th>
                             <td>{{user.value.first_name}} {{user.value.last_name}}</td>
-                            <td class="font-weight-bold  text-monospace tr_string">{{ topics_unsorted[user.value.quiz_id]["category"] }}, {{user.value.topic}}</td>
+                            <td class="font-weight-bold   tr_string">{{ topics_unsorted[user.value.quiz_id]["category"] }}, {{user.value.topic}}</td>
                             <td class="alert alert-warning">
                                 <p *ngIf="user.value.retake_topic !== all_users_original[user.key]['retake_topic']">
-                                  Retake <button class="btn-sm btn-xs btn-danger shadow text-monospace" (click)="undoChange(user.key, 'retake_topic')">Undo</button>
+                                  Retake <button class="btn-sm btn-xs btn-danger shadow " (click)="undoChange(user.key, 'retake_topic')">Undo</button>
                                 </p>
                                 <p *ngIf="user.value.regrade_submission !== all_users_original[user.key]['regrade_submission']">
-                                  Regrade <button class="btn-sm btn-xs btn-danger shadow text-monospace" (click)="undoChange(user.key, 'regrade_submission')">Undo</button>
+                                  Regrade <button class="btn-sm btn-xs btn-danger shadow " (click)="undoChange(user.key, 'regrade_submission')">Undo</button>
                                 </p>
                                 <p *ngIf="user.value.invalidate_submission !== all_users_original[user.key]['invalidate_submission']">
                                   <span *ngIf="user.value.invalidate_submission" >
-                                    Invalidate <button class="btn-sm btn-xs btn-danger shadow text-monospace" (click)="undoChange(user.key, 'invalidate_submission')">Undo</button>
+                                    Invalidate <button class="btn-sm btn-xs btn-danger shadow " (click)="undoChange(user.key, 'invalidate_submission')">Undo</button>
                                   </span>
                                   <span *ngIf="!user.value.invalidate_submission">
-                                    Do not invalidate <button class="btn-sm btn-xs btn-danger shadow text-monospace" (click)="undoChange(user.key, 'invalidate_submission')">Undo</button>
+                                    Do not invalidate <button class="btn-sm btn-xs btn-danger shadow " (click)="undoChange(user.key, 'invalidate_submission')">Undo</button>
                                   </span>
                                 </p>
                             </td>
@@ -51,9 +51,9 @@
                   </div>
                   <div class="team_control_panel">
                       <div style="height: 50px; margin-top: 25px;">
-                        <button type="button" (click)="submitChanges()" class="btn btn-success text-monospace btn-action-borderless shadow" style="margin: 0px 20px">Submit changes</button>
-                        <button type="button" (click)="undoChangeAll()" class="btn btn-danger text-monospace btn-action-borderless shadow" style="margin: 0px 20px">Cancel</button>
-                        <button type="button" (click)="closeModal()"  class="btn btn-warning text-monospace btn-action-borderless shadow"  style="margin: 0px 20px">Close</button>
+                        <button type="button" (click)="submitChanges()" class="btn btn-success  btn-action-borderless shadow" style="margin: 0px 20px">Submit changes</button>
+                        <button type="button" (click)="undoChangeAll()" class="btn btn-danger  btn-action-borderless shadow" style="margin: 0px 20px">Cancel</button>
+                        <button type="button" (click)="closeModal()"  class="btn btn-warning  btn-action-borderless shadow"  style="margin: 0px 20px">Close</button>
                       </div>
                   </div>
             </div>
@@ -64,7 +64,7 @@
                         <span aria-hidden="true">&times;</span>
                       </button>
                     <p>Your changes have been saved!</p>
-                    <button class="btn btn-primary btn-action-borderless text-monospace shadow" [routerLink]="['/',currentEng_id, 'admin']">Click here to go back to the admin portal</button>
+                    <button class="btn btn-primary btn-action-borderless  shadow" [routerLink]="['/',currentEng_id, 'admin']">Click here to go back to the admin portal</button>
                   </div>
                 <div class="alert alert-danger" style="margin-bottom: 0px" role="alert" *ngIf="modal_message.body == 'fail'">
                     <h4 class="alert-heading">Oops!</h4>
@@ -72,7 +72,7 @@
                         <span aria-hidden="true">&times;</span>
                       </button>
                     <p>Something went wrong. Please try again later or contact developers.</p>
-                    <button class="btn btn-primary btn-outline-primary-hover-side-shadow-sm btn-action-borderless text-monospace" [routerLink]="['/',currentEng_id, 'admin']">Click here to go back to the admin portal</button>
+                    <button class="btn btn-primary  btn-action-borderless " [routerLink]="['/',currentEng_id, 'admin']">Click here to go back to the admin portal</button>
                   </div>
             </div>
             <div class="modal-content modal-dialog-scrollable shadow"  *ngIf="modal_message.title == 'counter'">
@@ -94,18 +94,18 @@
     <div class="admin-quiz-permission-by_teams">
       <h3 [ngClass]="{'bp-color': current_list_target == 'by_teams' }">Teams</h3>
       <div class="admin-quiz-permission-list_buttons"  role="group">
-          <button class="btn btn-outline-secondary btn-action-borderless btn-outline-secondary-hover-side-shadow-sm" [ngClass]="{'active': current_list_target == 'by_teams' && current_list_key == team }" *ngFor="let team of by_teams" (click)="selectList('by_teams',team)">{{team}}</button>
+          <button class="btn btn-outline-secondary btn-action-borderless" [ngClass]="{'active shadow': current_list_target == 'by_teams' && current_list_key == team }" *ngFor="let team of by_teams" (click)="selectList('by_teams',team)">{{team}}</button>
       </div>
     </div>
     <div class="admin-quiz-permission-by_teams">
       <h3 [ngClass]="{'bp-color': current_list_target == 'by_title' }">Titles</h3>
       <div class="admin-quiz-permission-list_buttons"  role="group">
-        <button class="btn btn-outline-secondary btn-action-borderless btn-outline-secondary-hover-side-shadow-sm" [ngClass]="{'active': current_list_target == 'by_title' && current_list_key == title }" *ngFor="let title of by_title" (click)="selectList('by_title',title)">{{title}}</button>
+        <button class="btn btn-outline-secondary btn-action-borderless" [ngClass]="{'active shadow': current_list_target == 'by_title' && current_list_key == title }" *ngFor="let title of by_title" (click)="selectList('by_title',title)">{{title}}</button>
       </div>
     </div>
     <div class="admin-quiz-permission-by_teams">
         <div class="admin-quiz-permission-list_buttons"  role="group">
-            <button class="btn btn-outline-secondary btn-lg btn-action-borderless btn-outline-secondary-hover-side-shadow-sm" [ngClass]="{'bp-button-important': current_list_target == 'all_users' }" (click)="selectList('all_users', null)">All employees</button>
+            <button class="btn btn-outline-secondary btn-lg btn-action-borderless" [ngClass]="{'bp-button-important shadow': current_list_target == 'all_users' }" (click)="selectList('all_users', null)">All employees</button>
           </div>
     </div>
     <div class="admin-quiz-permission-by_teams">
@@ -133,7 +133,7 @@
           <div class="input-group shadow">
             <input type="text" class="form-control form-control-bp-shadow" id="forceRegrade" placeholder="" aria-label="" style="border-radius: 0px" placeholder="Enter Submit ID" aria-describedby="basic-addon1">
             <div class="input-group-append">
-              <button class="btn btn-dark btn-outline-secondary-hover-side-shadow" type="button" (click)="forceRegrade()" style="border-color: #2675a3; border-radius: 0px">Submit</button>
+              <button class="btn btn-dark " type="button" (click)="forceRegrade()" style="border-color: #2675a3; border-radius: 0px">Submit</button>
             </div>
           </div>
           {{forceRegrade_message}}
@@ -148,7 +148,7 @@
           <div class="input-group shadow">
             <input type="text" class="form-control form-control-bp-shadow" id="forceRegrade" placeholder="" aria-label="" style="border-radius: 0px" placeholder="Enter Submit ID" aria-describedby="basic-addon1">
             <div class="input-group-append">
-              <button class="btn btn-dark btn-outline-secondary-hover-side-shadow" type="button" (click)="submitGradesForOneQuiz()" style="border-color: #2675a3; border-radius: 0px">SEND</button>
+              <button class="btn btn-dark " type="button" (click)="submitGradesForOneQuiz()" style="border-color: #2675a3; border-radius: 0px">SEND</button>
             </div>
           </div>
           {{forceRegrade_message}}
@@ -164,7 +164,7 @@
 
   </div> -->
     <div class="admin-quiz-permission-table_box">
-        <table class="table table-borderless table-hover" id="sub_table">
+        <table class="table table-borderless table-hover " id="sub_table">
             <thead class="thead-dark shadow">
               <tr>
                 <th style="font-size: 10px; text-align: center;  width: 5%" >Submit ID</th>
@@ -172,8 +172,8 @@
                 <th >Name</th>
                 <th >Team</th>
                 <th >Title</th>
-                <th >Quiz category</th>
-                <th >Quiz topic</th>
+                <th >Category</th>
+                <th >Quiz name</th>
                 <th style='text-align: center'>Time started</th>
                 <th style='text-align: center'>Time submitted</th>
                 <th style='text-align: center'> Total Minutes</th>
@@ -240,13 +240,13 @@
             </thead>
             <tbody id="table_body_target">
               <tr *ngFor="let user of current_list | keyvalue" [ngClass]="{'text-success': user.value.graded, 'text-secondary': !user.value.diffTime }">
-                <th scope="row" class="font-weight-bold  text-center text-monospace tr_string">{{user.key}}</th>
+                <th scope="row" class="font-weight-bold  text-center  tr_string">{{user.key}}</th>
                 <td class="tr_string">{{user.value.email}}</td>
                 <td class="tr_string">{{user.value.first_name}} {{user.value.last_name}}</td>
                 <td class="tr_string">{{user.value.team}}</td>
                 <td class="tr_string">{{user.value.title}}</td>
-                <td class="font-weight-bold  text-monospace tr_string">{{ topics_unsorted[user.value.quiz_id]["category"] }}</td>
-                <td class="font-weight-bold  text-monospace tr_string">{{user.value.topic}}</td>
+                <td class="font-weight-bold   tr_string">{{ topics_unsorted[user.value.quiz_id]["category"] }}</td>
+                <td class="font-weight-bold   tr_string">{{user.value.topic}}</td>
                 <td class="text-muted tr_string text-center">{{user.value.start_time | date : "short" }}</td>
                 <td class="text-muted tr_string text-center">
                   <span *ngIf="user.value.diffTime || user.value.diffTime  == 0">{{user.value.stop_time | date: "short" }}</span>
@@ -256,7 +256,7 @@
                   <span *ngIf="user.value.diffTime || user.value.diffTime  == 0">{{ user.value.diffTime }}</span>
                   <span *ngIf="!user.value.diffTime && user.value.diffTime  != 0">DateTime mismatch </span>
                 </td>
-                <td class="tr_string text-center font-weight-bold text-monospace ">{{user.value.calculated_score * 100 | number:0}}</td>
+                <td class="tr_string text-center font-weight-bold  ">{{user.value.calculated_score * 100 | number:0}}</td>
                 <td class="text-muted tr_string text-center">
                   <span *ngIf="user.value.graded || user.value.grader_full_name">{{user.value.grader_full_name}}</span>
                   <span class="text-muted font-weight-light" *ngIf="user.value.graded && !user.value.grader_full_name">Auto graded</span>
@@ -268,7 +268,7 @@
                     <!-- all_users_original[user.key] and user.value -->
                       <div class="switchToggle">
                           <input type="checkbox"  id="retake_for_{{user.key}}" (click)="actionButton(user.key, 'retake_topic', null)" [checked]="(user.value.retake_topic)" [disabled]="all_users_original[user.key]['retake_topic']" >
-                          <label style="margin: 0px auto;" for="retake_for_{{user.key}}" [ngClass]="{
+                          <label style="margin: 0px auto;" class="shadow" for="retake_for_{{user.key}}" [ngClass]="{
                             'switchToggle_checked_disabled': all_users_original[user.key]['retake_topic'] ,
                             'switchToggle_checked_green': !all_users_original[user.key]['retake_topic'] && user.value.retake_topic
                           }"></label>
@@ -277,7 +277,7 @@
                 <td class="text-muted tr_string">
                       <div class="switchToggle">
                           <input type="checkbox"  id="regrade_for_{{user.key}}" (click)="actionButton(user.key,'regrade_submission', null)" [checked]='user.value.regrade_submission' [disabled]="all_users_original[user.key]['regrade_submission']" >
-                          <label style="margin: 0px auto;"  for="regrade_for_{{user.key}}" [ngClass]="{
+                          <label style="margin: 0px auto;" class="shadow" for="regrade_for_{{user.key}}" [ngClass]="{
                             'switchToggle_checked_disabled': all_users_original[user.key]['regrade_submission'],
                             'switchToggle_checked_green': !all_users_original[user.key]['regrade_submission'] && user.value.regrade_submission
                           }"></label>
@@ -286,7 +286,7 @@
                 <td class="text-muted tr_string">
                       <div class="switchToggle">
                           <input type="checkbox"  id="invalidate_for_{{user.key}}" (click)="actionButton(user.key, 'invalidate_submission', null)" [checked]="(user.value.invalidate_submission)" >
-                          <label style="margin: 0px auto;"  for="invalidate_for_{{user.key}}" 
+                          <label style="margin: 0px auto;" class="shadow" for="invalidate_for_{{user.key}}" 
                             [ngClass]="{
                               'switchToggle_checked_green': !all_users_original[user.key]['invalidate_submission'] && user.value.invalidate_submission, 
                               'switchToggle_checked_red':  all_users_original[user.key]['invalidate_submission'] && !user.value.invalidate_submission
