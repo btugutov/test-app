@@ -507,6 +507,60 @@ export class ConnectorService {
     })
   }
 
+  getQuizInfoById(quiz_id, email){
+    var that = this;
+    return new Promise(function (resolve, reject) {
+      let obj = {
+        quiz_id: quiz_id,
+        email: email
+      }
+      // console.log("getQuizByTopicIdForEdit")
+      that.http.post('/api/getQuizInfoById', obj).subscribe(
+        res => {
+          resolve(res)
+        },
+        err => {
+          reject(err)
+        }
+      );
+    })
+  }
+  getQuestionIds(quiz_id, email){
+    var that = this;
+    return new Promise(function (resolve, reject) {
+      let obj = {
+        quiz_id: quiz_id,
+        email: email
+      }
+      // console.log("getQuizByTopicIdForEdit")
+      that.http.post('/api/getQuestionIds', obj).subscribe(
+        res => {
+          resolve(res)
+        },
+        err => {
+          reject(err)
+        }
+      );
+    })
+  }
+  getQuestionInfoById(question_id, email){
+    var that = this;
+    return new Promise(function (resolve, reject) {
+      let obj = {
+        question_id: question_id,
+        email: email
+      }
+      // console.log("getQuizByTopicIdForEdit")
+      that.http.post('/api/getQuestionInfoById', obj).subscribe(
+        res => {
+          resolve(res)
+        },
+        err => {
+          reject(err)
+        }
+      );
+    })
+  }
 
 
   // ==============================================================================

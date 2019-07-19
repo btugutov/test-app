@@ -1,16 +1,21 @@
-<div *ngIf='currentUser && currentUser.admin' class="quiz-selection element-animation-fadeIn" align="center" id="body_fadeOut">
+<div *ngIf='currentUser && currentUser.admin' class="quiz-selection element-animation-fadeIn" align="center"
+    id="body_fadeOut">
     <div style="height: 10%; justify-content: center; display: flex; flex-direction: column;flex-wrap: wrap;">
         <h1 class="text-center">Welcome, {{currentUser.first_name}} {{currentUser.last_name}}</h1>
     </div>
-    <div class="home-main" id="homeCategories" *ngIf="currentEng">
+    <div class="home-main" id="homeCategories" *ngIf="false">
         <div class="home-category">
             <div class="home-category-title bg-dark text-white" style="width: 100%; padding: 5px 0px;">
                 <h2>Grader</h2>
             </div>
             <div class="home-category-element">
                 <a class="" [routerLink]="['/', currentEng_id, 'adminhomegrade']">
-                    <button *ngIf="gradings_counter>0" class="btn btn-outline-success btn-outline-success-hover-side-shadow btn-lg " [disabled]="!currentUser.admin_grader && !currentUser.admin_owner" type="button">Grade a Quiz ({{gradings_counter}})</button>
-                    <button *ngIf="!gradings_counter || gradings_counter<1" class="btn btn-outline-success btn-lg " disabled type="button">No quizzes to grade</button>
+                    <!-- btn-outline-success-hover-side-shadow -->
+                    <button *ngIf="gradings_counter>0" class="btn btn-outline-success  btn-lg "
+                        [disabled]="!currentUser.admin_grader && !currentUser.admin_owner" type="button">Grade a Quiz
+                        ({{gradings_counter}})</button>
+                    <button *ngIf="!gradings_counter || gradings_counter<1" class="btn btn-outline-success btn-lg "
+                        disabled type="button">No quizzes to grade</button>
                 </a>
             </div>
         </div>
@@ -20,10 +25,13 @@
             </div>
             <div class="home-category-element">
                 <a class="" [routerLink]="['/',currentEng_id, 'admincreatequiz']">
-                    <button class="btn btn-outline-info btn-lg btn-outline-info-hover-side-shadow" type="button" [disabled]="!currentUser.admin_editor && !currentUser.admin_owner">Create a Quiz</button>
+                    <!-- btn-outline-info-hover-side-shadow -->
+                    <button class="btn btn-outline-info btn-lg " type="button"
+                        [disabled]="!currentUser.admin_editor && !currentUser.admin_owner">Create a Quiz</button>
                 </a>
                 <a class="" [routerLink]="['/',currentEng_id, 'adminhomeedit']">
-                    <button class="btn btn-lg btn-outline-info btn-outline-info-hover-side-shadow" type="button" [disabled]="!currentUser.admin_editor && !currentUser.admin_owner">Edit a Quiz</button>
+                    <button class="btn btn-lg btn-outline-info" type="button"
+                        [disabled]="!currentUser.admin_editor && !currentUser.admin_owner">Edit a Quiz</button>
                 </a>
             </div>
         </div>
@@ -33,10 +41,15 @@
             </div>
             <div class="home-category-element">
                 <a class="" [routerLink]="['/',currentEng_id, 'AdminEditpermissions']">
-                    <button class="btn btn-outline-secondary btn-lg btn-outline-secondary-hover-side-shadow" [disabled]="!currentUser.admin_permissions && !currentUser.admin_owner" type="button">Quiz Permissions</button>
+                    <!-- btn-outline-secondary-hover-side-shadow -->
+                    <button class="btn btn-outline-secondary btn-lg "
+                        [disabled]="!currentUser.admin_permissions && !currentUser.admin_owner" type="button">Quiz
+                        Permissions</button>
                 </a>
                 <a class="" [routerLink]="['/',currentEng_id, 'AdminEditsubmissions']">
-                    <button class="btn btn-outline-secondary btn-lg btn-outline-secondary-hover-side-shadow" [disabled]="!currentUser.admin_permissions && !currentUser.admin_owner" type="button">Quiz Submissions</button>
+                    <button class="btn btn-outline-secondary btn-lg "
+                        [disabled]="!currentUser.admin_permissions && !currentUser.admin_owner" type="button">Quiz
+                        Submissions</button>
                 </a>
             </div>
         </div>
@@ -46,13 +59,106 @@
             </div>
             <div class="home-category-element">
                 <a class="" [routerLink]="['/',currentEng_id, 'AdminEditusersComponent']">
-                    <button class="btn btn-outline-warning btn-lg btn-outline-warning-hover-side-shadow" [disabled]="!currentUser.admin_permissions && !currentUser.admin_owner" type="button">User Permissions</button>
+                    <!-- btn-outline-warning-hover-side-shadow -->
+                    <button class="btn btn-outline-warning btn-lg "
+                        [disabled]="!currentUser.admin_permissions && !currentUser.admin_owner" type="button">User
+                        Permissions</button>
                 </a>
                 <a class="" [routerLink]="['/',currentEng_id, 'AdminEditengagements']">
-                    <button class="btn btn-outline-warning btn-lg btn-outline-warning-hover-side-shadow" [disabled]="!currentUser.admin_permissions && !currentUser.admin_owner" type="button">Edit Engagements</button>
+                    <button class="btn btn-outline-warning btn-lg "
+                        [disabled]="!currentUser.admin_permissions && !currentUser.admin_owner" type="button">Edit
+                        Engagements</button>
                 </a>
                 <a class="" [routerLink]="['/', 'log_event']">
-                    <button class="btn btn-outline-warning btn-lg btn-outline-warning-hover-side-shadow" [disabled]="!currentUser.admin_permissions && !currentUser.admin_owner" type="button">Event Log</button>
+                    <button class="btn btn-outline-warning btn-lg "
+                        [disabled]="!currentUser.admin_permissions && !currentUser.admin_owner" type="button">Event
+                        Log</button>
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="card-columns cards-main" *ngIf="currentEng" style="display: flex;
+                                                                flex-wrap: nowrap;
+                                                                justify-content: space-around;
+                                                                align-items: baseline;">
+        <div class="card card-category">
+            <div class="card-header text-center bg-dark text-white">
+                <h3>Grader</h3>
+            </div>
+            <div class="home-category-element ">
+                    <a class="" [routerLink]="['/', currentEng_id, 'adminhomegrade']">
+                        <!-- btn-outline-success-hover-side-shadow -->
+                        <button *ngIf="gradings_counter>0" class="btn btn-outline-success  btn-lg "
+                            [disabled]="!currentUser.admin_grader && !currentUser.admin_owner" type="button">Grade a Quiz
+                            ({{gradings_counter}})</button>
+                        <button *ngIf="!gradings_counter || gradings_counter<1" class="btn btn-outline-success btn-lg "
+                            disabled type="button">No quizzes to grade</button>
+                    </a>
+            </div>
+        </div>
+        <div class="card card-category">
+            <div class="card-header text-center bg-dark text-white">
+                <h3>Editor</h3>
+            </div>
+            <div class="home-category-element ">
+                    <a class="" [routerLink]="['/',currentEng_id, 'admincreatequiz']">
+                        <!-- btn-outline-info-hover-side-shadow -->
+                        <button class="btn btn-outline-info btn-lg " type="button"
+                            [disabled]="!currentUser.admin_editor && !currentUser.admin_owner">Create a Quiz</button>
+                    </a>
+                    
+            </div>
+            <div class="home-category-element ">
+                    <a class="" [routerLink]="['/',currentEng_id, 'adminhomeedit']">
+                        <button class="btn btn-lg btn-outline-info" type="button"
+                            [disabled]="!currentUser.admin_editor && !currentUser.admin_owner">Edit a Quiz</button>
+                    </a>
+            </div>
+        </div>
+        <div class="card card-category">
+            <div class="card-header text-center bg-dark text-white">
+                <h3>Quiz Controls</h3>
+            </div>
+            <div class="home-category-element ">
+                <a class="" [routerLink]="['/',currentEng_id, 'AdminEditpermissions']">
+                    <!-- btn-outline-secondary-hover-side-shadow -->
+                    <button class="btn btn-outline-secondary btn-lg "
+                        [disabled]="!currentUser.admin_permissions && !currentUser.admin_owner" type="button">Quiz
+                        Permissions</button>
+                </a>
+            </div>
+            <div class="home-category-element ">
+                    <a class="" [routerLink]="['/',currentEng_id, 'AdminEditsubmissions']">
+                        <button class="btn btn-outline-secondary btn-lg "
+                            [disabled]="!currentUser.admin_permissions && !currentUser.admin_owner" type="button">Quiz
+                            Submissions</button>
+                    </a>
+            </div>
+        </div>
+        <div class="card card-category">
+            <div class="card-header text-center bg-dark text-white">
+                <h3>Admin Controls</h3>
+            </div>
+            <div class="home-category-element ">
+                <a>
+                    <button class='btn btn-lg btn-outline-warning'
+                        [routerLink]="['/',currentEng_id, 'AdminEditusersComponent']"
+                        [disabled]="!currentUser.admin_permissions && !currentUser.admin_owner">User
+                        Permissions</button>
+                </a>
+            </div>
+            <div class="home-category-element ">
+                <a>
+                    <button class='btn btn-lg btn-outline-warning'
+                        [routerLink]="['/',currentEng_id, 'AdminEditengagements']"
+                        [disabled]="!currentUser.admin_permissions && !currentUser.admin_owner">Edit
+                        Engagements</button>
+                </a>
+            </div>
+            <div class="home-category-element ">
+                <a>
+                    <button class='btn btn-lg btn-outline-warning' [routerLink]="['/', 'log_event']"
+                        [disabled]="!currentUser.admin_permissions && !currentUser.admin_owner">Event Log</button>
                 </a>
             </div>
         </div>

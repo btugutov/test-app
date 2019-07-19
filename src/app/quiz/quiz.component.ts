@@ -81,6 +81,7 @@ export class QuizComponent implements OnInit {
       return;
     }
     this._ConnectorService.takeQuiz(this.currentEng_id, this.currentUser.email, this.topic_id, this.quiz_id).then(data => {
+      console.log("takeQuiz: DATA => ",data)
       if(data['status'] == "failed"){
         console.log(`data['status'] == "failed"`)
         if(localStorage['user']){
@@ -95,10 +96,9 @@ export class QuizComponent implements OnInit {
         }
         return;
       }
-      // console.log(data)
       this.question = data;
       if (data) {
-        // console.log(data)
+        console.log(data['image_info'])
         this.getQuizLength(this.topic_id);
         if (data['completed']) {
           this.completed = true;

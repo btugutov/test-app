@@ -25,7 +25,7 @@
                                 <tr *ngFor="let b of bucket_list | keyvalue" [ngClass]="{
                                     'alert-danger': b.value.soft_delete
                                 }">
-                                    <th class="text-monospace" scope="row">{{b.value.bucket_id}}</th>
+                                    <th class="" scope="row">{{b.value.bucket_id}}</th>
                                     <td>
                                         <input type="text"  [disabled]="b.value.soft_delete" class="form-control openBucketListSettings_inputs create_form_input_shadow"
                                             (change)="bucketListEditor( b.key,  'bucket_name',$event.target.value)" value={{b.value.bucket_name}}>
@@ -122,10 +122,10 @@
           <button class="btn btn-danger shadow btn-action-borderless" *ngIf='topic_soft_delete && !topic_delete_confirm' (click)="topic_delete_confirm = true">Delete  Quiz</button>
         </div>
         <div class="admin-create-quiz-title" style="margin: 20px auto" *ngIf="topic_delete_confirm">
-          <p class='text-monospace'>Are you sure to delete this quiz?</p>
+          <p class=''>Are you sure to delete this quiz?</p>
           <div class="btn-group" role="group" aria-label="">
-              <button type="button"  (click)="deleteQuiz()" class="btn btn-danger text-monospace" >Yes</button>
-              <button type="button" (click)="topic_delete_confirm = false" class="btn btn-warning text-monospace" >Cancel</button>
+              <button type="button"  (click)="deleteQuiz()" class="btn btn-danger " >Yes</button>
+              <button type="button" (click)="topic_delete_confirm = false" class="btn btn-warning " >Cancel</button>
             </div>
         </div>
     </div>
@@ -209,7 +209,7 @@
                     'alert-secondary': q.value['question_soft_delete'] || topic_soft_delete }">
                     <!-- QUESTIONS -->
                     <td *ngIf="!q.value['error_bool']" class='text-center table-row'>
-                        <p class="text-monospace" [ngClass]="{ 'text-success': q.key == 'new_question' }">{{q.key}}</p>
+                        <p class="" [ngClass]="{ 'text-success': q.key == 'new_question' }">{{q.key}}</p>
                         <div>
                             <input style="width: 100%; padding: 0px 0px !important" [disabled]="q.value.question_soft_delete || topic_soft_delete" (change)="inputEditor('question_sort', q.key, 'question_sort', null, $event.target.value)" class="edit_sort_value form-control create_form_input_shadow" min=1 max=99 type="number" value=1 title="Set Question Priority"
                                 data-toggle="tooltip" data-placement="bottom" title="Tooltip on bottom" value="{{list_of_questions[q.key]['question_sort']}}">
@@ -572,7 +572,7 @@
                             <button type="button" class="close" (click)="errorRemoveById(q.key)">
                                 <span aria-hidden="true">&times;</span>
                             </button>
-                            <p class="text-center text-monospace"><strong>{{q.value['target']}} error(s):</strong></p>
+                            <p class="text-center "><strong>{{q.value['target']}} error(s):</strong></p>
                            <p *ngFor="let error of q.value['errors'] | keyvalue" class="text-center" style="margin-bottom: 0px !important">{{error.value}}</p>
                         </div>
                     </td>
@@ -595,7 +595,7 @@
         </div>
         <div class="d-flex justify-content-center" *ngIf="!submit_status.display" style="margin-top: 50px; margin-bottom: 100px;">
             <button [hidden]="submit_ready" class="btn btn-lg btn-info btn-action-borderless shadow" (click)="validateQuiz()">Validate</button>
-            <div [hidden]="!submit_ready" class="shadow btn-group btn-group-lg text-monospace" role="group">
+            <div [hidden]="!submit_ready" class="shadow btn-group btn-group-lg " role="group">
                 <button  class="btn btn-lg btn-success" (click)="submitQuiz()">Submit</button>
                 <button  class="btn btn-lg btn-warning" (click)="cancelSubmitQuiz()">Cancel</button>
             </div>
@@ -606,7 +606,7 @@
                 <h4 class="alert-heading">Well done!</h4>
                 You successfully edited the quiz.
                 <br>
-                <a [hidden]="submit_ready" class="btn btn-outline-light btn-action-borderless text-monospace" (click)="goBack()">Click here to go back to the admin portal</a>
+                <a [hidden]="submit_ready" class="btn btn-outline-light btn-action-borderless " (click)="goBack()">Click here to go back to the admin portal</a>
             </div>
         </div>
 
@@ -615,7 +615,7 @@
                 <h4 class="alert-heading">Quiz updating failed</h4>
                 Something went wrong on the backend.
                 {{submit_status.message}}
-                <a [hidden]="submit_ready" class="btn btn-link btn-action-borderless text-monospace" (click)="goBack()">Click here to go back to the admin portal</a>
+                <a [hidden]="submit_ready" class="btn btn-link btn-action-borderless " (click)="goBack()">Click here to go back to the admin portal</a>
             </div>
         </div>
         <!-- <button class="btn btn-lg shadow" (click)="checkState()">Check State</button> -->
@@ -623,6 +623,7 @@
         
     </div>
 </div>
+
 <div *ngIf="!list_of_questions_bool" class=" loading_box ">
     <img class="loading_box-ing " src='./../../assets/loading.gif'>
 </div>

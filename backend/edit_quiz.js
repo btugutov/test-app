@@ -2089,15 +2089,68 @@ function delete_buckets_by_topic_id(topic_id){
 
 // =====================================================================================================
 
-/*
-update_topic_main(test, 'localtest').then(result => {
-  //console.log(result)
-  //console.log('I am FINISHED!')
-}).catch(function (error) {
-  //console.log(error);
-  //console.log('error');
-})
-*/
+// Edit Quiz function v2 ===============================================================================
+function get_topic_info_and_quesion_ids_by_topic_id_for_edit(topic_id) {
+    let functionName = 'get_topic_info_and_quesion_ids_by_topic_id_for_edit';
+    return new Promise(function(resolve, reject) {
+        let query = `SELECT 
+        topic.topic,
+        topic.topic_id,
+        topic.soft_delete,
+        topic.engagement_id,
+        topic.hard_delete,
+        topic.time_limit,
+        topic.category,
+        eng.engagement_name
+        FROM KA_test_topic as topic
+        JOIN KA_engagement as eng ON eng.engagement_id = topic.engagement_id
+        WHERE topic_id = ${topic_id}`;
+        dbQueryMethod.query(query).then(result => {
+            let query2 = `SELECT [question_id]
+            FROM [dbo].[KA_quiz_questions] where quiz_id = ${topic_id}`;
+            dbQueryMethod.query(query2).then(result2 => {
+                let obj = {
+                    quiz_info: result,
+                    questions: result2
+                }
+                resolve(obj);
+                return obj;
+            }).catch(function(error) { reject(error); throw (error); })
+        }).catch(function(error) { reject(error); throw (error); })
+    }).catch(function(error) {
+        log_event('WARNING', error, functionName);
+        throw (error);
+    })
+}
+function get_question_info_by_id(question_id) {
+    let functionName = 'get_topic_info_and_quesion_ids_by_topic_id_for_edit';
+    return new Promise(function(resolve, reject) {
+        let query = `SELECT q.question_id
+        ,q.prompt
+        ,q.question_type_id
+        ,q.display_type_id
+        ,q.sort
+        ,q.image
+        ,q.training_module
+        ,q.training_url
+        ,q.soft_delete
+        ,q.point_value
+        ,q.expected_response,
+        q_t.question_type_description
+    FROM [dbo].[KA_questions] as q
+    JOIN KA_question_types as q_t ON q.question_type_id = q_t.question_type_id
+     where question_id = ${question_id}`;
+        dbQueryMethod.query(query).then(result => {
+            resolve(result[0]);
+            return result[0];
+        }).catch(function(error) { reject(error); throw (error); })
+    }).catch(function(error) {
+        // log_event('WARNING', error, functionName);
+        reject(error);
+        throw (error);
+    })
+}
+
 
 /*
 EXPORTS 
@@ -2112,7 +2165,9 @@ module.exports = {
     saveOneBucket: saveOneBucket,
     create_topic_main:create_topic_main,
     deleteQuiz: deleteQuiz,
-    disableQuiz: disableQuiz
+    disableQuiz: disableQuiz,
+    get_topic_info_and_quesion_ids_by_topic_id_for_edit: get_topic_info_and_quesion_ids_by_topic_id_for_edit,
+    get_question_info_by_id: get_question_info_by_id
 };
 
 /*

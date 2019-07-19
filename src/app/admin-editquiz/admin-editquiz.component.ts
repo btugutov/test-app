@@ -77,6 +77,15 @@ export class AdminEditquizComponent implements OnInit {
   start_time = null;
   now: Date = new Date();
 
+  quiz_info = {
+    statuses: {
+      info: 'loading',
+      questions: 'loading',
+      buckets: 'loading'
+    },
+    questions:{}
+  };
+
   constructor(private _ConnectorService: ConnectorService, private location: Location, private _route: ActivatedRoute, private _r: Router) {
     this.list_of_questions = {};
     this._route.paramMap.subscribe(params => {
@@ -86,6 +95,33 @@ export class AdminEditquizComponent implements OnInit {
     this._ConnectorService.user.subscribe(user => {
       if (user) {
         this.currentUser = user;
+        // let that = this;
+        // this._ConnectorService.getQuizInfoById(this.topic_id, this.currentUser['email']).then(function(data) {
+        //   console.log("data =>",data);
+        //   if(data['status'] == 'success'){
+        //     that.quiz_info.questions = data['body']['questions'];
+        //     that.quiz_info['category'] = data['body']['quiz_info'][0].category;
+        //     that.quiz_info['engagement_id'] = data['body']['quiz_info'][0].engagement_id;
+        //     that.quiz_info['engagement_name'] = data['body']['quiz_info'][0].engagement_name;
+        //     that.quiz_info['hard_delete'] = data['body']['quiz_info'][0].hard_delete;
+        //     that.quiz_info['soft_delete'] = data['body']['quiz_info'][0].soft_delete;
+        //     that.quiz_info['time_limit'] = data['body']['quiz_info'][0].time_limit;
+        //     that.quiz_info['topic'] = data['body']['quiz_info'][0].topic;
+        //     that.quiz_info['topic_id'] = data['body']['quiz_info'][0].topic_id;
+        //     that.quiz_info.statuses.info = 'done';
+            
+        //     for(let el in that.quiz_info.questions){
+              
+        //     }
+        //     that.quiz_info.statuses.questions = 'done';
+        //     console.log(that.quiz_info)
+        //   }else{
+        //     console.log("ERROR")
+        //   }
+        // }).catch(function(error) {
+        //   console.log("getQuizInfoById error =>", error);
+        // });
+        
         this._ConnectorService.getCatsTopsEngs(user.email).then(res => {
           console.log("RES =>", res)
           if (res['status'] == 'success') {
@@ -157,7 +193,7 @@ export class AdminEditquizComponent implements OnInit {
         }).catch(function (err) {
           console.log("ERROR =>", err)
         })
-
+        
 
       }
       if (user && !user.admin) {
@@ -173,6 +209,13 @@ export class AdminEditquizComponent implements OnInit {
 
   ngOnInit() {
   }
+
+  // RENDER QUIZ =====================================================================================================================================================================================
+ 
+
+  // =================================================================================================================================================================================================
+
+
   addNewQuestion() {
     console.log(this.list_of_questions)
   }

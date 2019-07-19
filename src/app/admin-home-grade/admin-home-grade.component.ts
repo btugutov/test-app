@@ -11,6 +11,7 @@ import { Subscription } from 'rxjs';
 })
 export class AdminHomeGradeComponent implements OnInit {
   quizzes = null; // all submitted (not graded yet) quizzes
+  categories_length = 0;
   quizzes_counter = {};
   currentEng_id = null; // current engagement id
   currentUser = null;
@@ -54,10 +55,9 @@ export class AdminHomeGradeComponent implements OnInit {
             }
           }
           this.quizzes = res;
+          this.categories_length = Object.keys(res).length;
           this.your_list = this.getCurrentGradingQuiz(res)
           this.your_list_length = Object.keys(this.your_list).length;
-          // console.log("this.your_list =>", this.your_list)
-          // console.log("getCompletedQuizzes =>", this.quizzes)
         })
       }
     });

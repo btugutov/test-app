@@ -190,10 +190,14 @@ export class AdminGradeComponent implements OnInit {
   release(status){
     this.release_status = status;
     if(status == 'yes'){
+      if(!this.submit_id){
+        alert("Something went wrong. Please reload the page or navigate back to the grading portal.")
+      }
       this._ConnectorService.releaseSubmittedQuiz(this.submit_id, this.topic_id, this.currentUser.email).then(data =>{
         if(data['status'] == 'failed'){
-          // console.log("data after release =>", data)
+          console.log("data after release =>", data)
         }else{
+          console.log("releaseSubmittedQuiz: data =>", data)
           this._r.navigateByUrl(`${this.currentEng_id}/adminhomegrade`)
         }
       }).catch(function(err){

@@ -10,7 +10,7 @@ const { debugLog, getLineNumber, log_event, log_object_parser, dbQueryMethod, lo
 // methods
 const { get_available_quiz_for_profile_id_MSSQL, get_completed_quiz_categorized_submissions, get_gradable_quiz_submit_id_by_profile_and_topic, get_gradable_quiz_session_by_id, get_table_complete, get_submit_id_from_graded_by, time_now_MSSQL, update_image_base64_MSSQL, get_testable_topics_by_profile_id, get_available_engagements_by_profile_id, get_all_categories_and_topics_by_engagement_id_and_profile_id, getEngagementByEngId, get_all_topics } = require('../backend/methods.js');
 // edit_quiz.js
-const { get_topic_to_edit_MSSQL, get_topic_info_for_editQuizHome, update_topic_main, delete_topic_by_id, get_buckets_by_topic_id, saveOneBucket, create_topic_main, deleteQuiz, disableQuiz } = require('../backend/edit_quiz.js');
+const { get_topic_to_edit_MSSQL, get_topic_info_for_editQuizHome, update_topic_main, delete_topic_by_id, get_buckets_by_topic_id, saveOneBucket, create_topic_main, deleteQuiz, disableQuiz, get_topic_info_and_quesion_ids_by_topic_id_for_edit, get_question_info_by_id } = require('../backend/edit_quiz.js');
 // get_User
 const { get_User } = require('../backend/get_user.js');
 // get_Quiz
@@ -367,12 +367,12 @@ module.exports = function (app) {
                             //loop through each value and see if it matches the URL that is being requested
                             for (let i = 0; i < keys.length; i++) {
                                 // If the values don't match up, re-direct the user to the correct URL
-                                if (cPage[keys[i]].toString() !== req.params[keys[i]].toString()) {
+                                if (cPage[keys[i]].toString() != req.params[keys[i]].toString()) {
                                     console.log('==================SOMETHING WENT WRONG======================')
                                     console.log("mismatch on", keys[i])
                                     console.log(`cPage[keys[i]] => ${cPage[keys[i]]}; cPage[keys[i]].toString() => ${cPage[keys[i]].toString()}; req.params[keys[i]] => ${req.params[keys[i]]}; req.params[keys[i]].toString() => ${req.params[keys[i]].toString()}`)
                                     details.cPage = cPage;
-                                    log_event_detailed("WARNING", `Email ${req.session['user']['email']}: Take Quiz data mismatch`, functionName, req.params['userID'], JSON.stringify(details))
+                                    // log_event_detailed("WARNING", `Email ${req.session['user']['email']}: Take Quiz data mismatch`, functionName, req.params['userID'], JSON.stringify(details))
                                     console.log('=====================REDIRECTING=======================')
                                     console.log(`/${req.params['eng']}/topic/${cPage['topicID']}/user/${cPage['userID']}/quiz/${cPage['quizID']}/question/${cPage['questionID']}`)
                                     console.log('=============================================================')
@@ -640,20 +640,26 @@ module.exports = function (app) {
 
     // release one quiz by id
     app.post('/api/releaseSubmittedQuiz', (req, res, next) => {
-        let submit_id = req.body['submit_id']
+        let submit_id = req.body['submit_id'];
         let response_message = {
             'status': 'failed',
             'message': ''
-        }
+        };
         let functionName = '/api/releaseSubmittedQuiz';
         let details = {
             'req.body': req.body
+        };
+        if(!submit_id || submit_id == null){
+            response_message.message = "Submit ID is missing."
+            log_event_detailed("ERROR", response_message.message, functionName, req.body.email, JSON.stringify(req.body))
+            res.json(response_message)
         }
         preload_block(res, req.body['email'], undefined, req.params['eng'])
             .catch(function (error) {
                 // logEventParser("ERROR", err, "routes.js", "/api/releaseSubmittedQuiz: preload_block", req.body['email'])
                 log_event_detailed("ERROR", error, functionName, null, JSON.stringify(req.body))
-                res.json(error)
+                response_message.message = error;
+                res.json(response_message)
             })
             .then(returnObj => {
                 let currentUser = returnObj['currentUser']
@@ -791,6 +797,7 @@ module.exports = function (app) {
                                         get_quiz_name_by_topic_id(topic_id).then(quiz_name => {
                                             response_message.quiz_name = quiz_name[0];
                                             res.json(response_message);
+                                            return;
                                         }).catch(function (error) {
                                                 // log_event('ERROR', error, 'gradeHome');
                                                 // error_handler(error, res, getLineNumber())
@@ -798,6 +805,7 @@ module.exports = function (app) {
                                                 log_event_detailed("ERROR", error, functionName, currentUser.email, JSON.stringify(details))
                                                 // logEventParser("ERROR", error, "routes.js", "/api/getQuizForGrading:  get_quiz_name_by_topic_id", currentUser.profile_id);
                                                 res.json(response_message)
+                                                return;
                                             });
                                     }).catch(function (error) {
                                             // log_event('ERROR', error, 'continue_grade');
@@ -806,54 +814,57 @@ module.exports = function (app) {
                                             // logEventParser("ERROR", error, "routes.js", "/api/getQuizForGrading: get_completed_quiz_by_submissions", currentUser.profile_id);
                                             response_message.message = error;
                                             res.json(response_message)
+                                            return;
                                         });
                                 }
                             }
-                        }
-                        start_grading_quiz(currentUser.profile_id, topic_id).then(submit_id => {
-                            // If there are no quizzes left to grade, redirect back to the admin landing page
-                            if (submit_id === undefined) {
-                                console.log("submit_id =>>>>>", submit_id)
-                                response_message.message = "No such topics left to grade"
-                                log_event_detailed("WARNING", "No such topics left to grade", functionName, currentUser.email, JSON.stringify(req.body))
-                                // logEventParser("ERROR", "No such topics left to grade", "routes.js", "/api/getQuizForGrading: start_grading_quiz", currentUser.profile_id);
-                                console.log("return nothing here")
-                                res.json(response_message);
-                                return;
-                            } else { // If there are quizzes left, render the grading page
-                                details.submit_id = submit_id;
-                                get_completed_quiz_by_submissions(submit_id).then(result => {
-                                    response_message.quiz = unescapingObj(result);
-                                    response_message.submit_id = submit_id
-                                    response_message.status = 'success';
-                                    get_quiz_name_by_topic_id(topic_id).then(quiz_name => {
-                                        response_message.quiz_name = quiz_name[0];
-                                        res.json(response_message);
+                        }else{
+
+                            start_grading_quiz(currentUser.profile_id, topic_id).then(submit_id => {
+                                // If there are no quizzes left to grade, redirect back to the admin landing page
+                                if (submit_id === undefined) {
+                                    console.log("submit_id =>>>>>", submit_id)
+                                    response_message.message = "No such topics left to grade"
+                                    log_event_detailed("WARNING", "No such topics left to grade", functionName, currentUser.email, JSON.stringify(req.body))
+                                    // logEventParser("ERROR", "No such topics left to grade", "routes.js", "/api/getQuizForGrading: start_grading_quiz", currentUser.profile_id);
+                                    console.log("return nothing here")
+                                    res.json(response_message);
+                                    return;
+                                } else { // If there are quizzes left, render the grading page
+                                    details.submit_id = submit_id;
+                                    get_completed_quiz_by_submissions(submit_id).then(result => {
+                                        response_message.quiz = unescapingObj(result);
+                                        response_message.submit_id = submit_id
+                                        response_message.status = 'success';
+                                        get_quiz_name_by_topic_id(topic_id).then(quiz_name => {
+                                            response_message.quiz_name = quiz_name[0];
+                                            res.json(response_message);
+                                        }).catch(function (error) {
+                                                log_event_detailed("ERROR", error, functionName, currentUser.email, JSON.stringify(details))
+                                                // log_event('ERROR', error, 'gradeHome');
+                                                // logEventParser("ERROR", error, "routes.js", "/api/getQuizForGrading: get_quiz_name_by_topic_id", currentUser.profile_id);
+                                                // error_handler(error, res, getLineNumber())
+                                                response_message.message = error;
+                                                res.json(response_message)
+                                            });
                                     }).catch(function (error) {
-                                            log_event_detailed("ERROR", error, functionName, currentUser.email, JSON.stringify(details))
                                             // log_event('ERROR', error, 'gradeHome');
-                                            // logEventParser("ERROR", error, "routes.js", "/api/getQuizForGrading: get_quiz_name_by_topic_id", currentUser.profile_id);
                                             // error_handler(error, res, getLineNumber())
+                                            // logEventParser("ERROR", error, "routes.js", "/api/getQuizForGrading: get_completed_quiz_by_submissions", currentUser.profile_id);
+                                            log_event_detailed("ERROR", error, functionName, currentUser.email, JSON.stringify(details))
                                             response_message.message = error;
                                             res.json(response_message)
                                         });
-                                }).catch(function (error) {
-                                        // log_event('ERROR', error, 'gradeHome');
-                                        // error_handler(error, res, getLineNumber())
-                                        // logEventParser("ERROR", error, "routes.js", "/api/getQuizForGrading: get_completed_quiz_by_submissions", currentUser.profile_id);
-                                        log_event_detailed("ERROR", error, functionName, currentUser.email, JSON.stringify(details))
-                                        response_message.message = error;
-                                        res.json(response_message)
-                                    });
-                            }
-                        }).catch(function (error) {
-                                log_event_detailed("ERROR", error, functionName, currentUser.email, JSON.stringify(details))
-                                // log_event('ERROR', error, 'gradeHome');
-                                // error_handler(error, res, getLineNumber())
-                                // logEventParser("ERROR", error, "routes.js", "/api/getQuizForGrading: start_grading_quiz", currentUser.profile_id);
-                                response_message.message = error;
-                                res.json(response_message)
-                            });
+                                }
+                            }).catch(function (error) {
+                                    log_event_detailed("ERROR", error, functionName, currentUser.email, JSON.stringify(details))
+                                    // log_event('ERROR', error, 'gradeHome');
+                                    // error_handler(error, res, getLineNumber())
+                                    // logEventParser("ERROR", error, "routes.js", "/api/getQuizForGrading: start_grading_quiz", currentUser.profile_id);
+                                    response_message.message = error;
+                                    res.json(response_message)
+                                });
+                        }
 
                     }).catch(function (error) {
                         // log_event('ERROR', error, 'gradeHome');
@@ -1325,6 +1336,174 @@ module.exports = function (app) {
     });
 
     app.post('/api/getQuizByTopicIdForEdit', (req, res, next) => {
+        let r_r_c = JSON.stringify(new Date());
+        console.log(`Routes revieved a call getQuizByTopicIdForEdit. Start preload_block`, r_r_c)
+        let response_message = {
+            'status': 'failed',
+            'message': ''
+        }
+        let functionName = '/api/getQuizByTopicIdForEdit';
+        let details = {
+            "req.body": req.body
+        }
+        get_topic_to_edit_MSSQL(req.body['topic_id']).then(result => {
+            //console.log(result)
+            res.locals.quiz = format_quiz_table(result)[0];
+            res.locals.questions = Object.keys(res.locals.quiz);
+            response_message.status = 'success';
+            response_message.quiz1 = format_quiz_table2(result);
+            response_message.quiz_original = result;
+            // response_message.quiz2 = result;
+            // response_message.quiz3 = format_quiz_table2(result);
+            get_buckets_by_topic_id(req.body['topic_id']).then(buckets =>{
+                response_message.buckets = unescapingObj(buckets);
+                let time3 = JSON.stringify(new Date());
+                console.log("rending response to the FE", time3)
+                res.json(response_message)
+                return;
+            }).catch(function (error) {
+                log_event_detailed("ERROR", error, functionName, null, JSON.stringify(details));
+                // log_event('ERROR', error, 'get_buckets_by_topic_id');
+                // error_handler(error, res, getLineNumber())
+                // logEventParser("ERROR", err, "routes.js", "/api/getQuizByTopicIdForEdit: get_buckets_by_topic_id", req.body['email'])
+                response_message['message'] = error;
+                res.json(response_message)
+            })
+        }).catch(function (error) {
+            log_event_detailed("ERROR", error, functionName, null, JSON.stringify(details));
+            // log_event('ERROR', error, 'EditTopic');
+            // error_handler(error, res, getLineNumber())
+            // logEventParser("ERROR", err, "routes.js", "/api/getQuizByTopicIdForEdit: get_topic_to_edit_MSSQL", req.body['email'])
+            response_message['message'] = error;
+            res.json(response_message)
+        })
+        return;
+        preload_block(res, req.body['email'], undefined, undefined)
+            .catch(function (error) {
+                debugLog("ERROR HERE" + error);
+                response_message['message'] = error;
+                res.json(response_message)
+            })
+            .then(returnObj => {
+                let time2 = JSON.stringify(new Date());
+                console.log(`End of preload_block.  Routes start get_topic_to_edit_MSSQL`, time2)
+                get_topic_to_edit_MSSQL(req.body['topic_id']).then(result => {
+                    //console.log(result)
+                    res.locals.quiz = format_quiz_table(result)[0];
+                    res.locals.questions = Object.keys(res.locals.quiz);
+                    response_message.status = 'success';
+                    response_message.quiz1 = format_quiz_table2(result);
+                    response_message.quiz_original = result;
+                    // response_message.quiz2 = result;
+                    // response_message.quiz3 = format_quiz_table2(result);
+                    get_buckets_by_topic_id(req.body['topic_id']).then(buckets => {
+                        response_message.buckets = unescapingObj(buckets);
+                        let time3 = JSON.stringify(new Date());
+                        console.log("rending response to the FE", time3)
+                        res.json(response_message)
+                    }).catch(function (error) {
+                        log_event('ERROR', error, 'get_buckets_by_topic_id');
+                        error_handler(error, res, getLineNumber())
+                        response_message['message'] = error;
+                        res.json(response_message)
+                    })
+                }).catch(function (error) {
+                    log_event('ERROR', error, 'EditTopic');
+                    error_handler(error, res, getLineNumber())
+                    response_message['message'] = error;
+                    res.json(response_message)
+                })
+
+            }).catch(function (error) {
+                log_event('ERROR', error, 'EditTopic');
+                error_handler(error, res, getLineNumber())
+                response_message['message'] = error;
+                res.json(response_message)
+            })
+    })
+    app.post('/api/getQuizInfoById', (req, res, next) => {
+        let response_message = {
+            'status': 'failed',
+            'message': ''
+        }
+        let functionName = '/api/getQuizInfoById';
+        let details = {
+            "req.body": req.body
+        }
+        try {
+            preload_block(res, req.body['email'], undefined, undefined)
+                .catch(function (error) {
+                    debugLog("ERROR HERE" + error);
+                    response_message.message = error;
+                    res.json(response_message)
+                })
+                .then(returnObj => {
+                    let currentUser = returnObj['currentUser']
+                    // check to make sure that user has grading permissions before accepting data from the post
+                    if (currentUser.admin_editor || currentUser.admin_owner) {
+                        get_topic_info_and_quesion_ids_by_topic_id_for_edit(req.body.quiz_id).then(function(data){
+                            response_message.status = 'success';
+                            response_message.body = data;
+                            res.json(response_message)
+                        }).catch(function(error){
+                            response_message.body = data;
+                            res.json(response_message)
+                        })
+                    }else{
+                        log_event_detailed("WARNING", 'No permission.', functionName, req.body.email, JSON.stringify(details));
+                        response_message.message = "No permission";
+                        res.json(response_message)
+                    }
+                });
+            }catch (err) {
+                response_message.status = err;
+                log_event_detailed("ERROR", err, functionName, currentUser.email, JSON.stringify(details));
+                // logEventParser("ERROR", err, "routes.js", "/api/getQuizzesForEdit", req.body['email'])
+                res.json(response_message)
+            }
+    })
+    app.post('/api/getQuestionInfoById', (req, res, next) => {
+        let response_message = {
+            'status': 'failed',
+            'message': ''
+        }
+        let functionName = '/api/getQuestionInfoById';
+        let details = {
+            "req.body": req.body
+        }
+        try {
+            preload_block(res, req.body['email'], undefined, undefined)
+                .catch(function (error) {
+                    debugLog("ERROR HERE" + error);
+                    response_message.message = error;
+                    res.json(response_message)
+                })
+                .then(returnObj => {
+                    let currentUser = returnObj['currentUser']
+                    // check to make sure that user has grading permissions before accepting data from the post
+                    if (currentUser.admin_editor || currentUser.admin_owner) {
+                        get_question_info_by_id(req.body.question_id).then(function(data){
+                            response_message.status = 'success';
+                            response_message.body = data;
+                            res.json(response_message)
+                        }).catch(function(error){
+                            response_message.body = data;
+                            res.json(response_message)
+                        })
+                    }else{
+                        log_event_detailed("WARNING", 'No permission.', functionName, req.body.email, JSON.stringify(details));
+                        response_message.message = "No permission";
+                        res.json(response_message)
+                    }
+                });
+            }catch (err) {
+                response_message.status = err;
+                log_event_detailed("ERROR", err, functionName, currentUser.email, JSON.stringify(details));
+                // logEventParser("ERROR", err, "routes.js", "/api/getQuizzesForEdit", req.body['email'])
+                res.json(response_message)
+            }
+    })
+    app.post('/api/getQuestionIds', (req, res, next) => {
         let r_r_c = JSON.stringify(new Date());
         console.log(`Routes revieved a call getQuizByTopicIdForEdit. Start preload_block`, r_r_c)
         let response_message = {
