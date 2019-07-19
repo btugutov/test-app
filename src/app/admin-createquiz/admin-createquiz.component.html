@@ -120,14 +120,14 @@
             <div class="input-group">
                 <div class="admin-create-quiz-body-topic-cat-eng-box-select-box">
                     <span class="text-muted">Engagement</span>
-                    <select class="custom-select" (change)="valueChanger('engagement', $event.target.value)">
+                    <select class="custom-select shadow" style="border-radius: 0px;" (change)="valueChanger('engagement', $event.target.value)">
                         <option *ngFor="let eng of engagements" [selected]="eng.engagement_id==currentEng_id"
                             [disabled]="eng.soft_delete" value={{eng.engagement_id}}>{{eng.engagement_name}}</option>
                     </select>
                 </div>
                 <div class="admin-create-quiz-body-topic-cat-eng-box-select-box">
                     <span class="text-muted">Category</span>
-                    <input [disabled]="!selected_eng" class="custom-select" type="text" id="category_selector" list="categories" (change)="valueChanger('category', $event.target.value)" />
+                    <input [disabled]="!selected_eng" style="border-radius: 0px;" class="custom-select shadow" type="text" id="category_selector" list="categories" (change)="valueChanger('category', $event.target.value)" />
                     <datalist id="categories">
                         <select class="custom-select">
                             <option *ngFor="let c of categories_list | keyvalue" [value]="c.key"></option>
@@ -136,7 +136,7 @@
                 </div>
                 <div class="admin-create-quiz-body-topic-cat-eng-box-select-box">
                     <span class="text-muted">Topic</span>
-                    <input [disabled]="!selected_category" id="topic_selector" class="custom-select" type="text" list="topics" (change)="valueChanger('topic', $event.target.value)" />
+                    <input [disabled]="!selected_category" style="border-radius: 0px;" id="topic_selector" class="custom-select shadow" type="text" list="topics" (change)="valueChanger('topic', $event.target.value)" />
                     <datalist id="topics">
                         <select class="custom-select">
                             <option *ngFor="let t of topic_list | keyvalue" [value]="t.value['topic']">(Already exists)
@@ -146,7 +146,7 @@
                 </div>
                 <div class="admin-create-quiz-body-topic-cat-eng-box-select-box">
                         <span class="text-muted">Time limit</span>
-                        <select class="custom-select shadow" (change)="valueChanger('time_limit', $event.target.value)">
+                        <select class="custom-select shadow" style="border-radius: 0px;" (change)="valueChanger('time_limit', $event.target.value)">
                             <option value=null >No limit</option>
                             <option value="15" >15 minutes</option>
                             <option value="30" >30 minutes</option>
@@ -173,7 +173,7 @@
 
     <div class='admin-create-quiz-form' style="margin-top: 25px;">
         <table class="table table-borderless ">
-            <thead class="thead-light sticky-top">
+            <thead class="thead-dark sticky-top">
                 <tr style="height: 50px">
                     <th class="border-0 text-uppercase small font-weight-bold text-center" style="width: 5%">ID/Order
                     </th>
@@ -188,7 +188,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor='let q of list_of_questions | keyvalue' class="create_form_row">
+                <tr *ngFor='let q of list_of_questions | keyvalue' [ngClass]="{'border-top': !q.value['error_bool']}" class="create_form_row">
                     <!-- QUESTIONS -->
                     <td *ngIf="!q.value['error_bool']" class='text-center table-row'>
                         <p>{{q.key}}</p>
@@ -427,7 +427,6 @@
                     <!-- ACTION BUTTONS -->
                     <td style='text-align: center' *ngIf="!q.value['error_bool']">
                         <div>
-                            <button class='btn btn-outline-primary btn-action-borderless' disabled style="width: 100%">🔍 Preview</button>
                             <button *ngIf="q.key == 'new_question'" class='btn btn-outline-success btn-action-borderless' (click)="addQuestion()" style="width: 100%">+ Add</button>
                             <button *ngIf="q.key != 'new_question'" class='btn btn-outline-danger btn-action-borderless' (click)="removeQuestion(q.key)" style="width: 100%">Remove</button>
                         </div>

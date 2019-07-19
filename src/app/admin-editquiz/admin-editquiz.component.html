@@ -134,14 +134,14 @@
             <div class="input-group">
                 <div class="admin-create-quiz-body-topic-cat-eng-box-select-box">
                     <span class="text-muted">Engagement</span>
-                    <select class="custom-select shadow" (change)="valueChanger('engagement', $event.target.value)" [disabled]="topic_soft_delete">
+                    <select style="border-radius: 0px;" class="custom-select shadow" (change)="valueChanger('engagement', $event.target.value)" [disabled]="topic_soft_delete">
                         <option *ngFor="let eng of engagements" [selected]="eng.engagement_id==selected_eng"
                             [disabled]="eng.soft_delete" value={{eng.engagement_id}}>{{eng.engagement_name}}</option>
                     </select>
                 </div>
                 <div class="admin-create-quiz-body-topic-cat-eng-box-select-box">
                     <span class="text-muted">Category</span>
-                    <input [disabled]="!selected_eng || topic_soft_delete" class="custom-select shadow" type="text" id="category_selector" list="categories" value="{{selected_category}}" (change)="valueChanger('category', $event.target.value)" />
+                    <input style="border-radius: 0px;" [disabled]="!selected_eng || topic_soft_delete" class="custom-select shadow" type="text" id="category_selector" list="categories" value="{{selected_category}}" (change)="valueChanger('category', $event.target.value)" />
                     <datalist id="categories">
                         <select class="custom-select">
                             <option *ngFor="let c of categories_list | keyvalue" [selected]="c.key == selected_category" [value]="c.key"><span *ngIf="c.key == original_category">(Original)</span></option>
@@ -150,7 +150,7 @@
                 </div>
                 <div class="admin-create-quiz-body-topic-cat-eng-box-select-box">
                     <span class="text-muted">Topic</span>
-                    <input [disabled]="!selected_category || topic_soft_delete" id="topic_selector" class="custom-select shadow" type="text" list="topics" value="{{selected_topic}}" (change)="valueChanger('topic', $event.target.value)" />
+                    <input  style="border-radius: 0px;" [disabled]="!selected_category || topic_soft_delete" id="topic_selector" class="custom-select shadow" type="text" list="topics" value="{{selected_topic}}" (change)="valueChanger('topic', $event.target.value)" />
                     <datalist id="topics">
                         <select class="custom-select">
                             <option *ngFor="let t of topic_list | keyvalue" [value]="t.value['topic']">
@@ -162,7 +162,7 @@
                 </div>
                 <div class="admin-create-quiz-body-topic-cat-eng-box-select-box">
                     <span class="text-muted">Time limit</span>
-                    <select  [disabled]="topic_soft_delete" class="custom-select shadow" (change)="valueChanger('time_limit', $event.target.value)">
+                    <select style="border-radius: 0px;" [disabled]="topic_soft_delete" class="custom-select shadow" (change)="valueChanger('time_limit', $event.target.value)">
                         <option value=null [selected]="!time_limit">No limit</option>
                         <option value="15" [selected]="time_limit == 15">15 minutes</option>
                         <option value="30" [selected]="time_limit == 30">30 minutes</option>
@@ -206,6 +206,7 @@
                 <tr *ngFor='let q of list_of_questions | keyvalue' class="create_form_row" [ngClass]="{ 
                     'border border-success': q.key == 'new_question',
                     'element_hard_deleted': q.value['question_hard_delete'], 
+                    'border-top': !q.value['error_bool'],
                     'alert-secondary': q.value['question_soft_delete'] || topic_soft_delete }">
                     <!-- QUESTIONS -->
                     <td *ngIf="!q.value['error_bool']" class='text-center table-row'>
@@ -291,9 +292,9 @@
                                 'alert-secondary': q.value['answer_soft_delete'][ans.key] && !answer_delete_confirm_list[ans.key],
                                 'element_hard_deleted': answer_delete_confirm_list[ans.key]
                                 }">
-                                <input type="text" [disabled]="q.value.question_soft_delete || topic_soft_delete || q.value.answer_soft_delete[ans.key]" (change)="inputEditor('drag_and_drop', q.key, 'answer_prompt', ans.key, $event.target.value)" class="form-control bucket_input_edit bucket_input_edit_question_{{q.key}}" id="bucket_input_edit_{{q.key}}" placeholder='Add a choice' style="padding: 0px;"
+                                <input type="text" [disabled]="q.value.question_soft_delete || topic_soft_delete || q.value.answer_soft_delete[ans.key]" (change)="inputEditor('drag_and_drop', q.key, 'answer_prompt', ans.key, $event.target.value)" class="form-control bucket_input_edit bucket_input_edit_question_{{q.key}}" id="bucket_input_edit_{{q.key}}" placeholder='Add a choice' style="padding: 0px; border-radius: 0px;"
                                     value="{{ans.value}}">
-                                <select list="bucket_list" [disabled]="q.value.question_soft_delete || topic_soft_delete || q.value.answer_soft_delete[ans.key]" (change)="inputEditor('drag_and_drop', q.key, 'answer_bucket_id', ans.key, $event.target.value)" class="form-control bucket_list_pick" id="bucket_list_pick_{{q.key}}" placeholder='Bucket' style="padding: 0px;">
+                                <select list="bucket_list" [disabled]="q.value.question_soft_delete || topic_soft_delete || q.value.answer_soft_delete[ans.key]" (change)="inputEditor('drag_and_drop', q.key, 'answer_bucket_id', ans.key, $event.target.value)" class="form-control bucket_list_pick" id="bucket_list_pick_{{q.key}}" placeholder='Bucket' style="padding: 0px; border-radius: 0px;">
                                         <!-- <option *ngFor="let b of bucket_list" value="{{b.bucket_id}}"
                                             [selected]="q['answer_bucket_id'][ans.key] == b.bucket_id">
                                             {{b.bucket_name}}</option> -->
@@ -332,7 +333,7 @@
                                     id='bucket_input_add_button_{{q.key}}' 
                                     type="button">+</button>
                             </div>
-                            <input type="text" [disabled]="q.value.question_soft_delete || topic_soft_delete" (change)="inputEditor('drag_and_drop', q.key, 'temp_bucket_storage', 'answer_input', $event.target.value)" class="form-control bucket_input_add" id="bucket_input_add_input_{{q.key}}" placeholder='Add a choice' style="padding: 0px;">
+                            <input style="border-radius: 0px;" type="text" [disabled]="q.value.question_soft_delete || topic_soft_delete" (change)="inputEditor('drag_and_drop', q.key, 'temp_bucket_storage', 'answer_input', $event.target.value)" class="form-control bucket_input_add" id="bucket_input_add_input_{{q.key}}" placeholder='Add a choice' style="padding: 0px;">
                             <select 
                                 [disabled]="q.value.question_soft_delete || topic_soft_delete"  
                                 list="bucket_list" 
@@ -341,11 +342,11 @@
                                 class="form-control bucket_list_pick" 
                                 id="bucket_list_pick_{{q.key}}" 
                                 placeholder='Bucket' 
-                                style="padding: 0px;">
-                                    <option value="" selected disabled class="text-muted">Choose bucket</option>
-                                    <option disabled style="margin-top:8px; border-top:1px solid #666; padding:0;">____________</option>
+                                style="padding: 0px; border-radius: 0px !important;">
+                                    <option style="border-radius: 0px !important;" value="" selected disabled class="text-muted">Choose bucket</option>
+                                    <option disabled style="margin-top:8px; border-top:1px solid #666; padding:0; border-radius: 0px !important;">____________</option>
                                     <ng-container *ngFor="let b of bucket_list | keyvalue">
-                                        <option *ngIf="!b.value.soft_delete" value="{{b.key}}">{{b.value.bucket_name}}</option>
+                                        <option *ngIf="!b.value.soft_delete" value="{{b.key}}" style="border-radius: 0px !important;">{{b.value.bucket_name}}</option>
                                     </ng-container>
                                 </select>
                         </div>

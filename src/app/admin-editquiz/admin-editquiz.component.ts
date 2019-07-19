@@ -877,7 +877,7 @@ export class AdminEditquizComponent implements OnInit {
               }
             }
             if (counter == 0) {
-              res.body['answers'] = "Please mark the right answers."
+              res.body['answers'] = "Please mark the right answer(s)."
             }
           }
         }

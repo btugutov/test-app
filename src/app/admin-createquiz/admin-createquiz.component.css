@@ -202,3 +202,6 @@ input[type="file"] {
 	align-items: center;
 	align-content: flex-start;
 }
+.border-top{
+    border-top: 1px dotted silver !important;
+}
