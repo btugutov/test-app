@@ -61,6 +61,12 @@ export class AdminGradeComponent implements OnInit {
                     res['quiz'][el]['base64'] = res['quiz'][el]['base64'].split(',')[1] + ","+ res['quiz'][el]['base64'].split(',')[2]
                   }
                 }
+                if(!this.submit_id){
+                  console.log("no submit-Id!")
+                  this.submit_id = res['quiz'][0]['submit_id'][0]
+                }else{
+                  console.log("SUBMIT ID =>", this.submit_id)
+                }
                 // console.log("QUIZ =>", this.quiz)
               }else{
                 console.log("error!")

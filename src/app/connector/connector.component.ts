@@ -127,7 +127,7 @@ export class ConnectorComponent implements OnInit {
     for(let el in this.logs){
       if(this.logs[el]['log_id'] == log_id){
         this.logs[el] = obj;
-        this.logs[el]['log_event'] = unescape(this.logs[el]['log_event']);
+        this.logs[el]['log_event'] = this.removeNewLines(unescape(this.logs[el]['log_event']) )
         this.logs[el]['line_number'] = unescape(this.logs[el]['line_number']);
         this.logs[el]['details'] = unescape(this.logs[el]['details']);
         this.ready[log_id] = true;
@@ -170,5 +170,9 @@ export class ConnectorComponent implements OnInit {
   }
   closeModal(){
     this.modal_mesage_bool = false;
+  }
+
+  removeNewLines(str){
+    return str.split("\n").join("<br>")
   }
 }

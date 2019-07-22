@@ -796,6 +796,8 @@ module.exports = function (app) {
                                         details.response_message = response_message;
                                         get_quiz_name_by_topic_id(topic_id).then(quiz_name => {
                                             response_message.quiz_name = quiz_name[0];
+                                            response_message.cur_quizzes = cur_quizzes;
+
                                             res.json(response_message);
                                             return;
                                         }).catch(function (error) {

@@ -1,217 +1,320 @@
-<div [hidden]="engagements" class=" loading_box ">
-    <img class="loading_box-ing " src='./../../assets/loading.gif'>
-</div>
+<div style="min-height: 100vh; 
+            display: flex;
+            flex-direction: column;
+            flex-wrap: nowrap;
+            justify-content: space-between;
+            align-items: center;
+            align-content: space-between;
+            background: #e5e7da">
 
-<div [hidden]="!engagements" class="admin-quiz-permission">
+  <div [hidden]="engagements" class=" loading_box " style=" margin-top: 100px;height: 300px;">
+      <h2>Loading...</h2>
+      <div class="spinner-border" role="status">
+          <span class="sr-only"></span>
+      </div>
+  </div>
+
+  <div [hidden]="!engagements" class="admin-quiz-permission" style="margin-bottom: 50px">
     <div [hidden]="!modal_mesage_bool" class="modal_message_box">
-        <div class="modal-dialog modal-dialog-centered modal_message" role="document">
-            <!-- CHANGE LIST -->
-            <div class="modal-content modal-dialog-scrollable" *ngIf="modal_message.title == 'list_changes'">
-                <div class="modal-header">
-                    <h3 class="modal-title  text-center" id="exampleModalCenteredLabel" style="margin: 0px auto;">List of changes</h3>
-                    <button type="button" class="close" (click)="closeModal()" data-dismiss="modal" aria-label="Close">
-                          <span aria-hidden="true">&times;</span>
-                        </button>
-                </div>
-                <div style="height: 50vh !important; overflow-y: scroll;">
-                    <table class="table table-borderless">
-                        <thead class="thead-dark shadow">
-                          <tr>
-                            <th>ID</th>
-                            <th>Name</th>
-                            <th>Background</th>
-                            <th>Status</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr *ngFor="let eng of list_changes | keyvalue" [ngClass]="{
-                            'alert-success': eng.value.status=='new'
-                          }">
-                            <th scope="row" class="">
-                              <div style="display: flex;
-                              flex-direction: column;
-                              flex-wrap: nowrap;
-                              justify-content: flex-start;
-                              align-items: center;
-                              align-content: stretch;">
-                                {{eng.key}}
-                                <button class="btn-sm btn-xs btn-danger shadow " (click)="undoChanges(eng.key, 'remove')">Cancel</button>
-                              </div>
-                            </th>
-                            <!-- ENGAGEMENT NAME -->
-                            <td [ngClass]="{
-                              'alert alert-warning': (eng.value.status=='existed' && (engagements_original[eng.key].engagement_name != eng.value['engagement_name']))
-                            }">
-                              <span *ngIf="eng.value.status=='existed' && eng.value.engagement_name != engagements_original[eng.key].engagement_name">{{engagements_original[eng.key].engagement_name}} changed to </span>  <span class=" font-weight-bold">{{eng.value.engagement_name}}</span> <button *ngIf="eng.value.status=='existed' && eng.value.engagement_name != engagements_original[eng.key].engagement_name" class="btn-sm btn-xs btn-danger shadow " (click)="undoChanges(eng.key, 'soft_delete')">Undo</button>
-                            </td>
-                            <!-- BACKGROUND -->
-                            <td [ngClass]="{
-                              'alert alert-warning': (eng.value.status=='existed' && (engagements_original[eng.key].background != eng.value['background']))
-                            }">
-                                <div  *ngIf="eng.value.status=='existed' && eng.value['background'] && engagements_original[eng.key].background != eng.value['background']" style="position: relative">
-                                    <img src="{{eng.value['background']}}" class="img-fluid" alt="Responsive image">
-                                    <button class="btn btn-sm btn-danger btn-image-remove" [disabled]="eng.value.soft_delete" (click)="undoChangess(eng.key, 'background')">x</button>
-                                </div>
-                                <div  *ngIf="eng.value.status=='existed' && !eng.value['background'] && engagements_original[eng.key].background" class="default-background" style="position: relative">
-                                    <!-- <img src="{{eng.value['background']}}" class="img-fluid default-background" alt="Responsive image"> -->
-                                    <button class="btn btn-sm btn-danger btn-image-remove" [disabled]="eng.value.soft_delete" (click)="undoChangess(eng.key, 'background')">x</button>
-                                </div>
-                                <div *ngIf="eng.value.status=='new' && eng.value['background']" style="position: relative">
-                                    <img src="{{eng.value['background']}}" class="img-fluid" alt="Responsive image">
-                                </div>
-                                <div *ngIf="eng.value.status=='new' && !eng.value['background']" class="default-background" style="position: relative">
-                                </div>
-                                
-                            </td>
-                            <td [ngClass]="{
-                              'alert alert-warning': (eng.value.status=='existed' && (engagements_original[eng.key].soft_delete != eng.value.soft_delete))
-                            }">
-                                <p class=" font-weight-bold">
-                                  <span *ngIf="eng.value.status=='existed' && !eng.value.soft_delete && engagements_original[eng.key].soft_delete">Enabled  <button class="btn-sm btn-xs btn-danger shadow " (click)="undoChanges(eng.key, 'soft_delete')">Undo</button></span>
-                                  <span *ngIf="eng.value.status=='existed' && eng.value.soft_delete && !engagements_original[eng.key].soft_delete">Disabled  <button class="btn-sm btn-xs btn-danger shadow " (click)="undoChanges(eng.key, 'soft_delete')">Undo</button></span>
-                                  <span *ngIf="eng.value.status=='new'">New </span>
-                                </p>
-                            </td>
-                            
-                          </tr>
-                          
-                        </tbody>
-                      </table>
-                  </div>
-                  <div class="team_control_panel">
-                      <div style="height: 50px; margin-top: 25px;">
-                        <button type="button" (click)="submitChanges()" class="btn btn-success  btn-action-borderless shadow" style="margin: 0px 20px">Submit changes</button>
-                        <button type="button" (click)="undoChangesAll()" class="btn btn-danger  btn-action-borderless shadow" style="margin: 0px 20px">Cancel All</button>
-                        <button type="button" (click)="closeModal()"  class="btn btn-warning  btn-action-borderless shadow"  style="margin: 0px 20px">Close</button>
-                      </div>
-                  </div>
-            </div>
+      <div class="modal-dialog modal-dialog-centered modal_message" role="document">
+        <!-- CHANGE LIST -->
+        <div class="modal-content modal-dialog-scrollable" *ngIf="modal_message.title == 'list_changes'">
+          <div class="modal-header">
+            <h3 class="modal-title  text-center" id="exampleModalCenteredLabel" style="margin: 0px auto;">List of
+              changes
+            </h3>
+            <button type="button" class="close" (click)="closeModal()" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div style="height: 50vh !important; overflow-y: scroll;">
+            <table class="table table-borderless">
+              <thead class="thead-dark shadow">
+                <tr>
+                  <th>ID</th>
+                  <th>Name</th>
+                  <th>Background</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let eng of list_changes | keyvalue" [ngClass]="{
+                                          'alert-success': eng.value.status=='new'
+                                        }">
+                  <th scope="row" class="">
+                    <div style="display: flex;
+                                            flex-direction: column;
+                                            flex-wrap: nowrap;
+                                            justify-content: flex-start;
+                                            align-items: center;
+                                            align-content: stretch;">
+                      {{eng.key}}
+                      <button class="btn-sm btn-xs btn-danger shadow "
+                        (click)="undoChanges(eng.key, 'remove')">Cancel</button>
+                    </div>
+                  </th>
+                  <!-- ENGAGEMENT NAME -->
+                  <td [ngClass]="{
+                                            'alert alert-warning': (eng.value.status=='existed' && (engagements_original[eng.key].engagement_name != eng.value['engagement_name']))
+                                          }">
+                    <span
+                      *ngIf="eng.value.status=='existed' && eng.value.engagement_name != engagements_original[eng.key].engagement_name">{{engagements_original[eng.key].engagement_name}}
+                      changed to </span> <span class=" font-weight-bold">{{eng.value.engagement_name}}</span> <button
+                      *ngIf="eng.value.status=='existed' && eng.value.engagement_name != engagements_original[eng.key].engagement_name"
+                      class="btn-sm btn-xs btn-danger shadow "
+                      (click)="undoChanges(eng.key, 'soft_delete')">Undo</button>
+                  </td>
+                  <!-- BACKGROUND -->
+                  <td [ngClass]="{
+                                            'alert alert-warning': (eng.value.status=='existed' && (engagements_original[eng.key].background != eng.value['background']))
+                                          }">
+                    <div
+                      *ngIf="eng.value.status=='existed' && eng.value['background'] && engagements_original[eng.key].background != eng.value['background']"
+                      style="position: relative">
+                      <img src="{{eng.value['background']}}" class="img-fluid" alt="Responsive image">
+                      <button class="btn btn-sm btn-danger btn-image-remove" [disabled]="eng.value.soft_delete"
+                        (click)="undoChangess(eng.key, 'background')">x</button>
+                    </div>
+                    <div
+                      *ngIf="eng.value.status=='existed' && !eng.value['background'] && engagements_original[eng.key].background"
+                      class="default-background" style="position: relative">
+                      <!-- <img src="{{eng.value['background']}}" class="img-fluid default-background" alt="Responsive image"> -->
+                      <button class="btn btn-sm btn-danger btn-image-remove" [disabled]="eng.value.soft_delete"
+                        (click)="undoChangess(eng.key, 'background')">x</button>
+                    </div>
+                    <div *ngIf="eng.value.status=='new' && eng.value['background']" style="position: relative">
+                      <img src="{{eng.value['background']}}" class="img-fluid" alt="Responsive image">
+                    </div>
+                    <div *ngIf="eng.value.status=='new' && !eng.value['background']" class="default-background"
+                      style="position: relative">
+                    </div>
 
-            <div class="modal-content modal-dialog-scrollable shadow"  *ngIf="modal_message.title == 'message'">
-                <div class="alert alert-success text-center" style="margin-bottom: 0px" role="alert" *ngIf="modal_message.body == 'success'">
-                    <h4 class="alert-heading text-center">Well done!</h4>
-                    <button type="button" class="close" (click)="closeModal()" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                      </button>
-                    <p>Your changes have been saved!</p>
-                    <button class="btn btn-primary btn-action-borderless shadow" [routerLink]="['/',currentEng_id, 'admin']">Click here to go back to the admin portal</button>
-                  </div>
-                <div class="alert alert-danger text-center" style="margin-bottom: 0px" role="alert" *ngIf="modal_message.body == 'fail'">
-                    <h4 class="alert-heading text-center">Oops!</h4>
-                    <button type="button" class="close" (click)="closeModal()" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                      </button>
-                      <p>Something went wrong. Please try again later or contact developers.</p>
-                    <button class="btn btn-primary btn-action-borderless shadow" [routerLink]="['/',currentEng_id, 'admin']">Click here to go back to the admin portal</button>
-                  </div>
-            </div>
-            <div class="modal-content modal-dialog-scrollable shadow"  *ngIf="modal_message.title == 'counter'">
-                <div class="alert alert-success text-center" style="margin-bottom: 0px" role="alert" >
+                  </td>
+                  <td [ngClass]="{
+                                            'alert alert-warning': (eng.value.status=='existed' && (engagements_original[eng.key].soft_delete != eng.value.soft_delete))
+                                          }">
+                    <p class=" font-weight-bold">
+                      <span
+                        *ngIf="eng.value.status=='existed' && !eng.value.soft_delete && engagements_original[eng.key].soft_delete">Enabled
+                        <button class="btn-sm btn-xs btn-danger shadow "
+                          (click)="undoChanges(eng.key, 'soft_delete')">Undo</button></span>
+                      <span
+                        *ngIf="eng.value.status=='existed' && eng.value.soft_delete && !engagements_original[eng.key].soft_delete">Disabled
+                        <button class="btn-sm btn-xs btn-danger shadow "
+                          (click)="undoChanges(eng.key, 'soft_delete')">Undo</button></span>
+                      <span *ngIf="eng.value.status=='new'">New </span>
+                    </p>
+                  </td>
 
-                    <p>Saving changes {{modal_message.counter_start }} of {{modal_message.counter_end }}</p>
-                    <div class="progress">
-                        <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" [attr.aria-valuenow]="modal_message.counter_start" [attr.aria-valuemin]="0" [attr.aria-valuemax]="modal_message.counter_end" [style.width.%]="( (modal_message.counter_start/modal_message.counter_end) * 100)"></div>
-                      </div>
-                  </div>
+                </tr>
+
+              </tbody>
+            </table>
+          </div>
+          <div class="team_control_panel">
+            <div style="height: 50px; margin-top: 25px;">
+              <button type="button" (click)="submitChanges()" class="btn btn-success  btn-action-borderless shadow"
+                style="margin: 0px 20px">Submit changes</button>
+              <button type="button" (click)="undoChangesAll()" class="btn btn-danger  btn-action-borderless shadow"
+                style="margin: 0px 20px">Cancel All</button>
+              <button type="button" (click)="closeModal()" class="btn btn-warning  btn-action-borderless shadow"
+                style="margin: 0px 20px">Close</button>
             </div>
+          </div>
         </div>
-    </div>
 
+        <div class="modal-content modal-dialog-scrollable shadow" *ngIf="modal_message.title == 'message'">
+          <div class="alert alert-success text-center" style="margin-bottom: 0px" role="alert"
+            *ngIf="modal_message.body == 'success'">
+            <h4 class="alert-heading text-center">Well done!</h4>
+            <button type="button" class="close" (click)="closeModal()" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+            <p>Your changes have been saved!</p>
+            <button class="btn btn-primary btn-action-borderless shadow"
+              [routerLink]="['/',currentEng_id, 'admin']">Click
+              here to go back to the admin portal</button>
+          </div>
+          <div class="alert alert-danger text-center" style="margin-bottom: 0px" role="alert"
+            *ngIf="modal_message.body == 'fail'">
+            <h4 class="alert-heading text-center">Oops!</h4>
+            <button type="button" class="close" (click)="closeModal()" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+            <p>Something went wrong. Please try again later or contact developers.</p>
+            <button class="btn btn-primary btn-action-borderless shadow"
+              [routerLink]="['/',currentEng_id, 'admin']">Click
+              here to go back to the admin portal</button>
+          </div>
+        </div>
+        <div class="modal-content modal-dialog-scrollable shadow" *ngIf="modal_message.title == 'counter'">
+          <div class="alert alert-success text-center" style="margin-bottom: 0px" role="alert">
+
+            <p>Saving changes {{modal_message.counter_start }} of {{modal_message.counter_end }}</p>
+            <div class="progress">
+              <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"
+                [attr.aria-valuenow]="modal_message.counter_start" [attr.aria-valuemin]="0"
+                [attr.aria-valuemax]="modal_message.counter_end"
+                [style.width.%]="( (modal_message.counter_start/modal_message.counter_end) * 100)"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
     <div class="admin-quiz-permission-title">
       <h1>Engagement Editor</h1>
-      <button [hidden]="errors_length > 0" class="btn btn-success btn-action-borderless btn-lg shadow" (click)="checkChanges()">Check Changes</button>
-      <button [hidden]="errors_length == 0" class="btn btn-danger btn-action-borderless btn-lg shadow" disabled >Please fix errors bellow</button>
+      <button [hidden]="errors_length > 0" class="btn btn-success btn-action-borderless btn-lg shadow"
+        (click)="checkChanges()">Check Changes</button>
+      <button [hidden]="errors_length == 0" class="btn btn-danger btn-action-borderless btn-lg shadow" disabled>Please
+        fix
+        errors bellow</button>
 
 
 
 
 
-    <div class="admin-quiz-permission-table_box" style="padding-top: 25px">
-        <table class="table table-borderless shadow-lg" style="width: 1000px">
-            <thead class="thead-dark shadow-lg">
-              <tr>
-                <th>ID</th>
-                <th >Title</th>
-                <th >Categories and topics</th>
-                <th >Background</th>
-                <th >Status</th>
-              </tr>
-            </thead>
-            <tbody id="table_body_target">
-              <tr style="border-top: none !important" *ngFor="let eng of engagements | keyvalue" [ngClass]="{
-                'alert-secondary': eng.value.soft_delete,
-                'element-animation-fadeIn': last_added == eng.key,
-                'alert-info': eng.key == 'new' && eng.value.status == 'new',
-                'alert-success': eng.key != 'new' && eng.value.status == 'new'
-              }">
-                <th *ngIf="!eng.value['error_bool']"  scope="row" class="font-weight-bold  text-center  tr_string">{{eng.key}}</th>
-                <td *ngIf="!eng.value['error_bool']" class="tr_string">
-                    <input class="form-control" type="text" [disabled]="eng.value.soft_delete" placeholder="" minlength="2" (change)="inputChanger(eng.key, 'engagement_name', $event.target)" value='{{eng.value.engagement_name}}'>
-                </td>
-                <td *ngIf="!eng.value['error_bool']">
-                    <div class="wrap-collabsible">
-                        <input id="collapsible_{{eng.value.engagement_name}}" class="toggle" type="checkbox">
-                        <label for="collapsible_{{eng.value.engagement_name}}" class="lbl-toggle">{{eng.value.users_total_length}} users,{{eng.value.categories_length}} category(ies) and {{eng.value.topics_total_length}} topic(s)</label>
+      <div class="admin-quiz-permission-table_box" style="padding-top: 25px">
+        
+        <table class="table table-borderless shadow-lg" style="width: 1000px;">
+          <thead class="thead-dark shadow-lg">
+            <tr>
+              <th>ID</th>
+              <th>Title</th>
+              <th>Categories and topics</th>
+              <th>Background</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="table_body_target" style="background: white">
+            <tr style="border-top: none !important" *ngFor="let eng of engagements | keyvalue" [ngClass]="{
+                              'alert-secondary': eng.value.soft_delete,
+                              'element-animation-fadeIn': last_added == eng.key,
+                              'alert-info': eng.key == 'new' && eng.value.status == 'new',
+                              'alert-success': eng.key != 'new' && eng.value.status == 'new'
+                            }">
+              <th *ngIf="!eng.value['error_bool']" scope="row" class="font-weight-bold  text-center  tr_string">
+                {{eng.key}}</th>
+              <td *ngIf="!eng.value['error_bool']" class="tr_string">
+                <input class="form-control" type="text" [disabled]="eng.value.soft_delete" placeholder="" minlength="2"
+                  (change)="inputChanger(eng.key, 'engagement_name', $event.target)"
+                  value='{{eng.value.engagement_name}}'>
+              </td>
+              <td *ngIf="!eng.value['error_bool']">
+                <div class="wrap-collabsible">
+                  <input id="collapsible_{{eng.value.engagement_name}}" class="toggle" type="checkbox">
+                  <label for="collapsible_{{eng.value.engagement_name}}"
+                    class="lbl-toggle">{{eng.value.users_total_length}} users,{{eng.value.categories_length}}
+                    category(ies) and {{eng.value.topics_total_length}} topic(s)</label>
+                  <div class="collapsible-content shadow">
+                    <div class="content-inner">
+
+                      <div class="wrap-collabsible" *ngFor="let cat of eng.value.categories | keyvalue">
+                        <input id="collapsible_{{eng.value.engagement_name}}_{{cat.key}}" class="toggle"
+                          type="checkbox">
+                        <label for="collapsible_{{eng.value.engagement_name}}_{{cat.key}}"
+                          class="lbl-toggle">{{cat.key}}
+                          ({{cat.value.topic_length}} topics)</label>
                         <div class="collapsible-content shadow">
-                          <div class="content-inner">
-
-                              <div class="wrap-collabsible" *ngFor="let cat of eng.value.categories | keyvalue">
-                                  <input id="collapsible_{{eng.value.engagement_name}}_{{cat.key}}" class="toggle" type="checkbox">
-                                  <label for="collapsible_{{eng.value.engagement_name}}_{{cat.key}}" class="lbl-toggle">{{cat.key}} ({{cat.value.topic_length}} topics)</label>
-                                  <div class="collapsible-content shadow">
-                                    <div class="content-inner ">
-                                        <p class=" small" [ngClass]="{
-                                          'alert-danger': topic.value.topic_soft_delete
-                                        }" style="margin-bottom: 0px;" *ngFor="let topic of cat.value.topics | keyvalue"><a target="_blank" [routerLink]="topic.value.link"> #{{topic.key}} {{topic.value.topic}} ({{topic.value.users_length}} users have access)</a></p>
-                                    </div>
-                                  </div>
-                                </div>
-
+                          <div class="content-inner ">
+                            <p class=" small" [ngClass]="{
+                                                        'alert-danger': topic.value.topic_soft_delete
+                                                      }" style="margin-bottom: 0px;"
+                              *ngFor="let topic of cat.value.topics | keyvalue"><a target="_blank"
+                                [routerLink]="topic.value.link"> #{{topic.key}} {{topic.value.topic}}
+                                ({{topic.value.users_length}} users have access)</a></p>
                           </div>
                         </div>
                       </div>
-                </td>
-                <td *ngIf="!eng.value['error_bool']">
-                  <div *ngIf="eng.value['background'] && eng.value['background'] != 'null'" style="position: relative">
-                      <img src="{{eng.value['background']}}" class="img-fluid" alt="Responsive image">
-                      <button class="btn btn-sm btn-outline-danger btn-image-remove shadow" [disabled]="eng.value.soft_delete" (click)="removeImg(eng.key)">x</button>
+
+                    </div>
                   </div>
-                  <div *ngIf="!eng.value['background'] || eng.value['background'] == 'null'" class="default-background" style="position: relative">
-                      <!-- <img src="{{eng.value['background']}}" class="img-fluid default-background" alt="Responsive image"> -->
-                      <!-- <button class="btn btn-sm btn-outline-danger btn-image-remove" [disabled]="eng.value.soft_delete" (click)="removeImg(eng.key)">x</button> -->
-                  </div>
-                    <div>
-                        <label for="file-upload{{eng.key}}" style="width: 100%;" class="custom-file-upload btn btn-sm btn-outline-secondary btn-action-borderless">
-                                &#8682; Upload Picture
-                            </label>
-                        <input id="file-upload{{eng.key}}" type="file"  [disabled]="eng.value.soft_delete" (change)="addBackground(eng.key, $event.target.files)" accept="image/*" />
-                    </div>
-                </td>
-                <td *ngIf="!eng.value['error_bool']" align="center" class="tr_string">
-                    <div class="switchToggle" *ngIf="eng.value.status == 'existed' && eng.key != 'new'">
-                        <input type="checkbox"  id="soft_delete_{{eng.key}}" (click)="actionButton(eng.key,'soft_delete', null)" [checked]='!eng.value.soft_delete' >
-                        <label for="soft_delete_{{eng.key}}" [ngClass]="{
-                          'shadow': true,
-                          'switchToggle_checked_green': engagements_original[eng.key]['soft_delete'] && !eng.value.soft_delete,
-                          'switchToggle_checked_red': !engagements_original[eng.key]['soft_delete'] && eng.value.soft_delete
-                        }"></label>
-                    </div>
-                    <div class="switchToggle" *ngIf="eng.value.status == 'new' && eng.key == 'new'">
-                        <button class='btn btn-success btn-action-borderless shadow'  (click)="addEng()">Add</button>
-                    </div>
-                    <div class="switchToggle" *ngIf="eng.value.status == 'new' && eng.key != 'new'">
-                        <button class='btn btn-danger btn-action-borderless' (click)="deleteEng(eng.key)">Delete</button>
-                    </div>
-                </td>
-                <td colspan="7" *ngIf="eng.value['error_bool']" style="padding: 10px 10px !important">
-                    <div class="alert alert-warning shadow" role="alert" style="width: 500px; margin: 0px auto;">
-                        <p class="text-center "><strong>#{{eng.value['target']}} has error(s):</strong></p>
-                       <p *ngFor="let error of eng.value['errors'] | keyvalue" class="text-center" style="margin-bottom: 0px !important">{{error.value}}</p>
-                    </div>
-                </td>   
-              </tr>
-              
-            </tbody>
-          </table>
+                </div>
+              </td>
+              <td *ngIf="!eng.value['error_bool']">
+                <div *ngIf="eng.value['background'] && eng.value['background'] != 'null'" style="position: relative">
+                  <img src="{{eng.value['background']}}" class="img-fluid" alt="Responsive image">
+                  <button class="btn btn-sm btn-outline-danger btn-image-remove shadow"
+                    [disabled]="eng.value.soft_delete" (click)="removeImg(eng.key)">x</button>
+                </div>
+                <div *ngIf="!eng.value['background'] || eng.value['background'] == 'null'" class="default-background"
+                  style="position: relative">
+                  <!-- <img src="{{eng.value['background']}}" class="img-fluid default-background" alt="Responsive image"> -->
+                  <!-- <button class="btn btn-sm btn-outline-danger btn-image-remove" [disabled]="eng.value.soft_delete" (click)="removeImg(eng.key)">x</button> -->
+                </div>
+                <div>
+                  <label for="file-upload{{eng.key}}" style="width: 100%;"
+                    class="custom-file-upload btn btn-sm btn-outline-secondary btn-action-borderless">
+                    &#8682; Upload Picture
+                  </label>
+                  <input id="file-upload{{eng.key}}" type="file" [disabled]="eng.value.soft_delete"
+                    (change)="addBackground(eng.key, $event.target.files)" accept="image/*" />
+                </div>
+              </td>
+              <td *ngIf="!eng.value['error_bool']" align="center" class="tr_string">
+                <div class="switchToggle" *ngIf="eng.value.status == 'existed' && eng.key != 'new'">
+                  <input type="checkbox" id="soft_delete_{{eng.key}}"
+                    (click)="actionButton(eng.key,'soft_delete', null)" [checked]='!eng.value.soft_delete'>
+                  <label for="soft_delete_{{eng.key}}" [ngClass]="{
+                                        'shadow': true,
+                                        'switchToggle_checked_green': engagements_original[eng.key]['soft_delete'] && !eng.value.soft_delete,
+                                        'switchToggle_checked_red': !engagements_original[eng.key]['soft_delete'] && eng.value.soft_delete
+                                      }"></label>
+                </div>
+                <div class="switchToggle" *ngIf="eng.value.status == 'new' && eng.key == 'new'">
+                  <button class='btn btn-success btn-action-borderless shadow' (click)="addEng()">Add</button>
+                </div>
+                <div class="switchToggle" *ngIf="eng.value.status == 'new' && eng.key != 'new'">
+                  <button class='btn btn-danger btn-action-borderless' (click)="deleteEng(eng.key)">Delete</button>
+                </div>
+              </td>
+              <td colspan="7" *ngIf="eng.value['error_bool']" style="padding: 10px 10px !important">
+                <div class="alert alert-warning shadow" role="alert" style="width: 500px; margin: 0px auto;">
+                  <p class="text-center "><strong>#{{eng.value['target']}} has error(s):</strong></p>
+                  <p *ngFor="let error of eng.value['errors'] | keyvalue" class="text-center"
+                    style="margin-bottom: 0px !important">{{error.value}}</p>
+                </div>
+              </td>
+            </tr>
+
+          </tbody>
+        </table>
+        <button [hidden]="errors_length > 0" class="btn btn-success btn-action-borderless btn-lg shadow"
+            (click)="checkChanges()">Check Changes</button>
+      </div>
     </div>
+  </div>
+  <div
+    style="background: url(/assets/footer_background.png); background-position: top 0px right 0px !important; background-repeat: no-repeat !important; background-size: cover !important; width: 100%">
+    <div class="index_row element-animation-fadeIn " style="display: flex;
+                                                            flex-direction: column;
+                                                            flex-wrap: nowrap;
+                                                            justify-content: center;
+                                                            align-items: center;
+                                                            align-content: space-between;">
+      <div class="col-md-4 col-12 px-2" style="justify-content: center;">
+        <div class="text-center">
+          <h4 style="color: #4f91cd;">Skill Assessment Tool</h4>
+        </div>
+      </div>
+      <div class="col-md-4 col-12 px-2">
+        <div class="text-center">
+          <p class="mt-3">If you have questions, please contact the Training Team</p>
+          <p><a class="mt-3" href="mailto:jennifer@bpcs.com?subject=Question regarding Skill Assessment"
+              style="color: #4f91cd; cursor: pointer;"> Jennifer Hollar</a></p>
+          <p><a class="mt-3" href="mailto:nmelling@bpcs.com?subject=Question regarding Skill Assessment"
+              style="color: #4f91cd; cursor: pointer;"> Nigel Melling</a></p>
+          <p><a class="mt-3" href="mailto:kjenson@bpcs.com?subject=Question regarding Skill Assessment"
+              style="color: #4f91cd; cursor: pointer;"> Kevin Jenson</a></p>
+        </div>
+      </div>
+      <div class="col-md-4 col-12 px-2" style="margin: 5px">
+        <div class="text-center  bp-box shadow">
+          <h4 class="mt-3" style="color: #4f91cd; text-shadow: 0px 0px 1px silver;">Blueprint Consulting</h4>
+          <h5 class="mt-3" style="color: #4f91cd; text-shadow: 0px 0px 1px silver;">505 106th Ave NE, Third
+            Floor, Bellevue, WA 98004</h5>
+          <h5 class="mt-3" style="color: #4f91cd; text-shadow: 0px 0px 1px silver;">(206) 455-8326</h5>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

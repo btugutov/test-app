@@ -1,64 +1,76 @@
-<div class="column_list element-animation-fadeIn" id="body_fadeOut">
-    <div *ngIf='popup_message' class="d-flex justify-content-center popup_message_slideIn">
-        <div *ngIf='popup_message.success' class="alert alert-success" role="alert">
-            <strong>Well done!</strong> {{popup_message.message}}
-        </div>
-        <div *ngIf='!popup_message.success' class="alert alert-danger" role="alert">
-            <h4 class="alert-heading">Oops! Please contact admin or developers!</h4> {{popup_message.message | json}}
-        </div>
-    </div>
-    <div style="display: flex; flex-direction: column; flex-wrap: nowrap; justify-content: center; align-items: stretch; align-content: center; height: 10%;">
-        <h1 style="margin: 0px auto">Choose a category and topic to edit</h1>
-    </div>
-    <!-- <div class="d-flex justify-content-center" *ngIf="quizzes" style="margin-top: 50px; ">
-        <div class="alert alert-success shadow" role="alert" style="display: flex; align-items: center; flex-direction: column;">
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            <p class="badge btn-lg badge-light">Quiz is good</p>
-            <p class="badge badge-warning">Less than 6 questions </p>
-            <p class="badge btn-lg badge-danger">Quiz is disabled</p>
-        </div>
-    </div> -->
 
 
-    <!-- <div class="grade-home-main " id="grade-home-main ">
-        <div *ngFor="let c of quizzes | keyvalue " class="home-category " >
-            <div class="home-category-title bg-dark text-white" style="width: 100%; padding: 5px 0px;">
-                <h3 >{{c.key}}</h3>
+<div style="min-height: 100vh; 
+            display: flex;
+            flex-direction: column;
+            flex-wrap: nowrap;
+            justify-content: space-between;
+            align-items: center;
+            align-content: space-between;
+            background: #e5e7da">
+            <div class="column_list element-animation-fadeIn" id="body_fadeOut">
+                    <div *ngIf='popup_message' class="d-flex justify-content-center popup_message_slideIn">
+                        <div *ngIf='popup_message.success' class="alert alert-success" role="alert">
+                            <strong>Well done!</strong> {{popup_message.message}}
+                        </div>
+                        <div *ngIf='!popup_message.success' class="alert alert-danger" role="alert">
+                            <h4 class="alert-heading">Oops! Please contact admin or developers!</h4> {{popup_message.message | json}}
+                        </div>
+                    </div>
+                    <div style="display: flex; flex-direction: column; flex-wrap: nowrap; justify-content: center; align-items: stretch; align-content: center; height: 10%;">
+                        <h1 style="margin: 0px auto">Choose a category and topic to edit</h1>
+                    </div>
+                    <div class="card-columns cards-main">
+                        <div class="card card-category" *ngFor="let c of quizzes | keyvalue ">
+                            <div class="card-header text-center bg-dark text-white">
+                                <h3>{{c.key}}</h3>
+                              </div>
+                              <div *ngFor="let t of c.value | keyvalue " class="home-category-element ">
+                                <a [routerLink]="[links[t.value.topic_id][ 'topic_link']] ">
+                                    <button type="button " class="btn btn-lg" 
+                                        [ngClass]="{
+                                            'btn-outline-secondary': t.value.question_count > 5 && !t.value.topic_soft_delete, 
+                                            'btn-outline-warning': t.value.question_count <= 5 && !t.value.topic_soft_delete, 
+                                            'btn-outline-danger': t.value.topic_soft_delete
+                                        }">
+                                            {{t.value.topic}} ({{t.value.question_count}})</button>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+<div
+        style="background: url(/assets/footer_background.png); background-position: top 0px right 0px !important; background-repeat: no-repeat !important; background-size: cover !important; width: 100%">
+        <div class="index_row element-animation-fadeIn " style="display: flex;
+                                                            flex-direction: column;
+                                                            flex-wrap: nowrap;
+                                                            justify-content: center;
+                                                            align-items: center;
+                                                            align-content: space-between;">
+            <div class="col-md-4 col-12 px-2" style="justify-content: center;">
+                <div class="text-center">
+                    <h4 style="color: #4f91cd;">Skill Assessment Tool</h4>
+                </div>
             </div>
-            <div *ngFor="let t of c.value | keyvalue " class="home-category-element ">
-                <a [routerLink]="[links[t.value.topic_id][ 'topic_link']] ">
-                    <button type="button " class="btn btn-lg" 
-                        [ngClass]="{
-                            'btn-outline-secondary': t.value.question_count > 5 && !t.value.topic_soft_delete, 
-                            'btn-outline-secondary-hover-side-shadow': t.value.question_count > 5 && !t.value.topic_soft_delete, 
-                            'btn-outline-warning': t.value.question_count <= 5 && !t.value.topic_soft_delete, 
-                            'btn-outline-warning-hover-side-shadow':t.value.question_count <= 5 && !t.value.topic_soft_delete,  
-                            'btn-outline-danger': t.value.topic_soft_delete, 
-                            'btn-outline-danger-hover-side-shadow': t.value.topic_soft_delete
-                        }">
-                            {{t.value.topic}} ({{t.value.question_count}})</button>
-                </a>
+            <div class="col-md-4 col-12 px-2">
+                <div class="text-center">
+                    <p class="mt-3">If you have questions, please contact the Training Team</p>
+                    <p><a class="mt-3" href="mailto:jennifer@bpcs.com?subject=Question regarding Skill Assessment"
+                            style="color: #4f91cd; cursor: pointer;"> Jennifer Hollar</a></p>
+                    <p><a class="mt-3" href="mailto:nmelling@bpcs.com?subject=Question regarding Skill Assessment"
+                            style="color: #4f91cd; cursor: pointer;"> Nigel Melling</a></p>
+                    <p><a class="mt-3" href="mailto:kjenson@bpcs.com?subject=Question regarding Skill Assessment"
+                            style="color: #4f91cd; cursor: pointer;"> Kevin Jenson</a></p>
+                </div>
             </div>
-        </div>
-    </div> -->
-    <div class="card-columns cards-main">
-        <div class="card card-category" *ngFor="let c of quizzes | keyvalue ">
-            <div class="card-header text-center bg-dark text-white">
-                <h3>{{c.key}}</h3>
-              </div>
-              <div *ngFor="let t of c.value | keyvalue " class="home-category-element ">
-                <a [routerLink]="[links[t.value.topic_id][ 'topic_link']] ">
-                    <button type="button " class="btn btn-lg" 
-                        [ngClass]="{
-                            'btn-outline-secondary': t.value.question_count > 5 && !t.value.topic_soft_delete, 
-                            'btn-outline-warning': t.value.question_count <= 5 && !t.value.topic_soft_delete, 
-                            'btn-outline-danger': t.value.topic_soft_delete
-                        }">
-                            {{t.value.topic}} ({{t.value.question_count}})</button>
-                </a>
+            <div class="col-md-4 col-12 px-2" style="margin: 5px">
+                <div class="text-center  bp-box shadow">
+                    <h4 class="mt-3" style="color: #4f91cd; text-shadow: 0px 0px 1px silver;">Blueprint Consulting</h4>
+                    <h5 class="mt-3" style="color: #4f91cd; text-shadow: 0px 0px 1px silver;">505 106th Ave NE, Third
+                        Floor, Bellevue, WA 98004</h5>
+                    <h5 class="mt-3" style="color: #4f91cd; text-shadow: 0px 0px 1px silver;">(206) 455-8326</h5>
+                </div>
             </div>
         </div>
     </div>
-</div>

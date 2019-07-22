@@ -1,5 +1,7 @@
 .admin-create-quiz {
     margin-top: 50px;
+    margin-bottom: 50px;
+    width: 100%;
 }
 
 .admin-create-quiz-title {
@@ -204,4 +206,8 @@ input[type="file"] {
 }
 .border-top{
     border-top: 1px dotted silver !important;
+}
+.table{
+    width: 98%;
+    margin: 0px auto;
 }
