@@ -1777,6 +1777,7 @@ module.exports = function (app) {
 
     app.post('/api/get_availableEngagements', (req, res, next) => {
         let functionName = '/api/get_availableEngagements';
+        console.log(functionName, "=>",req.body)
         let details = {
             'req.body': req.body
         }

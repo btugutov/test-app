@@ -39,7 +39,7 @@ export class ConnectorService {
     return new Promise(function (resolve, reject) {
       that.http.post('/api/store_user', user).subscribe(
         res => {
-          that.getAvailableEngagements(res['profile_id']).then(engs => {
+          that.getAvailableEngagements(res['profile_id'], res['email']).then(engs => {
             // console.log("===========engs =>", engs)
             res['engs'] = engs;
             that.engs.next(that.objToToArray(engs));
@@ -91,13 +91,14 @@ export class ConnectorService {
     // console.log("done")
   }
   // ENGAGEMENT FUNCTIONS =========================================================
-  getAvailableEngagements(profile_id) {
+  getAvailableEngagements(profile_id, email) {
     var that = this;
-    profile_id = {
-      'profile_id': profile_id
+    let obj = {
+      profile_id: profile_id,
+      email: email
     }
     return new Promise(function (resolve, reject) {
-      that.http.post('/api/get_availableEngagements', profile_id).subscribe(
+      that.http.post('/api/get_availableEngagements', obj).subscribe(
         res => {
           resolve(res)
         },

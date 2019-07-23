@@ -276,7 +276,7 @@ export class AppComponent implements OnInit {
     if(loc[3]){
       if(localStorage['cur_eng'] && this.user_obj){
         if(localStorage['cur_eng']['engagement_id'] != loc[3]){
-          this._c.getAvailableEngagements(this.user_obj.profile_id).then(res => {
+          this._c.getAvailableEngagements(this.user_obj.profile_id, this.user_obj.email).then(res => {
             for(let el in res){
               if(res[el]['engagement_id'] == loc[3]){
                 this.currentEng = res[el];
@@ -294,7 +294,7 @@ export class AppComponent implements OnInit {
           this._r.navigate([''])
           return;
         }
-        this._c.getAvailableEngagements(this.user_obj.profile_id).then(res => {
+        this._c.getAvailableEngagements(this.user_obj.profile_id, this.user_obj.email).then(res => {
           for(let el in res){
             if(res[el]['engagement_id'] == loc[3]){
               this.currentEng = res[el];

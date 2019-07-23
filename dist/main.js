@@ -5283,7 +5283,7 @@ var AppComponent = /** @class */ (function () {
         if (loc[3]) {
             if (localStorage['cur_eng'] && this.user_obj) {
                 if (localStorage['cur_eng']['engagement_id'] != loc[3]) {
-                    this._c.getAvailableEngagements(this.user_obj.profile_id).then(function (res) {
+                    this._c.getAvailableEngagements(this.user_obj.profile_id, this.user_obj.email).then(function (res) {
                         for (var el in res) {
                             if (res[el]['engagement_id'] == loc[3]) {
                                 _this.currentEng = res[el];
@@ -5302,7 +5302,7 @@ var AppComponent = /** @class */ (function () {
                     this._r.navigate(['']);
                     return;
                 }
-                this._c.getAvailableEngagements(this.user_obj.profile_id).then(function (res) {
+                this._c.getAvailableEngagements(this.user_obj.profile_id, this.user_obj.email).then(function (res) {
                     for (var el in res) {
                         if (res[el]['engagement_id'] == loc[3]) {
                             _this.currentEng = res[el];
@@ -5566,7 +5566,7 @@ var ConnectorService = /** @class */ (function () {
         var that = this;
         return new Promise(function (resolve, reject) {
             that.http.post('/api/store_user', user).subscribe(function (res) {
-                that.getAvailableEngagements(res['profile_id']).then(function (engs) {
+                that.getAvailableEngagements(res['profile_id'], res['email']).then(function (engs) {
                     // console.log("===========engs =>", engs)
                     res['engs'] = engs;
                     that.engs.next(that.objToToArray(engs));
@@ -5610,13 +5610,14 @@ var ConnectorService = /** @class */ (function () {
         // console.log("done")
     };
     // ENGAGEMENT FUNCTIONS =========================================================
-    ConnectorService.prototype.getAvailableEngagements = function (profile_id) {
+    ConnectorService.prototype.getAvailableEngagements = function (profile_id, email) {
         var that = this;
-        profile_id = {
-            'profile_id': profile_id
+        var obj = {
+            profile_id: profile_id,
+            email: email
         };
         return new Promise(function (resolve, reject) {
-            that.http.post('/api/get_availableEngagements', profile_id).subscribe(function (res) {
+            that.http.post('/api/get_availableEngagements', obj).subscribe(function (res) {
                 resolve(res);
             }, function (err) {
                 reject(err);
