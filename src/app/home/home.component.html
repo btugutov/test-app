@@ -10,12 +10,12 @@
         style="background-position: top 0px right 0px !important; background-repeat: no-repeat !important; background-size: cover !important;"
         align="center" id="quiz_selection">
         <div *ngIf='ready_bool'>
-            <div *ngIf="cats_n_tops_bool == False"
+            <div *ngIf="!cats_n_tops_bool"
                 style='height: 25%; justify-content: center; display: flex; flex-direction: column; flex-wrap: wrap;'>
-                <h1 style="margin-top:200px;">You have no permission to take any quiz...yet. Please contact the training
-                    team if you feel this is an error.</h1>
+                <h1 style="margin-top:200px;">You have no permission to take any quiz...yet.</h1>
+                <h2>Please contact the training team if you feel this is an error.</h2>
             </div>
-            <div *ngIf="cats_n_tops">
+            <div *ngIf="cats_n_tops && cats_n_tops_bool">
                 <div
                     style='height: 10%; justify-content: center; display: flex; flex-direction: column; flex-wrap: wrap;'>
                     <h1>Please select the test you would like to take</h1>

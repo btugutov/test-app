@@ -87,7 +87,7 @@ export class HomeComponent implements OnInit {
   }
   getEngagementByEngId(currentEng_id){
     this._ConnectorService.getEngagementByEngId(currentEng_id).then(data =>{
-      // console.log("getEngagementByEngId: data =>", data)
+      console.log("getEngagementByEngId: data =>", data)
       if(data){
         if(data[0]['background']){
           // console.log("background!!!")

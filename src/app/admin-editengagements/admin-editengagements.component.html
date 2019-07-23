@@ -267,7 +267,9 @@
                   <button class='btn btn-danger btn-action-borderless' (click)="deleteEng(eng.key)">Delete</button>
                 </div>
               </td>
-              <td colspan="7" *ngIf="eng.value['error_bool']" style="padding: 10px 10px !important">
+              <td colspan="7" *ngIf="eng.value['error_bool']" style="padding: 10px 10px !important" [ngClass]="{
+                'alert-info': eng.value['target'] == 'New question form'
+              }">{{eng.key}}
                 <div class="alert alert-warning shadow" role="alert" style="width: 500px; margin: 0px auto;">
                   <p class="text-center "><strong>#{{eng.value['target']}} has error(s):</strong></p>
                   <p *ngFor="let error of eng.value['errors'] | keyvalue" class="text-center"

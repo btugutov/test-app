@@ -222,6 +222,24 @@ function getEngagementByEngId(id){
         throw error;
     })
 }
+function get_all_engagemets_for_admin(){
+    let functionName = 'get_all_engagemets_for_admin';
+    return new Promise(function(resolve, reject) {
+        let query = `SELECT [engagement_id]
+        ,[engagement_name]
+        ,[soft_delete]
+        ,[background]
+    FROM [dbo].[KA_engagement] WHERE soft_delete = 0`;
+        return dbQueryMethod.query(query).then(result => {
+            resolve(result)
+            return result;
+        }).catch(function(error) { reject(error); throw error; })
+    }).catch(function(error) {
+        log_event('WARNING', error, functionName);
+        reject(error)
+        throw error;
+    })
+}
 function get_all_topics(){
     let functionName = 'get_all_topics';
     return new Promise(function(resolve, reject) {
@@ -264,6 +282,7 @@ function get_all_categories_and_topics_by_engagement_id_and_profile_id(eng_id, p
     console.log('does not work right now.')
 }
 
+
 // Keep this in alphabetical order
 module.exports = {
     get_available_quiz_for_profile_id_MSSQL: get_available_quiz_for_profile_id_MSSQL,
@@ -278,7 +297,8 @@ module.exports = {
     get_available_engagements_by_profile_id: get_available_engagements_by_profile_id,
     get_all_categories_and_topics_by_engagement_id_and_profile_id: get_all_categories_and_topics_by_engagement_id_and_profile_id,
     getEngagementByEngId: getEngagementByEngId,
-    get_all_topics: get_all_topics
+    get_all_topics: get_all_topics,
+    get_all_engagemets_for_admin: get_all_engagemets_for_admin
 };
 
 // create a one liner here that is what another file will need to import everything from this file. 

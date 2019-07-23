@@ -8,7 +8,7 @@ const { register_user } = require('../backend/user_register.js');
 // classes
 const { debugLog, getLineNumber, log_event, log_object_parser, dbQueryMethod, logEvent, getEventLog, getEventLogByID, log_event_detailed } = require('../backend/classes.js');
 // methods
-const { get_available_quiz_for_profile_id_MSSQL, get_completed_quiz_categorized_submissions, get_gradable_quiz_submit_id_by_profile_and_topic, get_gradable_quiz_session_by_id, get_table_complete, get_submit_id_from_graded_by, time_now_MSSQL, update_image_base64_MSSQL, get_testable_topics_by_profile_id, get_available_engagements_by_profile_id, get_all_categories_and_topics_by_engagement_id_and_profile_id, getEngagementByEngId, get_all_topics } = require('../backend/methods.js');
+const { get_available_quiz_for_profile_id_MSSQL, get_completed_quiz_categorized_submissions, get_gradable_quiz_submit_id_by_profile_and_topic, get_gradable_quiz_session_by_id, get_table_complete, get_submit_id_from_graded_by, time_now_MSSQL, update_image_base64_MSSQL, get_testable_topics_by_profile_id, get_available_engagements_by_profile_id, get_all_categories_and_topics_by_engagement_id_and_profile_id, getEngagementByEngId, get_all_topics, get_all_engagemets_for_admin } = require('../backend/methods.js');
 // edit_quiz.js
 const { get_topic_to_edit_MSSQL, get_topic_info_for_editQuizHome, update_topic_main, delete_topic_by_id, get_buckets_by_topic_id, saveOneBucket, create_topic_main, deleteQuiz, disableQuiz, get_topic_info_and_quesion_ids_by_topic_id_for_edit, get_question_info_by_id } = require('../backend/edit_quiz.js');
 // get_User
@@ -1780,14 +1780,33 @@ module.exports = function (app) {
         let details = {
             'req.body': req.body
         }
-        // log_event_detailed("ERROR", err, functionName, null, JSON.stringify(details));
-        get_available_engagements_by_profile_id(req.body.profile_id).then(response => {
-            res.json(unescapingObj(response));
-        }).catch(function (err) {
-            console.log("ERROR => ", err)
-            log_event_detailed("ERROR", err, functionName, null, JSON.stringify(details));
-            // logEventParser("", err, "routes.js", "/api/get_availableEngagements: get_available_engagements_by_profile_id", req.body.profile_id);
-            res.json(err);
+        preload_block(res, req.body['email'], undefined, req.body['eng_id'])
+        .catch(function (error) {
+            debugLog("ERROR HERE" + error);
+            response_message.message = error;
+            // logEventParser("ERROR", err, "routes.js", "/api/saveEngagements: preload_block", req.body['email']);
+            res.json(response_message)
+        })
+        .then(user => {
+            if(user.currentUser.admin_permissions || user.currentUser.admin_owner){
+                get_all_engagemets_for_admin().then(res_engs => {
+                    // response_message.body = Object.assign({}, switchKey(unescapingObj(res_engs), 'engagement_id'));
+                    res.json(unescapingObj(res_engs))
+                }).catch(function (err) {
+                    response_message.message = error;
+                    log_event_detailed("ERROR", error, functionName, req.body.email, JSON.stringify(details));
+                    // logEventParser("ERROR", error, "routes.js", "/api/get_all_engagemets: get_all_engagemets", currentUser.profile_id);
+                    res.json(response_message)
+                })
+            }else{
+                get_available_engagements_by_profile_id(req.body.profile_id).then(response => {
+                    res.json(unescapingObj(response));
+                }).catch(function (err) {
+                    console.log("ERROR => ", err)
+                    log_event_detailed("ERROR", err, functionName, null, JSON.stringify(details));
+                    res.json(err);
+                })
+            }
         })
     });
     
