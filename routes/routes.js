@@ -6,7 +6,7 @@ var app = express();
 require('dotenv').config();
 const { register_user } = require('../backend/user_register.js');
 // classes
-const { debugLog, getLineNumber, log_event, log_object_parser, dbQueryMethod, logEvent, getEventLog, getEventLogByID, log_event_detailed } = require('../backend/classes.js');
+const { debugLog, getLineNumber, log_event, log_object_parser, dbQueryMethod, logEvent, getEventLog, getEventLogByID, log_event_detailed, getNewLogs } = require('../backend/classes.js');
 // methods
 const { get_available_quiz_for_profile_id_MSSQL, get_completed_quiz_categorized_submissions, get_gradable_quiz_submit_id_by_profile_and_topic, get_gradable_quiz_session_by_id, get_table_complete, get_submit_id_from_graded_by, time_now_MSSQL, update_image_base64_MSSQL, get_testable_topics_by_profile_id, get_available_engagements_by_profile_id, get_all_categories_and_topics_by_engagement_id_and_profile_id, getEngagementByEngId, get_all_topics, get_all_engagemets_for_admin } = require('../backend/methods.js');
 // edit_quiz.js
@@ -18,7 +18,7 @@ const { get_Quiz, get_quiz_name_by_topic_id, getQuizLength } = require('../backe
 // edit permissions
 const { update_permission_quiz_main, update_permission_admins_main, get_all_users_admin_permission_edit, get_all_users_quiz_permission_edit } = require('../backend/edit_permission.js');
 // grade_quiz
-const { get_completed_quiz_submissions, get_completed_quiz_by_submissions, finish_gradable_quiz_session_by_id, release_grade_hold, release_grade_hold_all, start_grading_quiz, update_grade_input_response, quizEndChecks, continue_grading_quiz, check_current_quizzes, call_stored_proc_grading, call_stored_proc_grading2 } = require('../backend/grade_quiz.js');
+const { get_completed_quiz_submissions, get_completed_quiz_by_submissions, finish_gradable_quiz_session_by_id, release_grade_hold, release_grade_hold_all, start_grading_quiz, update_grade_input_response, quizEndChecks, continue_grading_quiz, check_current_quizzes, call_stored_proc_grading, call_stored_proc_grading2,call_stored_proc_grading_for_one } = require('../backend/grade_quiz.js');
 // take_quiz
 const { finish_quiz_session, finish_response, get_image_by_questionID_MSSQL, start_response, get_topic_table_by_engagement } = require('../backend/take_quiz.js');
 // stay_awake
@@ -756,6 +756,7 @@ module.exports = function (app) {
         let details = {
             'req.body': req.body
         }
+        console.log(functionName, details)
         preload_block(res, req.body['email'], undefined, undefined)
             .catch(function (error) {
                 debugLog("ERROR HERE" + error);
@@ -773,7 +774,7 @@ module.exports = function (app) {
                 if (currentUser.admin_grader || currentUser.admin_owner) {
                     console.log("let's request topic =>", topic_id)
                     check_current_quizzes(currentUser.profile_id, topic_id).then(cur_quizzes => {
-                        // console.log("cur_quizzes =>", cur_quizzes)
+                        console.log("cur_quizzes =>", cur_quizzes)
                         if (cur_quizzes.length > 0) {
                             for (let el in cur_quizzes) {
                                 if (!cur_quizzes[el]['graded']) {
@@ -984,6 +985,7 @@ module.exports = function (app) {
         }
         let functionName = "/api/submitGrades";
         let grades = req.body.grades;
+        let submission_id = req.body.grades.submission_id;
         try {
             preload_block(res, req.body['email'], undefined, undefined)
                 .catch(function (error) {
@@ -1009,46 +1011,60 @@ module.exports = function (app) {
                         let questions = Object.keys(quiz);
                         console.log("QUIZ =>", quiz)
                         // loop through each question and update DB with score (and feedback if provided)
+                        let quiz_length = 0;
+                        for (let el in quiz) {
+                            if(typeof(quiz[el])!='object'){
+                                continue;
+                            }
+                            quiz_length ++;
+                        }
+                        let counter = 0;
                         for (let el in quiz) {
                             if(typeof(quiz[el])!='object'){
                                 continue;
                             }
                             console.log("============================================================")
                             // question_id, submit_id, grade_scale, grade_input, reviewer_id, grade_value
-                            update_grade_input_response(el, grades.submission_id, quiz[el][0], quiz[el][1], reviewer_id, quiz[el][2]).then(res => {
-                                console.log("update_grade_input_response(el, grades.submission_id, quiz[el][0], quiz[el][1], reviewer_id, quiz[el][2]): res is good")
+                            update_grade_input_response(el, submission_id, quiz[el][0], quiz[el][1], reviewer_id, quiz[el][2]).then(data => {
+                                console.log("update_grade_input_response(el, submission_id, quiz[el][0], quiz[el][1], reviewer_id, quiz[el][2]): res is good")
+                                counter++;
+                                console.log("quiz_length =>", quiz_length, "; counter =>", counter)
+                                if(counter == quiz_length){
+                                    finish_gradable_quiz_session_by_id(submission_id).then(response => {
+                                        console.log("finish_gradable_quiz_session_by_id; response =>", response)
+                                        details.submission_id = submission_id;
+                                        call_stored_proc_grading_for_one(submission_id).then(graded_done => {
+                                            response_message.status = 'success';
+                                            response.body = {
+                                                questions: questions,
+                                                quiz: quiz
+                                            }
+                                            response_message.confirm = graded_done;
+                                            res.json(response_message)
+                                        }).catch(function (error) {
+                                            log_event_detailed("ERROR", error, functionName, currentUser.email, JSON.stringify(details)) 
+                                            // log_event('ERROR', error, functionName);
+                                            // logEventParser("ERROR", error, "routes.js", "/api/submitGrades: quizEndChecks", currentUser.profile_id);
+                                            // error_handler(error, res, getLineNumber())
+                                            response_message.message = error;
+                                            res.json(response_message)
+                                        });;
+            
+                                    }).catch(function (error) {
+                                        log_event_detailed("ERROR", error, functionName, currentUser.email, JSON.stringify(details))
+                                        // log_event('ERROR', error, functionName);
+                                        // error_handler(error, res, getLineNumber())
+                                        // logEventParser("ERROR", error, "routes.js", "/api/submitGrades: finish_gradable_quiz_session_by_id", currentUser.profile_id);
+                                        response_message.message = error;
+                                        res.json(response_message)
+                                    });;
+                                }
                             }).catch(function(error){
-                                console.log("update_grade_input_response(el, grades.submission_id, quiz[el][0], quiz[el][1], reviewer_id, quiz[el][2]): res is bad")
+                                console.log("update_grade_input_response(el, submission_id, quiz[el][0], quiz[el][1], reviewer_id, quiz[el][2]): res is bad")
                             });
                             console.log("============================================================")
                         }
-                        finish_gradable_quiz_session_by_id(grades.submission_id).then(response => {
-                            details.submission_id = submission_id;
-                            quizEndChecks(grades.submission_id).then(graded_done => {
-                                response_message.status = 'success';
-                                response.body = {
-                                    questions: questions,
-                                    quiz: quiz
-                                }
-                                response_message.confirm = graded_done;
-                                res.json(response_message)
-                            }).catch(function (error) {
-                                log_event_detailed("ERROR", error, functionName, currentUser.email, JSON.stringify(details)) 
-                                // log_event('ERROR', error, functionName);
-                                // logEventParser("ERROR", error, "routes.js", "/api/submitGrades: quizEndChecks", currentUser.profile_id);
-                                // error_handler(error, res, getLineNumber())
-                                response_message.message = error;
-                                res.json(response_message)
-                            });;
-
-                        }).catch(function (error) {
-                            log_event_detailed("ERROR", error, functionName, currentUser.email, JSON.stringify(details))
-                            // log_event('ERROR', error, functionName);
-                            // error_handler(error, res, getLineNumber())
-                            // logEventParser("ERROR", error, "routes.js", "/api/submitGrades: finish_gradable_quiz_session_by_id", currentUser.profile_id);
-                            response_message.message = error;
-                            res.json(response_message)
-                        });;
+                        
                         // After grading is completed, redirect admin the the admin landing page
                     } else {
                         response_message.message = 'You have no permission.';
@@ -1113,43 +1129,7 @@ module.exports = function (app) {
     // ********************                         ***************************
     // ************************************************************************
     // ************************************************************************
-    /*  
-    app.get('/api/ADDRESS', (req, res, next) => {
-        let function_name = FUNCTION_NAME
-        let response_message = {
-            'status': 'failed',
-            'message': ''
-        }
-        try {
-            preload_block(res, req.body['email'], undefined, undefined)
-                .catch(function(error) {
-                    debugLog("ERROR HERE" + error);
-                    response_message.message = error;
-                    res.json(response_message)
-                })
-                .then(returnObj => {
-                    let currentUser = returnObj['currentUser']
-                    if (currentUser.admin_grader || currentUser.admin_owner) {
-                        DO ALL THE LOGIC HERE
-                        res.json(RETURN_RESULT)
-                    }else {
-                            response_message.message = 'You have no permission.';
-                            res.json(response_message)
-                        }
-                    }).catch(function(error) {
-                        log_event('ERROR', error, 'function_name');
-                        error_handler(error, res, getLineNumber());
-                        response_message.message = error;
-                        res.json(response_message)
-                    });
-            } catch (err) {
-                response_message.status = err;
-                res.json(err)
-            }
-    });
-
-
-    */
+    
     app.post('/api/getCatsTopsEngs', (req, res, next) => {
         let response_message = {
             'status': 'failed',
@@ -2310,6 +2290,43 @@ module.exports = function (app) {
                 }
             })
     });
+    app.post('/api/getNewLogs', (req, res, next) => {
+        let api_call_name = '/api/getNewLogs';
+        let response_message = {
+            'status': 'failed',
+            'message': ''
+        }
+        console.log(api_call_name, req.body)
+        preload_block(res, req.body['email'], undefined, req.body['eng_id'])
+            .catch(function (error) {
+                debugLog("ERROR HERE" + error);
+                response_message.message = error;
+                // logEventParser("ERROR", error, "routes.js", `${api_call_name}: preload_block`, req.body['email']);
+                res.json(response_message)
+            })
+            .then(returnObj => {
+                let currentUser = returnObj['currentUser']
+                if (currentUser.admin_permissions || currentUser.admin_owner) {
+                    getNewLogs(req.body.last_id).then(result =>{
+                        // console.log(`getNewLogs(${req.body.last_id}).then =>`, result)
+                        response_message.status = 'success';
+                        response_message.body = result;
+                        res.json(response_message)
+                    }).catch(function(error){
+                        debugLog("ERROR HERE" + error);
+                        response_message.message = error;
+                        logEventParser("ERROR", error, "routes.js", `${api_call_name}: getEventLog`, currentUser.profile_id);
+                        res.json(response_message)
+                    })
+                }
+                // if not admin with editing permissions, redirect to error page
+                else {
+                    response_message.message = 'No permission.';
+                    logEventParser("WARNING", 'No permission.', "routes.js", `${api_call_name}`, currentUser.profile_id);
+                    res.json(response_message)
+                }
+            })
+    });
     app.post('/api/getEventLogByID', (req, res, next) => {
         let api_call_name = '/api/getEventLogByID';
         let response_message = {
@@ -2327,6 +2344,8 @@ module.exports = function (app) {
             res.json(response_message)
         })
     });
+
+
     // app.post('/api/regradeStuckedSubmissions', (req, res, next) => {
     //     let api_call_name = '/api/regradeStuckedSubmissions';
     //     let response_message = {

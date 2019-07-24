@@ -408,7 +408,7 @@ function log_event_detailed(logLevel, event, functionName, user_id, details) {
         (log_level, log_event, host, webapp, line_number, user_id, event_time, details) 
         VALUES ('${logLevel}', '${stringEscaped}', '${functionName}', 'Skill Assessment', '${line_number}', '${user_id}', getdate(), '${escape(details)}')`;
     dbQueryMethod.queryRaw(insert).then(result => {
-        console.log("Error was successfully stored in the DB")
+        console.log(logLevel,"was successfully stored in the DB")
     }).catch(function (error) {
         console.log("ERROR =>", error);
     })
@@ -481,6 +481,22 @@ function getEventLogByID(log_id) {
         throw error;
     })
 }
+function getNewLogs(last_id) {
+    return new Promise(function (resolve, reject) {
+        let insert = `SELECT * FROM [dbo].[KA_log] WHERE log_id > ${last_id} AND user_id != 'stay_awake'`;
+        dbQueryMethod.query(insert).then(result => {
+            resolve(result);
+            return result
+        }).catch(function (error) {
+            console.log("ERROR =>", error);
+            reject(error)
+        })
+    }).catch(function (error) {
+        log_event('WARNING', error, "getEventLog");
+        reject(error)
+        throw error;
+    })
+}
 
 // CREATED ONCE TO SAVE MEMORY.
 // NO NEED TO INSTANTIATE MULTIPLE 
@@ -499,8 +515,8 @@ module.exports = {
     logEvent: logEvent,
     getEventLog: getEventLog,
     getEventLogByID: getEventLogByID,
-    log_event_detailed: log_event_detailed
-
+    log_event_detailed: log_event_detailed,
+    getNewLogs: getNewLogs
 };
 
 /*

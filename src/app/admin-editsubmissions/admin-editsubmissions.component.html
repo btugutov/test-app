@@ -257,7 +257,10 @@
                           </tr>
                         </thead>
                         <tbody id="table_body_target" style="background: white">
-                          <tr *ngFor="let user of current_list | keyvalue" [ngClass]="{'text-success': user.value.graded, 'text-secondary': !user.value.diffTime }">
+                          <tr *ngFor="let user of current_list | keyvalue" [ngClass]="{
+                              'text-success': user.value.graded && !user.value.retake_topic, 
+                              'text-secondary': !user.value.diffTime 
+                            }">
                             <th scope="row" class="font-weight-bold  text-center  tr_string">{{user.key}}</th>
                             <td class="tr_string">{{user.value.email}}</td>
                             <td class="tr_string">{{user.value.first_name}} {{user.value.last_name}}</td>
@@ -276,9 +279,10 @@
                             </td>
                             <td class="tr_string text-center font-weight-bold  ">{{user.value.calculated_score * 100 | number:0}}</td>
                             <td class="text-muted tr_string text-center">
-                              <span *ngIf="user.value.graded || user.value.grader_full_name">{{user.value.grader_full_name}}</span>
+                              <span *ngIf="(user.value.graded || user.value.grader_full_name) && !all_users_original[user.key]['regrade_submission'] ">{{user.value.grader_full_name}}</span>
                               <span class="text-muted font-weight-light" *ngIf="user.value.graded && !user.value.grader_full_name">Auto graded</span>
-                              <span *ngIf="!user.value.graded && !user.value.grader_full_name">Not graded yet</span>
+                              <span *ngIf="!user.value.graded && !user.value.grader_full_name && !all_users_original[user.key]['regrade_submission']">Not graded yet</span>
+                              <span *ngIf="all_users_original[user.key]['regrade_submission']">Grades cancelled</span>
                             </td>
                             <td class="text-muted tr_string text-center">{{user.value.graded_time | date : "short"}}</td>
                             

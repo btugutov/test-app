@@ -140,11 +140,19 @@ function get_users_admin_permission_by_profile_id_MSSQL(profile_id) {
 
 // update table to invalidate_submission
 function update_KA_quiz_submission_by_submit_id(submit_id, invalidate_submission, retake_topic, regrade_submission) {
+    
     let functionName = 'update_KA_quiz_submission_invalidate_by_submit_id';
     return new Promise(function (resolve, reject) {
-        let update = `UPDATE KA_quiz_submission 
-        SET [invalidate_submission] = '${invalidate_submission}', [retake_topic] = '${retake_topic}', [regrade_submission] = '${regrade_submission}'
-        WHERE submit_id = '${submit_id}'`
+        let update = '';
+        if(regrade_submission){
+            update = `UPDATE KA_quiz_submission 
+            SET [invalidate_submission] = '${invalidate_submission}', [retake_topic] = '${retake_topic}', [regrade_submission] = '${regrade_submission}', [graded_by] = NULL ,[graded] = 'false'
+            WHERE submit_id = '${submit_id}'`
+        }else{
+            update = `UPDATE KA_quiz_submission 
+            SET [invalidate_submission] = '${invalidate_submission}', [retake_topic] = '${retake_topic}', [regrade_submission] = '${regrade_submission}'
+            WHERE submit_id = '${submit_id}'`
+        }
         dbQueryMethod.queryRaw(update).then(result => {
             resolve(result)
             return result;
@@ -172,6 +180,43 @@ function edit_submissions_main_LOOP(obj, submit_id, edit_by) {
         try {
             console.log(`obj['invalidate_submission'], obj['retake_topic'], obj['regrade_submission'] =>`, obj['invalidate_submission'], obj['retake_topic'], obj['regrade_submission'])
             if (obj['regrade_submission']) {
+
+                get_manual_inputs_by_submit_id(submit_id).then(
+                    function (result) { /* handle a successful result */
+                        console.log("get_manual_inputs_by_submit_id: result =>", result)
+                        if(result && result.recordset.length > 0){
+                            console.log("Manual inputs found! CALLING update_KA_quiz_submission_by_submit_id")
+                            update_KA_quiz_submission_by_submit_id(submit_id, obj['invalidate_submission'], obj['retake_topic'], obj['regrade_submission']).then(result => {
+                                console.log('update_KA_quiz_submission_by_submit_id is done', submit_id)
+                                resolve(result)
+                            }).catch(function (error) { 
+                                log_event_detailed("ERROR", error, functionName, null, JSON.stringify(details)); 
+                                reject(error);
+                                console.log("we got error here", getLineNumber())
+                                throw error
+                             })
+                        }else if(result && result.recordset.length == 0){
+                            console.log("No manual inputs found. CALLING call_stored_proc_grading_for_one")
+                            call_stored_proc_grading_for_one(submit_id).then(
+                                function(result) { /* handle a successful result */ 
+                                    console.log("SUCCESS")
+                                    resolve(true)
+                                },
+                                function(error) { /* handle an error */ 
+                                    console.log("ERROR")
+                                    reject(error)
+                                    throw error
+                                }
+                            )
+                        }
+                        console.log("SUCCESS")
+                        resolve(true)
+                    },
+                    function (error) { /* handle an error */
+                        console.log("ERROR")
+                        reject(error)
+                        throw error
+                    })
                 // call_stored_proc_grading_for_one(submit_id).then(res => {
                 //     update_KA_quiz_submission_by_submit_id(submit_id, obj['invalidate_submission'], obj['retake_topic'], false).then(result => {
                 //         console.log("call_stored_proc_grading_for_one and update_KA_quiz_submission_by_submit_id are done", submit_id)
@@ -187,17 +232,7 @@ function edit_submissions_main_LOOP(obj, submit_id, edit_by) {
                 //     reject(error); 
                 //     throw error
                 // })
-                call_stored_proc_grading_for_one(submit_id).then(
-                    function(result) { /* handle a successful result */ 
-                        console.log("SUCCESS")
-                        resolve(true)
-                    },
-                    function(error) { /* handle an error */ 
-                        console.log("ERROR")
-                        reject(error)
-                        throw error
-                    }
-                )
+                
                     
             }else{
                 //update_KA_quiz_submission_by_submit_id(submit_id, invalidate_submission, retake_topic, regrade_submission)
@@ -307,6 +342,29 @@ function call_stored_proc_grading_for_one(submit_id) {
         return dbQueryMethod.queryRaw(query_quiz).then(result => {
             console.log("SUCCESSFULLY GRADED!")
             log_event_detailed("INFO", `Submit ID ${submit_id} is calculated successfully`, functionName, null, JSON.stringify(details))
+            // console.log(`call_stored_proc_grading_for_one() result =>`, result)
+            resolve(result)
+            return result;
+        }).catch(function(error) {
+            console.log("GRADING FAILED!", getLineNumber())
+            reject(error); 
+            throw (error); })
+    }).catch(function(error) {
+        console.log("GRADING FAILED!",getLineNumber())
+        reject(error)
+        throw (error);
+    })
+}
+function get_manual_inputs_by_submit_id(submit_id){
+    let functionName = 'get_manual_inputs_by_submit_id';
+    let details = {
+        submit_id: submit_id
+    }
+    console.log("get_manual_inputs_by_submit_id", submit_id)
+    return new Promise(function(resolve, reject) {
+        let query_quiz = `SELECT [question_id]
+        FROM [dbo].[KA_input_response] WHERE submit_id = ${submit_id}`;
+        return dbQueryMethod.queryRaw(query_quiz).then(result => {
             // console.log(`call_stored_proc_grading_for_one() result =>`, result)
             resolve(result)
             return result;

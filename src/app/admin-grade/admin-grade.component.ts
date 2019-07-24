@@ -164,7 +164,7 @@ export class AdminGradeComponent implements OnInit {
       obj[el] = [this.grade_data[el]['point'] , this.grade_data[el]['grader_comment'], this.grade_data[el]['point'] * this.points_map[el]]
     }
     this._ConnectorService.submitGrades(obj, this.currentUser.email).then(res =>{
-      // console.log("RES =>", res)
+      console.log("RES =>", res)
       if(res['status']=="success"){
         let obj = {
           'success': true,
@@ -179,10 +179,10 @@ export class AdminGradeComponent implements OnInit {
           'message': res['message']
         }
         this._r.navigateByUrl(`${this.currentEng_id}/adminhomegrade`)
-        alert(res['message'])
+        // alert(res['message'])
       }
     }).catch(function(err){
-      // console.log(err)
+      console.log(err)
       alert(err)
     })
     /*

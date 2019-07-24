@@ -830,6 +830,7 @@ export class ConnectorService {
       );
     })
   }
+  
   getEventLogByID(log_id){
     var that = this;
     let obj = {
@@ -837,6 +838,19 @@ export class ConnectorService {
     }
     return new Promise(function (resolve, reject) {
       that.http.post('/api/getEventLogByID', obj).subscribe(
+        res => {
+          resolve(res)
+        },
+        err => {
+          reject(err)
+        }
+      );
+    })
+  }
+  getNewLogs(user_email){
+    var that = this;
+    return new Promise(function (resolve, reject) {
+      that.http.post('/api/getNewLogs', user_email).subscribe(
         res => {
           resolve(res)
         },

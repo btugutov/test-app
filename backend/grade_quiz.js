@@ -203,8 +203,8 @@ function get_gradable_quiz_session_to_start(profile_id, topic_id) {
 }
 
 function check_current_quizzes(profile_id, topic_id) {
-    let functionName = 'get_gradable_quiz_session_to_start';
-    console.log(`****** ${functionName} ******`)
+    let functionName = 'check_current_quizzes';
+    console.log(`****** ${functionName} ****** profile_id => ${profile_id}; topic_id => ${topic_id}`)
     return new Promise(function(resolve, reject) {
         /*
         Gets a list of completed quiz_submissions
@@ -419,7 +419,9 @@ function continue_grading_quiz(profile_id, submit_id) {
 }
 
 function update_grade_input_response(question_id, submit_id, grade_scale, grade_input, reviewer_id, grade_value) {
-    console.log(`update_grade_input_response params =>(question_id = ${question_id}, submit_id = ${submit_id}, grade_scale = ${grade_scale}, grade_input = ${grade_input}, reviewer_id = ${reviewer_id})`)
+    console.log("update_grade_input_response params ======>")
+    console.log(`question_id = ${question_id}, submit_id = ${submit_id}, grade_scale = ${grade_scale}, grade_input = ${grade_input}, reviewer_id = ${reviewer_id} , grade_value=> ${grade_value})`)
+    console.log("<=========================================")
     let gradeValue = (grade_scale * 5)
     let functionName = 'update_grade_input_response';
     console.log(`****** ${functionName} ******`)
@@ -428,7 +430,7 @@ function update_grade_input_response(question_id, submit_id, grade_scale, grade_
     }
     return new Promise(function(resolve, reject) {
         let query = `UPDATE [KA_input_response] 
-        SET grade = '${gradeValue}', grade_input = '${grade_input}', reviewer_id = '${reviewer_id}' , grade_value = '${grade_value}', grade_scale = '${grade_scale}' 
+        SET grade = '${grade_value}', grade_input = '${grade_input}', reviewer_id = '${reviewer_id}' , grade_value = '${grade_value}', grade_scale = '${grade_scale}' 
         WHERE question_id = '${question_id}' and submit_id = '${submit_id}'`;
         dbQueryMethod.queryRaw(query).then(result => {
             resolve(result)
@@ -504,19 +506,14 @@ function quizEndChecks(submit_id) {
                 }
                 // if >0 
                 else {
-                    // normal call when grading is complete
-                    // call_stored_proc_grading().catch(function(error) {
-                    //         log_event('ERROR', error, 'call_stored_proc_grading');
-                    //     })
-                    //     // do nothing.
-                    // resolve('complete')
-                    // return 'complete';
-                    call_stored_proc_grading_for_one(submit_id).then(res_gradings =>{
-                        resolve(result)
-                    }).catch(function(error){
-                        log_event('ERROR', error, 'call_stored_proc_grading_for_one');
-                        reject(error)
-                    })
+                    resolve(true)
+                    return;
+                    // call_stored_proc_grading_for_one(submit_id).then(res_gradings =>{
+                    //     resolve(result)
+                    // }).catch(function(error){
+                    //     log_event('ERROR', error, 'call_stored_proc_grading_for_one');
+                    //     reject(error)
+                    // })
                 }
             }).catch(function(error) {
                 log_event('WARNING', error, functionName);
@@ -544,7 +541,8 @@ module.exports = {
     quizEndChecks: quizEndChecks,
     check_current_quizzes: check_current_quizzes,
     call_stored_proc_grading: call_stored_proc_grading,
-    call_stored_proc_grading2: call_stored_proc_grading2
+    call_stored_proc_grading2: call_stored_proc_grading2,
+    call_stored_proc_grading_for_one:call_stored_proc_grading_for_one
 };
 
 // create a one liner here that is what another file will need to import everything from this file. 

@@ -220,7 +220,6 @@
                       <input type="checkbox" class="font-weight-light checkTopic" id='checkTopic{{cat.value}}'
                         [checked]="user.value.topic_id.indexOf(topic.value.topic_id) >= 0"
                         (click)="checkTopic(user.key, topic.value.topic_id)"> {{topic.value.topic}}
-                      {{topic.value.topic_id}}
                     </span>
                   </div>
                 </div>

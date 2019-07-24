@@ -32,6 +32,7 @@
                 </div>
               <div class="text-center">
                 <h1>Event Log Page</h1>
+                <!-- {{ new_logs |json}} -->
                 <div class="spinner-border" *ngIf="!first_request_status" role="status">
                   <span class="sr-only">Loading...</span>
                 </div>
@@ -112,7 +113,13 @@
                         <div class="alert alert-secondary text-center">Loading</div>
                       </td> -->
                       <th scope="row" *ngIf="ready[el.log_id]" class="">
-                          <span *ngIf="ready[el.log_id]" ></span>{{el.log_id}}</th>
+                          ({{i + 1}})
+                          <span *ngIf="ready[el.log_id] && new_logs[el.log_id]" class="badge badge-success shadow">  
+                            New
+                            <br>
+                            {{el.log_id}}
+                          </span>
+                          <span *ngIf="ready[el.log_id] && !new_logs[el.log_id]" >{{el.log_id}}</span></th>
                       <td *ngIf="ready[el.log_id]">
                         <h4>
                           <span class="badge badge-info shadow" *ngIf="el.log_level == 'INFO' ">INFO</span>
@@ -124,7 +131,12 @@
                         </td>
                       <td *ngIf="ready[el.log_id] " class="text-break">
                         <span *ngIf="!highlights[el.log_id]">
-                          {{el.log_event}}
+                          <span *ngIf="el.log_event && el.log_event.length > 50">
+                            {{el.log_event | slice:0:50}} ... <a style="cursor: pointer; color: black" (click)="openModal('Details', el)">(details)</a>
+                          </span>
+                          <span *ngIf="el.log_event && el.log_event.length <= 50">
+                            {{el.log_event}}
+                          </span>
                         </span>
                         <span *ngIf="highlights[el.log_id] && highlights[el.log_id]['submit_id']" class="alert-info shadow">
                           {{highlights[el.log_id]['submit_id'][0]}}
