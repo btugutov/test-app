@@ -6347,7 +6347,7 @@ var ConnectorComponent = /** @class */ (function () {
         setInterval(function () {
             console.log("REFRESHING!!!!");
             _this.getNewLogs();
-        }, 600 * 5);
+        }, 60000);
     }
     ConnectorComponent.prototype.ngOnInit = function () {
     };

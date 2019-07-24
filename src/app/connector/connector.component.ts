@@ -70,7 +70,7 @@ export class ConnectorComponent implements OnInit {
     setInterval(() => {
       console.log("REFRESHING!!!!")
       this.getNewLogs();
-    }, 600 * 5
+    }, 60000
     );
   }
 

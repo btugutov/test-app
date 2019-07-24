@@ -1042,7 +1042,7 @@ module.exports = function (app) {
                                             response_message.confirm = graded_done;
                                             res.json(response_message)
                                         }).catch(function (error) {
-                                            log_event_detailed("ERROR", error, functionName, currentUser.email, JSON.stringify(details)) 
+                                            // log_event_detailed("ERROR", error, functionName, currentUser.email, JSON.stringify(details)) 
                                             // log_event('ERROR', error, functionName);
                                             // logEventParser("ERROR", error, "routes.js", "/api/submitGrades: quizEndChecks", currentUser.profile_id);
                                             // error_handler(error, res, getLineNumber())

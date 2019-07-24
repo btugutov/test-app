@@ -306,7 +306,7 @@ function finish_gradable_quiz_session_by_id(submit_id) {
             return result;
         }).catch(function(error) { reject(error); throw error; })
     }).catch(function(error) {
-        log_event('WARNING', error, functionName);
+        // log_event('ERROR', error, functionName);
         throw error;
     })
 };
