@@ -70,7 +70,7 @@ export class ConnectorComponent implements OnInit {
     setInterval(() => {
       console.log("REFRESHING!!!!")
       this.getNewLogs();
-    }, 6000 * 5
+    }, 600 * 5
     );
   }
 
@@ -128,8 +128,9 @@ export class ConnectorComponent implements OnInit {
   }
   getNewLogs() {
     let last_id = null;
-    if (this.logs[0]) {
-      last_id = this.logs[0]["log_id"]
+
+    if (this.ids[0]) {
+      last_id = this.ids[0]["log_id"]
     }
     //last_id = 346862; // comment this out after testing!
     let obj = {

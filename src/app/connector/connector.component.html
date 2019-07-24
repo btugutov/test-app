@@ -109,11 +109,11 @@
                     'alert-warning': ready[el.log_id] && el.log_level == 'WARNING',
                     'alert-danger': ready[el.log_id] && el.log_level == 'ERROR'
                   }">
-                      <!-- <td *ngIf="!ready[el.log_id]" colspan="8">
+                      <td *ngIf="!ready[el.log_id]" colspan="8">
                         <div class="alert alert-secondary text-center">Loading</div>
-                      </td> -->
+                      </td>
                       <th scope="row" *ngIf="ready[el.log_id]" class="">
-                          ({{i + 1}})
+                          ({{ (current_page - 1) * 100 + i + 1}})
                           <span *ngIf="ready[el.log_id] && new_logs[el.log_id]" class="badge badge-success shadow">  
                             New
                             <br>
