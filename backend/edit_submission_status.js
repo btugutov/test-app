@@ -113,7 +113,7 @@ function get_KA_quiz_submission_by_engagement_id(engagement_id) {
 	FULL OUTER JOIN [dbo].[KA_employee_dev] ON KA_profile.email = KA_employee_dev.email
     JOIN [dbo].[KA_quizzes] ON [KA_quiz_submission].quiz_id = [KA_quizzes].quiz_id
     JOIN [dbo].[KA_test_topic] ON [KA_test_topic].topic_id = [KA_quizzes].topic_id
-    WHERE KA_test_topic.engagement_id = ${engagement_id}`;
+    WHERE KA_test_topic.engagement_id = ${engagement_id} ORDER BY submit_id DESC`;
         return dbQueryMethod.query(query).then(result => {
             resolve(result)
             return result;

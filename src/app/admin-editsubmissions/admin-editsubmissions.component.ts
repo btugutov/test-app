@@ -48,7 +48,11 @@ export class AdminEditsubmissionsComponent implements OnInit {
     'counter_start': 0,
     'counter_end': 0,
   };
-
+  searchKeys = {
+    team: [],
+    title: [],
+    all_employees: []
+  }
 
   forceRegrade_message = '  ';
   submitGradesForOneQuiz_message = '  ';
@@ -72,6 +76,8 @@ export class AdminEditsubmissionsComponent implements OnInit {
         this._ConnectorService.getQuizSubmissions(obj).then(res => {
           console.log("RES =>", res)
           this.sorted_users = {};
+
+
           this.all_users_original = cloneDeep(res['response']['users']);
           this.sorted_users['all_users'] = cloneDeep(res['response']['users']);
           this.sorted_users['by_teams'] = groupBy(this.sorted_users['all_users'], 'team')
@@ -84,6 +90,7 @@ export class AdminEditsubmissionsComponent implements OnInit {
           this.current_list_key = Object.keys(this.sorted_users[this.current_list_target])[0];
           this.current_list = this.sorted_users[this.current_list_target][this.current_list_key]
           this.current_list_properties_setter(this.current_list);
+          this.reverseTable();
         }).catch(function (err) {
           console.log("ERROR =>", err)
         })
@@ -107,7 +114,11 @@ export class AdminEditsubmissionsComponent implements OnInit {
       this.current_list_key = key;
       this.current_list = this.sorted_users[this.current_list_target][this.current_list_key];
     }
-    this.current_list_properties_setter(this.current_list)
+    this.current_list_properties_setter(this.current_list);
+    let that = this;
+    setTimeout(function(){
+      that.reverseTable()
+    }, 200);
   }
   checkTopic(user_id, topic_id){
     let user = this.sorted_users.all_users[user_id]
@@ -537,6 +548,19 @@ export class AdminEditsubmissionsComponent implements OnInit {
       if (this.sorted_users.all_users[u]['regrade_submission'] && this.all_users_original[u]['regrade_submission']) {
         this.all_users_original[u]['regrade_submission'] = false;
       } 
+    }
+  }
+
+  reverseTable(){
+    // console.log("lol")
+    let table = document.getElementById("table_body_target");
+    // console.log(table.childNodes)
+    let childNodes_copy = [];
+    if(table.childNodes.length < 3){
+      return;
+    }
+    for(let i = 2; i < table.childNodes.length; i ++){
+      table.insertBefore( table.childNodes[i], table.childNodes[1])
     }
   }
 }
