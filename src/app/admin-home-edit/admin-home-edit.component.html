@@ -1,6 +1,4 @@
-
-
-<div style="min-height: 100vh; 
+<div style="min-height: 95vh; 
             display: flex;
             flex-direction: column;
             flex-wrap: nowrap;
@@ -8,41 +6,41 @@
             align-items: center;
             align-content: space-between;
             background: #e5e7da">
-            <div class="column_list element-animation-fadeIn" id="body_fadeOut">
-                    <div *ngIf='popup_message' class="d-flex justify-content-center popup_message_slideIn">
-                        <div *ngIf='popup_message.success' class="alert alert-success" role="alert">
-                            <strong>Well done!</strong> {{popup_message.message}}
-                        </div>
-                        <div *ngIf='!popup_message.success' class="alert alert-danger" role="alert">
-                            <h4 class="alert-heading">Oops! Please contact admin or developers!</h4> {{popup_message.message | json}}
-                        </div>
-                    </div>
-                    <div style="display: flex; flex-direction: column; flex-wrap: nowrap; justify-content: center; align-items: stretch; align-content: center; height: 10%;">
-                        <h1 style="margin: 0px auto">Choose a category and topic to edit</h1>
-                    </div>
-                    <div class="card-columns cards-main">
-                        <div class="card card-category" *ngFor="let c of quizzes | keyvalue ">
-                            <div class="card-header text-center bg-dark text-white">
-                                <h3>{{c.key}}</h3>
-                              </div>
-                              <div *ngFor="let t of c.value | keyvalue " class="home-category-element ">
-                                <a [routerLink]="[links[t.value.topic_id][ 'topic_link']] ">
-                                    <button type="button " class="btn btn-lg" 
-                                        [ngClass]="{
+    <div class="column_list element-animation-fadeIn" id="body_fadeOut">
+        <div *ngIf='popup_message' class="d-flex justify-content-center popup_message_slideIn">
+            <div *ngIf='popup_message.success' class="alert alert-success" role="alert">
+                <strong>Well done!</strong> {{popup_message.message}}
+            </div>
+            <div *ngIf='!popup_message.success' class="alert alert-danger" role="alert">
+                <h4 class="alert-heading">Oops! Please contact admin or developers!</h4>
+                {{popup_message.message | json}}
+            </div>
+        </div>
+        <div
+            style="display: flex; flex-direction: column; flex-wrap: nowrap; justify-content: center; align-items: stretch; align-content: center; height: 10%;">
+            <h1 style="margin: 0px auto">Choose a category and topic to edit</h1>
+        </div>
+        <div class="card-columns cards-main">
+            <div class="card card-category" *ngFor="let c of quizzes | keyvalue ">
+                <div class="card-header text-center bg-dark text-white">
+                    <h3>{{c.key}}</h3>
+                </div>
+                <div *ngFor="let t of c.value | keyvalue " class="home-category-element ">
+                    <a [routerLink]="[links[t.value.topic_id][ 'topic_link']] ">
+                        <button type="button " class="btn btn-lg" [ngClass]="{
                                             'btn-outline-secondary': t.value.question_count > 5 && !t.value.topic_soft_delete, 
                                             'btn-outline-warning': t.value.question_count <= 5 && !t.value.topic_soft_delete, 
                                             'btn-outline-danger': t.value.topic_soft_delete
                                         }">
-                                            {{t.value.topic}} ({{t.value.question_count}})</button>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
+                            {{t.value.topic}} ({{t.value.question_count}})</button>
+                    </a>
                 </div>
+            </div>
+        </div>
+    </div>
 
-<div
-        style="background: url(/assets/footer_background.png); background-position: top 0px right 0px !important; background-repeat: no-repeat !important; background-size: cover !important; width: 100%">
-        <div class="index_row element-animation-fadeIn " style="display: flex;
+    <div style="background: url(/assets/footer_background.png); background-position: top 0px right 0px !important; background-repeat: no-repeat !important; background-size: cover !important; width: 100%">
+        <div class="index_row  " style="display: flex;
                                                             flex-direction: column;
                                                             flex-wrap: nowrap;
                                                             justify-content: center;

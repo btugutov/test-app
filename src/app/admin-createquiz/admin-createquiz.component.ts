@@ -621,6 +621,13 @@ export class AdminCreatequizComponent implements OnInit {
   validateAllQuestions(){
     let list = this.list_of_questions;
     let res = {};
+    if(Object.keys(list).length <= 1){
+      res['new_question'] = {};
+      res['new_question']['body'] = {};
+      res['new_question']['body']['no_questions_found'] = "Please add questions.";
+      console.log(res)
+      return res;
+    }
     for(let el in list){
       if(el == 'new_question' || el['error_bool']){
         continue;
@@ -631,6 +638,7 @@ export class AdminCreatequizComponent implements OnInit {
         res[el] = temp_res;
       }
     }
+    
     return res;
   }
 

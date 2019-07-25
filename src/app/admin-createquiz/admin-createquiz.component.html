@@ -1,4 +1,4 @@
-<div style="min-height: 100vh; 
+<div style="min-height: 95vh; 
             display: flex;
             flex-direction: column;
             flex-wrap: nowrap;
@@ -190,20 +190,58 @@
                 </div>
             </div>
 
-            <div *ngIf="topic_cat_eng_message.display" style="margin-top: 15px">
-                <div *ngIf="topic_cat_eng_message.status == 'fail'" class="alert alert-warning shadow" role="alert">
-                    <strong>Warning!</strong> {{topic_cat_eng_message.message}}
-                </div>
-                <div *ngIf="topic_cat_eng_message.status == 'success'" class="alert alert-success shadow" role="alert">
-                    <strong>Nice!</strong> {{topic_cat_eng_message.message}}
-                </div>
-            </div>
+           
             <div style="margin-top: 15px">
                 <!-- <button class="btn btn-lg shadow" (click)="checkState()">Check State</button> -->
-                <button class="btn btn-lg btn-action-borderless btn-info bp-secondary shadow"
+                <button class="btn btn-lg btn-action-borderless btn-secondary shadow"
                     (click)="openBucketEditor()">Add/Edit Buckets</button>
             </div>
+            <div [hidden]="!submit_ready" class="alert alert-success text-center shadow"
+                style="width: 500px; margin: 50px auto;" role="alert">
+                <strong>All questions are good!</strong>
+            </div>
+            <div *ngIf="topic_cat_eng_message.display && !submit_ready" style="margin-top: 15px">
+                    <div *ngIf="topic_cat_eng_message.status == 'fail'" class="alert alert-warning shadow" role="alert">
+                        <strong>Warning!</strong> {{topic_cat_eng_message.message}}
+                    </div>
+                    <div *ngIf="topic_cat_eng_message.status == 'success'" class="alert alert-success shadow" role="alert">
+                        <strong>Nice!</strong> {{topic_cat_eng_message.message}}
+                    </div>
+                </div>
+            <div class="d-flex justify-content-center" *ngIf="!submit_status.display" style="margin-top: 50px">
+                <button [hidden]="submit_ready" class="btn btn-lg btn-info btn-action-borderless shadow"
+                    (click)="validateQuiz()">Validate</button>
+                <div [hidden]="!submit_ready" class="shadow btn-group btn-group-lg " role="group">
+                    <button class="btn btn-lg btn-success btn-action-borderless" (click)="submitQuiz()">Submit</button>
+                    <button class="btn btn-lg btn-warning btn-action-borderless" (click)="cancelSubmitQuiz()">Cancel</button>
+                </div>
+            </div>
+
+            <div class="d-flex justify-content-center"
+                *ngIf="submit_status.display && submit_status.status == 'success'" style="margin-top: 50px; ">
+                <div class="alert alert-success shadow" role="alert"
+                    style="display: flex; align-items: center; flex-direction: column;">
+                    <h4 class="alert-heading">Well done!</h4>
+                    You successfully created a new quiz.
+                    <br>
+                    <a [hidden]="submit_ready" class="btn btn-outline-light btn-action-borderless "
+                        (click)="goBack()">Click here to go back to the admin portal</a>
+                </div>
+            </div>
+
+            <div class="d-flex justify-content-center" *ngIf="submit_status.display && submit_status.status == 'fail'"
+                style="margin-top: 50px;">
+                <div class="alert alert-error shadow" role="alert"
+                    style="display: flex; align-items: center; flex-direction: column;">
+                    <h4 class="alert-heading">New quiz failed</h4>
+                    Something went wrong on the backend.
+                    {{submit_status.message}}
+                    <a [hidden]="submit_ready" class="btn btn-link btn-action-borderless " (click)="goBack()">Click here
+                        to go back to the admin portal</a>
+                </div>
+            </div>
         </div>
+
 
         <div class='admin-create-quiz-form' style="margin-top: 25px;">
             <table class="table table-borderless shadow">
@@ -567,15 +605,15 @@
                 </tbody>
             </table>
             <div [hidden]="!submit_ready" class="alert alert-success text-center shadow"
-                style="width: 500px; margin: 0px auto;" role="alert">
+                style="width: 500px; margin: 50px auto;" role="alert">
                 <strong>All questions are good!</strong>
             </div>
             <div class="d-flex justify-content-center" *ngIf="!submit_status.display" style="margin-top: 50px">
                 <button [hidden]="submit_ready" class="btn btn-lg btn-info btn-action-borderless shadow"
                     (click)="validateQuiz()">Validate</button>
                 <div [hidden]="!submit_ready" class="shadow btn-group btn-group-lg " role="group">
-                    <button class="btn btn-lg btn-success" (click)="submitQuiz()">Submit</button>
-                    <button class="btn btn-lg btn-warning" (click)="cancelSubmitQuiz()">Cancel</button>
+                    <button class="btn btn-lg btn-success btn-action-borderless" (click)="submitQuiz()">Submit</button>
+                    <button class="btn btn-lg btn-warning btn-action-borderless" (click)="cancelSubmitQuiz()">Cancel</button>
                 </div>
             </div>
 
@@ -617,7 +655,7 @@
 
     <div
         style="background: url(/assets/footer_background.png); background-position: top 0px right 0px !important; background-repeat: no-repeat !important; background-size: cover !important; width: 100%">
-        <div class="index_row element-animation-fadeIn " style="display: flex;
+        <div class="index_row " style="display: flex;
                                                             flex-direction: column;
                                                             flex-wrap: nowrap;
                                                             justify-content: center;
