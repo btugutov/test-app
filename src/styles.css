@@ -306,6 +306,7 @@ input.placeAfter {
     justify-content: space-between;
     align-items: stretch;
     align-content: stretch;
+    min-height: 5vh;
 }
 
 #carouselExampleControls {
@@ -331,6 +332,11 @@ input.placeAfter {
 
 .logo {
     width: 40px;
+    filter: drop-shadow(1px 1px 3px silver);
+    transition: 1s ease;
+}
+.logo:hover{
+    filter: drop-shadow(5px 5px 1px grey);
 }
 
 
@@ -2140,6 +2146,14 @@ a.disabled {
         justify-content: space-around;
         align-items: center;
         align-content: space-between;
+    }
+    #navigation{
+        width: 1600px;
+        margin: 0px auto;
+    }
+    #contact_footer{
+        width: 1600px;
+        margin: 0px auto;
     }
 }
 

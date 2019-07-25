@@ -1,6 +1,9 @@
 #index_wrapper {
-    background: currentColor;
+    /* background: #212528; */
     height: 100%;
+    width: 100%;
+    background: #212528;
+    /* background-image: linear-gradient(to bottom, #212528 0%, rgba(33, 37, 40, 0.9) 10%,rgba(33, 37, 40, 0.8) 20%, rgba(33, 37, 40, 0.7) 30%, rgba(33, 37, 40, 0.6) 40%,rgba(33, 37, 40, 0.5) 50%, rgba(33, 37, 40, 0.4) 60%, rgba(33, 37, 40, 0.3) 70%, rgba(33, 37, 40, 0.2) 80%, rgba(33, 37, 40, 0.1) 90%, rgba(33, 37, 40, 0.0) 100%) */
 }
 
 
