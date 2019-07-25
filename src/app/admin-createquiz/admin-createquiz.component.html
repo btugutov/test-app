@@ -5,8 +5,8 @@
             justify-content: space-between;
             align-items: center;
             align-content: space-between;
-            background: #e5e7da">
-    <div class="admin-create-quiz" *ngIf="currentUser && engagements">
+            background: linear-gradient(to bottom, rgba(255,255,255, 1), rgb(229, 231, 218),rgb(229, 231, 218),rgb(229, 231, 218))">
+    <div class="admin-create-quiz component-gradient element-animation-fadeIn" *ngIf="currentUser && engagements">
         <div [hidden]="!modal_mesage_bool" class="modal_message_box"
             (click)="closeModal_background_click($event.target)" id="modal_message_box">
             <div class="modal-dialog modal-dialog-centered modal_message" role="document" [ngClass]="{
@@ -646,7 +646,7 @@
         </div>
 
     </div>
-    <div *ngIf="!currentUser || !engagements" class=" loading_box " style=" margin-top: 100px;height: 300px;">
+    <div *ngIf="  !currentUser || !engagements " class=" loading_box component-gradient element-animation-fadeIn" style=" padding-top: 100px;height: 300px;">
         <h2>Loading...</h2>
         <div class="spinner-border" role="status">
             <span class="sr-only"></span>

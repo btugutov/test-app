@@ -42,8 +42,12 @@ export class IndexComponent implements OnInit {
         // console.log(this.engagements)
       }
     }else{
-
+      
     }
+    // console.log("=====")
+    //   console.log(document.getElementById("navigation"))
+    //   document.getElementById("navigation").style.background = null
+    //   document.getElementById("body").style.background = "#212528";
   }
 
 }

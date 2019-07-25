@@ -2168,3 +2168,6 @@ a.disabled {
     color: #4f91cd;
 }
 
+.component-gradient{
+    background: linear-gradient(to bottom, rgba(255,255,255, 1), rgb(229, 231, 218))
+}
