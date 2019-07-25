@@ -2141,3 +2141,14 @@ a.disabled {
     }
 }
 
+.text-line-through{
+    text-decoration: line-through;
+}
+.order-arrow-hover-target{
+    transition: 0.3s ease-in-out
+}
+
+.order-arrow-hover:hover .order-arrow-hover-target{
+    color: #4f91cd;
+}
+
