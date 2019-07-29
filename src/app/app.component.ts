@@ -27,8 +27,8 @@ export class AppComponent implements OnInit {
   engagements;
   currentEng;
   cur_url = {};
-  constructor(private location: Location, private _r: Router, private _route: ActivatedRoute,private _c: ConnectorService) {
-    
+  constructor(private location: Location, private _r: Router, private _route: ActivatedRoute, private _c: ConnectorService) {
+
     this._c.user.subscribe(user => {
       if (user) {
         this.user_obj = user;
@@ -48,19 +48,25 @@ export class AppComponent implements OnInit {
       }
     })
     let auth = {
-        clientId: "a1cbc100-5eed-4d33-b6fd-68856bb28b34",
-        authority: "https://login.microsoftonline.com/12e2dd65-5024-44c2-83b5-3ca21c04ef0e"
-      };
+      clientId: "a1cbc100-5eed-4d33-b6fd-68856bb28b34",
+      authority: "https://login.microsoftonline.com/12e2dd65-5024-44c2-83b5-3ca21c04ef0e"
+    };
     console.log(`window.location.hostname.split("//") =>`, window.location.hostname.split("//"))
-    console.log(`window.location.hostname.split("//")[0].slice(0,14) =>`, window.location.hostname.split("//")[0].slice(0,14))
-    if(window.location.hostname.split("//").length>0 && window.location.hostname.split("//")[0].slice(0,14) == "blueprintkadev"){
+    console.log(`window.location.hostname.split("//")[0].slice(0,14) =>`, window.location.hostname.split("//")[0].slice(0, 14))
+    if (window.location.hostname.split("//").length > 0 && window.location.hostname.split("//")[0].slice(0, 14) == "blueprintkadev") {
       console.log("DEV version detected")
       auth = {
         clientId: "bdb30407-5d2e-47e0-a40e-41aead5bc297",
         authority: "https://login.microsoftonline.com/12e2dd65-5024-44c2-83b5-3ca21c04ef0e"
       }
-    }else{
-      console.log("non-DEV version detected")
+    } else if (window.location.hostname.split("//").length > 0 && window.location.hostname.split("//")[0].slice(0, 14) == "blueprintka") {
+      console.log("Release version detected")
+      auth = {
+        clientId: "cff4c334-7d7f-4058-a2f5-2a496ddfff05",
+        authority: "https://login.microsoftonline.com/12e2dd65-5024-44c2-83b5-3ca21c04ef0e"
+      }
+    } else {
+      console.log("no version detected")
     }
     this.cur_url = auth;
     this.msalConfig = {
@@ -70,7 +76,7 @@ export class AppComponent implements OnInit {
         storeAuthStateInCookie: true
       }
     };
-                // 
+    // 
     // this.msalConfig = { // OLD VERSION
     //   auth: {
     //     clientId: "5f40551b-4ad5-4327-aead-858301bb6d90",
@@ -101,7 +107,7 @@ export class AppComponent implements OnInit {
       // console.log("let's get user than")
       if (localStorage.user) {
         this.user_obj = JSON.parse(localStorage.user)
-        if(this.user_obj){
+        if (this.user_obj) {
           this._c.storeUser(this.user_obj);
         }
       } else {
@@ -235,12 +241,12 @@ export class AppComponent implements OnInit {
 
   // ======================== ENGAGEMENT FUNCTIONS ==============
 
-  switchEng(eng_id){
+  switchEng(eng_id) {
     let loc = location.href.split('/');
     loc[3] = eng_id;
     let new_loc = '';
-    for(let i = 3; i < loc.length; i++){
-      new_loc+="/"+loc[i];
+    for (let i = 3; i < loc.length; i++) {
+      new_loc += "/" + loc[i];
     }
     // console.log(loc)
     // this._r.navigate([new_loc]);
@@ -250,7 +256,7 @@ export class AppComponent implements OnInit {
 
 
   // ======================== END OF ENGAGEMENT FUNCTIONS =======
-  
+
   // ========================= MISC FUNCTIONS ===================
   getInfo() {
     this._c.test().then(res => {
@@ -273,33 +279,33 @@ export class AppComponent implements OnInit {
     // console.log("App component is here! this.currentEng =>", this.currentEng)
     let loc = location.href.split('/');
     // console.log("THIS LOCATION =>", loc)
-    if(loc[3]){
-      if(localStorage['cur_eng'] && this.user_obj){
-        if(localStorage['cur_eng']['engagement_id'] != loc[3]){
+    if (loc[3]) {
+      if (localStorage['cur_eng'] && this.user_obj) {
+        if (localStorage['cur_eng']['engagement_id'] != loc[3]) {
           this._c.getAvailableEngagements(this.user_obj.profile_id, this.user_obj.email).then(res => {
-            for(let el in res){
-              if(res[el]['engagement_id'] == loc[3]){
+            for (let el in res) {
+              if (res[el]['engagement_id'] == loc[3]) {
                 this.currentEng = res[el];
                 localStorage['cur_eng'] = res[el];
-                this._c.setMainInfo({'currentEng': res[el]});
+                this._c.setMainInfo({ 'currentEng': res[el] });
                 // console.log("NEW ENGAGEMENT WAS DETECTED =>", res[el])
                 return;
               }
             }
           })
         }
-      }else{
-        if(!this.user_obj || !this.user_obj.profile_id){
+      } else {
+        if (!this.user_obj || !this.user_obj.profile_id) {
           console.log("NO USER!");
           this._r.navigate([''])
           return;
         }
         this._c.getAvailableEngagements(this.user_obj.profile_id, this.user_obj.email).then(res => {
-          for(let el in res){
-            if(res[el]['engagement_id'] == loc[3]){
+          for (let el in res) {
+            if (res[el]['engagement_id'] == loc[3]) {
               this.currentEng = res[el];
               localStorage['cur_eng'] = res[el];
-              this._c.setMainInfo({'currentEng': res[el]});
+              this._c.setMainInfo({ 'currentEng': res[el] });
               // console.log("SETTING A NEW ENGAGEMENT")
               return;
             }
@@ -307,13 +313,13 @@ export class AppComponent implements OnInit {
           alert("ERROR! No SUCH ENGAGEMENT WAS FOUND!")
           this._r.navigateByUrl('/');
         })
-        .catch(function(err){
-          this._c.logEvent(err, "ERROR", "app.component", "getAvailableEngagements")
-          // console.log( "ERR =>", err)
-        })
+          .catch(function (err) {
+            this._c.logEvent(err, "ERROR", "app.component", "getAvailableEngagements")
+            // console.log( "ERR =>", err)
+          })
       }
     }
-    
+
   }
   //========================= END OF MISC FUNCTIONS =============
 }
