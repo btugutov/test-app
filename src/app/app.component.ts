@@ -62,7 +62,7 @@ export class AppComponent implements OnInit {
     } else if (window.location.hostname.split("//").length > 0 && window.location.hostname.split("//")[0].slice(0, 14) == "blueprintka") {
       console.log("Release version detected")
       auth = {
-        clientId: "cff4c334-7d7f-4058-a2f5-2a496ddfff05",
+        clientId: "eb56f376-ffc5-425d-9687-3dab76d4bbc6",
         authority: "https://login.microsoftonline.com/12e2dd65-5024-44c2-83b5-3ca21c04ef0e"
       }
     } else {
