@@ -55,14 +55,14 @@ export class AppComponent implements OnInit {
     console.log(`window.location.hostname.split("//")[0].slice(0,14) =>`, window.location.hostname.split("//")[0].slice(0, 14))
     try{
       if (window.location.hostname.split("//").length > 0){
-      console.log(window.location.hostname.split("//")[1].split(".")[0])
-      if(window.location.hostname.split("//")[1].split(".")[1]  == "blueprintkadev"){
+      console.log(window.location.hostname.split("//")[0].split(".")[0])
+      if(window.location.hostname.split("//")[0].split(".")[0]  == "blueprintkadev"){
         console.log("Dev version detected")
         auth = {
           clientId: "bdb30407-5d2e-47e0-a40e-41aead5bc297",
           authority: "https://login.microsoftonline.com/12e2dd65-5024-44c2-83b5-3ca21c04ef0e"
         }
-      }else if(window.location.hostname.split("//")[1].split(".")[0]  == "blueprintka"){
+      }else if(window.location.hostname.split("//")[0].split(".")[0]  == "blueprintka"){
         console.log("Release version detected")
         auth = {
           clientId: "eb56f376-ffc5-425d-9687-3dab76d4bbc6",
