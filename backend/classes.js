@@ -483,18 +483,19 @@ function getEventLogByID(log_id) {
 }
 function getNewLogs(last_id) {
     return new Promise(function (resolve, reject) {
-        let insert = `SELECT * FROM [dbo].[KA_log] WHERE log_id > ${last_id} AND user_id != 'stay_awake'`;
+        let insert = `SELECT * FROM [dbo].[KA_log] WHERE log_id > ${last_id} AND user_id != 'stay_awake'  ORDER BY log_id DESC`; //AND user_id != 'stay_awake' 
         dbQueryMethod.query(insert).then(result => {
             resolve(result);
             return result
         }).catch(function (error) {
             console.log("ERROR =>", error);
             reject(error)
+            throw(error)
         })
     }).catch(function (error) {
         log_event('WARNING', error, "getEventLog");
-        reject(error)
-        throw error;
+        // reject(error)
+        throw(error);
     })
 }
 

@@ -28,12 +28,14 @@ export class ConnectorComponent implements OnInit {
   cur_num = 0;
   end_num = 0;
   levels_counter = {
-    DEBUG: { length: 0, list: {}, percentage: 0 },
-    ERROR: { length: 0, list: {}, percentage: 0 },
-    INFO: { length: 0, list: {}, percentage: 0 },
-    TESTING: { length: 0, list: {}, percentage: 0 },
-    WARNING: { length: 0, list: {}, percentage: 0 },
+    DEBUG: { length: 0, list: [], percentage: 0 },
+    ERROR: { length: 0, list: [], percentage: 0 },
+    INFO: { length: 0, list: [], percentage: 0 },
+    TESTING: { length: 0, list: [], percentage: 0 },
+    WARNING: { length: 0, list: [], percentage: 0 },
+    ALL: { length: 0, list: [], percentage: 0 }
   }
+  current_level = 'ALL';
   levels_counter_class_idx = 0;
   modal_mesage_bool = false;
   modal_message = {
@@ -43,7 +45,6 @@ export class ConnectorComponent implements OnInit {
   temp_obj = 0;
   new_logs = {};
   constructor(private _ConnectorService: ConnectorService, private location: Location, private _route: ActivatedRoute, private _r: Router) {
-
     this._ConnectorService.user.subscribe(user => {
       if (user) {
         this.currentUser = user;
@@ -51,14 +52,14 @@ export class ConnectorComponent implements OnInit {
           'email': user.email
         }
         this._ConnectorService.getEventLog(obj).then(res => {
-          this.first_request_status = true;
-          this.pages = Math.ceil(res['body'].length / 100)
-          console.log(res)
-          console.log(res['body'].length)
-          console.log(this.pages)
           this.ids = res['body'];
+          this.first_request_status = true;
+          this.levels_counter.ALL.list = res['body'];
+          this.levels_counter.ALL.length = res['body'].length;
+          this.pages = Math.ceil(res['body'].length / 100);
+          this.filterList('ALL');
           this.getLevelData();
-          this.orginizeList()
+          // this.renderCurrentList()
         }).catch(function (err) {
           console.log("ERROR =>", err)
         })
@@ -76,7 +77,21 @@ export class ConnectorComponent implements OnInit {
 
   ngOnInit() {
   }
-  orginizeList() {
+  filterList(target) {
+    if(target == 'ALL'){
+      console.log(target)
+    }else{
+      console.log(this.levels_counter[target])
+    }
+    let target_list = this.levels_counter[target];
+    this.current_level = target;
+    this.current_page = 1;
+    this.pages = Math.ceil(target_list.length / 100);
+    this.renderCurrentList();
+  }
+  renderCurrentList() {
+    console.log("New logs =>", this.new_logs)
+    let target_list = this.levels_counter[this.current_level]['list'];
     this.logs = [];
     let start = (this.current_page - 1) * 100;
     let end = this.current_page * 100;
@@ -85,13 +100,14 @@ export class ConnectorComponent implements OnInit {
     this.ready = {};
     let counter = 0;
     while (start < end) {
-      if (!this.ids[start]) {
+      if (!target_list[start]) {
         start++;
         continue;
       }
-      let cur_target = this.ids[start];
+      let cur_target = target_list[start];
       this.logs.push({
-        log_id: cur_target.log_id
+        log_id: cur_target.log_id,
+        log_level: cur_target.log_level
       })
       if (!this.log_storage[cur_target.log_id]) {
         this._ConnectorService.getEventLogByID(cur_target.log_id).then(res => {
@@ -124,47 +140,48 @@ export class ConnectorComponent implements OnInit {
       counter++;
     }
     this.end_num = counter;
-
+    // console.log("this.ready =>" ,this.ready)
   }
   getNewLogs() {
-    let last_id = null;
+    let last_id;
 
-    if (this.ids[0]) {
-      last_id = this.ids[0]["log_id"]
+    if (this.levels_counter['ALL']['list'][0] ) {
+      last_id = this.levels_counter['ALL']['list'][0];
+    }else{
+      return;
     }
-    //last_id = 346862; // comment this out after testing!
+    // last_id.log_id = 346862; // comment this out after testing!
     let obj = {
-      'email': this.currentUser.email,
-      last_id: last_id
+      email: this.currentUser.email,
+      last_id: last_id.log_id
     }
     this._ConnectorService.getNewLogs(obj).then(res => {
       console.log(res)
-      if (res && res['status'] == 'success' && res['body'].length>0) {
+      if (res && res['status'] == 'success' && res['body'].length > 0) {
         let new_logs = res['body'];
-        for(let i = 0; i < new_logs.length; i++){
+        for (let i = 0; i < new_logs.length; i++) {
           new_logs[i]['log_event'] = this.removeNewLines(unescape(new_logs[i]['log_event']))
           new_logs[i]['line_number'] = unescape(new_logs[i]['line_number']);
           new_logs[i]['details'] = unescape(new_logs[i]['details']);
           this.new_logs[new_logs[i]['log_id']] = true;
           this.ready[new_logs[i]['log_id']] = true;
           this.log_storage[new_logs[i]['log_id']] = new_logs[i]
-          this.logs.pop();
         }
-        this.logs = new_logs.concat(this.logs);
-        this.ids = res['body'].concat(this.ids)
+        this.levels_counter.ALL.list = new_logs.concat(this.levels_counter.ALL.list);
+        // this.ids = res['body'].concat(this.ids)
         this.getLevelData();
-        
         console.log('this.logs =>', this.logs)
         console.log("this.log_storage =>", this.log_storage)
+        this.renderCurrentList();
       }
     })
-
+    console.log("this.new_logs =>",this.new_logs)
     return;
   }
   changePage(val) {
     console.log("val =>", val)
     this.current_page = val;
-    this.orginizeList();
+    this.renderCurrentList();
   }
 
   bindLogObject(log_id, obj) {
@@ -180,24 +197,28 @@ export class ConnectorComponent implements OnInit {
     }
   }
   getLevelData() {
-    /*
-'INFO': {
-      length: 0,
-      list: {}
-    },
-    */
-    for (let el in this.ids) {
-      if (!this.levels_counter[this.ids[el]['log_level']]) {
-        this.levels_counter[this.ids[el]['log_level']] = {
+    let ids = this.levels_counter.ALL.list;
+    let all_copy = cloneDeep(this.levels_counter["ALL"])
+    this.levels_counter = {
+      DEBUG: { length: 0, list: [], percentage: 0 },
+      ERROR: { length: 0, list: [], percentage: 0 },
+      INFO: { length: 0, list: [], percentage: 0 },
+      TESTING: { length: 0, list: [], percentage: 0 },
+      WARNING: { length: 0, list: [], percentage: 0 },
+      ALL: all_copy
+    };
+    for (let el in ids) {
+      if (!this.levels_counter[ids[el]['log_level']]) {
+        this.levels_counter[ids[el]['log_level']] = {
           length: 0,
-          list: {},
-          percentage: (this.levels_counter[this.ids[el]['log_level']].length / this.ids.length) * 100
+          list: [],
+          percentage: (this.levels_counter[ids[el]['log_level']].length / ids.length) * 100
         }
       }
       let that = this;
-      this.levels_counter[this.ids[el]['log_level']].length++;
-      this.levels_counter[this.ids[el]['log_level']].percentage = Math.round((this.levels_counter[this.ids[el]['log_level']].length / this.ids.length) * 100);
-      this.levels_counter[this.ids[el]['log_level']].list[this.ids[el]['log_id']] = this.ids[el]['log_id'];
+      this.levels_counter[ids[el]['log_level']].length++;
+      this.levels_counter[ids[el]['log_level']].percentage = Math.round((this.levels_counter[ids[el]['log_level']].length / ids.length) * 100);
+      this.levels_counter[ids[el]['log_level']].list.push(ids[el]);
     }
     console.log(this.levels_counter)
   }
@@ -219,4 +240,6 @@ export class ConnectorComponent implements OnInit {
   removeNewLines(str) {
     return str.split("\\n").join("")
   }
+
+  
 }

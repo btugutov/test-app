@@ -32,38 +32,26 @@
               <div class="text-center">
                 <h1>Event Log Page</h1>
                 <!-- {{ new_logs |json}} -->
+                <!-- <button (click)="getNewLogs()">getNewLogs()</button> -->
                 <div class="spinner-border" *ngIf="!first_request_status" role="status">
                   <span class="sr-only">Loading...</span>
                 </div>
-                <h3 *ngIf="first_request_status">{{ids.length}} entries</h3>
-                <!-- <div *ngIf="first_request_status" class="progress" style="width: 95%; border-radius: 0px;">
-                    <div *ngFor="let el of levels_counter | keyvalue" class="progress-bar level_counter_get_class()" [ngClass]="{
-                        'bg-info': el.key =='INFO',
-                        'bg-warning': el.key == 'WARNING',
-                        'bg-danger': el.key == 'ERROR',
-                        'bg-secondary': el.key == 'DEBUG',
-                        'bg-success': el.key == 'TESTING'
-                      }" [style.width.%]="el.value.percentage" role="progressbar" aria-valuenow="15" aria-valuemin="0"
-                      aria-valuemax="100"> {{el.key}}</div>
-              
-                </div> -->
-                <div *ngIf="first_request_status">
+               <button *ngIf="first_request_status" class="btn btn-outline-dark btn-action-borderless" [ngClass]="{'active shadow': current_level == 'ALL'}" (click)="filterList('ALL')"><h3>All {{ids.length}} entries </h3></button>
+             
+                <div *ngIf="first_request_status" style="margin: 10px auto">
                   <span *ngFor="let el of levels_counter | keyvalue">
-                    <button class="btn">{{el.key}}: {{el.value.length}} (~{{el.value.percentage}}%)</button>
+                    <button *ngIf="el.key != 'ALL'" class="btn btn-action-borderless font-weight-bold" [ngClass]="{
+                      'btn-outline-info': el.key =='INFO',
+                      'btn-outline-warning': el.key == 'WARNING',
+                      'btn-outline-danger': el.key == 'ERROR',
+                      'btn-outline-secondary': el.key == 'DEBUG',
+                      'btn-outline-primary': el.key == 'TESTING',
+                      'active shadow': el.key == current_level
+                    }" (click)="filterList(el.key)">{{el.key}}: {{el.value.length}} (~{{el.value.percentage}}%)</button>
                   </span>
                 </div>
+
               </div>
-              <!-- <div *ngIf="first_request_status" class="progress" style="width: 95%; border-radius: 0px;">
-                  <div *ngFor="let el of levels_counter | keyvalue" class="progress-bar level_counter_get_class()" [ngClass]="{
-                      'bg-info': el.key =='INFO',
-                      'bg-warning': el.key == 'WARNING',
-                      'bg-danger': el.key == 'ERROR',
-                      'bg-secondary': el.key == 'DEBUG',
-                      'bg-success': el.key == 'TESTING'
-                    }" [style.width.%]="el.value.percentage" role="progressbar" aria-valuenow="15" aria-valuemin="0"
-                    aria-valuemax="100"> {{el.key}}</div>
-            
-              </div> -->
                 <nav aria-label="..." *ngIf="first_request_status" style="margin: auto 0px">
                   <ul class="pagination ">
                     <li class="page-item" [ngClass]="{'disabled': current_page < 2}">
@@ -109,9 +97,15 @@
                     'alert-danger': ready[el.log_id] && el.log_level == 'ERROR'
                   }">
                       <td *ngIf="!ready[el.log_id]" colspan="8">
-                        <div class="alert alert-secondary text-center">Loading</div>
-                      </td>
-                      <th scope="row" *ngIf="ready[el.log_id]" class="">
+                        <div class="alert text-center shadow" [ngClass]="{
+                          'alert-info': el.log_level == 'INFO',
+                          'alert-warning': el.log_level == 'WARNING',
+                          'alert-danger': el.log_level == 'ERROR',
+                          'alert-secondary': el.log_level == 'DEBUG',
+                          'alert-primary': el.log_level == 'TESTING'
+                        }">Loading </div>
+                        </td>
+                      <th scope="row" *ngIf="ready[el.log_id]" class="" >
                           ({{ (current_page - 1) * 100 + i + 1}})
                           <span *ngIf="ready[el.log_id] && new_logs[el.log_id]" class="badge badge-success shadow">  
                             New
@@ -121,11 +115,11 @@
                           <span *ngIf="ready[el.log_id] && !new_logs[el.log_id]" >{{el.log_id}}</span></th>
                       <td *ngIf="ready[el.log_id]">
                         <h4>
-                          <span class="badge badge-info shadow" *ngIf="el.log_level == 'INFO' ">INFO</span>
-                          <span class="badge badge-warning shadow" *ngIf="el.log_level == 'WARNING' ">WARNING</span>
-                          <span class="badge badge-danger shadow" *ngIf="el.log_level == 'ERROR' ">ERROR</span>
-                          <span class="badge badge-secondary shadow" *ngIf="el.log_level == 'DEBUG' ">DEBUG</span>
-                          <span class="badge badge-primary shadow" *ngIf="el.log_level != 'ERROR' && el.log_level != 'WARNING'  && el.log_level != 'INFO'  && el.log_level != 'DEBUG'">{{el.log_level}}</span>
+                          <span class="badge badge-info shadow btn-action-borderless" *ngIf="el.log_level == 'INFO' ">INFO</span>
+                          <span class="badge badge-warning shadow btn-action-borderless" *ngIf="el.log_level == 'WARNING' ">WARNING</span>
+                          <span class="badge badge-danger shadow btn-action-borderless" *ngIf="el.log_level == 'ERROR' ">ERROR</span>
+                          <span class="badge badge-secondary shadow btn-action-borderless" *ngIf="el.log_level == 'DEBUG' ">DEBUG</span>
+                          <span class="badge badge-primary shadow btn-action-borderless" *ngIf="el.log_level != 'ERROR' && el.log_level != 'WARNING'  && el.log_level != 'INFO'  && el.log_level != 'DEBUG'">{{el.log_level}}</span>
                         </h4>
                         </td>
                       <td *ngIf="ready[el.log_id] " class="text-break">
