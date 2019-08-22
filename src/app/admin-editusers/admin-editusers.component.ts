@@ -223,16 +223,11 @@ export class AdminEditusersComponent implements OnInit {
       console.log(new Date())
       console.log("RES =>", res)
       if(res['status'] == 'success'){
-        // if(res['response']['users']){
-        //   for(let el in this.list_changes){
-        //     console.log(res['response']['users'][el])
-        //     this.sorted_users.all_users[el] = cloneDeep(res['response']['users'][el]);
-        //     this.all_users_original[el] = cloneDeep(res['response']['users'][el])
-        //   }
-        // }
+       console.log(res)
         this.list_changes = {};
         this.openModal('message', 'success')
       }else{
+        console.log(res)
         this.openModal('message', 'fail')
       }
     }).catch(function(err){
