@@ -31,16 +31,16 @@
             <table class="table table-borderless">
               <thead class="thead-dark shadow">
                 <tr>
-                  <th>ID</th>
-                  <th>Name</th>
-                  <th>Background</th>
-                  <th>Status</th>
+                  <th class="text-center">ID</th>
+                  <th class="text-center">Name and Footer Text</th>
+                  <th class="text-center">Company Info</th>
+                  <th class="text-center">Background</th>
+                  <th class="text-center">Contacts</th>
+                  <th class="text-center">Status</th>
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let eng of list_changes | keyvalue" [ngClass]="{
-                                          'alert-success': eng.value.status=='new'
-                                        }">
+                <tr *ngFor="let eng of list_changes | keyvalue" [ngClass]="{'alert-success': eng.value.status=='new' }">
                   <th scope="row" class="">
                     <div style="display: flex;
                                             flex-direction: column;
@@ -54,15 +54,78 @@
                     </div>
                   </th>
                   <!-- ENGAGEMENT NAME -->
-                  <td [ngClass]="{
-                                            'alert alert-warning': (eng.value.status=='existed' && (engagements_original[eng.key].engagement_name != eng.value['engagement_name']))
-                                          }">
-                    <span
-                      *ngIf="eng.value.status=='existed' && eng.value.engagement_name != engagements_original[eng.key].engagement_name">{{engagements_original[eng.key].engagement_name}}
-                      changed to </span> <span class=" font-weight-bold">{{eng.value.engagement_name}}</span> <button
-                      *ngIf="eng.value.status=='existed' && eng.value.engagement_name != engagements_original[eng.key].engagement_name"
-                      class="btn-sm btn-xs btn-danger shadow "
-                      (click)="undoChanges(eng.key, 'soft_delete')">Undo</button>
+                  <td>
+                    <div class="text-sm-center" [ngClass]="{' alert alert-warning': eng.value.status=='existed' && eng.value.engagement_name != engagements_original[eng.key].engagement_name}">
+                        Engagement name  
+                      <span *ngIf="eng.value.status=='existed' && eng.value.engagement_name != engagements_original[eng.key].engagement_name">
+                             <br>"{{engagements_original[eng.key].engagement_name}}"<br>
+                            changed to <br></span> 
+                        <span class=" font-weight-bold">"{{eng.value.engagement_name}}"</span>
+                        <button *ngIf="eng.value.status=='existed' && eng.value.engagement_name != engagements_original[eng.key].engagement_name"
+                            class="btn-sm btn-xs btn-danger shadow "
+                            (click)="undoChanges(eng.key, 'engagement_name')">Undo</button>
+                    </div>
+                    <div class="text-sm-center " [ngClass]="{
+                      'alert alert-warning': eng.value.status=='existed' && checkValues(engagements_original[eng.key].main_text, eng.value['main_text']),
+                      'alert alert-success': eng.value.status=='new'
+                    }">
+                      <span *ngIf="eng.value.status=='existed' && checkValues(engagements_original[eng.key].main_text, eng.value['main_text'])">Footer text <br>"{{engagements_original[eng.key].main_text}}"<br>
+                            changed to <br></span> <span *ngIf="eng.value.status=='existed' && checkValues(engagements_original[eng.key].main_text, eng.value['main_text'])" class="font-weight-bold">"{{eng.value.main_text}}"</span> <button
+                            *ngIf="eng.value.status=='existed' && checkValues(engagements_original[eng.key].main_text, eng.value['main_text'])"
+                            class="btn-sm btn-xs btn-danger shadow " (click)="undoChanges(eng.key, 'main_text')">Undo</button>
+                      <span *ngIf="eng.value.status=='new'">Footer Text: <span class="font-weight-bold">"{{eng.value.main_text}}"</span></span>
+                    </div>
+
+                      
+                  </td>
+                  <!-- COMPANY INFO -->
+                  <td>
+                    <div class="text-sm-center">
+                      <div class="alert-warning alert" *ngIf="eng.value.status=='existed' && checkKeyValueDiff(eng.key, 'company_name')">
+                        Company's Name
+                        <br>
+                        "{{engagements_original[eng.key].company_name}}"
+                        <br>
+                        changed to <br>
+                        <span class="font-weight-bold">"{{eng.value.company_name}}"</span>
+                        <button class="btn-sm btn-xs btn-danger shadow " (click)="undoChanges(eng.key, 'company_name')">Undo</button>
+                      </div>
+                      <div class="'alert-success alert" *ngIf="eng.value.status=='new'"> 
+                          Company's Name <br>
+                          <span class="font-weight-bold">"{{eng.value.company_name}}"</span>
+                      </div>
+                    </div>
+                    <div class="text-sm-center ">
+                      <div class="alert-warning alert" *ngIf="eng.value.status=='existed' && checkKeyValueDiff(eng.key, 'company_address')">
+                        Company's Address 
+                        <br>
+                        "{{engagements_original[eng.key].company_address}}"
+                        <br>
+                        changed to <br>
+                        <span class="font-weight-bold">"{{eng.value.company_address}}"</span>
+                        <button class="btn-sm btn-xs btn-danger shadow " (click)="undoChanges(eng.key, 'company_address')">Undo</button>
+                      </div>
+                      <div class="alert-success alert" *ngIf="eng.value.status=='new'"> 
+                          Company's Address <br>
+                          <span class="font-weight-bold">"{{eng.value.company_address}}"</span>
+                      </div>
+                    </div>
+                    <div class="text-sm-center ">
+                      <div class="alert-warning alert" *ngIf="eng.value.status=='existed' && checkKeyValueDiff(eng.key, 'company_phone_number')">
+                        Company's Phone Number
+                        <br>
+                        "{{engagements_original[eng.key].company_phone_number}}"
+                        <br>
+                        changed to <br>
+                        <span class="font-weight-bold">"{{eng.value.company_phone_number}}"</span>
+                        <button class="btn-sm btn-xs btn-danger shadow " (click)="undoChanges(eng.key, 'company_phone_number')">Undo</button>
+                      </div>
+                      <div class="alert-success alert" *ngIf="eng.value.status=='new'">
+                        Company's Address <br>
+                        <span class="font-weight-bold">"{{eng.value.company_phone_number}}"</span>
+                      </div>
+                    </div>
+                  
                   </td>
                   <!-- BACKGROUND -->
                   <td [ngClass]="{
@@ -90,12 +153,32 @@
                     </div>
 
                   </td>
-                  <td [ngClass]="{
-                                            'alert alert-warning': (eng.value.status=='existed' && (engagements_original[eng.key].soft_delete != eng.value.soft_delete))
-                                          }">
-                    <p class=" font-weight-bold">
-                      <span
-                        *ngIf="eng.value.status=='existed' && !eng.value.soft_delete && engagements_original[eng.key].soft_delete">Enabled
+                  <!-- CONTACTS -->
+                  <td>
+                      <div class="text-sm-center">
+                        <div *ngFor="let el of eng.value.contacts | keyvalue">
+                          <span *ngIf="engagements_original[eng.key] && engagements_original[eng.key]['contacts'][el.key]">
+                            <div *ngIf="engagements_original[eng.key]['contacts'][el.key].full_name != el.value.full_name"  class="alert alert-warning">
+                              {{engagements_original[eng.key]['contacts'][el.key].full_name}} changed name to <span class="font-weight-bold">{{el.value.full_name}}</span>
+                            </div>
+                            <div *ngIf="engagements_original[eng.key]['contacts'][el.key].email != el.value.email"  class="alert alert-warning">
+                              {{el.value.full_name}}'s email {{engagements_original[eng.key]['contacts'][el.key].email}} updated to <span class="font-weight-bold">{{el.value.email}}</span>
+                            </div>
+                            <div *ngIf="el.value.soft_delete"  class="alert alert-warning">
+                              {{el.value.full_name}} will be <span class="font-weight-bold">removed</span> from the list.
+                            </div>
+                          </span>
+                          <div *ngIf="!engagements_original[eng.key] || !engagements_original[eng.key]['contacts'][el.key]" class="alert alert-success">
+                            New contact: {{el.value.full_name}} {{el.value.email}}
+                          </div>
+                        </div>
+                      </div>
+                  </td>
+                  <!-- STATUS -->
+                  <td [ngClass]="{'alert alert-warning': (eng.value.status=='existed' && (engagements_original[eng.key].soft_delete != eng.value.soft_delete))}">
+                    <p class="text-sm-center font-weight-bold">
+                      
+                      <span *ngIf="eng.value.status=='existed' && !eng.value.soft_delete && engagements_original[eng.key].soft_delete">Enabled
                         <button class="btn-sm btn-xs btn-danger shadow "
                           (click)="undoChanges(eng.key, 'soft_delete')">Undo</button></span>
                       <span
@@ -122,7 +205,7 @@
             </div>
           </div>
         </div>
-
+        <!-- MESSAGE -->
         <div class="modal-content modal-dialog-scrollable shadow" *ngIf="modal_message.title == 'message'">
           <div class="alert alert-success text-center" style="margin-bottom: 0px" role="alert"
             *ngIf="modal_message.body == 'success'">
@@ -147,6 +230,7 @@
               here to go back to the admin portal</button>
           </div>
         </div>
+        <!-- COUNTER -->
         <div class="modal-content modal-dialog-scrollable shadow" *ngIf="modal_message.title == 'counter'">
           <div class="alert alert-success text-center" style="margin-bottom: 0px" role="alert">
 
@@ -159,6 +243,86 @@
             </div>
           </div>
         </div>
+        <!-- EDIT CONTACTS -->
+        <div class="modal-content modal-dialog-scrollable" *ngIf="modal_message.title == 'edit_contacts'">
+            <div class="modal-header">
+              <h3 class="modal-title  text-center" id="exampleModalCenteredLabel" style="margin: 0px auto;">Edit contacts ({{engagements[modal_message.body]['contact_length']}} total)</h3>
+              <button type="button" class="close" (click)="closeModal()" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div style="overflow-y: scroll; height:500px;">
+              <table class="table table-borderless" style="width: 100%;
+              max-width: 700px;
+              margin: 0px auto;
+              box-shadow: 1px 1px 15px silver;">
+                <thead class="thead-dark shadow">
+                  <tr>
+                    <th>Full name</th>
+                    <th>Email</th>
+                    <th style="width: 110px;"></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let contact of engagements[modal_message.body]['contacts'] | keyvalue" [ngClass]="{
+                    'alert-secondary': contact.value.soft_delete
+                  }">
+                    <td >
+                      <div class="form-group" style="margin-bottom: 1px; margin: 0px 2px; padding: 5px 5px;">
+                        <input type="text" [disabled]='contact.value.soft_delete' class="form-control input_border-0-radius" 
+                          (input)="edit_contact(contact.value.contact_id, modal_message.body, 'full_name', $event.target.value)" 
+                          value="{{contact.value.full_name}}">
+                      </div>
+                    </td>
+                    <td>
+                      <div class="form-group" style="margin-bottom: 1px; margin: 0px 2px; padding: 5px 5px;">
+                        <input type="text" [disabled]='contact.value.soft_delete'  class="form-control input_border-0-radius" 
+                          (input)="edit_contact(contact.value.contact_id, modal_message.body, 'email', $event.target.value)"
+                          value="{{contact.value.email}}">
+                      </div>
+                    </td>
+                    <td style="vertical-align: middle">
+                      <div class="form-group" style="margin-bottom: 1px; margin: 0px 2px; padding: 5px 5px;">
+                        <button *ngIf="!contact.value.soft_delete" (click)="soft_delete_contact(contact.value.contact_id, modal_message.body)" 
+                          class='btn btn-sm btn-outline-danger btn-action-borderless' style="width: 100px">Remove</button>
+                        <button *ngIf="contact.value.soft_delete" (click)="soft_delete_contact(contact.value.contact_id, modal_message.body)"
+                          class='btn btn-sm btn-warning btn-action-borderless' style="width: 100px">Restore</button>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr class="alert-success">
+                      <td >
+                          <div class="form-group" style="margin-bottom: 1px; margin: 0px 2px; padding: 5px 5px;">
+                            <input type="text" class="form-control input_border-0-radius" value="{{engagements[modal_message.body]['new_contact']['full_name']}}" (input)="edit_contact('new', modal_message.body, 'full_name', $event.target.value)">
+                          </div>
+                        </td>
+                        <td>
+                          <div class="form-group" style="margin-bottom: 1px; margin: 0px 2px; padding: 5px 5px;">
+                            <input type="text" class="form-control input_border-0-radius" value="{{engagements[modal_message.body]['new_contact']['email']}}" (input)="edit_contact('new', modal_message.body, 'email', $event.target.value)">
+                          </div>
+                        </td>
+                        <td style="vertical-align: middle">
+                          <div class="form-group" style="margin-bottom: 1px; margin: 0px 2px; padding: 5px 5px;">
+                            <button [disabled]="engagements[modal_message.body]['new_contact']['email'].length < 3 || engagements[modal_message.body]['new_contact']['full_name'].length < 3" class='btn btn-sm btn-success btn-action-borderless'
+                             (click)="add_new_contact(modal_message.body)" style="width: 100px">Add</button>
+                          </div>
+                        </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="team_control_panel">
+              <div style="height: 50px; margin-top: 25px;">
+                <!-- <button type="button" (click)="submitChanges()" class="btn btn-success  btn-action-borderless shadow"
+                  style="margin: 0px 20px">Change</button> -->
+                <button type="button" (click)="contacts_cancel_all_changes(modal_message.body)" class="btn btn-danger  btn-action-borderless shadow"
+                  style="margin: 0px 20px">Cancel all changes</button>
+                <button type="button" (click)="closeModal()" class="btn btn-warning  btn-action-borderless shadow"
+                  style="margin: 0px 20px">Close</button>
+              </div>
+            </div>
+          </div>
+
       </div>
     </div>
     <div class="admin-quiz-permission-title">
@@ -179,7 +343,8 @@
           <thead class="thead-dark shadow-lg">
             <tr>
               <th>ID</th>
-              <th>Title</th>
+              <th>Engagement</th>
+              <th>Company</th>
               <th>Categories and topics</th>
               <th>Background</th>
               <th>Status</th>
@@ -195,32 +360,72 @@
               <th *ngIf="!eng.value['error_bool']" scope="row" class="font-weight-bold  text-center  tr_string">
                 {{eng.key}}</th>
               <td *ngIf="!eng.value['error_bool']" class="tr_string">
-                <input class="form-control" type="text" [disabled]="eng.value.soft_delete" placeholder="" minlength="2"
-                  (change)="inputChanger(eng.key, 'engagement_name', $event.target)"
-                  value='{{eng.value.engagement_name}}'>
+                  <div class="form-group" style="margin-bottom: 1px; margin: 0px 2px;">
+                      <label for="engagement_name_{{eng.value.engagement_id}}" style="margin-bottom: 0px; font-size: smaller;" class="text-secondary">Engagement name:</label>
+                      <input id="engagement_name_{{eng.value.engagement_id}}" class="form-control input_border-0-radius" type="text" [disabled]="eng.value.soft_delete" placeholder="" minlength="2"
+                      (change)="inputChanger(eng.key, 'engagement_name', $event.target)"
+                      value='{{eng.value.engagement_name}}'>
+                  </div>
+                  <div class="form-group" style="margin-bottom: 1px; margin: 0px 2px;">
+                      <label for="engagement_text_{{eng.value.engagement_id}}" style="margin-bottom: 0px; font-size: smaller;" class="text-secondary">Footer text</label>
+                      <input id="engagement_text_{{eng.value.engagement_id}}" class="form-control input_border-0-radius" type="text" [disabled]="eng.value.soft_delete" placeholder="" minlength="2"
+                      (change)="inputChanger(eng.key, 'main_text', $event.target)"
+                      value='{{eng.value.main_text}}'>
+                  </div>
+                  <div class="form-group" style="margin-bottom: 1px; margin: 0px 2px;">
+                      <label for="engagement_contact_{{eng.value.engagement_id}}" style="margin-bottom: 0px; font-size: smaller;" class="text-secondary">Support/Assistance</label>
+                      <button id="engagement_contact_{{eng.value.engagement_id}}" (click)="edit_contacts(eng.value.engagement_id)" class="form-control btn btn-secondary btn-action-borderless" [disabled]="eng.value.soft_delete || eng.key == 'new'">
+                        {{eng.value.contact_length}} contact<span *ngIf="eng.value.contact_length != 1">s</span>
+                      </button>
+                  </div>
+              </td>
+              <td *ngIf="!eng.value['error_bool']" class="tr_string">
+                <div class="form-group" style="margin-bottom: 1px; margin: 0px 2px;">
+                    <label for="company_name_{{eng.value.engagement_id}}" style="margin-bottom: 0px; font-size: smaller;" class="text-secondary">Company name:</label>
+                    <input id="company_name_{{eng.value.engagement_id}}" class="form-control input_border-0-radius" type="text" [disabled]="eng.value.soft_delete" placeholder="" minlength="2"
+                      (change)="inputChanger(eng.key, 'company_name', $event.target)"
+                      value='{{eng.value.company_name}}'>
+                </div>
+                <div class="form-group" style="margin-bottom: 1px; margin: 0px 2px;">
+                    <label for="company_address_{{eng.value.engagement_id}}" style="margin-bottom: 0px; font-size: smaller;" class="text-secondary">Address:</label>
+                    <input id="company_address_{{eng.value.engagement_id}}" class="form-control input_border-0-radius" type="text" [disabled]="eng.value.soft_delete" placeholder="" minlength="2"
+                    (change)="inputChanger(eng.key, 'company_address', $event.target)"
+                    value='{{eng.value.company_address}}'>
+                </div>
+                <div class="form-group" style="margin-bottom: 1px; margin: 0px 2px;">
+                    <label for="company_phone_{{eng.value.engagement_id}}" style="margin-bottom: 0px; font-size: smaller;" class="text-secondary">Phone number:</label>
+                    <input id="company_phone_{{eng.value.engagement_id}}" class="form-control input_border-0-radius" type="text" [disabled]="eng.value.soft_delete" placeholder="" minlength="2"
+                    (change)="inputChanger(eng.key, 'company_phone_number', $event.target)"
+                    value='{{eng.value.company_phone_number}}'>
+                </div>
               </td>
               <td *ngIf="!eng.value['error_bool']">
                 <div class="wrap-collabsible">
-                  <input id="collapsible_{{eng.value.engagement_name}}" class="toggle" type="checkbox">
+                  <input id="collapsible_{{eng.value.engagement_name}}" [ngClass]="{'toggle': eng.value.topics_total_length > 0, 'text-center': eng.value.topics_total_length == 0}" type="checkbox">
                   <label for="collapsible_{{eng.value.engagement_name}}"
-                    class="lbl-toggle">{{eng.value.users_total_length}} users,{{eng.value.categories_length}}
-                    category(ies) and {{eng.value.topics_total_length}} topic(s)</label>
-                  <div class="collapsible-content shadow">
-                    <div class="content-inner">
+                    class="lbl-toggle">
+                    <span *ngIf="eng.value.users_total_length>0">{{eng.value.users_total_length}} user<span *ngIf="eng.value.users_total_length != 1">s</span>,</span>
+                    <span *ngIf="eng.value.categories_length>0"> {{eng.value.categories_length}} categor<span *ngIf="eng.value.categories_length == 1">y</span><span *ngIf="eng.value.categories_length != 1">ies</span></span> 
+                    <span *ngIf="eng.value.topics_total_length>0">, and {{eng.value.topics_total_length}} topic<span *ngIf="eng.value.topics_total_length!=1">s</span></span>
+                    <span *ngIf="eng.value.topics_total_length == 0">No topics and categories</span>
 
+                  </label>
+                  <div class="collapsible-content shadow" *ngIf="eng.value.topics_total_length>0">
+                    <div class="content-inner">
                       <div class="wrap-collabsible" *ngFor="let cat of eng.value.categories | keyvalue">
                         <input id="collapsible_{{eng.value.engagement_name}}_{{cat.key}}" class="toggle"
                           type="checkbox">
-                        <label for="collapsible_{{eng.value.engagement_name}}_{{cat.key}}"
-                          class="lbl-toggle">{{cat.key}}
-                          ({{cat.value.topic_length}} topics)</label>
+                        <label for="collapsible_{{eng.value.engagement_name}}_{{cat.key}}" class="lbl-toggle">
+                          <span *ngIf="cat.value.topics_length > 0">{{cat.key}} ({{cat.value.topics_length}} topic<span *ngIf="cat.value.topics_length != 1">s</span>)</span>
+                          <span *ngIf="cat.value.topics_length < 1">No topics</span>
+                        </label>
                         <div class="collapsible-content shadow">
                           <div class="content-inner ">
                             <p class=" small" [ngClass]="{
                                                         'alert-danger': topic.value.topic_soft_delete
                                                       }" style="margin-bottom: 0px;"
                               *ngFor="let topic of cat.value.topics | keyvalue"><a target="_blank"
-                                [routerLink]="topic.value.link"> #{{topic.key}} {{topic.value.topic}}
+                                [routerLink]="topic.value.link"> #{{topic.value.topic_id}} {{topic.value.name}}
                                 ({{topic.value.users_length}} users have access)</a></p>
                           </div>
                         </div>
@@ -261,7 +466,7 @@
                                       }"></label>
                 </div>
                 <div class="switchToggle" *ngIf="eng.value.status == 'new' && eng.key == 'new'">
-                  <button class='btn btn-success btn-action-borderless shadow' (click)="addEng()">Add</button>
+                  <button class='btn btn-success btn-action-borderless shadow' (click)="addEng()" [disabled]="engagements['new']['engagement_name'].length < 2">Add</button>
                 </div>
                 <div class="switchToggle" *ngIf="eng.value.status == 'new' && eng.key != 'new'">
                   <button class='btn btn-danger btn-action-borderless' (click)="deleteEng(eng.key)">Delete</button>
@@ -298,25 +503,20 @@
           <h4 style="color: #4f91cd;">Skill Assessment Tool</h4>
         </div>
       </div>
-      <div class="col-md-4 col-12 px-2">
+      <div *ngIf="currentEng" class="col-md-4 col-12 px-2">
         <div class="text-center">
-          <p class="mt-3">If you have questions, please contact the Training Team</p>
-          <p><a class="mt-3" href="mailto:jennifer@bpcs.com?subject=Question regarding Skill Assessment"
-              style="color: #4f91cd; cursor: pointer;"> Jennifer Hollar</a></p>
-          <p><a class="mt-3" href="mailto:nmelling@bpcs.com?subject=Question regarding Skill Assessment"
-              style="color: #4f91cd; cursor: pointer;"> Nigel Melling</a></p>
-          <p><a class="mt-3" href="mailto:kjenson@bpcs.com?subject=Question regarding Skill Assessment"
-              style="color: #4f91cd; cursor: pointer;"> Kevin Jenson</a></p>
+            <p class="mt-3">{{currentEng.main_text}}</p>
+            <p *ngFor="let contact of currentEng.contacts | keyvalue"><a class="mt-3" href="mailto:{{contact.value.email}}?subject=Question regarding Skill Assessment"
+                    style="color: #4f91cd; cursor: pointer;">{{contact.value.full_name}}</a></p>
         </div>
-      </div>
-      <div class="col-md-4 col-12 px-2" style="margin: 5px">
+    </div>
+    <div *ngIf="currentEng" class="col-md-4 col-12 px-2" style="margin: 5px">
         <div class="text-center  bp-box shadow">
-          <h4 class="mt-3" style="color: #4f91cd; text-shadow: 0px 0px 1px silver;">Blueprint Consulting</h4>
-          <h5 class="mt-3" style="color: #4f91cd; text-shadow: 0px 0px 1px silver;">505 106th Ave NE, Third
-            Floor, Bellevue, WA 98004</h5>
-          <h5 class="mt-3" style="color: #4f91cd; text-shadow: 0px 0px 1px silver;">(206) 455-8326</h5>
+            <h4 class="mt-3" style="color: #4f91cd; text-shadow: 0px 0px 1px silver;">{{currentEng.company_name}}</h4>
+            <h5 class="mt-3" style="color: #4f91cd; text-shadow: 0px 0px 1px silver;">{{currentEng.company_address}}</h5>
+            <h5 class="mt-3" style="color: #4f91cd; text-shadow: 0px 0px 1px silver;">{{currentEng.company_phone_number}}</h5>
         </div>
-      </div>
+    </div>
     </div>
   </div>
 </div>

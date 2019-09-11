@@ -7,11 +7,16 @@ import { ConnectorService } from './../connector.service'
 })
 export class IndexComponent implements OnInit {
   currentUser;
+  currentEng;
   engagements;
   constructor(private _c: ConnectorService) { 
     this._c.user.subscribe(user => this.currentUser = user);
     this._c.engagements.subscribe(engs => {
         this.engagements = engs;
+        // console.log(engs)
+      });
+    this._c.currentEng.subscribe(currentEng => {
+        this.currentEng = currentEng;
         // console.log(engs)
       });
   }

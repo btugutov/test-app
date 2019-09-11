@@ -34,7 +34,7 @@ export class HomeComponent implements OnInit {
         if(params.get('eng')){
           if(this.engagements){
             // console.log("are you trying to renavigate to another engagement?")
-            this.changeCurEng("this._route.paramMap.subscribe(params => {");
+            // this.changeCurEng("this._route.paramMap.subscribe(params => {");
             this.filter_categories_and_topics_by_eng_id(this.cats_n_tops_raw);
             
           }
@@ -45,16 +45,21 @@ export class HomeComponent implements OnInit {
       this.currentUser = user;
       if(user){
         this.getAllCategoriesAndTopicsByProfileId(user.profile_id);
-        
       }
     });
     this._ConnectorService.engagements.subscribe(engs => {
       this.engagements = engs;
-      if(engs){
-        // console.log("========engs =>",engs)
-        this.changeCurEng("this._ConnectorService.engagements.subscribe(engs =>");
-      }
+      // if(engs){
+      //   // console.log("========engs =>",engs)
+      //   this.changeCurEng("this._ConnectorService.engagements.subscribe(engs =>");
+      // }
     });
+    this._ConnectorService.currentEng.subscribe(eng =>{
+      if(eng){
+        this.currentEng = eng;
+      }
+    })
+
   }
 
   ngOnInit() {
@@ -87,8 +92,9 @@ export class HomeComponent implements OnInit {
   }
   getEngagementByEngId(currentEng_id){
     this._ConnectorService.getEngagementByEngId(currentEng_id).then(data =>{
-      console.log("getEngagementByEngId: data =>", data)
       if(data){
+        console.log("ENGAGEMENT WAS UPDATED")
+        this._ConnectorService.setMainInfo({currentEng: currentEng_id})
         if(data[0]['background']){
           // console.log("background!!!")
           // console.log()

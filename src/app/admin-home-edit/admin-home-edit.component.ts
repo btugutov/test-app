@@ -12,6 +12,7 @@ import { Subscription } from 'rxjs';
 export class AdminHomeEditComponent implements OnInit {
   quizzes = null; // all submitted (not graded yet) quizzes
   quizzes_counter = {};
+  currentEng; // current engagement
   currentEng_id = null; // current engagement id
   currentUser = null;
   your_list = null; // list of your current grading quizzes
@@ -26,6 +27,11 @@ export class AdminHomeEditComponent implements OnInit {
       this.popup_message = message;
       if(message){
         this._ConnectorService.setMainInfo({'message': null})
+      }
+    });
+    this._ConnectorService.currentEng.subscribe(currentEng => {
+      if(currentEng){
+        this.currentEng = currentEng;
       }
     });
     this._ConnectorService.user.subscribe(user => {

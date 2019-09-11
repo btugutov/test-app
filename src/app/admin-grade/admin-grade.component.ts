@@ -9,6 +9,7 @@ import { first } from 'rxjs-compat/operator/first';
   styleUrls: ['./admin-grade.component.css']
 })
 export class AdminGradeComponent implements OnInit {
+  currentEng;
   currentEng_id;
   target;
   action;
@@ -32,9 +33,9 @@ export class AdminGradeComponent implements OnInit {
   };
 
   constructor(private _ConnectorService: ConnectorService, private location: Location, private _route: ActivatedRoute, private _r: Router) {
-    // this._ConnectorService.quizz_names.subscribe(quiz_names => {
-    //   this.quiz_names = quiz_names;
-    // })
+    this._ConnectorService.currentEng.subscribe(currentEng => {
+      this.currentEng = currentEng;
+    })
     this._route.paramMap.subscribe(params => {
       this.currentEng_id = params.get('eng');
       this.target = params.get('target_id');

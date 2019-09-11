@@ -13,6 +13,7 @@ import * as cloneDeep from 'lodash/cloneDeep';
 export class AdminCreatequizComponent implements OnInit {
   currentUser = JSON.parse(localStorage['user']);
   main_content;
+  currentEng;
   currentEng_id;
   engagements;
   engagements_obj;
@@ -62,6 +63,7 @@ export class AdminCreatequizComponent implements OnInit {
     this._route.paramMap.subscribe(params => {
       this.currentEng_id = params.get('eng');
     });
+    
     this._ConnectorService.user.subscribe(user => {
       if (user) {
         this.currentUser = user;
@@ -86,6 +88,11 @@ export class AdminCreatequizComponent implements OnInit {
       }
       if (user && !user.admin) {
         this._r.navigate([`/${this.currentEng_id}/home`]);
+      }
+    })
+    this._ConnectorService.currentEng.subscribe(currentEng => {
+      if (currentEng) {
+        this.currentEng = currentEng;
       }
     })
   }

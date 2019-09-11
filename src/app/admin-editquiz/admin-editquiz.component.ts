@@ -16,6 +16,7 @@ export class AdminEditquizComponent implements OnInit {
   currentUser = JSON.parse(localStorage['user']);
   topic_id;
   main_content;
+  currentEng;
   currentEng_id;
   engagements;
   engagements_obj;
@@ -198,6 +199,11 @@ export class AdminEditquizComponent implements OnInit {
       }
       if (user && !user.admin) {
         this._r.navigate([`/${this.currentEng_id}/home`]);
+      }
+    })
+    this._ConnectorService.currentEng.subscribe(currentEng => {
+      if (currentEng) {
+        this.currentEng = currentEng;
       }
     })
     setInterval(() => {

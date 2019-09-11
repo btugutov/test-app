@@ -1897,6 +1897,9 @@ a.disabled {
     border: none !important;
     border-radius: 0px !important;
 }
+.input_border-0-radius{
+    border-radius: 0px !important;
+}
 
 .bp-color {
     color: #4f91cd

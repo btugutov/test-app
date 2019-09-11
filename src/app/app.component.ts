@@ -116,6 +116,7 @@ export class AppComponent implements OnInit {
       if (localStorage.user) {
         this.user_obj = JSON.parse(localStorage.user)
         if (this.user_obj) {
+          // console.log("LINE 119: this.user_obj", this.user_obj)
           this._c.storeUser(this.user_obj);
         }
       } else {
@@ -259,6 +260,7 @@ export class AppComponent implements OnInit {
     // console.log(loc)
     // this._r.navigate([new_loc]);
     this._r.navigateByUrl(`/${eng_id}/home`)
+    this._c.setMainInfo({currentEng:eng_id})
   }
 
 

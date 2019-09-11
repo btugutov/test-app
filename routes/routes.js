@@ -18,7 +18,7 @@ const { get_Quiz, get_quiz_name_by_topic_id, getQuizLength } = require('../backe
 // edit permissions
 const { update_permission_quiz_main, update_permission_admins_main, get_all_users_admin_permission_edit, get_all_users_quiz_permission_edit } = require('../backend/edit_permission.js');
 // grade_quiz
-const { get_completed_quiz_submissions, get_completed_quiz_by_submissions, finish_gradable_quiz_session_by_id, release_grade_hold, release_grade_hold_all, start_grading_quiz, update_grade_input_response, quizEndChecks, continue_grading_quiz, check_current_quizzes, call_stored_proc_grading, call_stored_proc_grading2,call_stored_proc_grading_for_one } = require('../backend/grade_quiz.js');
+const { get_completed_quiz_submissions, get_completed_quiz_by_submissions, finish_gradable_quiz_session_by_id, release_grade_hold, release_grade_hold_all, start_grading_quiz, update_grade_input_response, quizEndChecks, continue_grading_quiz, check_current_quizzes, call_stored_proc_grading, call_stored_proc_grading2, call_stored_proc_grading_for_one } = require('../backend/grade_quiz.js');
 // take_quiz
 const { finish_quiz_session, finish_response, get_image_by_questionID_MSSQL, start_response, get_topic_table_by_engagement } = require('../backend/take_quiz.js');
 // stay_awake
@@ -28,12 +28,12 @@ const { get_KA_quiz_submission_by_profile_id, get_KA_quiz_submission_all, get_KA
 // object_validation
 const { format_quiz_table, unescapingObj, groupBy, groupByKey, categoriesFixer, switchKey, joinUsersByTopicId, removeSpacesFromStr, gradeValidate, findAnswerID, infoValidate, escapeObject, escapingQuiz, sortOnKeys, topicListNameRemoveSpaces, reAssignSession, questionRenderOderAnswers, filterEngagementsByAvailableQuizzes, format_quiz_table2, format_quiz_table_orderby_question_sort, sort_answers_for_question } = require('../backend/object_validation.js');
 // edit_engagement.js
-const { update_engagement_main, get_all_engagemets } = require('../backend/edit_engagement.js');
+const { update_engagement_main, get_all_engagemets, get_engagement_agents_by_eng_id, get_contacts_by_eng_id } = require('../backend/edit_engagement.js');
 let hostname = os.hostname();
 
 function preload_block(res, email, topic_id, engagement_id) {
     let functionName = 'preload_block';
-    let details ={
+    let details = {
         email: email,
         topic_id: topic_id,
         engagement_id: engagement_id
@@ -146,7 +146,7 @@ function create_params_object(currentUser) {
     }
 }
 
-function logEventParser(log_level, log_event, host, line, user_id){
+function logEventParser(log_level, log_event, host, line, user_id) {
     let obj = {
         log_event: log_event,
         log_level: log_level,
@@ -154,7 +154,7 @@ function logEventParser(log_level, log_event, host, line, user_id){
         line: line,
         user_id: user_id,
         event_time: new Date()
-      }
+    }
     logEvent(obj)
 }
 
@@ -260,7 +260,7 @@ module.exports = function (app) {
             "quizID": req.params['quizID'],
             "questionID": req.params['questionID']
         }
-        if(!req.session['user'] ||  (req.session['user'] && !req.session['user']['email'])){
+        if (!req.session['user'] || (req.session['user'] && !req.session['user']['email'])) {
             console.log("==========================NO USER IN SESSION==========================")
 
             response_message.message = "current_user_session_fail";
@@ -274,8 +274,8 @@ module.exports = function (app) {
                 let quiz = returnObj['quiz']
                 // check to see if the database returns anything. If it returns undefined that means that there are no more questions to be answered for this quiz.
                 // Redirect user to the complete page.
-                if(quiz['time_limit']){
-                    if(  Math.floor((new Date() - quiz.start_time)/60000) > quiz['time_limit'] ){
+                if (quiz['time_limit']) {
+                    if (Math.floor((new Date() - quiz.start_time) / 60000) > quiz['time_limit']) {
                         console.log("Quiz is expired!")
                     }
                 }
@@ -343,10 +343,10 @@ module.exports = function (app) {
                     pass_info.push(question_id); */
                     // -----------------------------------------------------------------------------------------------------------------------------------------------
                     object_to_send.anstest2 = format_quiz_table_orderby_question_sort(quiz.quizTable);
-                    
+
                     // Create an array call pass_info. It will be an array of identifying info that will be included with each user response
                     // pass info will hold the following: question_type,display_type,profile_id,submit_id,start_time,question_id
-                    
+
                     // query database for image related data for current question
                     get_image_by_questionID_MSSQL(question_id).then(result => {
                         get_table_complete('KA_test_topic').then(function (topics) {
@@ -495,7 +495,7 @@ module.exports = function (app) {
             eng_id: req.params['eng'],
             'req.body': req.body
         }
-        
+
         let drag_and_drop_bool = false;
         let drag_and_drop_answers = {};
         let iNeedThis = '';
@@ -595,8 +595,8 @@ module.exports = function (app) {
 
     app.post('/api/getQuizLength', (req, res) => {
         getQuizLength(req.body.quiz_id).then(quiz => {
-            res.json(quiz )
-        }).catch(function(err){
+            res.json(quiz)
+        }).catch(function (err) {
             log_event_detailed("ERROR", err, '/api/getQuizLength', null, JSON.stringify(req.body))
         })
     })
@@ -620,7 +620,7 @@ module.exports = function (app) {
     app.post('/api/getCompletedQuizzesLength', (req, res, next) => {
         get_completed_quiz_submissions(req.body.profile_id, req.body.eng_id).then(compQuiz => {
             res.json(compQuiz.length)
-        }).catch(function(err){
+        }).catch(function (err) {
             // logEventParser("ERROR", err, "routes.js", "get_completed_quiz_submissions", null)
             log_event_detailed("ERROR", err, '/api/getCompletedQuizzesLength', null, JSON.stringify(req.body))
         })
@@ -632,7 +632,7 @@ module.exports = function (app) {
                 quizzes[c] = groupBy(quizzes[c], 'topic')
             }
             res.json(quizzes)
-        }).catch(function(err){
+        }).catch(function (err) {
             // logEventParser("ERROR", err, "routes.js", "get_completed_quiz_submissions", null)
             log_event_detailed("ERROR", err, '/api/getCompletedQuizzes', null, JSON.stringify(req.body))
         })
@@ -649,7 +649,7 @@ module.exports = function (app) {
         let details = {
             'req.body': req.body
         };
-        if(!submit_id || submit_id == null){
+        if (!submit_id || submit_id == null) {
             response_message.message = "Submit ID is missing."
             log_event_detailed("ERROR", response_message.message, functionName, req.body.email, JSON.stringify(req.body))
             res.json(response_message)
@@ -691,13 +691,13 @@ module.exports = function (app) {
                 }
 
             })
-            // .catch(function (error) {
-            //     response_message.message = error
-            //     log_event('ERROR', error, 'grade_release');
-            //     logEventParser("ERROR", error, "routes.js", "grade_release", currentUser.profile_id)
-            //     // error_handler(error, res, getLineNumber())
-            //     res.json(response_message)
-            // });
+        // .catch(function (error) {
+        //     response_message.message = error
+        //     log_event('ERROR', error, 'grade_release');
+        //     logEventParser("ERROR", error, "routes.js", "grade_release", currentUser.profile_id)
+        //     // error_handler(error, res, getLineNumber())
+        //     res.json(response_message)
+        // });
     });
 
     // release all current quizzes
@@ -778,7 +778,7 @@ module.exports = function (app) {
                         if (cur_quizzes.length > 0) {
                             for (let el in cur_quizzes) {
                                 if (!cur_quizzes[el]['graded']) {
-                                    console.log("cur_quizzes[el]['submit_id'] =>>>",cur_quizzes[el]['submit_id'])
+                                    console.log("cur_quizzes[el]['submit_id'] =>>>", cur_quizzes[el]['submit_id'])
                                     /* UNCOMMENT IT !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                                         response_message.message = "continue";
                                         response_message.continue = cur_quizzes[el]['submit_id'];
@@ -802,26 +802,26 @@ module.exports = function (app) {
                                             res.json(response_message);
                                             return;
                                         }).catch(function (error) {
-                                                // log_event('ERROR', error, 'gradeHome');
-                                                // error_handler(error, res, getLineNumber())
-                                                response_message.message = error;
-                                                log_event_detailed("ERROR", error, functionName, currentUser.email, JSON.stringify(details))
-                                                // logEventParser("ERROR", error, "routes.js", "/api/getQuizForGrading:  get_quiz_name_by_topic_id", currentUser.profile_id);
-                                                res.json(response_message)
-                                                return;
-                                            });
-                                    }).catch(function (error) {
-                                            // log_event('ERROR', error, 'continue_grade');
+                                            // log_event('ERROR', error, 'gradeHome');
                                             // error_handler(error, res, getLineNumber())
-                                            log_event_detailed("ERROR", error, functionName, currentUser.email, JSON.stringify(details))
-                                            // logEventParser("ERROR", error, "routes.js", "/api/getQuizForGrading: get_completed_quiz_by_submissions", currentUser.profile_id);
                                             response_message.message = error;
+                                            log_event_detailed("ERROR", error, functionName, currentUser.email, JSON.stringify(details))
+                                            // logEventParser("ERROR", error, "routes.js", "/api/getQuizForGrading:  get_quiz_name_by_topic_id", currentUser.profile_id);
                                             res.json(response_message)
                                             return;
                                         });
+                                    }).catch(function (error) {
+                                        // log_event('ERROR', error, 'continue_grade');
+                                        // error_handler(error, res, getLineNumber())
+                                        log_event_detailed("ERROR", error, functionName, currentUser.email, JSON.stringify(details))
+                                        // logEventParser("ERROR", error, "routes.js", "/api/getQuizForGrading: get_completed_quiz_by_submissions", currentUser.profile_id);
+                                        response_message.message = error;
+                                        res.json(response_message)
+                                        return;
+                                    });
                                 }
                             }
-                        }else{
+                        } else {
 
                             start_grading_quiz(currentUser.profile_id, topic_id).then(submit_id => {
                                 // If there are no quizzes left to grade, redirect back to the admin landing page
@@ -843,30 +843,30 @@ module.exports = function (app) {
                                             response_message.quiz_name = quiz_name[0];
                                             res.json(response_message);
                                         }).catch(function (error) {
-                                                log_event_detailed("ERROR", error, functionName, currentUser.email, JSON.stringify(details))
-                                                // log_event('ERROR', error, 'gradeHome');
-                                                // logEventParser("ERROR", error, "routes.js", "/api/getQuizForGrading: get_quiz_name_by_topic_id", currentUser.profile_id);
-                                                // error_handler(error, res, getLineNumber())
-                                                response_message.message = error;
-                                                res.json(response_message)
-                                            });
-                                    }).catch(function (error) {
-                                            // log_event('ERROR', error, 'gradeHome');
-                                            // error_handler(error, res, getLineNumber())
-                                            // logEventParser("ERROR", error, "routes.js", "/api/getQuizForGrading: get_completed_quiz_by_submissions", currentUser.profile_id);
                                             log_event_detailed("ERROR", error, functionName, currentUser.email, JSON.stringify(details))
+                                            // log_event('ERROR', error, 'gradeHome');
+                                            // logEventParser("ERROR", error, "routes.js", "/api/getQuizForGrading: get_quiz_name_by_topic_id", currentUser.profile_id);
+                                            // error_handler(error, res, getLineNumber())
                                             response_message.message = error;
                                             res.json(response_message)
                                         });
+                                    }).catch(function (error) {
+                                        // log_event('ERROR', error, 'gradeHome');
+                                        // error_handler(error, res, getLineNumber())
+                                        // logEventParser("ERROR", error, "routes.js", "/api/getQuizForGrading: get_completed_quiz_by_submissions", currentUser.profile_id);
+                                        log_event_detailed("ERROR", error, functionName, currentUser.email, JSON.stringify(details))
+                                        response_message.message = error;
+                                        res.json(response_message)
+                                    });
                                 }
                             }).catch(function (error) {
-                                    log_event_detailed("ERROR", error, functionName, currentUser.email, JSON.stringify(details))
-                                    // log_event('ERROR', error, 'gradeHome');
-                                    // error_handler(error, res, getLineNumber())
-                                    // logEventParser("ERROR", error, "routes.js", "/api/getQuizForGrading: start_grading_quiz", currentUser.profile_id);
-                                    response_message.message = error;
-                                    res.json(response_message)
-                                });
+                                log_event_detailed("ERROR", error, functionName, currentUser.email, JSON.stringify(details))
+                                // log_event('ERROR', error, 'gradeHome');
+                                // error_handler(error, res, getLineNumber())
+                                // logEventParser("ERROR", error, "routes.js", "/api/getQuizForGrading: start_grading_quiz", currentUser.profile_id);
+                                response_message.message = error;
+                                res.json(response_message)
+                            });
                         }
 
                     }).catch(function (error) {
@@ -887,13 +887,13 @@ module.exports = function (app) {
                     res.json(response_message)
                 }
             })
-            // .catch(function (error) {
-            //     log_event('ERROR', error, '/api/getQuizForGrading: ');
-            //     // error_handler(error, res, getLineNumber())
-            //     logEventParser("ERROR", error, "routes.js", "/api/getQuizForGrading: ", req.body['email']);
-            //     response_message.message = error;
-            //     res.json(response_message)
-            // });
+        // .catch(function (error) {
+        //     log_event('ERROR', error, '/api/getQuizForGrading: ');
+        //     // error_handler(error, res, getLineNumber())
+        //     logEventParser("ERROR", error, "routes.js", "/api/getQuizForGrading: ", req.body['email']);
+        //     response_message.message = error;
+        //     res.json(response_message)
+        // });
     });
     app.post('/api/continue_grade', function (req, res, next) {
         var submit_id = req.body['submit_id'];
@@ -905,7 +905,7 @@ module.exports = function (app) {
         let details = {
             "req.body": req.body
         }
-        
+
         preload_block(res, req.body['email'], undefined, req.params['eng'])
             .catch(function (error) {
                 debugLog("ERROR HERE" + error);
@@ -935,45 +935,45 @@ module.exports = function (app) {
                                     response_message.quiz_name = quiz_name[0];
                                     res.json(response_message);
                                 }).catch(function (error) {
-                                        // log_event('ERROR', error, 'gradeHome');
-                                        // error_handler(error, res, getLineNumber())
-                                        log_event_detailed("ERROR", error, functionName, currentUser.email, JSON.stringify(details))
-                                        // logEventParser("ERROR", error, "routes.js", "/api/continue_grade: get_quiz_name_by_topic_id", currentUser.profile_id);
-                                        response_message.message = error;
-                                        res.json(response_message)
-                                    });
-                            }).catch(function (error) {
-                                    // log_event('ERROR', error, 'continue_grade');
+                                    // log_event('ERROR', error, 'gradeHome');
                                     // error_handler(error, res, getLineNumber())
-                                    response_message.message = error;
                                     log_event_detailed("ERROR", error, functionName, currentUser.email, JSON.stringify(details))
-                                    // logEventParser("ERROR", error, "routes.js", "/api/continue_grade: get_completed_quiz_by_submissions", currentUser.profile_id);
+                                    // logEventParser("ERROR", error, "routes.js", "/api/continue_grade: get_quiz_name_by_topic_id", currentUser.profile_id);
+                                    response_message.message = error;
                                     res.json(response_message)
                                 });
+                            }).catch(function (error) {
+                                // log_event('ERROR', error, 'continue_grade');
+                                // error_handler(error, res, getLineNumber())
+                                response_message.message = error;
+                                log_event_detailed("ERROR", error, functionName, currentUser.email, JSON.stringify(details))
+                                // logEventParser("ERROR", error, "routes.js", "/api/continue_grade: get_completed_quiz_by_submissions", currentUser.profile_id);
+                                res.json(response_message)
+                            });
                         }
                     }).catch(function (error) {
-                            log_event_detailed("ERROR", error, functionName, currentUser.email, JSON.stringify(details))    
-                            // log_event('ERROR', error, 'continue_grade');
-                            // error_handler(error, res, getLineNumber())
-                            // logEventParser("ERROR", error, "routes.js", "/api/continue_grade: continue_grading_quiz", currentUser.profile_id);
-                            response_message.message = error;
-                            res.json(response_message)
-                        });
+                        log_event_detailed("ERROR", error, functionName, currentUser.email, JSON.stringify(details))
+                        // log_event('ERROR', error, 'continue_grade');
+                        // error_handler(error, res, getLineNumber())
+                        // logEventParser("ERROR", error, "routes.js", "/api/continue_grade: continue_grading_quiz", currentUser.profile_id);
+                        response_message.message = error;
+                        res.json(response_message)
+                    });
                 }
                 // if not admin, redirect to an error page
                 else {
                     response_message.message = 'You have no permission.';
-                    log_event_detailed("WARNING", response_message.message, functionName, currentUser.email, JSON.stringify(details)) 
+                    log_event_detailed("WARNING", response_message.message, functionName, currentUser.email, JSON.stringify(details))
                     // logEventParser("WARNING", 'You have no permission.', "routes.js", "/api/continue_grade: continue_grading_quiz", currentUser.profile_id);
                     res.json(response_message)
                 }
             })
-            // .catch(function (error) {
-            //     log_event('ERROR', error, 'continue_grade');
-            //     error_handler(error, res, getLineNumber())
-            //     response_message.message = error;
-            //     res.json(response_message)
-            // });
+        // .catch(function (error) {
+        //     log_event('ERROR', error, 'continue_grade');
+        //     error_handler(error, res, getLineNumber())
+        //     response_message.message = error;
+        //     res.json(response_message)
+        // });
     });
     app.post('/api/submitGrades', function (req, res, next) {
         let response_message = {
@@ -1013,14 +1013,14 @@ module.exports = function (app) {
                         // loop through each question and update DB with score (and feedback if provided)
                         let quiz_length = 0;
                         for (let el in quiz) {
-                            if(typeof(quiz[el])!='object'){
+                            if (typeof (quiz[el]) != 'object') {
                                 continue;
                             }
-                            quiz_length ++;
+                            quiz_length++;
                         }
                         let counter = 0;
                         for (let el in quiz) {
-                            if(typeof(quiz[el])!='object'){
+                            if (typeof (quiz[el]) != 'object') {
                                 continue;
                             }
                             console.log("============================================================")
@@ -1029,7 +1029,7 @@ module.exports = function (app) {
                                 console.log("update_grade_input_response(el, submission_id, quiz[el][0], quiz[el][1], reviewer_id, quiz[el][2]): res is good")
                                 counter++;
                                 console.log("quiz_length =>", quiz_length, "; counter =>", counter)
-                                if(counter == quiz_length){
+                                if (counter == quiz_length) {
                                     finish_gradable_quiz_session_by_id(submission_id).then(response => {
                                         console.log("finish_gradable_quiz_session_by_id; response =>", response)
                                         details.submission_id = submission_id;
@@ -1049,7 +1049,7 @@ module.exports = function (app) {
                                             response_message.message = error;
                                             res.json(response_message)
                                         });;
-            
+
                                     }).catch(function (error) {
                                         log_event_detailed("ERROR", error, functionName, currentUser.email, JSON.stringify(details))
                                         // log_event('ERROR', error, functionName);
@@ -1059,12 +1059,12 @@ module.exports = function (app) {
                                         res.json(response_message)
                                     });;
                                 }
-                            }).catch(function(error){
+                            }).catch(function (error) {
                                 console.log("update_grade_input_response(el, submission_id, quiz[el][0], quiz[el][1], reviewer_id, quiz[el][2]): res is bad")
                             });
                             console.log("============================================================")
                         }
-                        
+
                         // After grading is completed, redirect admin the the admin landing page
                     } else {
                         response_message.message = 'You have no permission.';
@@ -1073,13 +1073,13 @@ module.exports = function (app) {
                         res.json(response_message)
                     }
                 })
-                // .catch(function (error) {
-                //     log_event('ERROR', error, 'gradeHome');
-                //     // error_handler(error, res, getLineNumber());
-                //     logEventParser("ERROR", error, "routes.js", "finish_gradable_quiz_session_by_id", currentUser.profile_id);
-                //     response_message.message = error;
-                //     res.json(response_message)
-                // });
+            // .catch(function (error) {
+            //     log_event('ERROR', error, 'gradeHome');
+            //     // error_handler(error, res, getLineNumber());
+            //     logEventParser("ERROR", error, "routes.js", "finish_gradable_quiz_session_by_id", currentUser.profile_id);
+            //     response_message.message = error;
+            //     res.json(response_message)
+            // });
         } catch (err) {
             log_event_detailed("ERROR", err, functionName, null, JSON.stringify(details))
             // logEventParser("ERROR", err, "routes.js", "/api/submitGrades", req.body['email']);
@@ -1098,11 +1098,11 @@ module.exports = function (app) {
         }
         let grades = req.body.grades;
         try {
-            call_stored_proc_grading2(req.body.submit_id).then(res =>{
+            call_stored_proc_grading2(req.body.submit_id).then(res => {
                 response_message.status = 'success';
                 response_message.body = res;
                 res.json(response_message)
-            }).catch(function(err){
+            }).catch(function (err) {
                 response_message.message = err;
                 log_event_detailed("ERROR", err, functionName, null, JSON.stringify(details))
                 // logEventParser("ERROR", err, "routes.js", "/api/submitGradesForOneQuiz: call_stored_proc_grading2", null);
@@ -1129,7 +1129,7 @@ module.exports = function (app) {
     // ********************                         ***************************
     // ************************************************************************
     // ************************************************************************
-    
+
     app.post('/api/getCatsTopsEngs', (req, res, next) => {
         let response_message = {
             'status': 'failed',
@@ -1187,13 +1187,13 @@ module.exports = function (app) {
                         res.json(response_message)
                     }
                 })
-                // .catch(function (error) {
-                //     log_event('ERROR', error, 'preload_block');
-                //     // error_handler(error, res, getLineNumber());
-                //     logEventParser("ERROR", 'You have no permission.', "routes.js", "get_table_complete('KA_engagement')", currentUser.profile_id);
-                //     response_message.message = error;
-                //     res.json(response_message)
-                // });
+            // .catch(function (error) {
+            //     log_event('ERROR', error, 'preload_block');
+            //     // error_handler(error, res, getLineNumber());
+            //     logEventParser("ERROR", 'You have no permission.', "routes.js", "get_table_complete('KA_engagement')", currentUser.profile_id);
+            //     response_message.message = error;
+            //     res.json(response_message)
+            // });
         } catch (err) {
             response_message.status = err;
             log_event_detailed("ERROR", err, functionName, req.body['email'], JSON.stringify(details));
@@ -1302,13 +1302,13 @@ module.exports = function (app) {
                         res.json(response_message)
                     }
                 })
-                // .catch(function (error) {
-                //     log_event('ERROR', error, 'preload_block');
-                //     // error_handler(error, res, getLineNumber());
-                //     logEventParser("ERROR", error, "routes.js", "get_table_complete('KA_test_topic')",  currentUser.profile_id)
-                //     response_message.message = error;
-                //     res.json(response_message)
-                // });
+            // .catch(function (error) {
+            //     log_event('ERROR', error, 'preload_block');
+            //     // error_handler(error, res, getLineNumber());
+            //     logEventParser("ERROR", error, "routes.js", "get_table_complete('KA_test_topic')",  currentUser.profile_id)
+            //     response_message.message = error;
+            //     res.json(response_message)
+            // });
         } catch (err) {
             response_message.status = err;
             log_event_detailed("ERROR", err, functionName, currentUser.email, JSON.stringify(details));
@@ -1337,7 +1337,7 @@ module.exports = function (app) {
             response_message.quiz_original = result;
             // response_message.quiz2 = result;
             // response_message.quiz3 = format_quiz_table2(result);
-            get_buckets_by_topic_id(req.body['topic_id']).then(buckets =>{
+            get_buckets_by_topic_id(req.body['topic_id']).then(buckets => {
                 response_message.buckets = unescapingObj(buckets);
                 let time3 = JSON.stringify(new Date());
                 console.log("rending response to the FE", time3)
@@ -1423,26 +1423,26 @@ module.exports = function (app) {
                     let currentUser = returnObj['currentUser']
                     // check to make sure that user has grading permissions before accepting data from the post
                     if (currentUser.admin_editor || currentUser.admin_owner) {
-                        get_topic_info_and_quesion_ids_by_topic_id_for_edit(req.body.quiz_id).then(function(data){
+                        get_topic_info_and_quesion_ids_by_topic_id_for_edit(req.body.quiz_id).then(function (data) {
                             response_message.status = 'success';
                             response_message.body = data;
                             res.json(response_message)
-                        }).catch(function(error){
+                        }).catch(function (error) {
                             response_message.body = data;
                             res.json(response_message)
                         })
-                    }else{
+                    } else {
                         log_event_detailed("WARNING", 'No permission.', functionName, req.body.email, JSON.stringify(details));
                         response_message.message = "No permission";
                         res.json(response_message)
                     }
                 });
-            }catch (err) {
-                response_message.status = err;
-                log_event_detailed("ERROR", err, functionName, currentUser.email, JSON.stringify(details));
-                // logEventParser("ERROR", err, "routes.js", "/api/getQuizzesForEdit", req.body['email'])
-                res.json(response_message)
-            }
+        } catch (err) {
+            response_message.status = err;
+            log_event_detailed("ERROR", err, functionName, currentUser.email, JSON.stringify(details));
+            // logEventParser("ERROR", err, "routes.js", "/api/getQuizzesForEdit", req.body['email'])
+            res.json(response_message)
+        }
     })
     app.post('/api/getQuestionInfoById', (req, res, next) => {
         let response_message = {
@@ -1464,26 +1464,26 @@ module.exports = function (app) {
                     let currentUser = returnObj['currentUser']
                     // check to make sure that user has grading permissions before accepting data from the post
                     if (currentUser.admin_editor || currentUser.admin_owner) {
-                        get_question_info_by_id(req.body.question_id).then(function(data){
+                        get_question_info_by_id(req.body.question_id).then(function (data) {
                             response_message.status = 'success';
                             response_message.body = data;
                             res.json(response_message)
-                        }).catch(function(error){
+                        }).catch(function (error) {
                             response_message.body = data;
                             res.json(response_message)
                         })
-                    }else{
+                    } else {
                         log_event_detailed("WARNING", 'No permission.', functionName, req.body.email, JSON.stringify(details));
                         response_message.message = "No permission";
                         res.json(response_message)
                     }
                 });
-            }catch (err) {
-                response_message.status = err;
-                log_event_detailed("ERROR", err, functionName, currentUser.email, JSON.stringify(details));
-                // logEventParser("ERROR", err, "routes.js", "/api/getQuizzesForEdit", req.body['email'])
-                res.json(response_message)
-            }
+        } catch (err) {
+            response_message.status = err;
+            log_event_detailed("ERROR", err, functionName, currentUser.email, JSON.stringify(details));
+            // logEventParser("ERROR", err, "routes.js", "/api/getQuizzesForEdit", req.body['email'])
+            res.json(response_message)
+        }
     })
     app.post('/api/getQuestionIds', (req, res, next) => {
         let r_r_c = JSON.stringify(new Date());
@@ -1505,7 +1505,7 @@ module.exports = function (app) {
             response_message.quiz_original = result;
             // response_message.quiz2 = result;
             // response_message.quiz3 = format_quiz_table2(result);
-            get_buckets_by_topic_id(req.body['topic_id']).then(buckets =>{
+            get_buckets_by_topic_id(req.body['topic_id']).then(buckets => {
                 response_message.buckets = unescapingObj(buckets);
                 let time3 = JSON.stringify(new Date());
                 console.log("rending response to the FE", time3)
@@ -1673,18 +1673,18 @@ module.exports = function (app) {
                 // var submitted_quiz = JSON.parse(Object.keys(req.body)) // quiz comes escaped
                 disableQuiz(req.body.quiz_id).then(result => {
                     console.log("disableQuiz res =>", result)
-                    if(result){
+                    if (result) {
                         response_message.status = 'success'
                         res.json(response_message)
                     }
-                }).catch(function(error){
+                }).catch(function (error) {
                     console.log("Error is here!", error)
                     debugLog("ERROR HERE" + error);
                     response_message.message = error;
                     log_event_detailed("ERROR", error, functionName, req.body.email, JSON.stringify(details));
                     // logEventParser("ERROR", error, "routes.js", "/api/disableQuiz: disableQuiz", currentUser.profile_id);
                     res.json(response_message);
-                })  
+                })
             })
             .catch(function (error) {
                 debugLog("ERROR HERE" + error);
@@ -1736,7 +1736,6 @@ module.exports = function (app) {
                     get_all_engagemets().then(res_engs => {
                         response_message.status = 'success';
                         response_message.body = res_engs
-                        // response_message.body = Object.assign({}, switchKey(unescapingObj(res_engs), 'engagement_id'));
                         res.json(response_message)
                     }).catch(function (err) {
                         response_message.message = error;
@@ -1754,61 +1753,148 @@ module.exports = function (app) {
                 }
             })
     });
+    // 
+    app.post('/api/get_engagement_agents_by_eng_id', (req, res, next) => {
+        let functionName = '/api/get_engagement_agents_by_eng_id';
+        console.log(functionName, "=>", req.body)
+        let details = {
+            'req.body': req.body
+        }
+        let response_message = {
+            'status': 'fail',
+            'message': ''
+        }
+        preload_block(res, req.body['email'], undefined, req.body['eng_id'])
+            .catch(function (error) {
+                console.log("ERROR HERE" + error);
+                debugLog("ERROR HERE" + error);
+                response_message.message = error;
+                res.json(response_message)
+                return;
+            })
+            .then(user => {
+                if (user.currentUser.admin_permissions || user.currentUser.admin_owner) {
+                    get_engagement_agents_by_eng_id(req.body['eng_id']).then(res_engs => {
+                        response_message.status = 'success';
+                        response_message.body = unescapingObj(res_engs) 
+                        res.json(response_message)
+                    }).catch(function (err) {
+                        response_message.message = error;
+                        log_event_detailed("ERROR", error, functionName, req.body.email, JSON.stringify(details));
+                        // logEventParser("ERROR", error, "routes.js", "/api/get_all_engagemets: get_all_engagemets", currentUser.profile_id);
+                        res.json(response_message)
+                    })
 
+                } else {
+                    response_message.message = 'No permission.';
+                    log_event_detailed("WARNING", 'No permission.', functionName, req.body.email, JSON.stringify(details));
+                    // logEventParser("WARNING", "No permission.", "routes.js", "/api/get_all_engagemets: get_all_engagemets", currentUser.profile_id);
+                    res.json(response_message)
+                }
+            })
+    });
+    app.post('/api/get_contacts_by_eng_id', (req, res, next) => {
+        let functionName = '/api/get_contacts_by_eng_id';
+        console.log(functionName, "=>", req.body)
+        let details = {
+            'req.body': req.body
+        }
+        let response_message = {
+            'status': 'fail',
+            'message': ''
+        }
+        preload_block(res, req.body['email'], undefined, req.body['eng_id'])
+            .catch(function (error) {
+                console.log("ERROR HERE" + error);
+                debugLog("ERROR HERE" + error);
+                response_message.message = error;
+                res.json(response_message)
+                return;
+            })
+            .then(user => {
+                if (user.currentUser.admin_permissions || user.currentUser.admin_owner) {
+                    get_contacts_by_eng_id(req.body['eng_id']).then(res_engs => {
+                        response_message.status = 'success';
+                        response_message.body = unescapingObj(res_engs);
+                        res.json(response_message)
+                    }).catch(function (err) {
+                        response_message.message = error;
+                        log_event_detailed("ERROR", error, functionName, req.body.email, JSON.stringify(details));
+                        // logEventParser("ERROR", error, "routes.js", "/api/get_all_engagemets: get_all_engagemets", currentUser.profile_id);
+                        res.json(response_message)
+                    })
+                } else {
+                    response_message.message = 'No permission.';
+                    log_event_detailed("WARNING", 'No permission.', functionName, req.body.email, JSON.stringify(details));
+                    // logEventParser("WARNING", "No permission.", "routes.js", "/api/get_all_engagemets: get_all_engagemets", currentUser.profile_id);
+                    res.json(response_message)
+                }
+            })
+    });
     app.post('/api/get_availableEngagements', (req, res, next) => {
         let functionName = '/api/get_availableEngagements';
-        console.log(functionName, "=>",req.body)
+        console.log(functionName, "=>", req.body)
         let details = {
             'req.body': req.body
         }
         preload_block(res, req.body['email'], undefined, req.body['eng_id'])
-        .catch(function (error) {
-            debugLog("ERROR HERE" + error);
-            response_message.message = error;
-            // logEventParser("ERROR", err, "routes.js", "/api/saveEngagements: preload_block", req.body['email']);
-            res.json(response_message)
-        })
-        .then(user => {
-            if(user.currentUser.admin_permissions || user.currentUser.admin_owner){
-                get_all_engagemets_for_admin().then(res_engs => {
-                    // response_message.body = Object.assign({}, switchKey(unescapingObj(res_engs), 'engagement_id'));
-                    res.json(unescapingObj(res_engs))
-                }).catch(function (err) {
-                    response_message.message = error;
-                    log_event_detailed("ERROR", error, functionName, req.body.email, JSON.stringify(details));
-                    // logEventParser("ERROR", error, "routes.js", "/api/get_all_engagemets: get_all_engagemets", currentUser.profile_id);
-                    res.json(response_message)
-                })
-            }else{
-                get_available_engagements_by_profile_id(req.body.profile_id).then(response => {
-                    res.json(unescapingObj(response));
-                }).catch(function (err) {
-                    console.log("ERROR => ", err)
-                    log_event_detailed("ERROR", err, functionName, null, JSON.stringify(details));
-                    res.json(err);
-                })
-            }
-        })
+            .catch(function (error) {
+                console.log("ERROR HERE" + error);
+                debugLog("ERROR HERE" + error);
+                response_message.message = error;
+                // logEventParser("ERROR", err, "routes.js", "/api/saveEngagements: preload_block", req.body['email']);
+                res.json(response_message)
+                return;
+            })
+            .then(user => {
+                if (user.currentUser.admin_permissions || user.currentUser.admin_owner) {
+                    get_all_engagemets_for_admin().then(res_engs => {
+                        // response_message.body = Object.assign({}, switchKey(unescapingObj(res_engs), 'engagement_id'));
+                        res.json(unescapingObj(res_engs))
+                        return;
+                    }).catch(function (err) {
+                        response_message.message = error;
+                        log_event_detailed("ERROR", error, functionName, req.body.email, JSON.stringify(details));
+                        // logEventParser("ERROR", error, "routes.js", "/api/get_all_engagemets: get_all_engagemets", currentUser.profile_id);
+                        res.json(response_message)
+                        return;
+                    })
+                } else {
+                    get_available_engagements_by_profile_id(req.body.profile_id).then(response => {
+                        res.json(unescapingObj(response));
+                        return;
+                    }).catch(function (err) {
+                        console.log("ERROR => ", err)
+                        log_event_detailed("ERROR", err, functionName, null, JSON.stringify(details));
+                        res.json(err);
+                        return;
+                    })
+                }
+            })
     });
-    
+
     app.post('/api/getEngagementByEngId', (req, res, next) => {
         let functionName = '/api/getEngagementByEngId';
         let details = {
             'req.body': req.body
         }
         // log_event_detailed("ERROR", err, functionName, null, JSON.stringify(details));
+        console.log(functionName," req.body =>", req.body)
         getEngagementByEngId(req.body.eng_id).then(response => {
-            res.json(unescapingObj(response));
+            get_contacts_by_eng_id(req.body.eng_id).then(data =>{
+                response[0]['contacts'] = data
+                res.json(unescapingObj(response));
+            })
         }).catch(function (err) {
             console.log("ERROR => ", err)
             log_event_detailed("ERROR", err, functionName, null, JSON.stringify(details));
             // logEventParser("ERROR", err, "routes.js", "/api/getEngagementByEngId: getEngagementByEngId", req.body.profile_id);
             res.json(err);
         })
-        
+
     });
 
-    
+
     app.post('/api/saveEngagements', (req, res, next) => {
         let response_message = {
             'status': 'fail',
@@ -1819,8 +1905,8 @@ module.exports = function (app) {
             'req.body': req.body
         }
         // log_event_detailed("ERROR", err, functionName, null, JSON.stringify(details));
-        console.log("save_engagemets: admin email  =>", req.body.email);
-        console.log("save_engagemets: engagement id =>", req.body.eng_id);
+        // console.log("save_engagemets: req.body =>", req.body);
+        // console.log("save_engagemets: engagement id =>", req.body.eng_id);
         preload_block(res, req.body['email'], undefined, req.body['eng_id'])
             .catch(function (error) {
                 debugLog("ERROR HERE" + error);
@@ -1831,16 +1917,16 @@ module.exports = function (app) {
             .then(returnObj => {
                 let currentUser = returnObj['currentUser']
                 if (currentUser.admin_permissions || currentUser.admin_owner) {
-                    update_engagement_main(escapeObject(req.body.engs), req.body['email']).then(res =>{
+                    update_engagement_main(escapeObject(req.body.engs), req.body['email']).then(res => {
                         console.log("update_engagement_main: res =>", res)
-                    }).catch(function(error){
+                    }).catch(function (error) {
                         log_event_detailed("ERROR", error, functionName, currentUser.email, JSON.stringify(details))
                     })
                     response_message.status = 'success';
                     res.json(response_message)
 
                     // log_event_detailed("ERROR", err, functionName, null, JSON.stringify(details));
-                    
+
                 }
                 // if not admin with editing permissions, redirect to error page
                 else {
@@ -1916,14 +2002,14 @@ module.exports = function (app) {
                     res.json(response_message)
                 })
             })
-            // .catch(function (error) {
-            //     log_event_detailed("ERROR", error, functionName, currentUser.email, JSON.stringify(details))
-            //     // log_event('ERROR', error, 'EditQuizPermissions');
-            //     // error_handler(error, res, getLineNumber())
-            //     // logEventParser("ERROR", error, "routes.js", `${api_call_name}: preload_block`, req.body.email);
-            //     response_message.message = error;
-            //     res.json(response_message)
-            // })
+        // .catch(function (error) {
+        //     log_event_detailed("ERROR", error, functionName, currentUser.email, JSON.stringify(details))
+        //     // log_event('ERROR', error, 'EditQuizPermissions');
+        //     // error_handler(error, res, getLineNumber())
+        //     // logEventParser("ERROR", error, "routes.js", `${api_call_name}: preload_block`, req.body.email);
+        //     response_message.message = error;
+        //     res.json(response_message)
+        // })
     });
     app.post('/api/saveQuizPermissions', (req, res, next) => {
         let response_message = {
@@ -2007,14 +2093,14 @@ module.exports = function (app) {
                     res.json(response_message)
                 })
             })
-            // .catch(function (error) {
-            //     log_event_detailed("ERROR", error, functionName, req.body.email, JSON.stringify(details));
-            //     // log_event('ERROR', error, 'EditQuizPermissions');
-            //     // error_handler(error, res, getLineNumber())
-            //     // logEventParser("ERROR", error, "routes.js", `${api_call_name}: preload_block`, req.body.email);
-            //     response_message.message = error;
-            //     res.json(response_message)
-            // })
+        // .catch(function (error) {
+        //     log_event_detailed("ERROR", error, functionName, req.body.email, JSON.stringify(details));
+        //     // log_event('ERROR', error, 'EditQuizPermissions');
+        //     // error_handler(error, res, getLineNumber())
+        //     // logEventParser("ERROR", error, "routes.js", `${api_call_name}: preload_block`, req.body.email);
+        //     response_message.message = error;
+        //     res.json(response_message)
+        // })
     });
     app.post('/api/saveQuizSubmissions', (req, res, next) => {
         let response_message = {
@@ -2040,7 +2126,7 @@ module.exports = function (app) {
             .then(returnObj => {
                 let currentUser = returnObj['currentUser']
                 if (currentUser.admin_permissions || currentUser.admin_owner) {
-                    edit_submissions_main(req.body['users'], currentUser['profile_id']).then(ressult1 =>{
+                    edit_submissions_main(req.body['users'], currentUser['profile_id']).then(ressult1 => {
                         get_KA_quiz_submission_by_engagement_id(req.body['eng_id']).then(result => {
                             // render homepage and turn header ID token into usable variable (user email)
                             // currentUser.admin_permissions || currentUser.admin_owner
@@ -2098,7 +2184,7 @@ module.exports = function (app) {
                     //     // call_stored_proc_grading().catch(function(error) {
                     //     //     log_event('ERROR', error, 'call_stored_proc_grading');
                     //     // })
-                        
+
                     // }, Object.keys(req.body['users']).length * 100)
                 }
                 // if not admin with editing permissions, redirect to error page
@@ -2141,13 +2227,13 @@ module.exports = function (app) {
                         }
                         response_message.status = 'success';
                         res.json(response_message)
-                    }).catch(function(err){
+                    }).catch(function (err) {
                         response_message.message = err;
                         log_event_detailed("ERROR", err, functionName, req.body.email, JSON.stringify(details));
                         // logEventParser("ERROR", err, "routes.js", `${api_call_name}: get_all_users_admin_permission_edit`, currentUser.profile_id);
                         res.json(response_message)
                     })
-                }else{
+                } else {
                     response_message.message = 'No permission.';
                     log_event_detailed("WARNING", 'No permission.', functionName, req.body.email, JSON.stringify(details));
                     // logEventParser("WARNING", 'No permission.', "routes.js", `${api_call_name}: preload_block`, req.body.email);
@@ -2194,8 +2280,8 @@ module.exports = function (app) {
     });
     // =================== END OF Quiz Submissions FUNCTIONS ==================
 
-     // ==================== Bucket FUNCTIONS ========================
-     app.post('/api/saveOneBucket', (req, res, next) => {
+    // ==================== Bucket FUNCTIONS ========================
+    app.post('/api/saveOneBucket', (req, res, next) => {
         let response_message = {
             'status': 'failed',
             'message': ''
@@ -2221,7 +2307,7 @@ module.exports = function (app) {
 
     // =================== END OF Bucket FUNCTIONS ==================
 
-     // ==================== LOGEVENT FUNCTIONS ========================
+    // ==================== LOGEVENT FUNCTIONS ========================
     app.post('/api/logEvent', (req, res, next) => {
         let functionName = 'logEvent';
         let response_message = {
@@ -2270,12 +2356,12 @@ module.exports = function (app) {
             .then(returnObj => {
                 let currentUser = returnObj['currentUser']
                 if (currentUser.admin_permissions || currentUser.admin_owner) {
-                    getEventLog().then(result =>{
+                    getEventLog().then(result => {
                         console.log("etEventLog().then => result.length", result.length)
                         response_message.status = 'success';
                         response_message.body = result;
                         res.json(response_message)
-                    }).catch(function(error){
+                    }).catch(function (error) {
                         debugLog("ERROR HERE" + error);
                         response_message.message = error;
                         logEventParser("ERROR", error, "routes.js", `${api_call_name}: getEventLog`, currentUser.profile_id);
@@ -2307,12 +2393,12 @@ module.exports = function (app) {
             .then(returnObj => {
                 let currentUser = returnObj['currentUser']
                 if (currentUser.admin_permissions || currentUser.admin_owner) {
-                    getNewLogs(req.body.last_id).then(result =>{
+                    getNewLogs(req.body.last_id).then(result => {
                         // console.log(`getNewLogs(${req.body.last_id}).then =>`, result)
                         response_message.status = 'success';
                         response_message.body = result;
                         res.json(response_message)
-                    }).catch(function(error){
+                    }).catch(function (error) {
                         debugLog("ERROR HERE" + error);
                         response_message.message = error;
                         logEventParser("ERROR", error, "routes.js", `${api_call_name}: getEventLog`, currentUser.profile_id);
@@ -2333,11 +2419,11 @@ module.exports = function (app) {
             'status': 'failed',
             'message': ''
         }
-        getEventLogByID(req.body.log_id).then(result =>{
+        getEventLogByID(req.body.log_id).then(result => {
             response_message.status = 'success';
             response_message.body = result;
             res.json(response_message)
-        }).catch(function(error){
+        }).catch(function (error) {
             debugLog("ERROR HERE" + error);
             response_message.message = error;
             logEventParser("ERROR", error, "routes.js", `${api_call_name}: getEventLog`, currentUser.profile_id);
@@ -2382,12 +2468,12 @@ module.exports = function (app) {
     //             }
     //         })
     // });
-    
-    
+
+
 
     // =================== END OF LOGEVENT FUNCTIONS ==================
 
-    
+
     // ************************************************************************
     // ************************* END OF MISC  FUNCTIONS ***********************
     // ************************************************************************

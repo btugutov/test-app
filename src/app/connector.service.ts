@@ -7,6 +7,7 @@ import 'rxjs/add/operator/map';
 import 'rxjs/Rx';
 import { log } from 'util';
 import { reject } from 'q';
+import { connectableObservableDescriptor } from 'rxjs/internal/observable/ConnectableObservable';
 @Injectable({
   providedIn: 'root'
 })
@@ -41,13 +42,19 @@ export class ConnectorService {
         res => {
           that.getAvailableEngagements(res['profile_id'], res['email']).then(engs => {
             // console.log("===========engs =>", engs)
-            res['engs'] = engs;
-            that.engs.next(that.objToToArray(engs));
-            that.cur_user.next(res);
-            resolve(res)
+            if(engs){
+              res['engs'] = engs;
+              that.engs.next(that.objToToArray(engs));
+              that.cur_user.next(res);
+              resolve(res)
+            }
+          })
+          .catch(function(error){
+            // console.log("ERROR! =>", error)
           })
         },
         err => {
+          // console.log("ERROR!", err)
           reject(err)
         }
       );
@@ -59,7 +66,7 @@ export class ConnectorService {
     }
     var that = this;
     user = JSON.parse(user)
-    console.log("update_user_session =>", user)
+    // console.log("update_user_session =>", user)
     return new Promise(function (resolve, reject) {
       that.http.post('/api/store_user', user).subscribe(
         res => {
@@ -79,16 +86,16 @@ export class ConnectorService {
     return new Promise(function (resolve, reject) {
       that.http.post('/api/get_User', email).subscribe(
         res => {
-          // console.log("RES =>", res)
+          console.log("RES =>", res)
           resolve(res)
         },
         err => {
-          // console.log("ERROR =>", err)
+          console.log("ERROR =>", err)
           reject(err)
         }
       );
     })
-    // console.log("done")
+    console.log("done")
   }
   // ENGAGEMENT FUNCTIONS =========================================================
   getAvailableEngagements(profile_id, email) {
@@ -394,7 +401,7 @@ export class ConnectorService {
         'email': email,
         'topic_id': topic_id
       }
-      // console.log("getQuizByTopicIdForEdit")
+      console.log("getQuizByTopicIdForEdit")
       that.http.post('/api/getQuizByTopicIdForEdit', obj).subscribe(
         res => {
           resolve(res)
@@ -515,7 +522,7 @@ export class ConnectorService {
         quiz_id: quiz_id,
         email: email
       }
-      // console.log("getQuizByTopicIdForEdit")
+      console.log("getQuizByTopicIdForEdit")
       that.http.post('/api/getQuizInfoById', obj).subscribe(
         res => {
           resolve(res)
@@ -533,7 +540,7 @@ export class ConnectorService {
         quiz_id: quiz_id,
         email: email
       }
-      // console.log("getQuizByTopicIdForEdit")
+      console.log("getQuizByTopicIdForEdit")
       that.http.post('/api/getQuestionIds', obj).subscribe(
         res => {
           resolve(res)
@@ -551,7 +558,7 @@ export class ConnectorService {
         question_id: question_id,
         email: email
       }
-      // console.log("getQuizByTopicIdForEdit")
+      console.log("getQuizByTopicIdForEdit")
       that.http.post('/api/getQuestionInfoById', obj).subscribe(
         res => {
           resolve(res)
@@ -671,6 +678,33 @@ export class ConnectorService {
       );
     })
   }
+  get_engagement_agents_by_eng_id(obj) {
+    var that = this;
+    return new Promise(function (resolve, reject) {
+      that.http.post('/api/get_engagement_agents_by_eng_id', obj).subscribe(
+        res => {
+          resolve(res)
+        },
+        err => {
+          reject(err)
+        }
+      );
+    })
+  }
+  get_contacts_by_eng_id(obj) {
+    var that = this;
+    return new Promise(function (resolve, reject) {
+      that.http.post('/api/get_contacts_by_eng_id', obj).subscribe(
+        res => {
+          resolve(res)
+        },
+        err => {
+          reject(err)
+        }
+      );
+    })
+  }
+
   saveEngagements(obj) {
     var that = this;
     return new Promise(function (resolve, reject) {
@@ -727,13 +761,46 @@ export class ConnectorService {
     return result
   };
   setMainInfo(obj) {
-    console.log("setMainInfo(obj) =>", obj)
+    // console.log("setMainInfo(obj) =>", obj)
     if (obj.currentUser) {
       this.cur_user.next(obj.currentUser);
     }
     if (obj.currentEng) {
-      this.curEng.next(obj.currentEng);
-      console.log('The curEng is updated =>', this.curEng)
+      // console.log("setMainInfo ENGAGEMENT UPDATED", obj.currentEng)
+      
+      let user ;
+      let eng_id = obj.currentEng.engagement_id
+      if(!obj.currentEng.engagement_id){
+        eng_id = obj.currentEng
+      }
+      let new_eng = obj.currentEng;
+
+      // console.log("new_eng =>", new_eng)
+      if(!new_eng[0] || !new_eng['contacts']){
+        // console.log("need to get more data")
+        this.user.subscribe(u => {
+          if (u) {
+            user = u;
+            let obj = {
+              email: user.email,
+              eng_id: eng_id
+            }
+            // console.log("OBJECT TO SEND =>", obj)
+            this.getEngagementByEngId(eng_id).then(eng => {
+              this.get_contacts_by_eng_id(obj).then(data => {
+                if(data){
+                  new_eng = eng[0]
+                  new_eng.contacts = data['body']
+                  console.log("new cur_eng =>", new_eng)
+                  this.curEng.next(new_eng);
+                }
+              })
+            })
+            
+          }
+        });
+      }
+      
     }
     if (obj.engagements) {
       this.engs.next(obj.engagements);
@@ -808,7 +875,7 @@ export class ConnectorService {
     return new Promise(function (resolve, reject) {
       that.http.post('/api/logEvent', obj).subscribe(
         res => {
-          console.log("/api/logEvent RESULT =>", res)
+          // console.log("/api/logEvent RESULT =>", res)
           resolve(res)
         },
         err => {

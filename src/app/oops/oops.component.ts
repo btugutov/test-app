@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ConnectorService } from '../connector.service';
 
 @Component({
   selector: 'app-oops',
@@ -7,7 +8,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class OopsComponent implements OnInit {
 
-  constructor() { }
+  currentEng; 
+  constructor(private _ConnectorService: ConnectorService) { 
+    this._ConnectorService.currentEng.subscribe(currentEng => {
+      if(currentEng){
+        this.currentEng = currentEng;
+      }
+    })
+  }
 
   ngOnInit() {
   }

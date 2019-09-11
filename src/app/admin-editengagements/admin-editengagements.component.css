@@ -1,173 +1,249 @@
 .admin-quiz-permission {
   width: 100%;
-    margin-top: 50px;
+  margin-top: 50px;
 }
 
 .admin-quiz-permission-title {
-    display: flex;
-    flex-direction: column;
-    flex-wrap: nowrap;
-    justify-content: flex-start;
-    align-items: center;
-    align-content: center;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  align-items: center;
+  align-content: center;
 }
 
 .admin-quiz-permission-body {
-    display: flex;
-    flex-direction: column;
-    flex-wrap: nowrap;
-    justify-content: flex-start;
-    align-items: center;
-    align-content: center;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  align-items: center;
+  align-content: center;
 }
+
 .admin-quiz-permission-list_buttons {
-    margin: 0px auto;
-    width: 80%;
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
-    align-content: center;
+  margin: 0px auto;
+  width: 80%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
 }
-.admin-quiz-permission-by_teams{
-    margin: 50px 50px;
-    display: flex;
-	flex-direction: column;
-	flex-wrap: nowrap;
-	justify-content: center;
-	align-items: center;
-	align-content: center;
+
+.admin-quiz-permission-by_teams {
+  margin: 50px 50px;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
 }
-.admin-quiz-permission-table_box{
-    display: flex;
-    flex-direction: column;
-    flex-wrap: nowrap;
-    justify-content: flex-start;
-    align-items: center;
+
+.admin-quiz-permission-table_box {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  align-items: center;
 }
+
 .EditQuizPermissions_categoryBox {
-    height: fit-content;
-    display: flex;
-    flex-direction: column;
-    flex-wrap: wrap;
-    justify-content: flex-start;
-    align-content: flex-start;
-    /* z-index: 0;
+  height: fit-content;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-content: flex-start;
+  /* z-index: 0;
     transition: 0.5s;
     box-shadow: none; */
-    margin: 5px 5px;
-    padding: 5px 5px;
-    user-select: none;
-    border-radius: 5px;
+  margin: 5px 5px;
+  padding: 5px 5px;
+  user-select: none;
+  border-radius: 5px;
 }
 
 .EditQuizPermissions_categoryBox p {
-    transition: 0.5s;
+  transition: 0.5s;
 }
 
 .EditQuizPermissions_categoryBox:hover {
-    /* z-index: 1;
+  /* z-index: 1;
     box-shadow: 5px 10px 18px #888888;
     background: white */
 }
 
 .EditQuizPermissions_categoryBox:hover p {
-    color: #4f91cd;
+  color: #4f91cd;
+}
+
+.modal-content{
+  max-width: 100%;
 }
 .modal_message_box {
-    position: fixed;
-    z-index: 50;
-    width: 100vw;
-    height: 100vh;
-    background: rgba(179, 182, 185, 0.5);
-    margin-top: -120px;
+  position: fixed;
+  z-index: 50;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(179, 182, 185, 0.5);
+  margin-top: -120px;
 }
 
 .modal_message {
-    max-height: 52vh;
+  max-height: 52vh;
 }
 
-.modal-edit-remove-bucket{
-    height: 50vh !important;
-    overflow-y: auto;
-}
-.modal-edit-remove-bucket td{
-    /* padding: 0px 0px !important; */
-}
-.modal-dialog{
-    width: 1000px;
-    max-width: 1000px !important;
-    /* height: 100px; */
+.modal-edit-remove-bucket {
+  height: 50vh !important;
+  overflow-y: auto;
 }
 
-.toggle-red::before{
-    border-color: #a71212 !important;
-    background-color: #f56f6f !important;
+.modal-edit-remove-bucket td {
+  /* padding: 0px 0px !important; */
 }
 
-input[type="checkbox"].switch_1{
-	font-size: 30px;
-	-webkit-appearance: none;
-	   -moz-appearance: none;
-	        appearance: none;
-	width: 2.2em;
-	height: 1em;
-	background: #ddd;
-	border-radius: 3em;
-	position: relative;
-	cursor: pointer;
-	outline: none;
-	-webkit-transition: all .2s ease-in-out;
-	transition: all .2s ease-in-out;
-  }
-  
-  input[type="checkbox"].switch_1:checked{
-	background: #0ebeff;
-  }
-  
-  input[type="checkbox"].switch_1:after{
-	position: absolute;
-	content: "";
-	width: 1em;
-	height: 1em;
-	border-radius: 50%;
-	background: #fff;
-	-webkit-box-shadow: 0 0 .25em rgba(0,0,0,.3);
-	        box-shadow: 0 0 .25em rgba(0,0,0,.3);
-	-webkit-transform: scale(.7);
-	        transform: scale(.7);
-	left: 0;
-	-webkit-transition: all .2s ease-in-out;
-	transition: all .2s ease-in-out;
-  }
-  
-  input[type="checkbox"].switch_1:checked:after{
-	left: calc(100% - 1em);
-  }
-  input[type="checkbox"].switch_1:disabled{
-    filter: brightness(65%);
-  }
-
-  .outerDivFull { margin:50px; } 
-
-.switchToggle input[type=checkbox]{height: 0; width: 0; visibility: hidden; position: absolute; }
-.switchToggle label {cursor: pointer; text-indent: -9999px; width: 100px; max-width: 100px !important; height: 30px; background: #d1d1d1; display: block; border-radius: 100px; position: relative; }
-.switchToggle label:after {content: ''; position: absolute; top: 2px; left: 2px; width: 26px; height: 26px; background: #fff; border-radius: 90px; transition: 0.3s; }
-.switchToggle input:checked + label, .switchToggle input:checked + input + label  {background: #3e98d3; }
-.switchToggle input + label:before, .switchToggle input + input + label:before {content: 'Disabled'; position: absolute; top: 5px; left: 35px; width: 26px; height: 26px; border-radius: 90px; transition: 0.3s; text-indent: 0; color: #fff; }
-.switchToggle input:checked + label:before, .switchToggle input:checked + input + label:before {content: 'Enabled'; position: absolute; top: 5px; left: 10px; width: 26px; height: 26px; border-radius: 90px; transition: 0.3s; text-indent: 0; color: #fff; }
-.switchToggle input:checked + label:after, .switchToggle input:checked + input + label:after {left: calc(100% - 2px); transform: translateX(-100%); }
-.switchToggle label:active:after {width: 60px; } 
-.toggle-switchArea { margin: 10px 0 10px 0; }
-
-thead th
-{
-    position: sticky;
-    top: 0px;
-    z-index: 1;
-
+.modal-dialog {
+  width: 1000px;
+  max-width: 1000px !important;
+  /* height: 100px; */
 }
+
+.toggle-red::before {
+  border-color: #a71212 !important;
+  background-color: #f56f6f !important;
+}
+
+input[type="checkbox"].switch_1 {
+  font-size: 30px;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  width: 2.2em;
+  height: 1em;
+  background: #ddd;
+  border-radius: 3em;
+  position: relative;
+  cursor: pointer;
+  outline: none;
+  -webkit-transition: all .2s ease-in-out;
+  transition: all .2s ease-in-out;
+}
+
+input[type="checkbox"].switch_1:checked {
+  background: #0ebeff;
+}
+
+input[type="checkbox"].switch_1:after {
+  position: absolute;
+  content: "";
+  width: 1em;
+  height: 1em;
+  border-radius: 50%;
+  background: #fff;
+  -webkit-box-shadow: 0 0 .25em rgba(0, 0, 0, .3);
+  box-shadow: 0 0 .25em rgba(0, 0, 0, .3);
+  -webkit-transform: scale(.7);
+  transform: scale(.7);
+  left: 0;
+  -webkit-transition: all .2s ease-in-out;
+  transition: all .2s ease-in-out;
+}
+
+input[type="checkbox"].switch_1:checked:after {
+  left: calc(100% - 1em);
+}
+
+input[type="checkbox"].switch_1:disabled {
+  filter: brightness(65%);
+}
+
+.outerDivFull {
+  margin: 50px;
+}
+
+.switchToggle input[type=checkbox] {
+  height: 0;
+  width: 0;
+  visibility: hidden;
+  position: absolute;
+}
+
+.switchToggle label {
+  cursor: pointer;
+  text-indent: -9999px;
+  width: 100px;
+  max-width: 100px !important;
+  height: 30px;
+  background: #d1d1d1;
+  display: block;
+  border-radius: 100px;
+  position: relative;
+}
+
+.switchToggle label:after {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 26px;
+  height: 26px;
+  background: #fff;
+  border-radius: 90px;
+  transition: 0.3s;
+}
+
+.switchToggle input:checked+label, .switchToggle input:checked+input+label {
+  background: #3e98d3;
+}
+
+.switchToggle input+label:before, .switchToggle input+input+label:before {
+  content: 'Disabled';
+  position: absolute;
+  top: 5px;
+  left: 35px;
+  width: 26px;
+  height: 26px;
+  border-radius: 90px;
+  transition: 0.3s;
+  text-indent: 0;
+  color: #fff;
+}
+
+.switchToggle input:checked+label:before, .switchToggle input:checked+input+label:before {
+  content: 'Enabled';
+  position: absolute;
+  top: 5px;
+  left: 10px;
+  width: 26px;
+  height: 26px;
+  border-radius: 90px;
+  transition: 0.3s;
+  text-indent: 0;
+  color: #fff;
+}
+
+.switchToggle input:checked+label:after, .switchToggle input:checked+input+label:after {
+  left: calc(100% - 2px);
+  transform: translateX(-100%);
+}
+
+.switchToggle label:active:after {
+  width: 60px;
+}
+
+.toggle-switchArea {
+  margin: 10px 0 10px 0;
+}
+
+thead th {
+  position: sticky;
+  top: 0px;
+  z-index: 1;
+}
+
 input[type="file"] {
   display: none;
 }
@@ -184,68 +260,75 @@ input[type="file"] {
   padding: 0px 0px;
   text-align: center;
 }
-/* ============ COLLAPSE BOX ================== */
-.wrap-collabsible {
-    margin-bottom: 1.2rem 0;
-  }
-  
-  input[type='checkbox'] {
-    display: none;
-  }
-  
-  .lbl-toggle {
-    display: block;
-  
-    font-family: monospace;
-    text-transform: uppercase;
-    cursor: pointer;
-  
-    border-radius: 0px;
-    transition: all 0.25s ease-out;
-  }
-  
-  .lbl-toggle:hover {
-    color: #7C5A0B;
-  }
-  
-  .lbl-toggle::before {
-    content: ' ';
-    display: inline-block;
-    border-top: 5px solid transparent;
-    border-bottom: 5px solid transparent;
-    border-left: 5px solid #212528;
-    vertical-align: middle;
-    margin-right: .7rem;
-    transform: translateY(-2px);
-  
-    transition: transform .2s ease-out;
-  }
-  
-  .toggle:checked + .lbl-toggle::before {
-    transform: rotate(90deg) translateX(-3px);
-  }
-  
-  .collapsible-content {
-    height: 0px;
-    overflow: hidden;
-    transition: max-height .25s ease;
-  }
-  
-  .toggle:checked + .lbl-toggle + .collapsible-content {
-    height: 100%;
-  }
-  
-  .toggle:checked + .lbl-toggle {
-    border-bottom-right-radius: 0;
-    border-bottom-left-radius: 0;
-  }
-  
-  .content-inner {
-    background: rgba(250, 224, 66, .2);
-    border-bottom: 1px solid rgba(250, 224, 66, .45);
-    border-bottom-left-radius: 7px;
-    border-bottom-right-radius: 7px;
-    padding: .5rem 1rem;
-  }
 
-  /* ============== END OF COLLAPSE BOX ============== */
+/* ============ COLLAPSE BOX ================== */
+
+.wrap-collabsible {
+  margin-bottom: 1.2rem 0;
+}
+
+input[type='checkbox'] {
+  display: none;
+}
+
+.lbl-toggle {
+  display: block;
+  font-family: monospace;
+  text-transform: uppercase;
+  cursor: pointer;
+  border-radius: 0px;
+  transition: all 0.25s ease-out;
+}
+
+.lbl-toggle:hover {
+  color: #7C5A0B;
+}
+
+.lbl-toggle::before {
+  content: ' ';
+  display: inline-block;
+  border-top: 5px solid transparent;
+  border-bottom: 5px solid transparent;
+  border-left: 5px solid #212528;
+  vertical-align: middle;
+  margin-right: .7rem;
+  transform: translateY(-2px);
+  transition: transform .2s ease-out;
+}
+
+.toggle:checked+.lbl-toggle::before {
+  transform: rotate(90deg) translateX(-3px);
+}
+
+.collapsible-content {
+  height: 0px;
+  overflow: hidden;
+  transition: max-height .25s ease;
+}
+
+.toggle:checked+.lbl-toggle+.collapsible-content {
+  height: 100%;
+}
+
+.toggle:checked+.lbl-toggle {
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.content-inner {
+  background: rgba(250, 224, 66, .2);
+  border-bottom: 1px solid rgba(250, 224, 66, .45);
+  border-bottom-left-radius: 7px;
+  border-bottom-right-radius: 7px;
+  padding: .5rem 1rem;
+}
+
+/* ============== END OF COLLAPSE BOX ============== */
+
+.switchToggle{
+  margin-top: 15px;
+}
+.changes_box{
+  padding: 3px 3px;
+  border: 1px solid silver;
+}

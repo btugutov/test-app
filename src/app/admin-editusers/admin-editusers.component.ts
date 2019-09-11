@@ -17,6 +17,7 @@ export class AdminEditusersComponent implements OnInit {
   all_users = null;
   by_teams;
   by_title;
+  currentEng;
   currentEng_id;
   sorted_users = null;
   categories = null;
@@ -94,6 +95,11 @@ export class AdminEditusersComponent implements OnInit {
       }
       if (user && !user.admin) {
         this._r.navigate([`/${this.currentEng_id}/home`]);
+      }
+    })
+    this._ConnectorService.currentEng.subscribe(currentEng => {
+      if (currentEng) {
+        this.currentEng = currentEng
       }
     })
   }
