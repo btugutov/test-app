@@ -1,6 +1,5 @@
-
-
-<div style="min-height: 95vh; 
+<div
+  style="min-height: 95vh; 
             display: flex;
             flex-direction: column;
             flex-wrap: nowrap;
@@ -8,197 +7,222 @@
             align-items: center;
             align-content: space-between; background: linear-gradient(to bottom, rgba(255,255,255, 1), rgb(229, 231, 218),rgb(229, 231, 218),rgb(229, 231, 218)) ">
 
-            <div class="logevent_main element-animation-fadeIn" > 
-                <div [hidden]="!modal_mesage_bool" class="modal_message_box">
-                    <div class="modal-dialog modal-dialog-centered modal_message" role="document">
-                        <div class="modal-content modal-dialog-scrollable" *ngIf="modal_message.title == 'Details'">
-                            <div class="modal-header">
-                                <h3 class="modal-title  text-center" id="exampleModalCenteredLabel" style="margin: 0px auto;">Details for {{modal_message.body.log_id}}</h3>
-                                <button type="button" class="close" (click)="closeModal()" data-dismiss="modal" aria-label="Close">
-                                      <span aria-hidden="true">&times;</span>
-                                    </button>
-                            </div>
-                            <div style="height: 50vh !important; overflow-y: scroll;" class="text-break">
-                                {{ modal_message.body | json}}
-                              </div>
-                              <div class="team_control_panel">
-                                  <div style="height: 50px; margin-top: 25px;">
-                                    <button type="button" (click)="closeModal()"  class="btn btn-warning  btn-action-borderless shadow"  style="margin: 0px 20px">Close</button>
-                                  </div>
-                              </div>
-                        </div>
-                    </div>
-                </div>
-              <div class="text-center">
-                <h1>Event Log Page</h1>
-                <!-- {{ new_logs |json}} -->
-                <!-- <button (click)="getNewLogs()">getNewLogs()</button> -->
-                <div class="spinner-border" *ngIf="!first_request_status" role="status">
-                  <span class="sr-only">Loading...</span>
-                </div>
-               <button *ngIf="first_request_status" class="btn btn-outline-dark btn-action-borderless" [ngClass]="{'active shadow': current_level == 'ALL'}" (click)="filterList('ALL')"><h3>All {{ids.length}} entries </h3></button>
-             
-                <div *ngIf="first_request_status" style="margin: 10px auto">
-                  <span *ngFor="let el of levels_counter | keyvalue">
-                    <button *ngIf="el.key != 'ALL'" class="btn btn-action-borderless font-weight-bold" [ngClass]="{
+  <div class="logevent_main element-animation-fadeIn">
+    <div [hidden]="!modal_mesage_bool" class="modal_message_box">
+      <div class="modal-dialog modal-dialog-centered modal_message" role="document">
+        <div class="modal-content modal-dialog-scrollable" *ngIf="modal_message.title == 'Details'">
+          <div class="modal-header">
+            <h3 class="modal-title  text-center" id="exampleModalCenteredLabel" style="margin: 0px auto;">Details for
+              {{modal_message.body.log_id}}</h3>
+            <button type="button" class="close" (click)="closeModal()" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div style="height: 50vh !important; overflow-y: scroll;" class="text-break">
+            {{ modal_message.body | json}}
+          </div>
+          <div class="team_control_panel">
+            <div style="height: 50px; margin-top: 25px;">
+              <button type="button" (click)="closeModal()" class="btn btn-warning  btn-action-borderless shadow"
+                style="margin: 0px 20px">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="text-center">
+      <h1>Event Log Page</h1>
+      <!-- {{ new_logs |json}} -->
+      <!-- <button (click)="getNewLogs()">getNewLogs()</button> -->
+      <div class="spinner-border" *ngIf="!first_request_status" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
+      <button *ngIf="first_request_status" class="btn btn-outline-dark btn-action-borderless"
+        [ngClass]="{'active shadow': current_level == 'ALL'}" (click)="filterList('ALL')">
+        <h3>All {{ids.length}} entries </h3>
+      </button>
+
+      <div *ngIf="first_request_status" style="margin: 10px auto">
+        <span *ngFor="let el of levels_counter | keyvalue">
+          <button *ngIf="el.key != 'ALL'" class="btn btn-action-borderless font-weight-bold" [ngClass]="{
                       'btn-outline-info': el.key =='INFO',
                       'btn-outline-warning': el.key == 'WARNING',
                       'btn-outline-danger': el.key == 'ERROR',
                       'btn-outline-secondary': el.key == 'DEBUG',
                       'btn-outline-primary': el.key == 'TESTING',
                       'active shadow': el.key == current_level
-                    }" (click)="filterList(el.key)">{{el.key}}: {{el.value.length}} (~{{el.value.percentage}}%)</button>
-                  </span>
-                </div>
+                    }" (click)="filterList(el.key)">{{el.key}}: {{el.value.length}}
+            (~{{el.value.percentage}}%)</button>
+        </span>
+      </div>
 
-              </div>
-                <nav aria-label="..." *ngIf="first_request_status" style="margin: auto 0px">
-                  <ul class="pagination ">
-                    <li class="page-item" [ngClass]="{'disabled': current_page < 2}">
-                      <button class="btn btn-outline-secondary btn-action-borderless" (click)="changePage(1)" [disabled]="current_page < 2"> <<
-                         </button> </li> 
-                    <li class="page-item" (click)="changePage(current_page - 2)" [hidden]="current_page-2<1">
-                          <button class="btn btn-outline-secondary btn-action-borderless">{{current_page - 2}}</button></li>
-                    <li class="page-item" (click)="changePage(current_page - 1)" [hidden]="current_page<2"><button
-                        class="btn btn-outline-secondary btn-action-borderless">{{current_page - 1}}</button></li>
-                    <li class="page-item active">
-                      <button class="btn btn-dark btn-action-borderless shadow">{{current_page}}</button>
-                    </li>
-                    <li class="page-item" (click)="changePage(current_page + 1)" [hidden]="current_page+1 > pages"><button
-                        class="btn btn-outline-secondary btn-action-borderless">{{current_page + 1}}</button></li>
-                    <li class="page-item" (click)="changePage(current_page + 2)" [hidden]="current_page+2  > pages"><button
-                        class="btn btn-outline-secondary btn-action-borderless">{{current_page + 2}}</button></li>
-                    <li class="page-item" [ngClass]="{'disabled': current_page == pages}">
-                      <button class="btn btn-outline-secondary btn-action-borderless" (click)="changePage(pages)"> >> </button>
-                    </li>
-                  </ul>
-                </nav>
-                <!-- {{cur_num}}/{{end_num}} -->
-            
-                <div class="progress shadow"  *ngIf="first_request_status" style="width: 95%; border-radius: 0px;">
-                    <div class="progress-bar shadow " role="progressbar" style="height: 35px;" [style.width.%]="( (cur_num/end_num) * 100)"  style="transition: width .1s ease; background-color: #4f91cd">{{cur_num}}/{{end_num}}</div>
-                  </div>
-                <table class="table table-borderless shadow" style="width: 95%" *ngIf="first_request_status">
-                  <thead class="thead-dark shadow">
-                    <tr>
-                      <th style="width: 120px;">Event ID</th>
-                      <th style="width: 100px;">Level</th>
-                      <th>Content</th>
-                      <th>Host</th>
-                      <th>Line</th>
-                      <th>Details</th>
-                      <th>Submit by</th>
-                      <th>Time</th>
-                    </tr>
-                  </thead>
-                  <tbody style="background: white">
-                    <tr *ngFor="let el of logs; let i = index" [ngClass]="{
+    </div>
+    <nav aria-label="..." *ngIf="first_request_status" style="margin: auto 0px">
+      <ul class="pagination ">
+        <li class="page-item" [ngClass]="{'disabled': current_page < 2}">
+          <button class="btn btn-outline-secondary btn-action-borderless" (click)="changePage(1)"
+            [disabled]="current_page < 2">
+            << </button> </li> <li class="page-item" (click)="changePage(current_page - 2)" [hidden]="current_page-2<1">
+              <button class="btn btn-outline-secondary btn-action-borderless">{{current_page - 2}}</button></li>
+        <li class="page-item" (click)="changePage(current_page - 1)" [hidden]="current_page<2"><button
+            class="btn btn-outline-secondary btn-action-borderless">{{current_page - 1}}</button></li>
+        <li class="page-item active">
+          <button class="btn btn-dark btn-action-borderless shadow">{{current_page}}</button>
+        </li>
+        <li class="page-item" (click)="changePage(current_page + 1)" [hidden]="current_page+1 > pages"><button
+            class="btn btn-outline-secondary btn-action-borderless">{{current_page + 1}}</button></li>
+        <li class="page-item" (click)="changePage(current_page + 2)" [hidden]="current_page+2  > pages"><button
+            class="btn btn-outline-secondary btn-action-borderless">{{current_page + 2}}</button></li>
+        <li class="page-item" [ngClass]="{'disabled': current_page == pages}">
+          <button class="btn btn-outline-secondary btn-action-borderless" (click)="changePage(pages)"> >> </button>
+        </li>
+      </ul>
+    </nav>
+    <!-- {{cur_num}}/{{end_num}} -->
+
+    <div class="progress shadow" *ngIf="first_request_status" style="width: 95%; border-radius: 0px;">
+      <div class="progress-bar shadow " role="progressbar" style="height: 35px;"
+        [style.width.%]="( (cur_num/end_num) * 100)" style="transition: width .1s ease; background-color: #4f91cd">
+        {{cur_num}}/{{end_num}}</div>
+    </div>
+    <table class="table table-borderless shadow" style="width: 95%" *ngIf="first_request_status">
+      <thead class="thead-dark shadow">
+        <tr>
+          <th style="width: 120px;">Event ID</th>
+          <th style="width: 100px;">Level</th>
+          <th>Content</th>
+          <th>Host</th>
+          <th>Line</th>
+          <th>Details</th>
+          <th>Submit by</th>
+          <th>Time</th>
+        </tr>
+      </thead>
+      <tbody style="background: white">
+        <tr *ngFor="let el of logs; let i = index" [ngClass]="{
                     'alert-warning': ready[el.log_id] && el.log_level == 'WARNING',
                     'alert-danger': ready[el.log_id] && el.log_level == 'ERROR'
                   }">
-                      <td *ngIf="!ready[el.log_id]" colspan="8">
-                        <div class="alert text-center shadow" [ngClass]="{
+          <td *ngIf="!ready[el.log_id]" colspan="8">
+            <div class="alert text-center shadow" [ngClass]="{
                           'alert-info': el.log_level == 'INFO',
                           'alert-warning': el.log_level == 'WARNING',
                           'alert-danger': el.log_level == 'ERROR',
                           'alert-secondary': el.log_level == 'DEBUG',
                           'alert-primary': el.log_level == 'TESTING'
                         }">Loading </div>
-                        </td>
-                      <th scope="row" *ngIf="ready[el.log_id]" class="" >
-                          ({{ (current_page - 1) * 100 + i + 1}})
-                          <span *ngIf="ready[el.log_id] && new_logs[el.log_id]" class="badge badge-success shadow">  
-                            New
-                            <br>
-                            {{el.log_id}}
-                          </span>
-                          <span *ngIf="ready[el.log_id] && !new_logs[el.log_id]" >{{el.log_id}}</span></th>
-                      <td *ngIf="ready[el.log_id]">
-                        <h4>
-                          <span class="badge badge-info shadow btn-action-borderless" *ngIf="el.log_level == 'INFO' ">INFO</span>
-                          <span class="badge badge-warning shadow btn-action-borderless" *ngIf="el.log_level == 'WARNING' ">WARNING</span>
-                          <span class="badge badge-danger shadow btn-action-borderless" *ngIf="el.log_level == 'ERROR' ">ERROR</span>
-                          <span class="badge badge-secondary shadow btn-action-borderless" *ngIf="el.log_level == 'DEBUG' ">DEBUG</span>
-                          <span class="badge badge-primary shadow btn-action-borderless" *ngIf="el.log_level != 'ERROR' && el.log_level != 'WARNING'  && el.log_level != 'INFO'  && el.log_level != 'DEBUG'">{{el.log_level}}</span>
-                        </h4>
-                        </td>
-                      <td *ngIf="ready[el.log_id] " class="text-break">
-                        <span *ngIf="!highlights[el.log_id]">
-                          <span *ngIf="el.log_event && el.log_event.length > 50">
-                            {{el.log_event | slice:0:50}} ... <a style="cursor: pointer; color: black" (click)="openModal('Details', el)">(details)</a>
-                          </span>
-                          <span *ngIf="el.log_event && el.log_event.length <= 50">
-                            {{el.log_event}}
-                          </span>
-                        </span>
-                        <span *ngIf="highlights[el.log_id] && highlights[el.log_id]['submit_id']" class="alert-info shadow">
-                          {{highlights[el.log_id]['submit_id'][0]}}
-                        </span>
-                        <span *ngIf="highlights[el.log_id] && highlights[el.log_id]['submit_id']">
-                          {{highlights[el.log_id]['submit_id'][1]}}
-                        </span>
-                        </td>
-                      <td *ngIf="ready[el.log_id]" class="text-break">{{el.host}}</td>
-                      <td *ngIf="ready[el.log_id]" class="text-break">{{el.line_number}}</td>
-                      <td *ngIf="ready[el.log_id]"><button class="btn btn-secondary btn-action-borderless shadow" (click)="openModal('Details', el)">Check details</button></td>
-                      <td *ngIf="ready[el.log_id]" class="text-break">{{el.user_id}}</td>
-                      <td *ngIf="ready[el.log_id]" class="text-break">{{el.event_time | date:'medium'}}</td>
-                    </tr>
-                  </tbody>
-                </table>
-                <nav aria-label="..." *ngIf="first_request_status" style="margin: auto 0px">
-                    <ul class="pagination ">
-                      <li class="page-item" [ngClass]="{'disabled': current_page < 2}">
-                        <button class="btn btn-outline-secondary btn-action-borderless" (click)="changePage(1)" [disabled]="current_page < 2"> <<
-                           </button> </li> 
-                      <li class="page-item" (click)="changePage(current_page - 2)" [hidden]="current_page-2<1">
-                            <button class="btn btn-outline-secondary btn-action-borderless">{{current_page - 2}}</button></li>
-                      <li class="page-item" (click)="changePage(current_page - 1)" [hidden]="current_page<2"><button
-                          class="btn btn-outline-secondary btn-action-borderless">{{current_page - 1}}</button></li>
-                      <li class="page-item active">
-                        <button class="btn btn-dark btn-action-borderless shadow">{{current_page}}</button>
-                      </li>
-                      <li class="page-item" (click)="changePage(current_page + 1)" [hidden]="current_page+1 > pages"><button
-                          class="btn btn-outline-secondary btn-action-borderless">{{current_page + 1}}</button></li>
-                      <li class="page-item" (click)="changePage(current_page + 2)" [hidden]="current_page+2  > pages"><button
-                          class="btn btn-outline-secondary btn-action-borderless">{{current_page + 2}}</button></li>
-                      <li class="page-item" [ngClass]="{'disabled': current_page == pages}">
-                        <button class="btn btn-outline-secondary btn-action-borderless" (click)="changePage(pages)"> >> </button>
-                      </li>
-                    </ul>
-                  </nav>
-            </div>
-<div  style="background: url(/assets/footer_background.png); background-position: top 0px right 0px !important; background-repeat: no-repeat !important; background-size: cover !important; width: 100%">
-        <div class="index_row" style="display: flex;
+          </td>
+          <th scope="row" *ngIf="ready[el.log_id]" class="">
+            ({{ (current_page - 1) * 100 + i + 1}})
+            <span *ngIf="ready[el.log_id] && new_logs[el.log_id]" class="badge badge-success shadow">
+              New
+              <br>
+              {{el.log_id}}
+            </span>
+            <span *ngIf="ready[el.log_id] && !new_logs[el.log_id]">{{el.log_id}}</span></th>
+          <td *ngIf="ready[el.log_id]">
+            <h4>
+              <span class="badge badge-info shadow btn-action-borderless" *ngIf="el.log_level == 'INFO' ">INFO</span>
+              <span class="badge badge-warning shadow btn-action-borderless"
+                *ngIf="el.log_level == 'WARNING' ">WARNING</span>
+              <span class="badge badge-danger shadow btn-action-borderless"
+                *ngIf="el.log_level == 'ERROR' ">ERROR</span>
+              <span class="badge badge-secondary shadow btn-action-borderless"
+                *ngIf="el.log_level == 'DEBUG' ">DEBUG</span>
+              <span class="badge badge-primary shadow btn-action-borderless"
+                *ngIf="el.log_level != 'ERROR' && el.log_level != 'WARNING'  && el.log_level != 'INFO'  && el.log_level != 'DEBUG'">{{el.log_level}}</span>
+            </h4>
+          </td>
+          <td *ngIf="ready[el.log_id] " class="text-break">
+            <span *ngIf="!highlights[el.log_id]">
+              <span *ngIf="el.log_event && el.log_event.length > 50">
+                {{el.log_event | slice:0:50}} ... <a style="cursor: pointer; color: black"
+                  (click)="openModal('Details', el)">(details)</a>
+              </span>
+              <span *ngIf="el.log_event && el.log_event.length <= 50">
+                {{el.log_event}}
+              </span>
+            </span>
+            <span *ngIf="highlights[el.log_id] && highlights[el.log_id]['submit_id']" class="alert-info shadow">
+              {{highlights[el.log_id]['submit_id'][0]}}
+            </span>
+            <span *ngIf="highlights[el.log_id] && highlights[el.log_id]['submit_id']">
+              {{highlights[el.log_id]['submit_id'][1]}}
+            </span>
+          </td>
+          <td *ngIf="ready[el.log_id]" class="text-break">{{el.host}}</td>
+          <td *ngIf="ready[el.log_id]" class="text-break">{{el.line_number}}</td>
+          <td *ngIf="ready[el.log_id]"><button class="btn btn-secondary btn-action-borderless shadow"
+              (click)="openModal('Details', el)">Check details</button></td>
+          <td *ngIf="ready[el.log_id]" class="text-break">{{el.user_id}}</td>
+          <td *ngIf="ready[el.log_id]" class="text-break">{{el.event_time | date:'medium'}}</td>
+        </tr>
+      </tbody>
+    </table>
+    <nav aria-label="..." *ngIf="first_request_status" style="margin: auto 0px">
+      <ul class="pagination ">
+        <li class="page-item" [ngClass]="{'disabled': current_page < 2}">
+          <button class="btn btn-outline-secondary btn-action-borderless" (click)="changePage(1)"
+            [disabled]="current_page < 2">
+            << </button> </li> <li class="page-item" (click)="changePage(current_page - 2)" [hidden]="current_page-2<1">
+              <button class="btn btn-outline-secondary btn-action-borderless">{{current_page - 2}}</button></li>
+        <li class="page-item" (click)="changePage(current_page - 1)" [hidden]="current_page<2"><button
+            class="btn btn-outline-secondary btn-action-borderless">{{current_page - 1}}</button></li>
+        <li class="page-item active">
+          <button class="btn btn-dark btn-action-borderless shadow">{{current_page}}</button>
+        </li>
+        <li class="page-item" (click)="changePage(current_page + 1)" [hidden]="current_page+1 > pages"><button
+            class="btn btn-outline-secondary btn-action-borderless">{{current_page + 1}}</button></li>
+        <li class="page-item" (click)="changePage(current_page + 2)" [hidden]="current_page+2  > pages"><button
+            class="btn btn-outline-secondary btn-action-borderless">{{current_page + 2}}</button></li>
+        <li class="page-item" [ngClass]="{'disabled': current_page == pages}">
+          <button class="btn btn-outline-secondary btn-action-borderless" (click)="changePage(pages)"> >> </button>
+        </li>
+      </ul>
+    </nav>
+  </div>
+  <div
+    style="background: url(/assets/footer_background.png); background-position: top 0px right 0px !important; background-repeat: no-repeat !important; background-size: cover !important; width: 100%">
+    <div class="index_row" style="display: flex;
                                                             flex-direction: column;
                                                             flex-wrap: nowrap;
                                                             justify-content: center;
                                                             align-items: center;
                                                             align-content: space-between;">
-            <div class="col-md-4 col-12 px-2" style="justify-content: center;">
-                <div class="text-center">
-                    <h4 style="color: #4f91cd;">Skill Assessment Tool</h4>
-                </div>
-            </div>
-            <div class="col-md-4 col-12 px-2">
-                <div class="text-center">
-                    <p class="mt-3">If you have questions, please contact the Training Team</p>
-                    <p><a class="mt-3" href="mailto:jennifer@bpcs.com?subject=Question regarding Skill Assessment"
-                            style="color: #4f91cd; cursor: pointer;"> Jennifer Hollar</a></p>
-                    <p><a class="mt-3" href="mailto:nmelling@bpcs.com?subject=Question regarding Skill Assessment"
-                            style="color: #4f91cd; cursor: pointer;"> Nigel Melling</a></p>
-                    <p><a class="mt-3" href="mailto:kjenson@bpcs.com?subject=Question regarding Skill Assessment"
-                            style="color: #4f91cd; cursor: pointer;"> Kevin Jenson</a></p>
-                </div>
-            </div>
-            <div class="col-md-4 col-12 px-2" style="margin: 5px">
-                <div class="text-center  bp-box shadow">
-                    <h4 class="mt-3" style="color: #4f91cd; text-shadow: 0px 0px 1px silver;">Blueprint Consulting</h4>
-                    <h5 class="mt-3" style="color: #4f91cd; text-shadow: 0px 0px 1px silver;">505 106th Ave NE, Third
-                        Floor, Bellevue, WA 98004</h5>
-                    <h5 class="mt-3" style="color: #4f91cd; text-shadow: 0px 0px 1px silver;">(206) 455-8326</h5>
-                </div>
-            </div>
+      <div class="col-md-4 col-12 px-2" style="justify-content: center;">
+        <div class="text-center" style="display: flex;
+              flex-direction: row;
+              flex-wrap: wrap;
+              justify-content: center;
+              align-items: center;
+              align-content: stretch;">
+          <h4 style="color: #4f91cd;">Skill Assessment Tool</h4>
+          <a href="https://forms.office.com/Pages/ResponsePage.aspx?id=Zd3iEiRQwkSDtTyiHATvDig8hn-UbEJAlkljxOu9n7dUQllFRVMxTjRGV1o4OTRROE5JWldTM0FKVi4u"
+            target="_blank" data-toggle="tooltip" data-placement="top" title="Leave a feedback"
+            style="margin-left: 15px">
+            <img src="assets/feedback_icon.svg" style="height: 24px" class="bp_logo footer_element">
+          </a>
         </div>
+      </div>
+      <div class="col-md-4 col-12 px-2">
+        <div class="text-center">
+          <p class="mt-3">If you have questions, please contact the Training Team</p>
+          <p><a class="mt-3" href="mailto:jennifer@bpcs.com?subject=Question regarding Skill Assessment"
+              style="color: #4f91cd; cursor: pointer;"> Jennifer Hollar</a></p>
+          <p><a class="mt-3" href="mailto:nmelling@bpcs.com?subject=Question regarding Skill Assessment"
+              style="color: #4f91cd; cursor: pointer;"> Nigel Melling</a></p>
+          <p><a class="mt-3" href="mailto:kjenson@bpcs.com?subject=Question regarding Skill Assessment"
+              style="color: #4f91cd; cursor: pointer;"> Kevin Jenson</a></p>
+        </div>
+      </div>
+      <div class="col-md-4 col-12 px-2" style="margin: 5px">
+        <div class="text-center  bp-box shadow">
+          <h4 class="mt-3" style="color: #4f91cd; text-shadow: 0px 0px 1px silver;">Blueprint Consulting</h4>
+          <h5 class="mt-3" style="color: #4f91cd; text-shadow: 0px 0px 1px silver;">505 106th Ave NE, Third
+            Floor, Bellevue, WA 98004</h5>
+          <h5 class="mt-3" style="color: #4f91cd; text-shadow: 0px 0px 1px silver;">(206) 455-8326</h5>
+        </div>
+      </div>
     </div>
-    </div>
+  </div>
+</div>

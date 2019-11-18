@@ -1,30 +1,20 @@
 const sql = require('mssql');
 const os = require('os');
 const path = require('path');
+const fs = require('fs');
 
-// I have to have the log function HERE because i can't call the log class until i write it ^^^
-//const hostname = os.hostname();
-//console.log(os.hostname());
-
-// this really should be in a key vault or something
+let settings = JSON.parse(fs.readFileSync('./settings.json')); 
 const config = {
-    user: 'WebApp_B',
-    password: 'Valve$Web$App$B!',
-    server: 'valvegeneral01.database.windows.net',
-    database: 'BPWebAppDB',
+    user: settings.db.user,
+    password: settings.db.password,
+    server: settings.db.server,
+    database: settings.db.database,
     options: {
         encrypt: true
     }
 };
-
-// this really should be in a key vault or something
-// CONFIG
-
-// this might not work for MAC,
-// This is intended to be used to replace as 
-function debugLog(consoleString) {
-    // a log option to display the line number where it was called
-    // only output if a dev on dev machine, not in production!!!
+ 
+function debugLog(consoleString) { 
     if (devCheck.trusted == true) {
         const orig = Error.prepareStackTrace;
         Error.prepareStackTrace = (_, stack) => stack;
@@ -33,12 +23,9 @@ function debugLog(consoleString) {
         const callee = err.stack[0];
         Error.prepareStackTrace = orig;
         process.stdout.write(`${path.relative(process.cwd(), callee.getFileName())}:${callee.getLineNumber()}: ${consoleString} \n`);
-        //process.stdout.write(`${line}: ${consoleString}\n`);
     }
 }
-
-// This is intended to use for logs to get the line number of the reporting error.
-// This might now be working for MAC
+ 
 function getLineNumber() {
     // gets the line number 
     const orig = Error.prepareStackTrace;

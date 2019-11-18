@@ -1,4 +1,5 @@
-<div style="min-height: 95vh; 
+<div
+    style="min-height: 95vh; 
             display: flex;
             flex-direction: column;
             flex-wrap: nowrap;
@@ -54,14 +55,6 @@
                                             <p *ngIf="bucket_list_counter[b.key]"
                                                 style="font-size: 12px;margin-bottom: 0px">are using this bucket</p>
                                         </td>
-                                        <!-- <td *ngIf="b.value.soft_delete" class="table-secondary">
-                                                            <input type="text" disabled class="form-control openBucketListSettings_inputs"
-                                                                (change)="bucketListEditor(i, 'bucket_name', $event.target.value)" value={{b.value.bucket_name}}>
-                                                        </td>
-                                                        <td *ngIf="b.value.soft_delete" class="table-secondary">
-                                                            <button *ngIf="b.value.soft_delete" (click)="bucketListEditor(i, 'soft_delete', false)"
-                                                                class='btn btn-outline-success btn-action-borderless'>Enable</button>
-                                                        </td> -->
                                     </tr>
                                 </tbody>
                             </table>
@@ -111,11 +104,8 @@
 
                         </div>
                         <div class="modal-footer">
-                            <!-- <button type="button" *ngIf="bucket_list_changes_bool" class="btn btn-action-borderless btn-outline-danger" (click)="bucketListEditorCancel()" data-dismiss="modal">Cancel changes</button> -->
                             <button type="button" class="btn btn-action-borderless btn-outline-info"
                                 (click)="bucketListEditorClose()" data-dismiss="modal">Close</button>
-                            <!-- <button type="button" [hidden]="bucket_list_confirm_bool" class="btn btn-action-borderless btn-outline-warning" (click)="bucketListEditorConfirm()">Confirm</button> -->
-                            <!-- <button type="button" [disabled]="!bucket_list_changes_bool" class="btn btn-action-borderless btn-outline-success" (click)="bucketListEditorSave()">Save</button> -->
                         </div>
                     </div>
                 </div>
@@ -190,7 +180,7 @@
                 </div>
             </div>
 
-           
+
             <div style="margin-top: 15px">
                 <!-- <button class="btn btn-lg shadow" (click)="checkState()">Check State</button> -->
                 <button class="btn btn-lg btn-action-borderless btn-secondary shadow"
@@ -201,19 +191,20 @@
                 <strong>All questions are good!</strong>
             </div>
             <div *ngIf="topic_cat_eng_message.display && !submit_ready" style="margin-top: 15px">
-                    <div *ngIf="topic_cat_eng_message.status == 'fail'" class="alert alert-warning shadow" role="alert">
-                        <strong>Warning!</strong> {{topic_cat_eng_message.message}}
-                    </div>
-                    <div *ngIf="topic_cat_eng_message.status == 'success'" class="alert alert-success shadow" role="alert">
-                        <strong>Nice!</strong> {{topic_cat_eng_message.message}}
-                    </div>
+                <div *ngIf="topic_cat_eng_message.status == 'fail'" class="alert alert-warning shadow" role="alert">
+                    <strong>Warning!</strong> {{topic_cat_eng_message.message}}
                 </div>
+                <div *ngIf="topic_cat_eng_message.status == 'success'" class="alert alert-success shadow" role="alert">
+                    <strong>Nice!</strong> {{topic_cat_eng_message.message}}
+                </div>
+            </div>
             <div class="d-flex justify-content-center" *ngIf="!submit_status.display" style="margin-top: 50px">
                 <button [hidden]="submit_ready" class="btn btn-lg btn-info btn-action-borderless shadow"
                     (click)="validateQuiz()">Validate</button>
                 <div [hidden]="!submit_ready" class="shadow btn-group btn-group-lg " role="group">
                     <button class="btn btn-lg btn-success btn-action-borderless" (click)="submitQuiz()">Submit</button>
-                    <button class="btn btn-lg btn-warning btn-action-borderless" (click)="cancelSubmitQuiz()">Cancel</button>
+                    <button class="btn btn-lg btn-warning btn-action-borderless"
+                        (click)="cancelSubmitQuiz()">Cancel</button>
                 </div>
             </div>
 
@@ -315,12 +306,6 @@
                                     [disabled]="q.value.question_soft_delete" type="radio" name="displayTypeNew"
                                     id="radio " value="Radio"> Radio</button>
 
-                                <!-- <button class="btn btn-sm btn-action-borderless btn-outline-secondary "
-                                                        [disabled]="q.value.question_soft_delete"
-                                                        [ngClass]="{ 'active': q.value.display_type_id == 3 && q.value.question_type_id == 1 }" 
-                                                        (click)="displayTypeChanger( q.key, 'Dropdown')" type="radio" name="displayTypeNew" 
-                                                        id="dropdown" value="Dropdown"> Dropdown</button> -->
-
                                 <button class="btn btn-sm btn-action-borderless btn-outline-secondary"
                                     [ngClass]="{ 'active': q.value.display_type_id == 2 && q.value.question_type_id == 1 }"
                                     (click)="displayTypeChanger(q.key, 'Checkbox')"
@@ -362,12 +347,8 @@
                                         (change)="inputEditor('drag_and_drop', q.key, 'answer_bucket_id', ans.key, $event.target.value)"
                                         class="form-control bucket_list_pick" id="bucket_list_pick_{{q.key}}"
                                         placeholder='Bucket' style="padding: 0px;">
-                                        <!-- <option type='button' class="bucket_list_settings" value="add_edit">Add/Edit</option> -->
                                         <option disabled style="margin-top:8px; border-top:1px solid #666; padding:0;">
                                             ____________</option>
-                                        <!-- <option *ngFor="let b of bucket_list" value="{{b.bucket_id}}"
-                                                            [selected]="q['answer_bucket_id'][ans.key] == b.bucket_id">
-                                                            {{b.bucket_name}}</option> -->
                                         <ng-container *ngFor="let b of bucket_list | keyvalue">
                                             <option
                                                 [selected]="q.value['answer_bucket_id'][ans.key] == b.value.bucket_id"
@@ -394,7 +375,6 @@
                                     class="form-control bucket_list_pick" id="bucket_list_pick_{{q.key}}"
                                     placeholder='Bucket' style="padding: 0px;">
                                     <option value="" selected disabled class="text-muted">Choose bucket</option>
-                                    <!-- <option type='button' class="bucket_list_settings" value="add_edit">Add/Edit </option> -->
                                     <option disabled style="margin-top:8px; border-top:1px solid #666; padding:0;">
                                         ____________</option>
                                     <ng-container *ngFor="let b of bucket_list | keyvalue">
@@ -593,15 +573,6 @@
 
 
                     </tr>
-                    <!-- <tr *ngIf="list_of_questions.new_question_error" class="create_form_row">
-                                    <td colspan="7" (click)="errorHandlerRemover('new_question')" class="errorHandlerBox">
-                                        <div class="alert alert-danger shadow errorHandler" role="alert">
-                                            <p class="text-center" *ngFor="let el of list_of_questions.new_question_error.errors | keyvalue">
-                                                {{el.value}}
-                                            </p>
-                                        </div>
-                                    </td>
-                                </tr> -->
                 </tbody>
             </table>
             <div [hidden]="!submit_ready" class="alert alert-success text-center shadow"
@@ -613,7 +584,8 @@
                     (click)="validateQuiz()">Validate</button>
                 <div [hidden]="!submit_ready" class="shadow btn-group btn-group-lg " role="group">
                     <button class="btn btn-lg btn-success btn-action-borderless" (click)="submitQuiz()">Submit</button>
-                    <button class="btn btn-lg btn-warning btn-action-borderless" (click)="cancelSubmitQuiz()">Cancel</button>
+                    <button class="btn btn-lg btn-warning btn-action-borderless"
+                        (click)="cancelSubmitQuiz()">Cancel</button>
                 </div>
             </div>
 
@@ -646,7 +618,8 @@
         </div>
 
     </div>
-    <div *ngIf="  !currentUser || !engagements " class=" loading_box component-gradient element-animation-fadeIn" style=" padding-top: 100px;height: 300px;">
+    <div *ngIf="  !currentUser || !engagements " class=" loading_box component-gradient element-animation-fadeIn"
+        style=" padding-top: 100px;height: 300px;">
         <h2>Loading...</h2>
         <div class="spinner-border" role="status">
             <span class="sr-only"></span>
@@ -662,22 +635,35 @@
                                                             align-items: center;
                                                             align-content: space-between;">
             <div class="col-md-4 col-12 px-2" style="justify-content: center;">
-                <div class="text-center">
+                <div class="text-center" style="display: flex;
+                                                flex-direction: row;
+                                                flex-wrap: wrap;
+                                                justify-content: center;
+                                                align-items: center;
+                                                align-content: stretch;">
                     <h4 style="color: #4f91cd;">Skill Assessment Tool</h4>
+                    <a href="https://forms.office.com/Pages/ResponsePage.aspx?id=Zd3iEiRQwkSDtTyiHATvDig8hn-UbEJAlkljxOu9n7dUQllFRVMxTjRGV1o4OTRROE5JWldTM0FKVi4u"
+                        target="_blank" data-toggle="tooltip" data-placement="top" title="Leave a feedback" style="margin-left: 15px">
+                        <img src="assets/feedback_icon.svg" style="height: 24px" class="bp_logo footer_element">
+                    </a>
                 </div>
             </div>
             <div *ngIf="currentEng" class="col-md-4 col-12 px-2">
                 <div class="text-center">
                     <p class="mt-3">{{currentEng.main_text}}</p>
-                    <p *ngFor="let contact of currentEng.contacts | keyvalue"><a class="mt-3" href="mailto:{{contact.value.email}}?subject=Question regarding Skill Assessment"
+                    <p *ngFor="let contact of currentEng.contacts | keyvalue"><a class="mt-3"
+                            href="mailto:{{contact.value.email}}?subject=Question regarding Skill Assessment"
                             style="color: #4f91cd; cursor: pointer;">{{contact.value.full_name}}</a></p>
                 </div>
             </div>
             <div *ngIf="currentEng" class="col-md-4 col-12 px-2" style="margin: 5px">
                 <div class="text-center  bp-box shadow">
-                    <h4 class="mt-3" style="color: #4f91cd; text-shadow: 0px 0px 1px silver;">{{currentEng.company_name}}</h4>
-                    <h5 class="mt-3" style="color: #4f91cd; text-shadow: 0px 0px 1px silver;">{{currentEng.company_address}}</h5>
-                    <h5 class="mt-3" style="color: #4f91cd; text-shadow: 0px 0px 1px silver;">{{currentEng.company_phone_number}}</h5>
+                    <h4 class="mt-3" style="color: #4f91cd; text-shadow: 0px 0px 1px silver;">
+                        {{currentEng.company_name}}</h4>
+                    <h5 class="mt-3" style="color: #4f91cd; text-shadow: 0px 0px 1px silver;">
+                        {{currentEng.company_address}}</h5>
+                    <h5 class="mt-3" style="color: #4f91cd; text-shadow: 0px 0px 1px silver;">
+                        {{currentEng.company_phone_number}}</h5>
                 </div>
             </div>
         </div>

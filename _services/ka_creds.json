@@ -1,0 +1,10 @@
+{
+    "bp_database": "ValveTicketmasterDB",
+    "bp_server": "valvegeneral01.database.windows.net",
+    "bp_username": "ValveBI_A",
+    "bp_pass": "DATA$geek4",
+    "ka_database": "BPWebAppDB",
+    "ka_server": "valvegeneral01.database.windows.net",
+    "ka_username": "WebApp_B",
+    "ka_pass": "Valve$Web$App$B!"
+}
